@@ -55,7 +55,9 @@ assert.equal(verifiedLi4.standardLocation, '手背、第2中手骨中点の橈�
 assert(DETAILED_ACUPOINTS.li4.locationDetail.startsWith(verifiedLi4.standardLocation), 'the visible LI4 location matches the checked definition');
 assert.match(verifiedLi4.note, /35ページ.*合谷（LI4）の体表での位置/, 'the note identifies a body-surface location at a specific source page');
 const pointScope = fs.readFileSync(path.resolve(__dirname, '../src/components/tsubo/AcupointInformationScope.tsx'), 'utf8');
-assert.match(pointScope, /安全な刺鍼深度を示しません/, 'the visible source note does not endorse a procedure');
+const pointDiagram = fs.readFileSync(path.resolve(__dirname, '../src/components/tsubo/CrossSectionViewer.tsx'), 'utf8');
+assert.match(pointScope, /個別の画像検証や査読の完了を意味しません/, 'the visible source note describes the scope of the review');
+assert.match(pointDiagram, /刺鍼の安全域や経路の決定には使用できません/, 'the diagram displays its limits beside the anatomy model');
 for (const model of Object.values(CROSS_SECTIONS)) {
   assert.equal(model.procedureReviewStatus, 'pending_expert_review', `${model.id}: anatomy/procedure review remains pending`);
 }

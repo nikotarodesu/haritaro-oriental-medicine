@@ -7,6 +7,7 @@ import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition
 import PublicLectureSections, { PublicLectureLinks } from "@/components/curriculum/PublicLectureSections";
 import ReadingUnitCheck from "@/components/curriculum/ReadingUnitCheck";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
+import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import ReadingContents from "@/components/reading/ReadingContents";
 import ReadingSequence from "@/components/reading/ReadingSequence";
 import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
@@ -16,10 +17,18 @@ import { getPublicLectureArticle } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
 import { getPublicLectureDiagram } from "@/data/publicLectures/diagrams";
 import { getLectureIndexGroups, getReadingUnit, READING_LECTURES_REVISED_AT, readingUnits } from "@/data/publicLectures/readingUnits";
+import { getReadingUnitQuestions } from "@/data/publicLectures/readingUnitQuestions";
 import { getPublicLectureReferences, publishedLectureRecords } from "@/data/publicLectures/resources";
 import { readingUnitRevisions } from "@/data/publicLectures/revisions";
 import { reviseLectureSections } from "@/data/publicLectures/revisions/types";
 import styles from "./lecture-reading.module.css";
+
+const practiceByUnit: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
+  "meridians-and-points": { href: "/tsubo#nearby-comparisons", label: "近いツボの位置を図で見比べる" },
+  "qi-blood-and-patterns": { href: "/cases/case-02-fatigue-spleen-deficiency", label: "疲労の模擬症例で所見を読む" },
+  "assessment-basics": { href: "/cases/case-01-headache-liver-fire", label: "頭痛の模擬症例で四診と根拠を確かめる" },
+  "principles-and-goals": { href: "/practice/haiketsu", label: "配穴の練習でツボを選んだ理由を書く" },
+};
 
 const lectureIndexHref = "/learn#learn-courses-heading";
 
@@ -64,6 +73,8 @@ export default async function ReadingLecturePage({ params }: Props) {
   const unit = await findUnit(params);
   const revision = readingUnitRevisions[unit.slug];
   if (!revision) notFound();
+  const questions = getReadingUnitQuestions(unit.slug);
+  const practice = practiceByUnit[unit.slug];
   const revisedAt = PAGE_REVISIONS[unit.href] ?? READING_LECTURES_REVISED_AT;
   const index = readingUnits.indexOf(unit);
   const chapter = getLectureIndexGroups("reading").find(group => group.id === unit.chapter);
@@ -182,12 +193,27 @@ export default async function ReadingLecturePage({ params }: Props) {
           <details id="lecture-check" className="lecture-check">
             <summary>
               <span>確認問題</span>
-              <span className="lecture-check-count">{revision.questions.length}問</span>
+              <span className="lecture-check-count">{questions.length}問</span>
               <ChevronDown aria-hidden="true" />
             </summary>
-            <ReadingUnitCheck key={unit.slug} unitId={unit.slug} questions={revision.questions} />
+            <ReadingUnitCheck key={unit.slug} unitId={unit.slug} questions={questions} />
           </details>
+          <ContentNavigationLink href="/learn/review#learning-review" placement="reading_unit_review" className="ui-text-link inline-flex min-h-11 items-center">
+            間違えた問題を復習する
+          </ContentNavigationLink>
         </section>
+
+        {practice && (
+          <div className="print:hidden">
+            <ContentNavigationLink
+              href={practice.href}
+              placement="reading_unit_practice"
+              className="page-secondary-action"
+            >
+              {practice.label}
+            </ContentNavigationLink>
+          </div>
+        )}
 
         <ReadingSequence
           label="講義"

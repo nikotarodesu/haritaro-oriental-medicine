@@ -12,6 +12,9 @@ const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
 const { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } = load('src/utils/caseStudyProgress');
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
 const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
+const { NEARBY_COMPARISONS } = load('src/data/tsubo/atlas/nearbyComparisons');
+
+let learningValues = {};
 
 function component(file) {
   const source = fs.readFileSync(file, 'utf8');
@@ -33,6 +36,7 @@ function component(file) {
     '@/components/cases/CaseStudyResume': () => null,
     '@/components/clinical/ClinicalToolBridge': () => null,
     '@/components/learning/PrescriptionScoringGuide': () => null,
+    '@/components/learning/ContentNavigationLink': ({ href, children }) => React.createElement('a', { href }, children),
     '@/components/kikei/KikeiPathwaySvg': () => React.createElement('svg', { 'data-test': 'pathway' }),
     '@/components/kikei/KikeiQuizSection': () => React.createElement('div', { 'data-test': 'quiz' }),
     '@/components/kikei/KikeiEvidenceNote': () => null,
@@ -45,7 +49,8 @@ function component(file) {
       if (id === '@/components/design/PageArtwork') return { PageSymbol: mockComponents[id] };
       if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams() };
       if (id === '@/utils/analytics') return { trackEvent() {} };
-      if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: {}, status: 'local', setEntry() {} }) };
+      if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: learningValues, status: 'local', setEntry() {} }) };
+      if (id === './CaseStudyReview') return { __esModule: true, default: component('src/components/cases/CaseStudyReview.tsx') };
       if (mockComponents[id]) return { __esModule: true, default: mockComponents[id] };
       if (id.startsWith('@/')) return load('src/' + id.slice(2));
       return require(id);
@@ -59,9 +64,14 @@ assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinica
 const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
 assert.equal(CLINICAL_CASES.length, 20);
 assert.equal(CLINICAL_CASES.filter(({ patient }) => typeof patient.historyOfPresentIllness !== 'string').length, 13);
+assert.equal(NEARBY_COMPARISONS.length, 7);
+for (const group of NEARBY_COMPARISONS) {
+  assert(group.points.some(point => point.code === group.question.answerCode), group.id);
+}
 for (const clinicalCase of CLINICAL_CASES) {
   assert(casesIndex.includes('href="/cases/' + clinicalCase.id + '"'), clinicalCase.id);
-  const html = renderToStaticMarkup(React.createElement(CaseViewer, { clinicalCase }));
+  const viewer = React.createElement(CaseViewer, { clinicalCase, reviewResources: { readingHref: '/learn/lectures/assessment-basics' } });
+  const html = renderToStaticMarkup(viewer);
   assert(html.includes('href="#case-examination"') && html.includes('id="case-examination"'), clinicalCase.id);
   assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
   assert(html.includes('aria-label="表示する所見"') && html.includes('aria-pressed="true"'), clinicalCase.id);
@@ -80,13 +90,22 @@ for (const clinicalCase of CLINICAL_CASES) {
       priorIndex = index;
     }
   }
+  assert(!html.includes('id="case-practice-review"'), clinicalCase.id);
   const values = {};
   const steps = clinicalCase.reasoningSteps;
   const last = steps.at(-1);
   values[caseStudyAnswerKey(clinicalCase.id, last.stepNumber)] = { attempt: 'initial', optionId: last.options[0].id, answeredAt: 20 };
   assert.equal(getCaseStudyProgress(values, clinicalCase).complete, false, clinicalCase.id + ': answering only the last step does not complete the case');
-  for (const step of steps) values[caseStudyAnswerKey(clinicalCase.id, step.stepNumber)] = { attempt: 'initial', optionId: step.options[0].id, answeredAt: 30 };
+  for (const [index, step] of steps.entries()) {
+    const option = step.options.find(item => item.isCorrect === (index !== 0));
+    values[caseStudyAnswerKey(clinicalCase.id, step.stepNumber)] = { attempt: 'initial', optionId: option.id, answeredAt: 30 };
+  }
   assert.equal(getCaseStudyProgress(values, clinicalCase).complete, true, clinicalCase.id);
+  learningValues = values;
+  const completedHtml = renderToStaticMarkup(viewer);
+  assert(completedHtml.includes('id="case-practice-review"') && completedHtml.includes('href="#case-question-1"'), clinicalCase.id);
+  assert(!completedHtml.includes('href="#case-question-2"'), clinicalCase.id);
+  learningValues = {};
   values[caseStudyAttemptKey(clinicalCase.id)] = 'new-attempt';
   assert.equal(getCaseStudyProgress(values, clinicalCase).answered, 0, clinicalCase.id + ': restarting excludes the previous attempt');
   values[caseStudyAnswerKey(clinicalCase.id, last.stepNumber)] = { attempt: 'new-attempt', optionId: 'unavailable', answeredAt: 40 };

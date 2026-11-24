@@ -11,7 +11,7 @@
 | `quiz_answer` | 未回答の問題を回答 | 問題文・選択肢・選んだ答えは送らない。正否の真偽値だけ |
 | `quiz_complete` | 講義チェックの全問が回答済みになる | 合否、正解数、問題数。再挑戦の完了も含む |
 | `review_start` / `review_complete` | 復習を開始 / 最後の解説を確認して完了 | 既存イベントを利用 |
-| `context_link_click` | 記事・講義・コース間のリンクを押す | `placement` で場所、`course_id` / `lecture_id` で公開教材を区別 |
+| `context_link_click` | 教材間のリンクを押す | `placement` で場所、`course_id` / `lecture_id` で公開教材を区別 |
 | `home_series_open` | トップの図鑑・講義・臨床演習のいずれかを開くリンクを押す | `placement` は `atlas` / `reading` / `clinical` |
 | `search_submit` | トップまたは検索トップでサイト内検索を送信する | `placement` は `platform_search`、入力内容は除外 |
 | `atlas_compare_open` | 合谷・足三里・百会の位置解説から、経穴比較を開くリンクを押す | 元の図鑑ページを集計。比較条件は送らない |
@@ -27,6 +27,8 @@
 | `web_vital_<lcp/inp/cls>_<good/needs_improvement/poor>` | Next.js内蔵の公式web-vitalsが測定を確定 | 実環境での表示・応答・ずれの評価。技術指標を公開UIに表示しない |
 
 コースで学習意図を測る `placement` は `course_start` / `course_resume` / `course_step`。一覧を見る操作や関連記事を押すだけでは活動日に数えません。`course_review` / `course_reading` / `lecture_course_return` などの移動は移動イベントとして記録します。
+
+公開講義から復習・演習へ移動する操作は `reading_unit_review` / `reading_unit_practice`、症例の振り返りから講義・図鑑へ移動する操作は `case_review_reading` / `case_review_atlas` で集計します。確認問題の選択肢や症例で迷った設問は含めません。
 
 7日以内の再学習では、ブラウザに前回の暦日文字列だけを保存します。新しい追跡用の個人IDは作成しません。端末変更、ストレージ削除、時差・時計の変更、複数タブの同時操作に影響されます。保存を禁止するブラウザでは、同一ページを開いている間だけ重複を避け、端末をまたぐ継続率として扱いません。現状のアカウント同期・学習保存内容は変更しません。
 

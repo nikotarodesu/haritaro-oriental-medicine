@@ -20,6 +20,9 @@ const { CURRICULUM_QUIZZES } = load('src/data/curriculumQuizzes');
 const { KOKUSHI_PAST_EXAMS } = load('src/data/kokushiPastExams');
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { LEARNING_QUESTIONS } = load('src/data/learningQuestionBank');
+const { READING_UNIT_QUESTIONS, getReadingUnitQuestions } = load('src/data/publicLectures/readingUnitQuestions');
+const { readingUnits } = load('src/data/publicLectures/readingUnits');
+const { readingUnitRevisions } = load('src/data/publicLectures/revisions/index');
 const { getLearningProgressCatalog } = load('src/data/learningProgressCatalog');
 const { questionRevision, updateReviewSchedule, shuffledIndices } = load('src/utils/learningReview');
 const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
@@ -36,11 +39,23 @@ assert.equal(new Set(LEARNING_QUESTIONS.map(q => q.id)).size, expectedQuestionCo
 const progressCatalog = getLearningProgressCatalog();
 const publishedCount = CURRICULUM_DATA.flatMap(chapter=>chapter.lectures).length;
 assert.equal(progressCatalog.totalPublished, publishedCount);
-assert.equal(progressCatalog.questions.length, LEARNING_QUESTIONS.length);
-for (const [index, question] of LEARNING_QUESTIONS.entries()) {
+const allProgressQuestions = [...LEARNING_QUESTIONS, ...READING_UNIT_QUESTIONS];
+assert.equal(progressCatalog.questions.length, allProgressQuestions.length);
+assert.equal(new Set(progressCatalog.questions.map(question => question.id)).size, allProgressQuestions.length);
+for (const [index, question] of allProgressQuestions.entries()) {
   const summary = progressCatalog.questions[index];
   assert.equal(JSON.stringify(Object.keys(summary).sort()), JSON.stringify(['href','id','kind','revision']));
   for (const key of ['id','revision','kind','href']) assert.equal(summary[key], question[key], `${question.id}: ${key}`);
+}
+for (const unit of readingUnits) {
+  const questions = getReadingUnitQuestions(unit.slug);
+  const source = readingUnitRevisions[unit.slug].questions;
+  assert(questions.length > 0 && questions.length === source.length, unit.slug);
+  for (const [index, question] of questions.entries()) {
+    const check = source[index];
+    assert.equal(question.href, unit.href + '#lecture-review');
+    assert.equal(question.revision, questionRevision(check.question, check.choices, check.answer, check.explanation));
+  }
 }
 for (const q of LEARNING_QUESTIONS) {
   assert(lectureIds.has(q.lectureId), `${q.id}: missing lecture`);
@@ -134,4 +149,4 @@ for (const c of PROGRESSIVE_CASES) {
   assert.equal(c.steps.length,6); assert(lectureIds.has(c.lectureId));
   for (const step of c.steps) { assert.equal(step.options.filter(o=>o.points===2).length,1); assert(step.reveal); }
 }
-console.log(`Passed: ${LEARNING_QUESTIONS.length} learning questions, ${generatedCount} generated acupoint questions, review intervals/revisions, ${scenarios} simulator combinations and 18 case decisions.`);
+console.log(`Passed: ${LEARNING_QUESTIONS.length} existing learning questions, ${READING_UNIT_QUESTIONS.length} public lecture checks, ${generatedCount} generated acupoint questions, review intervals/revisions, ${scenarios} simulator combinations and 18 case decisions.`);

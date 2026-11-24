@@ -7,6 +7,10 @@ import CaseStudyViewer from "@/components/cases/CaseStudyViewer";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { SERIES } from "@/config/series";
 import { KNEE_RESEARCH_HREF, MIGRAINE_RESEARCH_HREF } from "@/config/acupunctureLearning";
+import { readingPartHref } from "@/data/publicLectures/readingUnits";
+import { getAcupointByCode } from "@/data/tsubo";
+import { atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
+import { NEARBY_COMPARISON_LINKS } from "@/data/tsubo/atlas/nearbyComparisonLinks";
 import { getSymptomGuide, SYMPTOM_LEARNING_RESOURCES, symptomGuidePath } from "@/utils/symptomGuides";
 
 interface Props {
@@ -69,6 +73,19 @@ export default async function CaseDetailPage({ params }: Props) {
   const relatedSlug = Object.keys(SYMPTOM_LEARNING_RESOURCES).find(slug => SYMPTOM_LEARNING_RESOURCES[slug].caseId === id);
   const relatedGuide = relatedSlug ? getSymptomGuide(relatedSlug) : undefined;
   const researchExercise = caseResearchExercises[id];
+  const primaryCodes = new Set(clinicalCase.correctDiagnosis.primaryPoints.flatMap(point => {
+    const code = point.match(/\(([A-Z]+\d+)\)/i)?.[1].toLowerCase();
+    return code ? [code] : [];
+  }));
+  const [firstPoint, secondPoint] = [...primaryCodes].flatMap(code => {
+    const point = getAcupointByCode(code);
+    return point ? [point] : [];
+  });
+  const comparison = firstPoint && secondPoint ? {
+    href: NEARBY_COMPARISON_LINKS.find(group => group.codes.includes(firstPoint.codeLower) && group.codes.includes(secondPoint.codeLower))?.href
+      ?? atlasLearningPairHref([firstPoint.code, secondPoint.code]),
+    label: `${firstPoint.name}・${secondPoint.name}の位置を比べる`,
+  } : undefined;
   const resourceJsonLd = {
     "@context": "https://schema.org",
     "@type": ["WebPage", "LearningResource"],
@@ -89,7 +106,7 @@ export default async function CaseDetailPage({ params }: Props) {
         { href: "/cases", name: "症例演習" },
         { href: path, name: clinicalCase.title },
       ]} />
-      <CaseStudyViewer clinicalCase={clinicalCase} />
+      <CaseStudyViewer clinicalCase={clinicalCase} reviewResources={{ readingHref: readingPartHref("lecture-diagnosis-1"), comparison }} />
       {researchExercise && (
         <section className="page-help mt-6 space-y-3" aria-labelledby="case-research-exercise">
           <h2 id="case-research-exercise" className="page-section-heading">研究と症例を読み比べる</h2>

@@ -42,7 +42,7 @@ export type NearbyComparison = {
   size?: { width: number; height: number };
   referenceCodes?: readonly string[];
   points: readonly ComparisonPoint[];
-  question?: AtlasLocationQuestion;
+  question: AtlasLocationQuestion;
 };
 
 const { ear, palm, back, ankle, shin, forearm, shoulder, elbow } = comparisonTransforms;
@@ -69,6 +69,11 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       { code: "si19", position: project(headPoints.si19, ear), button: [38, 111], leader: [134, 111], difference: "耳の入口の前にある突起と同じ高さで、その突起のすぐ前です。" },
       { code: "gb2", position: project(headPoints.gb2, ear), button: [38, 171], leader: [134, 171], difference: "耳の入口の前にある突起より下、下側の切れ込みのすぐ前です。" },
     ],
+    question: {
+      prompt: "耳の入口の前にある小さな突起と同じ高さで、上下に並ぶ3穴の真ん中にあるのはどれですか？",
+      answerCode: "si19",
+      explanation: "聴宮です。上に耳門、下に聴会があり、聴宮は耳の入口の前にある突起が目印です。",
+    },
   },
   {
     id: "wrist",
@@ -80,6 +85,11 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       { code: "te5", position: project({ x: 114.5, y: wristProximalY }, back), button: [197, 83], leader: [267, 83], difference: "手の甲側の手首のしわからひじへ2寸で、前腕に並ぶ二本の骨の間です。" },
       { code: "te4", position: project({ x: 118, y: forearmWristCreaseY }, back), button: [197, 158], leader: [267, 158], difference: "手の甲側の手首のしわで、指を伸ばすときに動くすじの小指側です。" },
     ],
+    question: {
+      prompt: "手のひら側で、手首のしわの高さにあるのはどれですか？",
+      answerCode: "pc7",
+      explanation: "大陵です。同じ手のひら側でも、内関はそのしわからひじへ2寸の高さです。",
+    },
   },
   {
     id: "ankle",
@@ -90,6 +100,11 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       { code: "ki6", position: project(footLandmarks.ki6, ankle), button: [141, 183], leader: [151, 160], difference: "内くるぶしの出っ張りから、足裏のほうへ真下に進んだくぼみです。" },
       { code: "lr4", position: project(footLandmarks.lr4, ankle), button: [249, 73], leader: [229, 73], difference: "内くるぶしの前で、足首を起こしたときに見えるすじの内くるぶし側です。" },
     ],
+    question: {
+      prompt: "内くるぶしの出っ張りから足裏のほうへ、真下に進んだくぼみにあるのはどれですか？",
+      answerCode: "ki6",
+      explanation: "照海です。内くるぶしを目印にすると、照海は真下、太谿は後ろ、中封は前にあります。",
+    },
   },
   {
     id: "shin",
@@ -134,6 +149,11 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       { code: "li15", position: project(armPoints.li15, shoulder), button: [36, 148], leader: [106, 148], difference: "肩の外の骨の下にできる二つのくぼみのうち、胸に近い方です。" },
       { code: "te14", position: project(armPoints.te14, shoulder), button: [267, 148], leader: [250, 148], difference: "肩の外の骨の下にできる二つのくぼみのうち、背中に近い方です。" },
     ],
+    question: {
+      prompt: "肩の外側の骨の下にある二つのくぼみのうち、背中側にあるのはどれですか？",
+      answerCode: "te14",
+      explanation: "肩髎です。肩の外側の骨を目印にすると、肩髃は胸側のくぼみにあります。",
+    },
   },
   {
     id: "elbow",
@@ -146,6 +166,11 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       { code: "lu5", position: project(armPoints.lu5, elbow), button: [30, 164], leader: [94, 164], difference: "ひじの横じわに沿って、力こぶから続くすじ（腱）のすぐ親指側にあるくぼみです。" },
       { code: "pc3", position: project(armPoints.pc3, elbow), button: [265, 111], leader: [246, 111], difference: "ひじの横じわの上で、力こぶから続くすじ（腱）のすぐ小指側にあるくぼみです。" },
     ],
+    question: {
+      prompt: "手のひらを上にしたひじの図で、力こぶから続くすじのすぐ親指側にあるのはどれですか？",
+      answerCode: "lu5",
+      explanation: "尺沢です。そのすじのすぐ小指側が曲沢で、曲池は尺沢より親指側にあります。",
+    },
   },
 ];
 

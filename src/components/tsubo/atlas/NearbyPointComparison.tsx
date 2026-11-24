@@ -40,7 +40,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
         <NearbyComparisonControls key={code} {...(comparison.size ?? comparisonSize)} label={comparison.figureLabel} points={points} initialCode={code}>
           <NearbyComparisonArtwork id={comparison.id} />
         </NearbyComparisonControls>
-        {comparison.question && <AtlasLocationCheck key={code} question={comparison.question} options={points} placement="nearby_diagram" />}
+        <AtlasLocationCheck key={code} question={comparison.question} options={points} placement="nearby_diagram" />
       </div>
     </HashTargetDetails>
   );

@@ -1,15 +1,17 @@
 import Link from 'next/link';
 
-export default function QuestionEvidence({ lectureId, revision, sources = [] }: {
-  lectureId: string; revision: string; sources?: { title: string; url: string }[];
+export default function QuestionEvidence({ lectureId, revision, sources = [], readingUnitHref }: {
+  lectureId: string; revision: string; sources?: { title: string; url: string }[]; readingUnitHref?: string;
 }) {
+  const lectureHref = readingUnitHref ?? `/curriculum/${lectureId}`;
+  const referencesHref = lectureHref + (readingUnitHref ? '#lecture-resources' : '#article-references-section');
   return (
     <details className="mt-3 text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
       <summary className="cursor-pointer font-semibold">問題の出典・改訂情報</summary>
       <div className="mt-2 space-y-1">
         <p>種別：本サイトのオリジナル学習問題。公式国家試験の原文ではありません。</p>
-        <p>学習上の参照：<Link className="underline" href={`/curriculum/${lectureId}`}>関連講義</Link></p>
-        <p>外部資料との確認範囲：<Link className="underline" href={`/curriculum/${lectureId}#article-references-section`}>講義の出典と確認範囲</Link>。問題ごとに個別の外部出典を照合したことを示す表示ではありません。</p>
+        <p>学習上の参照：<Link className="underline" href={lectureHref}>関連講義</Link></p>
+        <p>外部資料との確認範囲：<Link className="underline" href={referencesHref}>講義の出典と確認範囲</Link>。問題ごとに個別の外部出典を照合したことを示す表示ではありません。</p>
         {sources.map(source => <p key={source.url}><a className="underline" href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></p>)}
         <p>内容識別：{revision}。設問・選択肢・正答・解説の変更時に更新します。</p>
         <p>伝統医学上の分類と現代医学の診断は区別して学びます。</p>

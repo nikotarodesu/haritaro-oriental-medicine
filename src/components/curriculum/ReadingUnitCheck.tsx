@@ -1,29 +1,51 @@
 "use client";
 
-import { useState } from "react";
-import type { ReadingCheckQuestion } from "@/data/publicLectures/revisions/types";
+import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
+import type { LearningQuestion } from "@/data/learningQuestionBank";
 
 export default function ReadingUnitCheck({ unitId, questions }: {
   unitId: string;
-  questions: readonly ReadingCheckQuestion[];
+  questions: readonly LearningQuestion[];
 }) {
-  const [answers, setAnswers] = useState<Partial<Record<number, number>>>({});
+  const { isMounted, quizResults, saveQuizResult } = useCurriculumProgress();
+
+  function answerQuestion(question: LearningQuestion, choice: number) {
+    saveQuizResult({
+      questionId: question.id,
+      lectureId: question.lectureId,
+      lectureTitle: question.lectureTitle,
+      chapterId: question.chapterId,
+      chapterTitle: question.chapterTitle,
+      questionText: question.question,
+      userAnswerIndex: choice,
+      correctAnswerIndex: question.correctIndex,
+      isCorrect: choice === question.correctIndex,
+      options: [...question.options],
+      explanation: question.explanation,
+      answeredAt: new Date().toISOString(),
+      revision: question.revision,
+      kind: question.kind,
+      practiceHref: question.href,
+    });
+  }
 
   return (
     <div className="lecture-check-questions" data-reading-unit-check={unitId}>
-      {questions.map(({ question, choices, answer, explanation }, index) => {
-        const selected = answers[index];
+      {questions.map((question, index) => {
+        const { id, options, correctIndex, explanation } = question;
+        const selected = quizResults[id]?.userAnswerIndex;
         return (
-          <fieldset key={question} className="lecture-check-question">
-            <legend>{index + 1}. {question}</legend>
+          <fieldset key={id} className="lecture-check-question">
+            <legend>{index + 1}. {question.question}</legend>
             <div className="lecture-check-choices">
-              {choices.map((choice, choiceIndex) => (
+              {options.map((choice, choiceIndex) => (
                 <label key={choice}>
                   <input
                     type="radio"
-                    name={`${unitId}-check-${index + 1}`}
+                    name={id}
+                    disabled={!isMounted}
                     checked={selected === choiceIndex}
-                    onChange={() => setAnswers(current => ({ ...current, [index]: choiceIndex }))}
+                    onChange={() => answerQuestion(question, choiceIndex)}
                   />
                   <span>{choice}</span>
                 </label>
@@ -31,8 +53,8 @@ export default function ReadingUnitCheck({ unitId, questions }: {
             </div>
             <div role="status" aria-atomic="true" className="lecture-check-status">
               {selected !== undefined && (
-                <p className="lecture-check-feedback" data-correct={selected === answer}>
-                  <strong>{selected === answer ? "正解です。" : `正解は「${choices[answer]}」です。`}</strong>{" "}
+                <p className="lecture-check-feedback" data-correct={selected === correctIndex}>
+                  <strong>{selected === correctIndex ? "正解です。" : `正解は「${options[correctIndex]}」です。`}</strong>{" "}
                   {explanation}
                 </p>
               )}
@@ -40,7 +62,7 @@ export default function ReadingUnitCheck({ unitId, questions }: {
             <noscript>
               <details className="lecture-check-fallback">
                 <summary>答えと解説を見る</summary>
-                <p>{choices[answer]}。{explanation}</p>
+                <p>{options[correctIndex]}。{explanation}</p>
               </details>
             </noscript>
           </fieldset>

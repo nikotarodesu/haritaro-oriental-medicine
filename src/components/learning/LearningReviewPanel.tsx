@@ -33,14 +33,16 @@ const clinicalLectureIds = new Set(CURRICULUM_CHAPTERS_META
   .filter(chapter => chapter.stageId === 'stage-2' || chapter.stageId === 'stage-3')
   .flatMap(chapter => chapter.lectureIds));
 
-export default function LearningReviewPanel({ compact = false }: { compact?: boolean } = {}) {
+type ReviewPanelProps = { compact?: boolean; readingQuestions?: readonly LearningQuestion[] };
+
+export default function LearningReviewPanel({ compact = false, readingQuestions }: ReviewPanelProps = {}) {
   const { isMounted } = useCurriculumProgress();
   // Mount only after the current owner's catalog is ready. Never render the previous owner's answers.
   if (!isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">このブラウザーの学習記録を読み込んでいます。</section>;
-  return <ReviewWorkspace owner={'guest'} compact={compact} />;
+  return <ReviewWorkspace owner={'guest'} compact={compact} readingQuestions={readingQuestions} />;
 }
 
-function ReviewWorkspace({ owner, compact }: { owner: string; compact: boolean }) {
+function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps & { owner: string; compact: boolean }) {
   const { quizResults, quizHistory, saveQuizResult, completedLectures, lastVisitedLectureId, revisedQuestionCount, isMounted } = useCurriculumProgress();
   const { values, ready, status: syncStatus } = useLearningSync();
   const showSyncAttention = compact && syncStatus === 'memory';
@@ -53,12 +55,13 @@ function ReviewWorkspace({ owner, compact }: { owner: string; compact: boolean }
   const currentCourse = getLearningCourseForSeries(currentChapter.seriesId)!;
   const shortExampleHref = `/learn/courses/${currentCourse.slug}#course-mini-case-${currentCourse.seriesId}`;
   const today = localStudyDate();
-  const bank = useMemo(() => [...lectureReviewQuestions, ...Object.values(quizResults).filter(r => r.kind === 'acupoint').map((r): LearningQuestion => ({
+  const lectureQuestions = useMemo(() => [...(readingQuestions ?? []), ...lectureReviewQuestions], [readingQuestions]);
+  const bank = useMemo(() => [...lectureQuestions, ...Object.values(quizResults).filter(r => r.kind === 'acupoint').map((r): LearningQuestion => ({
     id: r.questionId, question: r.questionText, options: r.options, correctIndex: r.correctAnswerIndex,
     explanation: r.explanation, lectureId: r.lectureId, lectureTitle: r.lectureTitle,
     chapterId: r.chapterId, chapterTitle: r.chapterTitle, kind: 'acupoint',
     href: r.practiceHref || '/tsubo/practice', revision: r.revision || '',
-  }))], [quizResults]);
+  }))], [lectureQuestions, quizResults]);
   const [review, setReview] = useState<ReviewState>(() => {
     const requested = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('resumeReview');
     return restoreReviewSession(browserReviewStorage(), owner, bank, requested);
@@ -76,8 +79,9 @@ function ReviewWorkspace({ owner, compact }: { owner: string; compact: boolean }
   const due = bank.filter(q => quizResults[q.id]?.nextReviewDate && quizResults[q.id].nextReviewDate! <= today)
     .sort((a, b) => (quizResults[a.id].nextReviewDate || '').localeCompare(quizResults[b.id].nextReviewDate || ''));
   const weak = bank.filter(q => quizResults[q.id] && !quizResults[q.id].isCorrect);
-  const unlearned = lectureReviewQuestions.filter(q => !quizResults[q.id]);
+  const unlearned = lectureQuestions.filter(q => !quizResults[q.id]);
   const q = queue[index];
+  const readingUnitHref = q?.href.startsWith('/learn/lectures/') ? q.href.split('#', 1)[0] : undefined;
 
   const replaceSession = (next: ReviewSession | null, status: ReviewState['status'] = 'active') => {
     sessionRef.current = next;
@@ -174,7 +178,7 @@ function ReviewWorkspace({ owner, compact }: { owner: string; compact: boolean }
     focusQuestion.current = true;
     replaceSession(original, 'returned');
   };
-  const similar = q && !session?.returnTo && lectureReviewQuestions.find(other => other.id !== q.id && other.lectureId === q.lectureId);
+  const similar = q && !session?.returnTo && lectureQuestions.find(other => other.id !== q.id && other.lectureId === q.lectureId);
   const reviewControls = <>
       <div className={`grid grid-cols-1 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-3 text-sm`}>
         <button type="button" disabled={!isMounted} onClick={() => start(due.length ? due.slice(0, 10) : unlearned.slice(0, 3))} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left disabled:opacity-50">今日の復習：{isMounted ? due.length : '…'}問<br /><span className="text-xs">{due.length ? '予定日が来た問題を確認' : '未回答の問題から始める'}</span></button>
@@ -215,12 +219,12 @@ function ReviewWorkspace({ owner, compact }: { owner: string; compact: boolean }
           <h4 className="quiz-explanation-title font-bold">解説</h4><p className="quiz-explanation-body whitespace-pre-line">{q.explanation}</p>
           <p className="text-xs">次回復習：{quizResults[q.id]?.nextReviewDate}</p>
           <div className="flex flex-wrap gap-3 text-sm">
-            <Link className="underline" href={`/curriculum/${q.lectureId}?review=${encodeURIComponent(q.id)}&reviewSession=${session.id}#review-question-card`}>要点と関連講義を読む</Link>
+            <Link className="underline" href={readingUnitHref ? q.href : `/curriculum/${q.lectureId}?review=${encodeURIComponent(q.id)}&reviewSession=${session.id}#review-question-card`}>要点と関連講義を読む</Link>
             {similar && <button type="button" className="underline" onClick={() => openSimilar(similar)}>同じテーマの類題で確認</button>}
             <Link className="underline" href={showCaseReview ? '/simulator#case-training' : shortExampleHref}>{showCaseReview ? '症例演習へ' : '短い例で振り返る'}</Link>
           </div>
           <button type="button" onClick={nextQuestion} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2">{index + 1 < queue.length ? '次の問題へ' : session.returnTo ? '類題を終えて元の復習に戻る' : '復習を完了する'}</button>
-          <QuestionEvidence lectureId={q.lectureId} revision={q.revision} />
+          <QuestionEvidence lectureId={q.lectureId} revision={q.revision} readingUnitHref={readingUnitHref} />
         </div>}
       </div>}
       {!compact && reviewSupport}
