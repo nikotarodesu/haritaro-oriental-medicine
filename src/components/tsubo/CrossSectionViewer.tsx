@@ -48,6 +48,8 @@ export default function CrossSectionViewer({
   );
   const numbersByStructure = new Map(numberedLandmarks.map(({ layerId, number }) => [layerId, number]));
   const landmarkSummaryId = `${pointCode.toLowerCase()}-anatomy-landmark-summary`;
+  const surfacePointId = model.surfacePoint ? `${pointCode.toLowerCase()}-anatomy-surface-description` : undefined;
+  const diagramDescriptions = [surfacePointId, numberedLandmarks.length ? landmarkSummaryId : undefined].filter(Boolean).join(" ");
   const structures = [...model.layers, ...(model.boundaries || []), ...(model.adjacentStructures || [])];
   const selectableStructures = structures.filter((structure, index) => visibleIds.has(structure.id) && structures.findIndex(item => item.id === structure.id) === index);
   const selectStructure = (id: string) => setSelectedStructureId(current => current === id ? null : id);
@@ -150,7 +152,17 @@ export default function CrossSectionViewer({
                     <span className="font-bold text-[#232826] dark:text-[#FAF8F5]">
                       {item.title}
                     </span>
-                    {item.doi && (
+                    {item.url ? (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[#1E3D34] underline underline-offset-2 dark:text-[#74BA9E]"
+                      >
+                        原典を読む
+                        <ExternalLink aria-hidden="true" className="h-3 w-3" />
+                      </a>
+                    ) : item.doi && (
                       <a
                         href={item.doi.startsWith("http") ? item.doi : `https://doi.org/${item.doi}`}
                         target="_blank"
@@ -203,12 +215,12 @@ export default function CrossSectionViewer({
 
         {/* SVG断面図 */}
         <svg
-          viewBox="0 0 500 270"
+          viewBox={model.diagramViewBox ?? "0 0 500 270"}
           className="w-full h-auto max-h-[380px] my-2 select-none"
           preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={`${pointName}の横断面解剖図`}
-          aria-describedby={numberedLandmarks.length ? landmarkSummaryId : undefined}
+          aria-describedby={diagramDescriptions || undefined}
         >
           {/* 断面要素描画 */}
           {publicElements.map((el) => {
@@ -281,6 +293,14 @@ export default function CrossSectionViewer({
               <text x={x} y={y} fill="#FFF9F0" fontSize="16" fontWeight="700" textAnchor="middle" dominantBaseline="central">{number}</text>
             </g>
           ))}
+          {model.surfacePoint && (
+            <g aria-hidden="true" className="pointer-events-none">
+              <text x={model.surfacePoint.x} y={model.surfacePoint.y - 25} textAnchor="middle" fill="#7F3520" stroke="#FFF9F0" strokeWidth="4" strokeLinejoin="round" style={{ paintOrder: "stroke fill" }} fontSize="23" fontWeight="700">
+                {model.surfacePoint.label}
+              </text>
+              <circle data-anatomy-surface-point="" cx={model.surfacePoint.x} cy={model.surfacePoint.y} r="11" fill="#7F3520" stroke="#FFF9F0" strokeWidth="3" />
+            </g>
+          )}
         </svg>
 
         <div className="anatomy-axis-pair">
@@ -291,6 +311,10 @@ export default function CrossSectionViewer({
         <figcaption className="mt-2 flex items-start gap-2 border-t border-[#E8E1D1] pt-2.5 text-sm leading-relaxed text-[#59615D] dark:border-[#22303D] dark:text-[#A0B0BC]">
           <HelpCircle aria-hidden="true" className="mt-1 h-3.5 w-3.5 shrink-0 text-[#B86924]" />
           <div className="min-w-0 space-y-1">
+            {model.surfacePoint && <p id={surfacePointId}>
+              <strong>丸印は体表の位置です。</strong> {model.surfacePoint.description}
+              {" "}ひじの前の横じわ付近を一つの模式図にまとめています。
+            </p>}
             {numberedLandmarks.length > 0 && <p id={landmarkSummaryId}>
               位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。{" "}
               <a href="#acupoint-location" className="atlas-source-link inline-flex min-h-11 items-center">体表の位置図に戻る</a>

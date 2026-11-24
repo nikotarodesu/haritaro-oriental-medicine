@@ -8,6 +8,9 @@ const anatomyPreviews: Readonly<Partial<Record<string, string>>> = {
   li4: "手の甲の中手骨と、骨の間にある筋肉の位置関係を図で見られます。",
   pc6: "手のひら側の前腕で、目印になる二本の腱と周りの組織を図で見られます。",
   st36: "すねの骨と、その外側にある前脛骨筋の位置関係を図で見られます。",
+  li11: "曲池は、尺沢とひじの外側にある骨の出っ張りの中ほどです。",
+  lu5: "尺沢は、ひじの前のしわで、上腕二頭筋の腱より親指側にあります。",
+  pc3: "曲沢は、ひじの前のしわで、上腕二頭筋の腱より小指側にあります。",
 };
 
 export default function AcupointAnatomy({ point, paragraphs = [] }: {

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle, AtlasCloseUpProps, AtlasMarker, AtlasRegion } from "@/data/tsubo/atlas/types";
 import { getAnnotatedCloseUp } from "@/data/tsubo/atlas/closeUpMeasurements";
-import { expandedLandmarkIds, expandedLandmarkLabels } from "@/data/tsubo/atlas/landmarkLabels";
+import { expandedLandmarkIds, expandedLandmarkLabels, isElbowSurfacePoint, type LandmarkPosition } from "@/data/tsubo/atlas/landmarkLabels";
 import { legLandmarks } from "@/data/tsubo/atlas/legLandmarks";
 import { regionalLandmarkLabels, regionalLandmarkView } from "@/data/tsubo/atlas/regionalLandmarkLabels";
 import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
@@ -21,6 +21,11 @@ import AtlasLandmarkGuide from "./AtlasLandmarkGuide";
 import type { BodyArea } from "./expanded/views";
 
 const figureClass = "atlas-figure";
+const elbowCloseUp = { x: -83, y: 9, scale: 1.7 } as const;
+
+function projectElbowCloseUp([x, y]: LandmarkPosition): LandmarkPosition {
+  return [elbowCloseUp.x + x * elbowCloseUp.scale, elbowCloseUp.y + y * elbowCloseUp.scale];
+}
 
 const regions = {
   knee: { BodyHighlight: <path d="M82 194v10m36-10v10" />, CloseUp: LegLandmarkRegion },
@@ -92,12 +97,18 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const expandedPoint = closeUpMarker.expanded;
   const expandedView = expandedPoint && expandedViews[expandedPoint.view];
   const labelled = !measured;
+  const elbowPoint = isElbowSurfacePoint(point.codeLower);
   const landmarkView = labelled && (expandedView ? { caption: expandedView.name, left: 0 } : regionalLandmarkView(point.codeLower, closeUpMarker));
   const landmarks = labelled && (expandedPoint && expandedView ? expandedLandmarkLabels(expandedPoint, point.codeLower, expandedView.features) : regionalLandmarkLabels(point.codeLower, closeUpMarker));
+  const [markerX, markerY] = elbowPoint ? projectElbowCloseUp([closeUpMarker.x, closeUpMarker.y]) : [closeUpMarker.x, closeUpMarker.y];
+  const surfaceLandmarks = elbowPoint && landmarks
+    ? landmarks.map(landmark => ({ ...landmark, position: projectElbowCloseUp(landmark.position) }))
+    : landmarks;
+  const surfaceCaption = elbowPoint ? "ひじの前面・図の左が親指側" : landmarkView ? landmarkView.caption : expandedView?.name;
   const bodyMap = point.codeLower === "gv14" ? bodyMapOverrides.neckBase
     : occipitalPoints.has(point.codeLower) ? bodyMapOverrides.occiput : undefined;
-  const bodyArea = bodyMap?.area ?? expandedView?.area;
-  const bodyLabel = bodyMap?.label ?? illustration.bodyLabel;
+  const bodyArea = elbowPoint ? "elbow" : bodyMap?.area ?? expandedView?.area;
+  const bodyLabel = elbowPoint ? "ひじの前" : bodyMap?.label ?? illustration.bodyLabel;
   const back = expandedView?.direction === "back" || Boolean(marker.legCode && legLandmarks[marker.legCode].view === "posterior");
   const bodyDirection = back ? "背面" : "正面";
   const landmarkNames = closeUpMarker.expanded?.landmarks.map((id) => expandedView?.features[id].name.replace("／", "")).join("、");
@@ -114,13 +125,14 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const step = lineLength / Math.max(nearby.length - 1, 1);
   const pointLabel = `${point.name} ${point.code}`;
   const diagramLabel = `${point.name}の場所と目印`;
+  const landmarkArtwork = <CloseUp marker={closeUpMarker} label={pointLabel} labelled landmarkIds={expandedPoint && expandedLandmarkIds(expandedPoint, point.codeLower)} />;
   const locationDiagram = (
     <ZoomableAtlasDiagram label={diagramLabel}>
-      {landmarks && landmarkView ? (
-        <LandmarkCloseUp marker={closeUpMarker} pointLabel={pointLabel} landmarks={landmarks} left={landmarkView.left}
-          numbered={point.codeLower === "pc7" || point.codeLower === "lr3"}
-          description={`${pointLabel}。 ${landmarkView.caption}。 ${whoLocations[point.codeLower]}`}>
-          <CloseUp marker={closeUpMarker} label={pointLabel} labelled landmarkIds={expandedPoint && expandedLandmarkIds(expandedPoint, point.codeLower)} />
+      {surfaceLandmarks && landmarkView ? (
+        <LandmarkCloseUp marker={{ x: markerX, y: markerY }} pointLabel={pointLabel} landmarks={surfaceLandmarks} left={landmarkView.left}
+          numbered={elbowPoint || point.codeLower === "pc7" || point.codeLower === "lr3"}
+          description={`${pointLabel}。 ${surfaceCaption}。 ${whoLocations[point.codeLower]}`}>
+          {elbowPoint ? <g transform={`translate(${elbowCloseUp.x} ${elbowCloseUp.y}) scale(${elbowCloseUp.scale})`}>{landmarkArtwork}</g> : landmarkArtwork}
         </LandmarkCloseUp>
       ) : (
         <svg viewBox="0 0 340 300" role="img" aria-label={`${closeUpAlt} ${measureAlt}`} className="mx-auto block w-full max-w-[340px]">
@@ -138,13 +150,13 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
       <figure className={`${figureClass} ${measured ? "atlas-figure--measured" : "atlas-figure--labelled"}`}>
         {guidedPoint ? <AtlasLandmarkGuide code={guidedPoint}>{locationDiagram}</AtlasLandmarkGuide> : locationDiagram}
         <figcaption>
-          {(landmarkView || expandedView) && <span className="block text-sm font-semibold">{landmarkView ? landmarkView.caption : expandedView?.name}{" "}</span>}
+          {surfaceCaption && <span className="block text-sm font-semibold">{surfaceCaption}{" "}</span>}
           {(measured || illustration.closeUpCaption !== diagramLabel) && illustration.closeUpCaption}
           {measured && <>
             <p className="atlas-dimension-guide">白丸が起点、矢印が測る方向です。{measurements.some(({ alternative }) => alternative) && "ひし形は代替位置です。"}</p>
             <CloseUpMeasurementKey measurements={measurements} />
           </>}
-          {guidedPoint && <a href="#acupoint-anatomy-diagram" className="atlas-source-link inline-flex min-h-11 items-center">同じ番号を断面図で見る</a>}
+          {(guidedPoint || elbowPoint) && <a href="#acupoint-anatomy-diagram" className="atlas-source-link inline-flex min-h-11 items-center">同じ番号を断面図で見る</a>}
         </figcaption>
       </figure>
     }>

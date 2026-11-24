@@ -23,8 +23,11 @@ const anatomyCards = [
   { code: "li4", structure: "中手骨と筋" },
   { code: "pc6", structure: "前腕の腱" },
   { code: "st36", structure: "すねの骨と筋" },
+  { code: "li11", structure: "ひじの外側" },
+  { code: "lu5", structure: "腱の親指側" },
+  { code: "pc3", structure: "腱の小指側" },
 ].flatMap(({ code, structure }) => {
-  const point = flagshipPoints.find(point => point.codeLower === code);
+  const point = ALL_ACUPOINTS.find(point => point.codeLower === code);
   return point && DETAILED_ACUPOINTS[code]?.crossSection ? [{ point, structure }] : [];
 });
 const otherFlagshipPoints = flagshipPoints.filter(point => !anatomyCards.some(card => card.point.code === point.code));
@@ -33,7 +36,7 @@ const studyGroups = [
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
 ];
 
-const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。体表の位置図や名前の由来に加え、合谷・内関・足三里では周りの骨や筋、腱を断面図で学べます。";
+const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。体表の位置図や名前の由来に加え、合谷や曲池・尺沢・曲沢などでは周りの骨や腱を断面図で学べます。";
 
 export default function TsuboPage() {
   const guideLinks = (

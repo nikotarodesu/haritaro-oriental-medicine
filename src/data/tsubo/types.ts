@@ -137,6 +137,8 @@ export interface CrossSectionModel {
   adjacentStructures?: AdjacentStructure[]; // 周囲を走る神経・血管・重要組織
   surfaceMap?: SurfaceMapData; // 体表切断線連動マップ
   svgElements: SvgAnatomicalElement[];
+  diagramViewBox?: string;
+  surfacePoint?: { x: number; y: number; label: string; description: string };
   explodedSvgElements?: SvgAnatomicalElement[]; // 層分解表示用SVG
   references: string[];
   referenceLedger?: ReferenceLedgerItem[]; // 詳細資料台帳

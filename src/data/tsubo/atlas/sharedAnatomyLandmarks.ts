@@ -12,6 +12,16 @@ export interface SharedAnatomyLandmark {
   leaderTo?: LandmarkPosition;
 }
 
+export const elbowSurfaceLandmarks = {
+  bicepsTendon: { number: 1, name: "上腕二頭筋の腱" },
+  lateralEpicondyle: { number: 2, name: "上腕骨の外側上顆" },
+} as const;
+
+const elbowLandmarks = [
+  { ...elbowSurfaceLandmarks.bicepsTendon, layerId: "elbow-biceps-tendon", elementId: "elbow-biceps-tendon-section", sectionBadge: [250, 111] },
+  { ...elbowSurfaceLandmarks.lateralEpicondyle, layerId: "elbow-lateral-epicondyle", elementId: "elbow-lateral-epicondyle-bone", sectionBadge: [119, 151] },
+] as const satisfies readonly SharedAnatomyLandmark[];
+
 export const sharedAnatomyLandmarks = {
   li4: {
     indexBone: { number: 1, name: "人差し指の中手骨", layerId: "second-metacarpal-bone", elementId: "li4-second-metacarpal-cortex", sectionBadge: [375, 132] },
@@ -32,6 +42,9 @@ export function getSharedAnatomyLandmarks(code: string): readonly SharedAnatomyL
     case "li4": return Object.values(sharedAnatomyLandmarks.li4);
     case "pc6": return Object.values(sharedAnatomyLandmarks.pc6);
     case "st36": return Object.values(sharedAnatomyLandmarks.st36);
+    case "li11":
+    case "lu5":
+    case "pc3": return elbowLandmarks;
     default: return [];
   }
 }

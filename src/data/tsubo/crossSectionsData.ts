@@ -1,11 +1,13 @@
 import { CrossSectionModel } from "./types";
+import { ELBOW_CROSS_SECTIONS } from "./elbowCrossSections";
 
 /**
- * 旗艦3穴（合谷 LI4, 内関 PC6, 足三里 ST36）の断面解剖データ
+ * 個別に編集した経穴の断面解剖データ
  * 2026年9月17日改訂：体表切断線連動、通過層・境界目印・神経血管の3群完全分離、
  * 教育用模式図。個別の図座標・深度・実技条件は専門家確認待ち
  */
 export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
+  ...ELBOW_CROSS_SECTIONS,
   li4: {
     id: "cs-li4",
     procedureReviewStatus: "pending_expert_review",

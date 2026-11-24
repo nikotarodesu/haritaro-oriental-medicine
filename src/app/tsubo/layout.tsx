@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import React from "react";
 
 const title = "全361経穴を名前・場所・症状から探す｜はり太郎のツボ図鑑";
-const description = "全361のツボを名前・部位・経絡から探せます。図で場所と目印を確認でき、合谷・内関・足三里は骨や筋、腱を断面図でも学べます。名前の由来や注意点も掲載しています。";
+const description = "全361のツボを名前・部位・経絡から探せます。体表図で場所と目印を確認でき、合谷やひじの曲池・尺沢・曲沢などは断面図も掲載しています。名前の由来や注意点も読めます。";
 
 export const metadata: Metadata = {
   title: { absolute: title },

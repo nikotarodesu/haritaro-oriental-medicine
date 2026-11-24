@@ -4,10 +4,22 @@ import { posteriorThigh, sacralLandmarks, spinalLevels } from "./expanded/back";
 import { faceLandmarks, headPoints, profileLandmarks } from "./expanded/head";
 import { flankLandmarks, groinLandmarks } from "./expanded/trunk";
 import { whoLocations } from "./whoLocations";
+import { elbowSurfaceLandmarks } from "./sharedAnatomyLandmarks";
 
 export type LandmarkPosition = readonly [x: number, y: number];
 export type LandmarkLabel = { name: string; position: LandmarkPosition; number?: number };
 type Anchor = readonly [x: number, y: number, name?: string];
+
+export function isElbowSurfacePoint(code: string) {
+  return code === "li11" || code === "lu5" || code === "pc3";
+}
+
+const elbowLandmarkIds = ["bicepsTendon", "outerElbow", "elbowCrease"] as const;
+const elbowLabels: readonly LandmarkLabel[] = [
+  { ...elbowSurfaceLandmarks.bicepsTendon, position: [105, 80] },
+  { ...elbowSurfaceLandmarks.lateralEpicondyle, position: [67, 58] },
+  { name: "ひじの横じわ", position: [137, 59] },
+];
 
 const { earApex, mastoidTip, masseterAttachment, templeEdge, posteriorEarRootX } = profileLandmarks;
 const { x: gluteX, y: gluteY } = posteriorThigh.glutealMidpoint;
@@ -268,10 +280,12 @@ const arcLandmarks: Readonly<Partial<Record<string, LandmarkLabel[]>>> = {
 };
 
 export function expandedLandmarkIds(point: ExpandedPoint, code: string) {
+  if (isElbowSurfacePoint(code)) return elbowLandmarkIds;
   return landmarkIds[code] ?? point.landmarks;
 }
 
 export function expandedLandmarkLabels(point: ExpandedPoint, code: string, names: Readonly<Record<string, { name: string }>>): readonly LandmarkLabel[] {
+  if (isElbowSurfacePoint(code)) return elbowLabels;
   const arc = arcLandmarks[code];
   if (arc) return arc;
   return expandedLandmarkIds(point, code).map((id) => {

@@ -1,7 +1,27 @@
 import { AcupointDetail } from "./types";
+import { ACUPOINTS_MASTER } from "./acupointsMaster";
 import { CROSS_SECTIONS } from "./crossSectionsData";
 
+function elbowTendonPoint(code: "lu5" | "pc3"): AcupointDetail {
+  const point = ACUPOINTS_MASTER.find(point => point.codeLower === code);
+  if (!point) throw new Error(`Missing master record for ${code}`);
+  const crossSection = CROSS_SECTIONS[code];
+  const location = crossSection.surfacePoint?.description ?? point.locationSimple;
+
+  return {
+    ...point,
+    hasDetailedAnatomy: true,
+    locationSimple: location,
+    howToLocate: ["ひじの前の横じわと、上腕二頭筋の腱の位置を図で確認します。", location],
+    palpationLandmarks: ["ひじの前の横じわ", "上腕二頭筋の腱"],
+    pitfalls: "尺沢と曲沢は、同じ横じわの上で腱を挟んで反対側にあります。",
+    crossSection,
+  };
+}
+
 export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
+  lu5: elbowTendonPoint("lu5"),
+  pc3: elbowTendonPoint("pc3"),
   li4: {
     id: "li4",
     legacyId: "gokoku",
@@ -639,20 +659,19 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     meridianOrder: 11,
     bodyPart: "手・腕",
     bodyRegionDetail: "肘前外側・肘窩横紋外端",
-    locationSimple: "肘を直角に曲げたときにできる外側のしわの先端（親指側のキワ）。",
-    locationDetail: "肘前外側、尺沢と上腕骨外側上顆を結ぶ線の中点、肘窩横紋の外側端。",
+    locationSimple: "ひじの外側で、尺沢と上腕骨の外側上顆を結ぶ線の中点。",
+    locationDetail: "ひじの外側で、尺沢と上腕骨の外側上顆を結ぶ線の中点。ひじを十分に曲げると、前の横じわの外側端のくぼみ。",
     locationSource: "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     howToLocate: [
-      "患者の肘関節を90度に屈曲させる。",
-      "肘の内側のしわ（肘窩横紋）の外側端を確認する。",
-      "上腕骨外側上顆（肘の外側の出っ張った骨）と、肺経の尺沢穴を結ぶラインの中点にとる。"
+      "ひじの前のしわにある尺沢と、ひじの外側の骨の出っ張りを図で確認します。",
+      "尺沢と上腕骨の外側上顆を結ぶ線の中点が曲池です。"
     ],
     palpationLandmarks: [
       "上腕骨外側上顆",
       "肘窩横紋の外端",
-      "腕橈骨筋の筋膨隆"
+      "尺沢（LU5）"
     ],
-    pitfalls: "肘を伸ばした状態ではしわの位置がずれるため、必ず肘を90度曲げた状態で取穴します。外側上顆炎（テニス肘）の治療点としても重要です。",
+    pitfalls: "ひじの角度によって横じわの見え方が変わります。WHO標準では尺沢と外側上顆の中点を基準にします。",
     indications: [
       "高熱・急性炎症・咽頭炎・扁桃炎",
       "アトピー性皮膚炎・蕁麻疹・皮膚掻痒症",
@@ -665,7 +684,8 @@ export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
     clinicalNote: "曲池は手の陽明大腸経の合穴・土穴です。伝統的な「清熱」は、熱感、皮膚のかゆみ、喉の痛みなどの病証との関連を表す治法です。解熱剤・抗炎症薬・抗アレルギー薬と同じ作用を実証したという意味ではありません。皮膚疾患、発熱、高血圧は別々の対象として、効果と安全性を評価する必要があります。",
     caution: "局所の感染・炎症や、体調・既往歴・服薬などを確認し、資格を持つ施術者が個別に施術の適否を評価します。経穴名だけで禁忌がないとは判断できません。",
     status: "published",
-    hasDetailedAnatomy: false,
+    hasDetailedAnatomy: true,
+    crossSection: CROSS_SECTIONS.li11,
     goldenPairs: [
       { partnerCode: "SP10", partnerName: "血海", prescriptionName: "祛風清血配穴", effect: "皮膚のかゆみや熱の病証と関連づける伝統的な配穴例です。皮膚炎・蕁麻疹・アトピー性皮膚炎への効果は、別に臨床研究で確認する必要があります。" },
       { partnerCode: "LI4", partnerName: "合谷", prescriptionName: "陽明大清熱配穴", effect: "熱の病証、喉や歯の痛み、顔のむくみ、便秘などと関連づける伝統的な配穴例です。症状をすぐに解消することを保証するものではありません。" }
