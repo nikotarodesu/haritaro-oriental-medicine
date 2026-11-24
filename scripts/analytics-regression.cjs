@@ -71,6 +71,8 @@ for (const [pathname, action, eventName, placement] of [
   ['/', 'home_atlas', 'home_series_open', 'atlas'],
   ['/', 'home_reading', 'home_series_open', 'reading'],
   ['/', 'home_clinical', 'home_series_open', 'clinical'],
+  ['/tsubo/li4', 'atlas_compare', 'atlas_compare_open', 'atlas_location'],
+  ['/tsubo/compare', 'compare_case', 'compare_case_open', 'compare_result'],
   ['/tsubo/compare', 'compare_atlas', 'compare_atlas_open', 'point_detail'],
   ['/learn/acupuncture/research/urinary-incontinence', 'topic_source', 'research_source_open', 'research_article'],
   ['/tsubo/st36', 'atlas_source', 'research_source_open', 'atlas'],
@@ -85,7 +87,15 @@ for (const [pathname, action, eventName, placement] of [
   assert.equal(events.at(-1).params.placement, placement);
   assert.equal(events.at(-1).params.page_location, windowStub.location.origin + pathname);
 }
+windowStub.location.pathname = '/cases/case-01-headache-liver-fire';
+trackEvent('case_study_start', { placement: 'case_study', answers: 'private', patient_name: 'private' });
+assert.equal(events.at(-1).name, 'case_study_start');
+assert.deepEqual(Object.keys(events.at(-1).params).sort(), ['page_location', 'page_path', 'page_referrer', 'placement', 'send_to']);
+assert.equal(events.at(-1).params.page_location, windowStub.location.origin + windowStub.location.pathname);
 const beforeBadRead = events.length;
+trackPublicNavigationAction('atlas_compare');
+trackPublicNavigationAction('compare_case');
+windowStub.location.pathname = '/diagnosis';
 trackPublicNavigationAction('home_reading'); // The identifier is not valid on the Gorou route.
 trackPublicNavigationAction('__proto__');
 trackPublicNavigationAction('https://example.net/doi-private');

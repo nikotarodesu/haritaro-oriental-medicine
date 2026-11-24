@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { 
   CheckCircle2, 
@@ -23,6 +23,7 @@ import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } fr
 import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
 import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
 import { SlidersHorizontal, FlaskConical } from "lucide-react";
+import { trackEvent } from "@/utils/analytics";
 
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
 
@@ -33,9 +34,14 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
   // 推論ステップの回答状態
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [showExplanation, setShowExplanation] = useState(false);
+  const startedCaseId = useRef<string | null>(null);
 
 
   const handleSelectOption = (stepNumber: number, optionId: string) => {
+    if (startedCaseId.current !== clinicalCase.id) {
+      startedCaseId.current = clinicalCase.id;
+      trackEvent("case_study_start", { placement: "case_study" });
+    }
     setSelectedAnswers((prev) => ({
       ...prev,
       [stepNumber]: optionId,

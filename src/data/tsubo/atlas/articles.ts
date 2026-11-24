@@ -63,6 +63,13 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
   ...digitArticles,
   ...footArticles,
   ...legArticles,
+  gv20: {
+    ...expandedArticles.gv20,
+    relatedPoints: [
+      ...expandedArticles.gv20.relatedPoints,
+      { code: "GV16", text: "同じ督脈で、後頭部の中央にある骨の出っ張りのすぐ下が目印です。" },
+    ],
+  },
   pc4: {
     description: "郄門（げきもん・PC4）は、手のひら側の腕の真ん中から少し手首へ戻ったところ。ひじと手首のしわ、2本のすじを目印に位置を図解します。",
     locationSummary: "手のひら側の手首のしわから、ひじまでの長さの12分の5だけ進んだ、二本のすじの間。",

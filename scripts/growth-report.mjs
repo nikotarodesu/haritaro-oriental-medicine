@@ -23,10 +23,12 @@ const hostFilter = { filter: { fieldName: 'hostName', stringFilter: { matchType:
 const publicFilter = { andGroup: { expressions: [hostFilter, { notExpression: {
   filter: { fieldName: 'pagePath', stringFilter: { matchType: 'FULL_REGEXP', value: '^/(notes|auth|account|api)(/.*)?$', caseSensitive: false } },
 } }] } };
+const atlasLearningEvents = ['atlas_compare_open', 'compare_case_open', 'case_study_start'];
 const eventNames = [
   'article_view', 'lecture_view', 'quiz_start', 'quiz_answer', 'quiz_complete', 'review_start', 'review_complete',
   'case_training_start', 'case_training_complete', 'context_link_click', 'learning_activity', 'learning_return_7d',
   'search_submit', 'search_result_click', 'home_series_open', 'compare_atlas_open', 'research_source_open', 'gorou_examples_open',
+  ...atlasLearningEvents,
   'upgrade_click', 'checkout_login_required', 'begin_checkout', 'checkout_error', 'purchase',
   'tsubo_practice_start', 'tsubo_practice_resume', 'tsubo_practice_complete',
   ...['lcp', 'inp', 'cls'].flatMap(name => ['good', 'needs_improvement', 'poor'].map(rating => `web_vital_${name}_${rating}`)),
@@ -68,6 +70,11 @@ async function gaReports() {
       metrics: ['eventCount', 'totalUsers'].map(name => ({ name })),
       dimensionFilter: { andGroup: { expressions: [publicFilter, { filter: { fieldName: 'eventName', inListFilter: { values: eventNames } } }] } },
       limit: 1000,
+    },
+    atlasLearningByPage: {
+      dimensions: ['eventName', 'pagePath', 'deviceCategory'].map(name => ({ name })),
+      metrics: ['eventCount', 'totalUsers'].map(name => ({ name })),
+      dimensionFilter: { andGroup: { expressions: [publicFilter, { filter: { fieldName: 'eventName', inListFilter: { values: atlasLearningEvents } } }] } },
     },
   };
   const results = await Promise.allSettled(Object.entries(requests).map(async ([name, request]) => {

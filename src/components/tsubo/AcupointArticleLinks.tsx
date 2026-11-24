@@ -3,6 +3,7 @@ import { getDiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
 import { getAcupointGuideLinks } from "@/utils/symptomGuides";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
 import { KEY_POINT_TYPES_GUIDE, type AcupointKeyPointType } from "@/data/tsubo/keyPointTypes";
+import { ATLAS_LEARNING_PAIRS } from "@/data/tsubo/atlas/learningPairs";
 
 const sectionLinks = [
   { href: "#acupoint-cautions", label: "注意点" },
@@ -20,6 +21,26 @@ export function AcupointSectionLinks() {
     <nav aria-label="このツボのページ内を移動" className="atlas-section-nav">
       {sectionLinks.map(({ href, label }) => <a key={href} href={href} className={linkClass}>{label}</a>)}
     </nav>
+  );
+}
+
+export function AcupointComparisonLink({ code }: { code: string }) {
+  const pair = ATLAS_LEARNING_PAIRS.find(({ codes }) => codes[0] === code);
+  if (!pair) return null;
+
+  const [first, second] = pair.codes.map(pointCode => pointCode.toLowerCase());
+  return (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-frame bg-panel p-3 print:hidden">
+      <p className="min-w-0 flex-1 basis-48 text-sm leading-relaxed">{pair.comparisonPrompt}</p>
+      <Link
+        href={`/tsubo/compare?a=${first}&b=${second}`}
+        prefetch={false}
+        className="page-secondary-action"
+        data-analytics-action="atlas_compare"
+      >
+        {pair.comparisonLabel}
+      </Link>
+    </div>
   );
 }
 

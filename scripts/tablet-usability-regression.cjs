@@ -149,12 +149,15 @@ const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   'next/link': { __esModule: true, default: Link },
   'next/navigation': { useSearchParams: () => queryParams },
   '@/components/design/PageIntro': { __esModule: true, default: () => null },
+  '@/data/tsubo/atlas/learningPairs': load('src/data/tsubo/atlas/learningPairs'),
   '@/utils/search': load('src/utils/search'),
 }, { window: { print() {} }, document: { getElementById: () => ({ focus() {}, scrollIntoView() {} }) },
   requestAnimationFrame(callback) { comparisonFrames.set(++frameId, callback); return frameId; }, cancelAnimationFrame(id) { comparisonFrames.delete(id); },
 });
 compare.boundaryChild({ points: TSUBOS }); compare.render();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
+const relatedCase = () => nodes(compare.tree()).find(node => node.props?.['data-analytics-action'] === 'compare_case');
+assert.equal(relatedCase().props.href, '/cases/case-01-headache-liver-fire');
 assert.equal(scroll().props.tabIndex, 0, 'The two-direction scrolling region is reachable by keyboard');
 assert.equal(scroll().props.role, 'region');
 assert.equal(scroll().props['aria-describedby'], nodes(compare.tree()).find(node => node.props?.id === 'tsubo-compare-scroll-hint').props.id);
@@ -196,11 +199,13 @@ compareInput().props.onChange({ target: { value: '' } }); compare.render();
 compare.button('合谷を比較から外す').props.onClick(); compare.render();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 6);
+assert.equal(relatedCase(), undefined, 'A single point has no pair-specific case');
 
 queryParams = new URLSearchParams({ a: 'LI4', b: 'LR3', c: 'ＳＴ３６' }); compare.render();
 for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 4, 'URL synchronization displays all three points without an account');
 assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝,足三里'), 'Each item stays labeled when three points stack');
+assert.equal(relatedCase(), undefined, 'The case link is limited to the exact pair');
 queryParams = new URLSearchParams('a=ST36&b=LI4'); compare.render();
 queryParams = new URLSearchParams('a=LR3&b=ST36'); compare.render();
 assert.equal(comparisonFrames.size, 1, 'A newer route cancels a pending older route selection');

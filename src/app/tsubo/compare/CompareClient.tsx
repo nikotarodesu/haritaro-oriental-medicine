@@ -12,6 +12,7 @@ import {
   Printer,
 } from "lucide-react";
 import { normalizeSearchText } from "@/utils/search";
+import { ATLAS_LEARNING_PAIRS } from "@/data/tsubo/atlas/learningPairs";
 import type { Tsubo } from "@/types/oriental";
 
 export type ComparisonPoint = Pick<Tsubo, "id" | "code" | "name" | "kana" | "romaji" | "meridian" | "meridianShort" | "bodyPart" | "locationSimple" | "clinicalNote"> & {
@@ -141,6 +142,9 @@ function TsuboCompareContent({ points }: CompareProps) {
       .map(code => points.find(t => t.code === code))
       .filter((t): t is ComparisonPoint => Boolean(t));
   }, [selectedCodes, points]);
+  const learningPair = selectedTsubos.length === 2
+    ? ATLAS_LEARNING_PAIRS.find(({ codes }) => codes.every(code => selectedCodes.includes(code)))
+    : undefined;
 
   // 検索ヒットツボ一覧
   const searchResults = useMemo(() => {
@@ -324,6 +328,19 @@ function TsuboCompareContent({ points }: CompareProps) {
                 </tbody>
               </table>
             </div>
+            {learningPair && (
+              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-frame bg-panel p-3 print:hidden">
+                <p className="min-w-0 flex-1 basis-48 text-sm leading-relaxed">{learningPair.casePrompt}</p>
+                <Link
+                  href={`/cases/${learningPair.caseId}`}
+                  prefetch={false}
+                  className="page-secondary-action"
+                  data-analytics-action="compare_case"
+                >
+                  {learningPair.caseLabel}
+                </Link>
+              </div>
+            )}
           </section>
         )}
       </div>

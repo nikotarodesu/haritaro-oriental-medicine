@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
-import { AcupointReadingLinks, AcupointSectionLinks } from "./AcupointArticleLinks";
+import { AcupointComparisonLink, AcupointReadingLinks, AcupointSectionLinks } from "./AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
 import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
@@ -48,6 +48,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
             <Paragraphs paragraphs={article.location} />
           </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
+          <AcupointComparisonLink code={point.code} />
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
           <AcupointSectionLinks />
         </PointAtlasDiagrams>

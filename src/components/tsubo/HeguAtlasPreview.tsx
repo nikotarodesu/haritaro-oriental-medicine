@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
-import { AcupointReadingLinks, AcupointSectionLinks } from "@/components/tsubo/AcupointArticleLinks";
+import { AcupointComparisonLink, AcupointReadingLinks, AcupointSectionLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "@/components/tsubo/AcupointArticleHeader";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
@@ -43,6 +43,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
             <p>拡大図の①は人差し指につながる骨（第2中手骨）、②は親指につながる骨（第1中手骨）です。丸印は①の真ん中から②の方へ少し寄ったところにあります。</p>
           </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
+          <AcupointComparisonLink code={point.code} />
           <AcupointPointDetails point={point} meridianReading="てのようめいだいちょうけい" />
           <AcupointSectionLinks />
         </AcupointAtlasDiagrams>
@@ -80,6 +81,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <h2 className={headingClass}>位置を見比べるツボ</h2>
         <ul className="list-disc space-y-2 pl-5">
           <li>同じ経絡で、人差し指の付け根に近いツボです。 <Link href="/tsubo/li3" className={linkClass}>三間（さんかん・LI3）</Link></li>
+          <li>同じ経絡で、手の甲側の手首のしわにあるくぼみが目印です。 <Link href="/tsubo/li5" prefetch={false} className={linkClass}>陽渓（ようけい・LI5）</Link></li>
           <li>足の甲にあるツボです。手と足で目印になる骨を見比べられます。 <Link href="/tsubo/lr3" className={linkClass}>太衝（たいしょう・LR3）</Link></li>
         </ul>
       </section>

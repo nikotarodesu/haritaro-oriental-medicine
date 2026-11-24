@@ -45,6 +45,7 @@ export type AnalyticsEventName =
   | "case_training_start"
   | "case_stage_complete"
   | "case_training_complete"
+  | "atlas_compare_open" | "compare_case_open" | "case_study_start"
   | "home_series_open" | "compare_atlas_open" | "research_source_open" | "gorou_examples_open"
   | "lecture_view" | "article_view" | "learning_activity" | "learning_return_7d"
   | `web_vital_${"lcp" | "inp" | "cls"}_${"good" | "needs_improvement" | "poor"}`;
@@ -118,6 +119,7 @@ export function setAnalyticsDisabled(disabled: boolean): void {
   if (measurementId) (window as unknown as Record<string, unknown>)[`ga-disable-${measurementId}`] = disabled;
 }
 
+const ACUPOINT_DETAIL_PATH = /^\/tsubo\/[a-z]{2}\d{1,2}$/;
 const NAVIGATION_ACTIONS: Readonly<Partial<Record<string, {
   event: AnalyticsEventName;
   placement: string;
@@ -127,9 +129,11 @@ const NAVIGATION_ACTIONS: Readonly<Partial<Record<string, {
   home_reading: { event: "home_series_open", placement: "reading", allowedOn: path => path === "/" },
   home_clinical: { event: "home_series_open", placement: "clinical", allowedOn: path => path === "/" },
   platform_search: { event: "search_submit", placement: "platform_search", allowedOn: path => path === "/" || path === "/search" },
+  atlas_compare: { event: "atlas_compare_open", placement: "atlas_location", allowedOn: path => ACUPOINT_DETAIL_PATH.test(path) },
+  compare_case: { event: "compare_case_open", placement: "compare_result", allowedOn: path => path === "/tsubo/compare" },
   compare_atlas: { event: "compare_atlas_open", placement: "point_detail", allowedOn: path => path === "/tsubo/compare" },
   topic_source: { event: "research_source_open", placement: "research_article", allowedOn: path => path.startsWith("/learn/acupuncture/research/") },
-  atlas_source: { event: "research_source_open", placement: "atlas", allowedOn: path => /^\/tsubo\/[a-z]{2}\d{1,2}$/.test(path) },
+  atlas_source: { event: "research_source_open", placement: "atlas", allowedOn: path => ACUPOINT_DETAIL_PATH.test(path) },
   gorou_examples: { event: "gorou_examples_open", placement: "rest_examples", allowedOn: path => path === "/diagnosis" },
 };
 
@@ -303,7 +307,7 @@ function recordLearningActivity(activity: string, pathname: string): void {
 const LEARNING_ACTIONS = new Set<AnalyticsEventName>([
   "tsubo_practice_start", "tsubo_practice_resume", "tsubo_practice_complete",
   "quiz_start", "quiz_answer", "quiz_complete", "review_start", "review_complete", "case_training_start",
-  "case_stage_complete", "case_training_complete",
+  "case_stage_complete", "case_training_complete", "case_study_start",
 ]);
 const COURSE_ACTIONS = new Set(["course_start", "course_resume", "course_step"]);
 
