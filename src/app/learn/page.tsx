@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Droplets, LibraryBig, List, Network, Scale } from "lucide-react";
+import { ArrowRight, Droplets, LibraryBig, List, Network, Scale } from "lucide-react";
 import PublicLearningPath from "@/components/curriculum/PublicLearningPath";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
+import PublicReadingStart from "@/components/curriculum/PublicReadingStart";
 import PageIntro from "@/components/design/PageIntro";
 import StudyDiagram from "@/components/reading/StudyDiagram";
 import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
@@ -42,14 +43,10 @@ export default function LearnGuidePage() {
       <div className="learning-guide-intro">
         <PageIntro title={heading} description={introduction} art="study" />
         <nav aria-label="学び方を選ぶ" className={`learning-options ${styles.options}`}>
+          <PublicReadingStart firstHref={readingUnits[0].href} className={`learning-option ${styles.primaryOption}`} />
           <Link href={ACUPUNCTURE_GUIDE.href} className="learning-option">
             <span className="learning-option-icon"><LibraryBig size={21} aria-hidden="true" /></span>
             <span className="learning-option-label"><strong>{ACUPUNCTURE_GUIDE.label}</strong><span>はり・お灸の道具と施術の流れ</span></span>
-            <ArrowRight size={18} aria-hidden="true" />
-          </Link>
-          <Link href={readingUnits[0].href} className={`learning-option ${styles.primaryOption}`}>
-            <span className="learning-option-icon"><BookOpen size={21} aria-hidden="true" /></span>
-            <span className="learning-option-label"><strong>第1講から読む</strong><span>東洋医学では何を確かめるか</span></span>
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
           <Link href="/learn/essentials" className="learning-option">

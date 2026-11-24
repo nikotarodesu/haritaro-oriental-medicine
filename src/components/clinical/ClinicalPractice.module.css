@@ -24,7 +24,7 @@
   text-wrap: balance;
 }
 
-.hero p {
+.hero > div > p {
   max-width: 26em;
   margin-top: .75rem;
   color: var(--text-secondary);
@@ -422,7 +422,7 @@
     font-size: clamp(1.35rem, 5.7vw, 1.55rem);
   }
 
-  .hero p {
+  .hero > div > p {
     max-width: none;
     margin-top: .5rem;
     text-wrap: pretty;

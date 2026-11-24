@@ -219,6 +219,7 @@ const sectionShortcuts = { dictionary: "tsubo", learn: "curriculum", clinical: "
 export function getCurrentBottomNavItem(items: readonly NavItemId[], pathname: string, searchParams?: Pick<URLSearchParams, "get">) {
   const selected = items.find(id => isNavigationItemActive(id, pathname, searchParams));
   if (selected) return selected;
+  if (pathname === "/tsubo/compare" && items.includes("tsubo")) return "tsubo";
 
   const section = getNavigationSection(pathname);
   const shortcut = section ? sectionShortcuts[section] : undefined;

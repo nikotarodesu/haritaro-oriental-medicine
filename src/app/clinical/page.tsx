@@ -5,6 +5,8 @@ import { PAGE_REVISIONS } from '@/config/contentUpdates';
 import { ALL_NAV_ITEMS } from '@/config/navigationItems';
 import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from '@/config/acupunctureLearning';
 import { pageSocialMetadata, SITE_ORIGIN } from '@/config/seo';
+import { CASE_STUDY_DESCRIPTORS } from '@/data/cases/caseStudyCatalog';
+import CaseStudyResume from '@/components/cases/CaseStudyResume';
 import { ClinicalCheckArtwork } from '@/components/clinical/ClinicalArtwork';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
 import styles from '@/components/clinical/ClinicalPractice.module.css';
@@ -83,6 +85,7 @@ export default function ClinicalLandingPage() {
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
           <p>架空の症例を読み、どの所見をもとに見立てやツボを選ぶか考えます。</p>
+          <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" />
         </div>
         <figure className={styles.casePreview}>
           <figcaption>模擬症例で集める情報</figcaption>

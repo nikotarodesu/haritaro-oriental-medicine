@@ -66,15 +66,17 @@ function readerHost() {
 (async () => {
   // The reading hub links to the public lecture index. Legacy course URLs are checked below.
   const PublicIndex = () => null;
-  const Hub = component('src/app/learn/page.tsx', id =>
-    id === '@/components/curriculum/PublicLectureIndex' ? PublicIndex : undefined
-  ).default;
+  const ReadingStart = () => null;
+  const Hub = component('src/app/learn/page.tsx', id => ({
+    '@/components/curriculum/PublicLectureIndex': PublicIndex,
+    '@/components/curriculum/PublicReadingStart': ReadingStart,
+  })[id]).default;
   const { readingUnits } = load('src/data/publicLectures/readingUnits');
   const hub = flatten(Hub());
   const courseIndex = hub.find(node => node.props?.id === 'learn-courses-heading');
   assert(courseIndex && courseIndex.type === 'section');
   assert(flatten(courseIndex).some(node => node.type === PublicIndex && node.props.series === 'reading'));
-  assert(hub.some(node => node.type === Link && node.props.href === readingUnits[0].href));
+  assert(hub.some(node => node.type === ReadingStart && node.props.firstHref === readingUnits[0].href));
   assert(hub.some(node => node.type === Link && node.props.href === '/diagnosis'));
   const Redirect = component('src/app/learn/courses/page.tsx', id => id === 'next/navigation' ? { permanentRedirect(destination) { throw Object.assign(new Error('redirect'), { destination }); } } : undefined).default;
   assert.throws(() => Redirect(), error => error.destination === LEARNING_COURSES_HREF);

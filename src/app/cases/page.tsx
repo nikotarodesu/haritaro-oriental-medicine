@@ -4,18 +4,13 @@ import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { PageSymbol } from "@/components/design/PageArtwork";
 import { AlertCircle, ArrowRight } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
+import { CASE_STUDY_DESCRIPTORS } from "@/data/cases/caseStudyCatalog";
 import { collectionPageJsonLd } from "@/config/seo";
 import { SERIES } from "@/config/series";
 import CaseStudyResume from "@/components/cases/CaseStudyResume";
 
 const title = "症例演習";
 const description = "模擬症例の主訴と経過、四診の所見を読み、どの記述を根拠に見立てやツボを選ぶか考えます。選んだ後に、解答例と理由を読めます。";
-const resumeStudies = CLINICAL_CASES.map(({ id, title, reasoningSteps }) => ({
-  id, title,
-  reasoningSteps: reasoningSteps.map(({ stepNumber, options }) => ({
-    stepNumber, options: options.map(({ id: optionId }) => ({ id: optionId })),
-  })),
-}));
 
 export default function CasesIndexPage() {
   const totalCaseCount = CLINICAL_CASES.length;
@@ -34,7 +29,7 @@ export default function CasesIndexPage() {
         </div>
       </PageIntro>
 
-      <CaseStudyResume studies={resumeStudies} />
+      <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} />
 
       {/* 症例一覧グリッド */}
       <div id="case-catalog" className="scroll-mt-28 space-y-4">

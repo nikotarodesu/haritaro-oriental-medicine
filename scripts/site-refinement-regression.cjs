@@ -10,6 +10,8 @@ const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader();
 const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
 const { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } = load('src/utils/caseStudyProgress');
+const { caseReviewLectureHref, caseReviewReturnHref } = load('src/utils/caseStudyNavigation');
+const { CASE_STUDY_DESCRIPTORS, PUBLIC_CASE_STUDY_IDS } = load('src/data/cases/caseStudyCatalog');
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
 const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
 const { NEARBY_COMPARISONS } = load('src/data/tsubo/atlas/nearbyComparisons');
@@ -63,6 +65,7 @@ const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/c
 assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
 const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
 assert.equal(CLINICAL_CASES.length, 20);
+assert.equal(CASE_STUDY_DESCRIPTORS.length, CLINICAL_CASES.length);
 assert.equal(CLINICAL_CASES.filter(({ patient }) => typeof patient.historyOfPresentIllness !== 'string').length, 13);
 assert.equal(NEARBY_COMPARISONS.length, 7);
 for (const group of NEARBY_COMPARISONS) {
@@ -70,7 +73,11 @@ for (const group of NEARBY_COMPARISONS) {
 }
 for (const clinicalCase of CLINICAL_CASES) {
   assert(casesIndex.includes('href="/cases/' + clinicalCase.id + '"'), clinicalCase.id);
-  const viewer = React.createElement(CaseViewer, { clinicalCase, reviewResources: { readingHref: '/learn/lectures/assessment-basics' } });
+  const readingHref = caseReviewLectureHref('/learn/lectures/assessment-basics#part-lecture-diagnosis-1', clinicalCase.id);
+  const readingUrl = new URL(readingHref, 'https://www.haritaro.jp');
+  assert.equal(readingUrl.hash, '#part-lecture-diagnosis-1');
+  assert.equal(caseReviewReturnHref(readingUrl.searchParams, PUBLIC_CASE_STUDY_IDS), '/cases/' + clinicalCase.id + '#case-practice-review');
+  const viewer = React.createElement(CaseViewer, { clinicalCase, reviewResources: { readingHref } });
   const html = renderToStaticMarkup(viewer);
   assert(html.includes('href="#case-examination"') && html.includes('id="case-examination"'), clinicalCase.id);
   assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
@@ -104,6 +111,7 @@ for (const clinicalCase of CLINICAL_CASES) {
   learningValues = values;
   const completedHtml = renderToStaticMarkup(viewer);
   assert(completedHtml.includes('id="case-practice-review"') && completedHtml.includes('href="#case-question-1"'), clinicalCase.id);
+  assert(completedHtml.includes('href="' + readingHref + '"'), clinicalCase.id);
   assert(!completedHtml.includes('href="#case-question-2"'), clinicalCase.id);
   learningValues = {};
   values[caseStudyAttemptKey(clinicalCase.id)] = 'new-attempt';
@@ -111,6 +119,22 @@ for (const clinicalCase of CLINICAL_CASES) {
   values[caseStudyAnswerKey(clinicalCase.id, last.stepNumber)] = { attempt: 'new-attempt', optionId: 'unavailable', answeredAt: 40 };
   assert.equal(getCaseStudyProgress(values, clinicalCase).answered, 0, clinicalCase.id + ': stale answer IDs are ignored');
 }
+for (const query of ['', 'fromCase=missing', 'fromCase=https%3A%2F%2Fexample.com', 'fromCase=case-01-headache-liver-fire&fromCase=case-01-headache-liver-fire']) {
+  assert.equal(caseReviewReturnHref(new URLSearchParams(query), PUBLIC_CASE_STUDY_IDS), undefined, query);
+}
+const [olderCase, latestCase, finishedCase] = CASE_STUDY_DESCRIPTORS;
+for (const [study, steps, answeredAt] of [
+  [olderCase, olderCase.reasoningSteps.slice(0, 1), 10],
+  [latestCase, latestCase.reasoningSteps.slice(0, 2), 20],
+  [finishedCase, finishedCase.reasoningSteps, 30],
+]) {
+  for (const step of steps) {
+    learningValues[caseStudyAnswerKey(study.id, step.stepNumber)] = { attempt: 'initial', optionId: step.options[0].id, answeredAt };
+  }
+}
+const resume = renderToStaticMarkup(React.createElement(component('src/components/cases/CaseStudyResume.tsx'), { studies: CASE_STUDY_DESCRIPTORS }));
+assert(resume.includes('href="/cases/' + latestCase.id + '#case-question-3"'), 'Resume opens the first unanswered question in the latest unfinished case');
+learningValues = {};
 
 const Vessel = component('src/components/kikei/KikeiDetailClient.tsx');
 assert.equal(KIKEI_VESSELS.length, 8);

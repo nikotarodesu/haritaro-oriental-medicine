@@ -99,7 +99,7 @@ assert(isNavigationItemActive('tsubo_compare', '/tsubo/compare'));
 assert(!isNavigationItemActive('tsubo', '/tsubo/compare'), 'The comparison page does not select the point dictionary at the same time');
 assert(isNavigationItemActive('clinical_guides', '/clinical/symptoms/neck-shoulder'));
 for (const [route, item] of [
-  ['/tsubo/pc6', 'tsubo'], ['/symptoms/headache-stiff-neck', 'tsubo'],
+  ['/tsubo/pc6', 'tsubo'], ['/tsubo/compare', 'tsubo'], ['/symptoms/headache-stiff-neck', 'tsubo'],
   ['/learn/review', 'curriculum'], ['/learn/lectures/assessment-basics', 'curriculum'],
   ['/cases', 'clinical'], ['/cases/case-01-headache-liver-fire', 'clinical'],
   ['/clinical/symptoms/shoulder', 'clinical'], ['/practice/haiketsu', 'clinical'],

@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useLearningSync } from "@/contexts/LearningSyncContext";
+import { caseQuestionAnchor } from "@/utils/caseStudyNavigation";
 import { getCaseStudyProgress, type CaseStudyDescriptor } from "@/utils/caseStudyProgress";
 
-export default function CaseStudyResume({ studies }: { studies: readonly CaseStudyDescriptor[] }) {
+export default function CaseStudyResume({ studies, className = "" }: { studies: readonly CaseStudyDescriptor[]; className?: string }) {
   const { ready, values } = useLearningSync();
   if (!ready) return null;
 
@@ -16,14 +17,17 @@ export default function CaseStudyResume({ studies }: { studies: readonly CaseStu
   if (!resume) return null;
 
   const { study, progress } = resume;
+  const nextQuestion = study.reasoningSteps.find(({ stepNumber }) => !progress.answers[stepNumber]);
+  if (!nextQuestion) return null;
+
   return (
-    <section aria-labelledby="case-resume-title" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-frame bg-panel p-4">
+    <section aria-labelledby="case-resume-title" className={`flex flex-wrap items-center justify-between gap-3 rounded-xl border border-frame bg-panel p-4 ${className}`}>
       <div className="min-w-0">
         <h2 id="case-resume-title" className="font-semibold">前回の続き</h2>
         <p className="text-sm leading-relaxed">{study.title}</p>
         <p className="ui-muted text-sm">{progress.answered} / {progress.total}問 回答済み</p>
       </div>
-      <Link href={`/cases/${study.id}#case-reasoning`} className="page-secondary-action">
+      <Link href={`/cases/${study.id}#${caseQuestionAnchor(nextQuestion.stepNumber)}`} scroll={false} className="page-secondary-action">
         続きから解く<ArrowRight size={16} aria-hidden="true" />
       </Link>
     </section>

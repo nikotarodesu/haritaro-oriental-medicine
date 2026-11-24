@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowDown, ChevronDown, ListChecks } from "lucide-react";
+import { Suspense } from "react";
+import { ArrowDown, ArrowRight, ChevronDown, ListChecks } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
+import CaseReviewReturnLink from "@/components/cases/CaseReviewReturnLink";
 import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition";
 import PublicLectureSections, { PublicLectureLinks } from "@/components/curriculum/PublicLectureSections";
 import ReadingUnitCheck from "@/components/curriculum/ReadingUnitCheck";
@@ -14,6 +16,7 @@ import ReadingSequence from "@/components/reading/ReadingSequence";
 import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
+import { PUBLIC_CASE_STUDY_IDS } from "@/data/cases/caseStudyCatalog";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
 import { getPublicLectureArticle } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
@@ -24,13 +27,22 @@ import { getPublicLectureReferences, publishedLectureRecords } from "@/data/publ
 import { readingUnitRevisions } from "@/data/publicLectures/revisions";
 import { reviseLectureSections } from "@/data/publicLectures/revisions/types";
 import { originalLectureHref } from "@/utils/curriculumLegacyPaths";
+import { CASE_REVIEW_LECTURE_ID } from "@/utils/caseStudyNavigation";
 import styles from "./lecture-reading.module.css";
 
-const practiceByUnit: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
-  "meridians-and-points": { href: "/tsubo#nearby-comparisons", label: "近いツボの位置を図で見比べる" },
-  "qi-blood-and-patterns": { href: "/cases/case-02-fatigue-spleen-deficiency", label: "疲労の模擬症例で所見を読む" },
-  "assessment-basics": { href: "/cases/case-01-headache-liver-fire", label: "頭痛の模擬症例で四診と根拠を確かめる" },
-  "principles-and-goals": { href: "/practice/haiketsu", label: "配穴の練習でツボを選んだ理由を書く" },
+const practiceByUnit: Readonly<Partial<Record<string, { href: string; label: string; headerLabel: string }>>> = {
+  "meridians-and-points": {
+    href: "/tsubo#nearby-comparisons", label: "近いツボの位置を図で見比べる", headerLabel: "近いツボを図で比べる",
+  },
+  "qi-blood-and-patterns": {
+    href: "/cases/case-02-fatigue-spleen-deficiency", label: "疲労の模擬症例で所見を読む", headerLabel: "この講義を症例で試す",
+  },
+  "assessment-basics": {
+    href: "/cases/case-01-headache-liver-fire", label: "頭痛の模擬症例で四診と根拠を確かめる", headerLabel: "この講義を症例で試す",
+  },
+  "principles-and-goals": {
+    href: "/practice/haiketsu", label: "配穴の練習でツボを選んだ理由を書く", headerLabel: "配穴を練習する",
+  },
 };
 
 const lectureIndexHref = "/learn#learn-courses-heading";
@@ -145,6 +157,11 @@ export default async function ReadingLecturePage({ params }: Props) {
           </p>
         </div>
         <h1 className="reader-title">{unit.title}</h1>
+        {practice && (
+          <ContentNavigationLink href={practice.href} placement="reading_unit_practice" className={`page-secondary-action ${styles.practiceLink} print:hidden`}>
+            {practice.headerLabel}<ArrowRight size={16} aria-hidden="true" />
+          </ContentNavigationLink>
+        )}
         <div className="lecture-unit-opening">
           {unit.opening.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
         </div>
@@ -174,6 +191,9 @@ export default async function ReadingLecturePage({ params }: Props) {
           return (
             <section key={part.lectureId} id={part.anchor} tabIndex={-1} className="lecture-unit-part" data-lecture-part={part.lectureId} aria-labelledby={`${part.anchor}-heading`}>
               <h2 id={`${part.anchor}-heading`} className="reader-section-title">{part.label}</h2>
+              {part.lectureId === CASE_REVIEW_LECTURE_ID && (
+                <Suspense fallback={null}><CaseReviewReturnLink publicCaseIds={PUBLIC_CASE_STUDY_IDS} /></Suspense>
+              )}
               <PublicLectureSections
                 lectureId={part.lectureId}
                 sections={reviseLectureSections(article.sections, revision.copy[part.lectureId])}

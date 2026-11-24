@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { 
   CheckCircle2, 
@@ -30,6 +30,7 @@ import { SlidersHorizontal, FlaskConical } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
 import { useLearningSync } from "@/contexts/LearningSyncContext";
 import { getLearningStorageAdapter } from "@/utils/learningStorageBridge";
+import { CASE_REASONING_ANCHOR, CASE_REVIEW_ANCHOR, caseQuestionAnchor } from "@/utils/caseStudyNavigation";
 import { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } from "@/utils/caseStudyProgress";
 import CaseStudyReview, { type CaseStudyReviewResources } from "./CaseStudyReview";
 
@@ -51,6 +52,12 @@ function observationHref(target: CaseObservationTarget) {
   }
 }
 
+function focusCaseAnchor(anchor: string) {
+  const target = document.getElementById(anchor);
+  target?.scrollIntoView({ block: "start" });
+  target?.focus({ preventScroll: true });
+}
+
 export default function CaseStudyViewer({ clinicalCase, reviewResources }: { clinicalCase: ClinicalCase; reviewResources: CaseStudyReviewResources }) {
 
 
@@ -64,6 +71,29 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   const history = clinicalCase.patient.historyOfPresentIllness;
   const observations = clinicalCase.clinicalExplanation.observations;
 
+  useEffect(() => {
+    if (!ready) return;
+    let frame = 0;
+    function openReviewAnchor() {
+      cancelAnimationFrame(frame);
+      if (window.location.hash !== `#${CASE_REVIEW_ANCHOR}`) return;
+      frame = requestAnimationFrame(() => focusCaseAnchor(progress.complete ? CASE_REVIEW_ANCHOR : CASE_REASONING_ANCHOR));
+    }
+    openReviewAnchor();
+    window.addEventListener("hashchange", openReviewAnchor);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", openReviewAnchor);
+    };
+  }, [ready, progress.complete]);
+
+  useEffect(() => {
+    if (!ready) return;
+    const anchor = window.location.hash.slice(1);
+    if (!clinicalCase.reasoningSteps.some(step => caseQuestionAnchor(step.stepNumber) === anchor)) return;
+    const frame = requestAnimationFrame(() => focusCaseAnchor(anchor));
+    return () => cancelAnimationFrame(frame);
+  }, [ready, clinicalCase.reasoningSteps]);
 
   const handleSelectOption = (stepNumber: number, optionId: string, answeredAt: number) => {
     if (!ready) return;
@@ -83,7 +113,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   function restartStudy() {
     setEntry(caseStudyAttemptKey(clinicalCase.id), crypto.randomUUID());
     setShowExplanation(false);
-    document.getElementById("case-reasoning")?.focus({ preventScroll: true });
+    document.getElementById(CASE_REASONING_ANCHOR)?.focus({ preventScroll: true });
   }
 
   return (
@@ -97,7 +127,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <ol className="case-reading-path">
           <li><a href="#case-patient"><UserIcon aria-hidden="true" /><span>基本情報を読む</span></a></li>
           <li><a href="#case-examination"><Stethoscope aria-hidden="true" /><span>四診を確認</span></a></li>
-          <li><a href="#case-reasoning"><Activity aria-hidden="true" /><span>問題に答える</span></a></li>
+          <li><a href={`#${CASE_REASONING_ANCHOR}`}><Activity aria-hidden="true" /><span>問題に答える</span></a></li>
         </ol>
       </nav>
 
@@ -267,7 +297,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       </section>
 
       {/* ステップ 3: 臨床推論ステップ（演習クイズ） */}
-      <section id="case-reasoning" tabIndex={-1} aria-labelledby="case-reasoning-title" className="case-section">
+      <section id={CASE_REASONING_ANCHOR} tabIndex={-1} aria-labelledby="case-reasoning-title" className="case-section">
         <h2 id="case-reasoning-title" className="reader-section-title flex items-center gap-2">
           <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />臨床推論の演習
         </h2>
@@ -278,7 +308,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
             {status === "memory" && <p className="ui-muted">このブラウザーでは進捗を保存できません。</p>}
             {progress.complete && (
               <>
-                <a href="#case-practice-review" className="ui-text-link inline-flex min-h-11 items-center">振り返りへ</a>
+                <a href={`#${CASE_REVIEW_ANCHOR}`} className="ui-text-link inline-flex min-h-11 items-center">振り返りへ</a>
                 <button type="button" className="ui-text-link min-h-11" onClick={restartStudy}>もう一度解く</button>
               </>
             )}
@@ -289,7 +319,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
           {clinicalCase.reasoningSteps.map((step) => {
             const selected = progress.answers[step.stepNumber];
             return (
-              <div key={step.stepNumber} id={`case-question-${step.stepNumber}`} tabIndex={-1} className="case-question scroll-mt-28 space-y-3">
+              <div key={step.stepNumber} id={caseQuestionAnchor(step.stepNumber)} tabIndex={-1} className="case-question scroll-mt-28 space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-panel-selected text-sm font-semibold text-accent">
                     {step.stepNumber}
