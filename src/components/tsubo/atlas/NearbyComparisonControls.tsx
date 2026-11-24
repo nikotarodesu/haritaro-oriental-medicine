@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { Layers } from "lucide-react";
-import { useId, useRef, useState, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
+import { useLearningSync } from "@/contexts/LearningSyncContext";
 import type { NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import { trackEvent } from "@/utils/analytics";
+import { PRACTICE_REVIEW_HREF, practiceReviewAnchor, recordPracticeReviewAnswer, type PracticeReviewQuestion } from "@/utils/practiceReview";
 
 type PointChoice = {
   code: string;
@@ -20,11 +22,12 @@ type PointChoice = {
 type ComparisonCopy = Pick<NearbyComparison, "id" | "region" | "heading" | "figureLabel" | "quizFigureLabel" | "question">;
 
 export default function NearbyComparisonControls({
-  width, height, comparison, points, initialCode, anchorId, initiallyOpen, introduction, relatedReading, children,
+  width, height, comparison, reviewQuestion, points, initialCode, anchorId, initiallyOpen, introduction, relatedReading, children,
 }: {
   width: number;
   height: number;
   comparison: ComparisonCopy;
+  reviewQuestion: PracticeReviewQuestion;
   points: readonly PointChoice[];
   initialCode: string;
   anchorId: string;
@@ -33,9 +36,11 @@ export default function NearbyComparisonControls({
   relatedReading?: ReactNode;
   children: ReactNode;
 }) {
+  const { ready } = useLearningSync();
   const [selectedCode, setSelectedCode] = useState(initialCode);
   const [isQuiz, setIsQuiz] = useState(false);
   const [answerCode, setAnswerCode] = useState<string | null>(null);
+  const [reviewing, setReviewing] = useState(false);
   const started = useRef(false);
   const questionId = useId();
 
@@ -44,6 +49,31 @@ export default function NearbyComparisonControls({
   const { id, region, heading, figureLabel, quizFigureLabel, question } = comparison;
   const isSolved = isQuiz && answerCode === question.answerCode;
   const markedCode = isQuiz ? answerCode : selected.code;
+  const reviewAnchor = practiceReviewAnchor(reviewQuestion.id);
+
+  useEffect(() => {
+    let frame = 0;
+    function openLinkedQuestion() {
+      if (window.location.hash !== `#${reviewAnchor}`) return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        setIsQuiz(true);
+        setReviewing(true);
+        setAnswerCode(null);
+        frame = requestAnimationFrame(() => {
+          const target = document.getElementById(reviewAnchor);
+          target?.scrollIntoView({ block: "start" });
+          target?.focus({ preventScroll: true });
+        });
+      });
+    }
+    openLinkedQuestion();
+    window.addEventListener("hashchange", openLinkedQuestion);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", openLinkedQuestion);
+    };
+  }, [reviewAnchor]);
 
   function toggleQuiz() {
     setIsQuiz(!isQuiz);
@@ -55,9 +85,10 @@ export default function NearbyComparisonControls({
       setSelectedCode(code);
       return;
     }
-    if (isSolved) return;
+    if (!ready || isSolved || code === answerCode) return;
 
     setAnswerCode(code);
+    recordPracticeReviewAnswer(reviewQuestion, code === question.answerCode);
     if (!started.current) {
       started.current = true;
       trackEvent("atlas_location_check_start", { placement: "nearby_diagram" });
@@ -91,7 +122,7 @@ export default function NearbyComparisonControls({
     >
       <div id={anchorId} className="atlas-target atlas-comparison-content">
         {!isQuiz && introduction}
-        <div className="atlas-comparison-actions print:hidden">
+        <div id={reviewAnchor} tabIndex={-1} className="atlas-target atlas-comparison-actions print:hidden">
           <button type="button" onClick={toggleQuiz}>
             {isQuiz ? "比較に戻る" : "図で位置を当てる"}
           </button>
@@ -138,6 +169,7 @@ export default function NearbyComparisonControls({
               aria-label={isQuiz ? `位置 ${index + 1}` : `${name}の位置`}
               aria-pressed={code === markedCode}
               aria-disabled={isSolved || undefined}
+              disabled={isQuiz && !ready}
               onClick={() => choosePosition(code)}
             >
               <span aria-hidden="true">{index + 1}</span>{!isQuiz && name}
@@ -154,6 +186,11 @@ export default function NearbyComparisonControls({
           <div className="sr-only" role="status">
             {selected.name}。{selected.difference}
           </div>
+        )}
+        {isQuiz && (reviewing || (answer && !isSolved)) && (
+          <Link href={PRACTICE_REVIEW_HREF} className="ui-text-link inline-flex min-h-11 items-center">
+            {reviewing ? "復習一覧に戻る" : "図と症例の復習を開く"}
+          </Link>
         )}
         {(!isQuiz || isSolved) && (
           <ol className="atlas-comparison-reading" role="list" aria-label="ツボごとの位置と詳しい図">

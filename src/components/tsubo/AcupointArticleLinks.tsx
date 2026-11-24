@@ -4,9 +4,11 @@ import { getCaseStudyUsingAcupoint } from "@/data/cases/caseStudyCatalog";
 import { getDiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
 import { getAcupointGuideLinks } from "@/utils/symptomGuides";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
-import { KEY_POINT_TYPES_GUIDE, type AcupointKeyPointType } from "@/data/tsubo/keyPointTypes";
+import { getAcupointKeyPointTypes, KEY_POINT_TYPES_GUIDE, type AcupointKeyPointType } from "@/data/tsubo/keyPointTypes";
 import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
-import { getReadingUnitForLecture } from "@/data/publicLectures/readingUnitCatalog";
+import { readingPartHref } from "@/data/publicLectures/readingUnitCatalog";
+import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
+import { caseQuestionAnchor } from "@/utils/caseStudyNavigation";
 
 const sectionLinks = [
   { href: "#acupoint-location", label: "場所" },
@@ -31,20 +33,33 @@ export function AcupointSectionLinks({ hasAnatomyDiagram }: { hasAnatomyDiagram:
 }
 
 export function AcupointStudyLinks({ code }: { code: string }) {
-  const lecture = getReadingUnitForLecture("lecture-meridians-1");
-  const pair = ATLAS_LEARNING_PAIRS.find(({ codes }) => codes.includes(code.toUpperCase()));
-  const caseId = pair?.caseId ?? getCaseStudyUsingAcupoint(code)?.id;
-  const caseLabel = pair?.caseLabel ?? (caseId ? "このツボが出る模擬症例を解く" : "模擬症例を探す");
+  const standardCode = code.toUpperCase();
+  const route = ATLAS_STUDY_ROUTES.find(({ codes }) => codes.includes(standardCode));
+  const pointType = getAcupointKeyPointTypes(code.toLowerCase())[0];
+  const lecture = route
+    ? { href: route.readingHref, label: route.readingLabel }
+    : pointType
+      ? { href: `${KEY_POINT_TYPES_GUIDE}#${pointType.id}`, label: `${pointType.label}を読む` }
+      : { href: readingPartHref("lecture-meridians-1"), label: "経絡とツボの講義を読む" };
+  const pair = ATLAS_LEARNING_PAIRS.find(({ codes }) => codes.includes(standardCode));
+  const relatedCase = getCaseStudyUsingAcupoint(code);
+  const caseId = pair?.caseId ?? relatedCase?.id;
+  const mentionsPoint = (text: string) => text.match(/\b[A-Z]{2}\d{1,2}\b/g)?.includes(standardCode);
+  const relatedStep = relatedCase && relatedCase.id === caseId ? relatedCase.reasoningSteps.find(step =>
+    mentionsPoint(step.question) || step.options.some(option => option.isCorrect && mentionsPoint(option.label)),
+  ) : undefined;
+  const exercise = (route && atlasStudyExercise(route)) ?? {
+    href: caseId ? `/cases/${caseId}${relatedStep ? `#${caseQuestionAnchor(relatedStep.stepNumber)}` : ""}` : "/cases",
+    label: relatedStep ? "このツボが出る設問を解く" : pair?.caseLabel ?? (caseId ? "このツボが出る模擬症例を解く" : "模擬症例を探す"),
+  };
 
   return (
     <nav aria-label="講義と模擬症例" className="atlas-study-links print:hidden">
-      {lecture && (
-        <Link href={lecture.href} className="page-secondary-action" prefetch={false}>
-          <BookOpen size={16} aria-hidden="true" />経絡とツボの講義を読む
-        </Link>
-      )}
-      <Link href={caseId ? `/cases/${caseId}` : "/cases"} className="page-secondary-action" prefetch={false}>
-        <ClipboardList size={16} aria-hidden="true" />{caseLabel}
+      <Link href={lecture.href} className="page-secondary-action" prefetch={false}>
+        <BookOpen size={16} aria-hidden="true" />{lecture.label}
+      </Link>
+      <Link href={exercise.href} className="page-secondary-action" prefetch={false}>
+        <ClipboardList size={16} aria-hidden="true" />{exercise.label}
       </Link>
     </nav>
   );

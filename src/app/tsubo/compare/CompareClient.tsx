@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { normalizeSearchText } from "@/utils/search";
 import { getAtlasLearningPair } from "@/data/tsubo/atlas/learningPairs";
+import { atlasPairPracticeReview } from "@/data/tsubo/atlas/practiceReviews";
 import AtlasLocationCheck from "@/components/tsubo/atlas/AtlasLocationCheck";
 import type { Tsubo } from "@/types/oriental";
 import { PRESET_TSUBO_COMPARISONS } from "./presets";
@@ -286,6 +287,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
                 <AtlasLocationCheck
                   key={learningPair.codes[0]}
                   question={learningPair.question}
+                  reviewQuestion={atlasPairPracticeReview(learningPair)}
                   options={selectedTsubos}
                   placement="atlas_comparison"
                 />

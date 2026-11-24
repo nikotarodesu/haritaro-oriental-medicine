@@ -1,6 +1,7 @@
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import type { CaseReasoningStep } from "@/types/clinicalCase";
 import { CASE_REVIEW_ANCHOR, caseQuestionAnchor } from "@/utils/caseStudyNavigation";
+import { PRACTICE_REVIEW_HREF } from "@/utils/practiceReview";
 
 export type CaseStudyReviewResources = {
   readingHref: string;
@@ -44,6 +45,11 @@ export default function CaseStudyReview({ steps, answers, resources }: {
         {resources.comparison && (
           <ContentNavigationLink href={resources.comparison.href} placement="case_review_atlas" prefetch={false} className="page-secondary-action">
             {resources.comparison.label}
+          </ContentNavigationLink>
+        )}
+        {missed.length > 0 && (
+          <ContentNavigationLink href={PRACTICE_REVIEW_HREF} placement="case_review_practice" className="page-secondary-action">
+            図と症例の復習を開く
           </ContentNavigationLink>
         )}
       </nav>

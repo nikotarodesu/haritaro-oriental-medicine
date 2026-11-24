@@ -21,7 +21,7 @@ import {
   Layers,
   RotateCcw
 } from "lucide-react";
-import type { CaseObservationTarget, ClinicalCase } from "@/types/clinicalCase";
+import type { CaseObservationTarget, CaseReasoningStep, ClinicalCase } from "@/types/clinicalCase";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
 import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
@@ -31,7 +31,10 @@ import { trackEvent } from "@/utils/analytics";
 import { useLearningSync } from "@/contexts/LearningSyncContext";
 import { getLearningStorageAdapter } from "@/utils/learningStorageBridge";
 import { CASE_REASONING_ANCHOR, CASE_REVIEW_ANCHOR, caseQuestionAnchor } from "@/utils/caseStudyNavigation";
+import { casePracticeReviewQuestion } from "@/utils/casePracticeReview";
 import { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } from "@/utils/caseStudyProgress";
+import { CASE_RETRY_PARAM, PRACTICE_REVIEW_HREF, recordPracticeReviewAnswer } from "@/utils/practiceReview";
+import CaseQuestionReferences, { CaseHistoryContent } from "./CaseQuestionReferences";
 import CaseStudyReview, { type CaseStudyReviewResources } from "./CaseStudyReview";
 
 const examinationOptions = [
@@ -68,6 +71,8 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   const { ready, values, status, setEntry } = useLearningSync();
   const progress = getCaseStudyProgress(values, clinicalCase);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [retry, setRetry] = useState<{ stepNumber: number; optionId?: string } | null>(null);
+  const retryStep = retry?.stepNumber;
   const history = clinicalCase.patient.historyOfPresentIllness;
   const observations = clinicalCase.clinicalExplanation.observations;
 
@@ -90,17 +95,40 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   useEffect(() => {
     if (!ready) return;
     const anchor = window.location.hash.slice(1);
-    if (anchor !== CASE_REASONING_ANCHOR && !clinicalCase.reasoningSteps.some(step => caseQuestionAnchor(step.stepNumber) === anchor)) return;
-    const frame = requestAnimationFrame(() => focusCaseAnchor(anchor));
+    const question = clinicalCase.reasoningSteps.find(step => caseQuestionAnchor(step.stepNumber) === anchor);
+    if (anchor !== CASE_REASONING_ANCHOR && !question) return;
+    const retrying = question && new URLSearchParams(window.location.search).get(CASE_RETRY_PARAM) === "1";
+    const frame = requestAnimationFrame(() => {
+      if (retrying) setRetry({ stepNumber: question.stepNumber });
+      else focusCaseAnchor(anchor);
+    });
     return () => cancelAnimationFrame(frame);
   }, [ready, clinicalCase.reasoningSteps]);
 
-  const handleSelectOption = (stepNumber: number, optionId: string, answeredAt: number) => {
+  useEffect(() => {
+    if (retryStep === undefined) return;
+    const frame = requestAnimationFrame(() => focusCaseAnchor(caseQuestionAnchor(retryStep)));
+    return () => cancelAnimationFrame(frame);
+  }, [retryStep]);
+
+  const handleSelectOption = (step: CaseReasoningStep, optionId: string, answeredAt: number) => {
     if (!ready) return;
+    const { stepNumber } = step;
+    const choice = step.options.find(option => option.id === optionId);
+    if (!choice) return;
+    const reviewQuestion = casePracticeReviewQuestion(clinicalCase, step);
+
+    if (retry?.stepNumber === stepNumber) {
+      if (retry.optionId === optionId) return;
+      recordPracticeReviewAnswer(reviewQuestion, choice.isCorrect, answeredAt);
+      setRetry({ stepNumber, optionId });
+      return;
+    }
     const adapter = getLearningStorageAdapter();
     const before = getCaseStudyProgress(adapter?.values() ?? values, clinicalCase);
     if (before.answers[stepNumber] === optionId) return;
 
+    recordPracticeReviewAnswer(reviewQuestion, choice.isCorrect, answeredAt);
     const key = caseStudyAnswerKey(clinicalCase.id, stepNumber);
     const answer = { attempt: before.attempt, optionId, answeredAt };
     setEntry(key, answer);
@@ -168,19 +196,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <div className="space-y-3 text-base leading-[1.85]">
           <section id="case-history" tabIndex={-1} aria-labelledby="case-history-title" className="space-y-2">
             <h3 id="case-history-title" className="font-bold text-ink">症状の経過と背景</h3>
-            {typeof history === "string" ? <p>{history}</p> : (
-              <>
-                <ol role="list" aria-labelledby="case-history-title" className="case-history-timeline">
-                  {history.entries.map(({ when, description }) => (
-                    <li key={when}>
-                      <strong>{when}</strong>
-                      <p>{description}</p>
-                    </li>
-                  ))}
-                </ol>
-                {history.context && <p>{history.context}</p>}
-              </>
-            )}
+            <CaseHistoryContent history={history} labelledBy="case-history-title" />
           </section>
           {clinicalCase.patient.lifestyle && <div className="space-y-1">
             <span className="font-bold text-ink">仕事や日ごろの習慣</span>
@@ -299,10 +315,10 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       {/* ステップ 3: 臨床推論ステップ（演習クイズ） */}
       <section id={CASE_REASONING_ANCHOR} tabIndex={-1} aria-labelledby="case-reasoning-title" className="case-section">
         <h2 id="case-reasoning-title" className="reader-section-title flex items-center gap-2">
-          <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />臨床推論の演習
+          <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />{retry ? "症例の復習" : "臨床推論の演習"}
         </h2>
 
-        {ready && (
+        {ready && !retry && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
             <p role="status">{progress.answered} / {progress.total}問 回答済み{progress.complete && "・演習完了"}</p>
             {status === "memory" && <p className="ui-muted">このブラウザーでは進捗を保存できません。</p>}
@@ -316,8 +332,8 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         )}
 
         <div className="space-y-6">
-          {clinicalCase.reasoningSteps.map((step) => {
-            const selected = progress.answers[step.stepNumber];
+          {clinicalCase.reasoningSteps.filter(step => !retry || step.stepNumber === retry.stepNumber).map((step) => {
+            const selected = retry ? retry.optionId : progress.answers[step.stepNumber];
             return (
               <div key={step.stepNumber} id={caseQuestionAnchor(step.stepNumber)} tabIndex={-1} className="case-question scroll-mt-28 space-y-3">
                 <div className="flex items-center gap-2">
@@ -332,6 +348,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                 <p className="text-base leading-[1.8] text-ink">
                   {step.question}
                 </p>
+                <CaseQuestionReferences patient={clinicalCase.patient} examinations={clinicalCase.examinations} />
 
                 <div className="space-y-2 pt-1">
                   {step.options.map((opt) => {
@@ -342,7 +359,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                         type="button"
                         disabled={!ready}
                         aria-pressed={isSelected}
-                        onClick={() => handleSelectOption(step.stepNumber, opt.id, Date.now())}
+                        onClick={() => handleSelectOption(step, opt.id, Date.now())}
                         className={`flex min-h-11 w-full cursor-pointer items-start gap-2.5 rounded-lg border p-3 text-left text-base leading-[1.65] ${
                           isSelected
                             ? opt.isCorrect
@@ -370,15 +387,16 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                     );
                   })}
                 </div>
+                {retry && <Link href={PRACTICE_REVIEW_HREF} className="ui-text-link inline-flex min-h-11 items-center">復習一覧に戻る</Link>}
               </div>
             );
           })}
         </div>
 
-        {progress.complete && <CaseStudyReview steps={clinicalCase.reasoningSteps} answers={progress.answers} resources={reviewResources} />}
+        {!retry && progress.complete && <CaseStudyReview steps={clinicalCase.reasoningSteps} answers={progress.answers} resources={reviewResources} />}
 
         {/* 解答と完全解説の表示トグル */}
-        <div className="pt-2">
+        {!retry && <div className="pt-2">
           <button
             type="button"
             aria-expanded={showExplanation}
@@ -389,7 +407,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
             <BookOpen aria-hidden="true" className="h-4 w-4" />
             <span>{showExplanation ? "解説を閉じる" : "解答と配穴例を見る"}</span>
           </button>
-        </div>
+        </div>}
       </section>
 
       {/* ステップ 4 & 5: 確定弁証・治法・処方配穴 ＆ 専門解説 */}

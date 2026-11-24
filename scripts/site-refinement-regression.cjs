@@ -13,13 +13,14 @@ const { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } = load('
 const { caseReviewLectureHref, caseReviewReturnHref } = load('src/utils/caseStudyNavigation');
 const { CASE_STUDY_DESCRIPTORS, PUBLIC_CASE_STUDY_IDS, getCaseStudyUsingAcupoint } = load('src/data/cases/caseStudyCatalog');
 const { ATLAS_LEARNING_PAIRS, getAtlasLearningPair } = load('src/data/tsubo/atlas/learningPairs');
+const { ATLAS_STUDY_ROUTES, atlasStudyExercise } = load('src/data/tsubo/atlas/studyRoutes');
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
 const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
 const { NEARBY_COMPARISONS } = load('src/data/tsubo/atlas/nearbyComparisons');
 
 let learningValues = {};
 
-function component(file) {
+function component(file, exportName = 'default') {
   const source = fs.readFileSync(file, 'utf8');
   assert.doesNotMatch(source, /useAuth|AuthModal|useSubscriptionAvailability|\/notes|\/pricing|プレミアム/);
   const js = ts.transpileModule(source, {
@@ -54,12 +55,13 @@ function component(file) {
       if (id === '@/utils/analytics') return { trackEvent() {} };
       if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: learningValues, status: 'local', setEntry() {} }) };
       if (id === './CaseStudyReview') return { __esModule: true, default: component('src/components/cases/CaseStudyReview.tsx') };
+      if (id === './CaseQuestionReferences') return { __esModule: true, default: component('src/components/cases/CaseQuestionReferences.tsx'), CaseHistoryContent: component('src/components/cases/CaseQuestionReferences.tsx', 'CaseHistoryContent') };
       if (mockComponents[id]) return { __esModule: true, default: mockComponents[id] };
       if (id.startsWith('@/')) return load('src/' + id.slice(2));
       return require(id);
     },
   }, { filename: file });
-  return exports.default;
+  return exports[exportName];
 }
 
 const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
@@ -84,6 +86,9 @@ for (const clinicalCase of CLINICAL_CASES) {
   assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
   assert(html.includes('aria-label="表示する所見"') && html.includes('aria-pressed="true"'), clinicalCase.id);
   assert(html.includes('id="case-history"'), clinicalCase.id + ': stable link to symptom history');
+  for (const label of ['症状の経過を見返す', '四診の所見を見返す']) {
+    assert.equal(html.split(label).length - 1, clinicalCase.reasoningSteps.length, clinicalCase.id + ': references are available at every question');
+  }
   assert(!html.includes('class="case-observation-links"'), clinicalCase.id + ': reveal the evidence links with the explanation');
   assert(!html.includes('この症例に出てくるツボの位置と注意点'), clinicalCase.id + ': reveal the point links with the explanation');
   const history = clinicalCase.patient.historyOfPresentIllness;
@@ -139,6 +144,12 @@ learningValues = {};
 assert.equal(getCaseStudyUsingAcupoint('pc6')?.id, 'case-05-insomnia-heart-kidney');
 assert.equal(getCaseStudyUsingAcupoint('LI4')?.id, 'case-11-cervicobrachial-syndrome');
 assert.equal(getCaseStudyUsingAcupoint('missing'), undefined);
+for (const route of ATLAS_STUDY_ROUTES) {
+  const study = CLINICAL_CASES.find(item => item.id === route.caseId);
+  const step = study.reasoningSteps.find(item => item.stepTitle === route.stepTitle);
+  assert.equal(atlasStudyExercise(route).href, '/cases/' + study.id + '#case-question-' + step.stepNumber);
+}
+assert.equal(atlasStudyExercise(ATLAS_STUDY_ROUTES.find(route => route.codes.includes('PC6'))).href, '/cases/case-06-gerd-liver-stomach#case-question-4');
 for (const pair of ATLAS_LEARNING_PAIRS) {
   assert(PUBLIC_CASE_STUDY_IDS.includes(pair.caseId), pair.caseId);
   assert.equal(getAtlasLearningPair(pair.codes), pair);

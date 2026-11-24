@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DETAILED_ACUPOINTS, getAcupointByCode } from "@/data/tsubo";
 import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
+import { nearbyPracticeReview } from "@/data/tsubo/atlas/practiceReviews";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
 import NearbyComparisonControls from "./NearbyComparisonControls";
@@ -26,6 +27,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
       key={code}
       {...(comparison.size ?? comparisonSize)}
       comparison={{ id, region, heading, figureLabel, quizFigureLabel, question }}
+      reviewQuestion={nearbyPracticeReview(comparison)}
       points={points}
       initialCode={code}
       anchorId={anchorId}

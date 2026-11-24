@@ -115,6 +115,7 @@ let auth = { user: { id: owner }, isLoading: false };
 let progress = { isMounted: true, quizResults: {}, quizHistory: [], completedLectures: {}, revisedQuestionCount: 0, lastVisitedLectureId: null };
 let sync = { ready: true, values: {} };
 let answersSaved = 0;
+let focusedPracticeList = false;
 progress.saveQuizResult = record => { answersSaved++; progress.quizResults = { ...progress.quizResults, [record.questionId]: record }; };
 let hooks = [], cursor = 0, uuid = 1;
 const fakeReact = { ...React, useMemo: compute => compute(), useEffect() {},
@@ -143,6 +144,7 @@ function client(relative) {
     return require(name);
   };
   vm.runInNewContext(compiled, { exports, require: localRequire, window: browser, URLSearchParams, Date, console,
+    document: { getElementById: value => value === 'practice-reviews' ? { scrollIntoView() {}, focus() { focusedPracticeList = true; } } : null },
     crypto: { randomUUID: () => `00000000-0000-4000-8000-${String(uuid++).padStart(12, '0')}` }, setTimeout, clearTimeout });
   return exports.default;
 }
@@ -394,6 +396,49 @@ for (const [status, ready, message] of [
   assert(!nodes(syncTree).some(node => node.type === 'details' || node.type === 'button'));
   if (status === 'memory') assert(text(syncTree).includes('この画面を閉じると入力内容が消えます'));
 }
+
+const { PRACTICE_REVIEW_QUESTIONS } = load('src/data/practiceReviewCatalog');
+const { practiceReviewKey, readPracticeReview, recordPracticeReviewAnswer } = load('src/utils/practiceReview');
+const { caseStudyAnswerKey, caseStudyAttemptKey } = load('src/utils/caseStudyProgress');
+const { setLearningStorageAdapter } = load('src/utils/learningStorageBridge');
+const atlasQuestion = PRACTICE_REVIEW_QUESTIONS.find(item => item.kind === 'atlas');
+const caseQuestion = PRACTICE_REVIEW_QUESTIONS.find(item => item.kind === 'case');
+const legacy = caseQuestion.caseStep;
+const legacyKey = caseStudyAnswerKey(legacy.caseId, legacy.stepNumber);
+const missed = legacy.options.find(option => !option.isCorrect);
+assert.equal(new Set(PRACTICE_REVIEW_QUESTIONS.map(item => item.id)).size, PRACTICE_REVIEW_QUESTIONS.length);
+sync = { ready: true, status: 'local', values: {
+  [legacyKey]: { attempt: 'initial', optionId: missed.id, answeredAt: Date.now() },
+} };
+setLearningStorageAdapter({ owner: 'guest', values: () => sync.values, set(key, value) { sync.values[key] = value; } });
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
+recordPracticeReviewAnswer(atlasQuestion, false, yesterday.getTime());
+assert.equal(readPracticeReview(sync.values, caseQuestion).isCorrect, false, 'Earlier case answers are included');
+assert.equal(readPracticeReview(sync.values, { ...atlasQuestion, revision: 'changed' }), undefined);
+progress.quizResults = {};
+session.saveReviewSession(storage, null);
+browser.location.search = '';
+mount({ practiceQuestions: [atlasQuestion, caseQuestion] });
+assert.match(text(button('苦手分野')), /2問/);
+assert.match(text(button('今日の復習')), /1問/);
+button('今日の復習').props.onClick(); render();
+assert(focusedPracticeList);
+const activityLinks = () => nodes(nodes(tree).find(node => node.props?.id === 'practice-reviews')).filter(node => node.type === Link).map(node => node.props.href);
+assert.deepEqual(activityLinks(), [atlasQuestion.href]);
+button('苦手分野').props.onClick(); render();
+assert.deepEqual(activityLinks(), [atlasQuestion.href, caseQuestion.href]);
+recordPracticeReviewAnswer(caseQuestion, true);
+recordPracticeReviewAnswer(atlasQuestion, true);
+assert.equal(sync.values[legacyKey].optionId, missed.id, 'A case review does not overwrite the original practice answer');
+assert.equal(sync.values[practiceReviewKey(caseQuestion.id)].mistakes, 1);
+sync.values[caseStudyAttemptKey(legacy.caseId)] = 'new-attempt';
+assert.equal(readPracticeReview(sync.values, caseQuestion).isCorrect, true, 'The new review result survives restarting the case');
+render();
+assert(button('苦手分野').props.disabled);
+assert.deepEqual(activityLinks(), []);
+setLearningStorageAdapter(null);
+
 // Execute the actual lecture key handler, extracted with the TypeScript AST.
 const readerFile = path.join(root, 'src/components/curriculum/CurriculumLectureReader.tsx');
 const ast = ts.createSourceFile(readerFile, fs.readFileSync(readerFile, 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);

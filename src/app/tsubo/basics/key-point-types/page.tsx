@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getAcupointByCode } from "@/data/tsubo";
+import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
 import {
   FIVE_TRANSPORT_STAGES,
   KEY_POINT_TYPES,
@@ -73,6 +74,8 @@ export default function KeyPointTypesPage() {
         {KEY_POINT_TYPES.map(({ id, label, reading, description, codes, exampleCode, exampleLocation }) => {
           const example = getAcupointByCode(exampleCode);
           const exampleSection = exampleLocation ? "acupoint-location" : "acupoint-classifications";
+          const topic = ATLAS_STUDY_ROUTES.find(route => route.readingHref === `${KEY_POINT_TYPES_GUIDE}#${id}`);
+          const exercise = topic && atlasStudyExercise(topic);
 
           return (
             <section id={id} key={id} aria-labelledby={`${id}-heading`} className={`atlas-target min-w-0 space-y-2 rounded-xl border border-frame bg-panel p-4 ${id === "five-transport" ? "sm:col-span-2" : ""}`}>
@@ -88,6 +91,9 @@ export default function KeyPointTypesPage() {
               <Link href={keyPointFilterHref(label)} prefetch={false} className="atlas-text-action">
                 {label}のツボ一覧（{codes.length}穴） <ArrowRight aria-hidden="true" size={15} />
               </Link>
+              {exercise && (
+                <div><Link href={exercise.href} prefetch={false} className="page-secondary-action">{exercise.label}<ArrowRight aria-hidden="true" size={16} /></Link></div>
+              )}
               {id === "five-transport" && (
                 <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3" aria-label="五輸穴の内訳">
                   {FIVE_TRANSPORT_STAGES.map(stage => (

@@ -11,6 +11,7 @@ import { readCaseLearningRecords } from '@/utils/learningFocus';
 import { LEARNING_QUESTIONS, LearningQuestion } from '@/data/learningQuestionBank';
 import { restoreLegacyExerciseHref } from '@/utils/curriculumLegacyPaths';
 import { localStudyDate, shuffledIndices } from '@/utils/learningReview';
+import { PRACTICE_REVIEW_SECTION_ID, readPracticeReview, type PracticeReviewQuestion } from '@/utils/practiceReview';
 import QuestionEvidence from './QuestionEvidence';
 import { recordAnswerInStore } from '@/data/tsubo/studyStorage';
 import type { StudySkillType } from '@/data/tsubo/types';
@@ -34,16 +35,26 @@ const clinicalLectureIds = new Set(CURRICULUM_CHAPTERS_META
   .filter(chapter => chapter.stageId === 'stage-2' || chapter.stageId === 'stage-3')
   .flatMap(chapter => chapter.lectureIds));
 
-type ReviewPanelProps = { compact?: boolean; readingQuestions?: readonly LearningQuestion[] };
+type ReviewPanelProps = {
+  compact?: boolean;
+  readingQuestions?: readonly LearningQuestion[];
+  practiceQuestions?: readonly PracticeReviewQuestion[];
+};
 
-export default function LearningReviewPanel({ compact = false, readingQuestions }: ReviewPanelProps = {}) {
+export default function LearningReviewPanel({ compact = false, readingQuestions, practiceQuestions }: ReviewPanelProps = {}) {
   const { isMounted } = useCurriculumProgress();
   // Mount only after the current owner's catalog is ready. Never render the previous owner's answers.
   if (!isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">このブラウザーの学習記録を読み込んでいます。</section>;
-  return <ReviewWorkspace owner={'guest'} compact={compact} readingQuestions={readingQuestions} />;
+  return <ReviewWorkspace owner={'guest'} compact={compact} readingQuestions={readingQuestions} practiceQuestions={practiceQuestions} />;
 }
 
-function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps & { owner: string; compact: boolean }) {
+function focusPracticeReviewList() {
+  const list = document.getElementById(PRACTICE_REVIEW_SECTION_ID);
+  list?.scrollIntoView({ block: 'start', behavior: 'instant' });
+  list?.focus({ preventScroll: true });
+}
+
+function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }: ReviewPanelProps & { owner: string; compact: boolean }) {
   const { quizResults, quizHistory, saveQuizResult, completedLectures, lastVisitedLectureId, revisedQuestionCount, isMounted } = useCurriculumProgress();
   const { values, ready, status: syncStatus } = useLearningSync();
   const showSyncAttention = compact && syncStatus === 'memory';
@@ -81,6 +92,21 @@ function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps 
     .sort((a, b) => (quizResults[a.id].nextReviewDate || '').localeCompare(quizResults[b.id].nextReviewDate || ''));
   const weak = bank.filter(q => quizResults[q.id] && !quizResults[q.id].isCorrect);
   const unlearned = lectureQuestions.filter(q => !quizResults[q.id]);
+  const practice = useMemo(() => (practiceQuestions ?? []).flatMap(question => {
+    const result = readPracticeReview(values, question);
+    return result ? [{ question, result }] : [];
+  }), [practiceQuestions, values]);
+  const overduePractice = practice.filter(({ result }) => result.nextReviewDate && result.nextReviewDate <= today);
+  const weakPractice = practice.filter(({ result }) => !result.isCorrect);
+  const [practiceFilter, setPracticeFilter] = useState<'due' | 'weak' | null>(null);
+  const visiblePractice = practice.filter(({ result }) => {
+    const dueNow = Boolean(result.nextReviewDate && result.nextReviewDate <= today);
+    if (practiceFilter === 'due') return dueNow;
+    if (practiceFilter === 'weak') return !result.isCorrect;
+    return !result.isCorrect || dueNow;
+  });
+  const dueCount = due.length + overduePractice.length;
+  const weakCount = weak.length + weakPractice.length;
   const q = queue[index];
   const readingUnitHref = q?.href.startsWith('/learn/lectures/') ? q.href.split('#', 1)[0] : undefined;
 
@@ -117,6 +143,11 @@ function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps 
     }, 0);
     return () => clearTimeout(timer);
   }, [session]);
+  useEffect(() => {
+    if (!practice.length || window.location.hash !== `#${PRACTICE_REVIEW_SECTION_ID}`) return;
+    const frame = requestAnimationFrame(focusPracticeReviewList);
+    return () => cancelAnimationFrame(frame);
+  }, [practice.length]);
 
   const start = (questions: LearningQuestion[]) => {
     if (!questions.length) return;
@@ -125,6 +156,22 @@ function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps 
     trackEvent('review_start', { placement: 'learning_review', total: questions.length });
     focusQuestion.current = true;
     replaceSession(next);
+  };
+  const startDailyReview = () => {
+    if (overduePractice.length) {
+      setPracticeFilter('due');
+      focusPracticeReviewList();
+    } else {
+      start(due.length ? due.slice(0, 10) : unlearned.slice(0, 3));
+    }
+  };
+  const startWeakReview = () => {
+    if (weakPractice.length) {
+      setPracticeFilter('weak');
+      focusPracticeReviewList();
+    } else {
+      start(weak);
+    }
   };
   const choose = (answerIndex: number) => {
     const current = currentSession();
@@ -180,11 +227,12 @@ function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps 
     replaceSession(original, 'returned');
   };
   const similar = q && !session?.returnTo && lectureQuestions.find(other => other.id !== q.id && other.lectureId === q.lectureId);
+  const questionsForFilter = practiceFilter === 'weak' ? weak : due.slice(0, 10);
   const reviewControls = <>
       <div className={`grid grid-cols-1 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-3 text-sm`}>
-        <button type="button" disabled={!isMounted} onClick={() => start(due.length ? due.slice(0, 10) : unlearned.slice(0, 3))} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left disabled:opacity-50">今日の復習：{isMounted ? due.length : '…'}問<br /><span className="text-xs">{due.length ? '予定日が来た問題を確認' : '未回答の問題から始める'}</span></button>
+        <button type="button" disabled={!isMounted} onClick={startDailyReview} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left disabled:opacity-50">今日の復習：{isMounted ? dueCount : '…'}問<br /><span className="text-xs">{dueCount ? '予定日が来た問題を確認' : '未回答の問題から始める'}</span></button>
         {!compact && <Link href={lastVisitedLectureId ? `/curriculum/${lastVisitedLectureId}` : '/curriculum/lecture-intro-1'} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-[#1E3D34] dark:text-[#83BEA8]">前回の続き<br /><span className="text-xs">講義を読み、理解度を確認</span></Link>}
-        <button type="button" disabled={!isMounted || !weak.length} onClick={() => start(weak)} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-left text-[#1E3D34] dark:text-[#83BEA8] disabled:opacity-50">苦手分野：{isMounted ? weak.length : '…'}問<br /><span className="text-xs">講義と経穴の確認問題を復習</span></button>
+        <button type="button" disabled={!isMounted || !weakCount} onClick={startWeakReview} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-left text-[#1E3D34] dark:text-[#83BEA8] disabled:opacity-50">苦手分野：{isMounted ? weakCount : '…'}問<br /><span className="text-xs">{practiceQuestions ? '間違えた問題を解き直す' : '講義と経穴の確認問題を復習'}</span></button>
       </div>
   </>;
   const reviewSupport = <div className="review-support space-y-3">
@@ -201,6 +249,28 @@ function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps 
         <summary><span>今日の復習</span><span className="curriculum-review-due">{due.length}問</span></summary>
         <div className="space-y-4 pb-4 pt-2">{reviewControls}{!showSyncAttention && <LearningSyncStatus compact />}{reviewSupport}</div>
       </details> : <><h2 className="font-serif text-lg font-bold text-[#1E3D34] dark:text-[#83BEA8]">今日の復習</h2>{reviewControls}<LearningSyncStatus compact /></>}
+      {practice.length > 0 && (
+        <section id={PRACTICE_REVIEW_SECTION_ID} tabIndex={-1} aria-labelledby="practice-reviews-title" className="scroll-mt-28 space-y-3 rounded-xl border border-frame bg-panel p-4">
+          <h3 id="practice-reviews-title" className="font-semibold">図と症例の復習</h3>
+          {visiblePractice.length ? (
+            <ul className="space-y-2">
+              {visiblePractice.map(({ question }) => (
+                <li key={question.id}>
+                  <Link href={question.href} prefetch={false} className="block min-h-11 rounded-lg border border-frame p-3 hover:border-accent">
+                    <span className="block text-sm ui-muted">{question.kind === 'atlas' ? '図の位置当て' : '模擬症例'} · {question.title}</span>
+                    <strong className="block text-accent">{question.prompt}</strong>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : <p role="status" className="text-sm ui-muted">いま解き直す図や症例はありません。</p>}
+          {practiceFilter && questionsForFilter.length > 0 && (
+            <button type="button" className="ui-text-link min-h-11" onClick={() => start(questionsForFilter)}>
+              講義・経穴ドリルを解く（{questionsForFilter.length}問）
+            </button>
+          )}
+        </section>
+      )}
       {showSyncAttention && <LearningSyncStatus compact />}
       {isMounted && revisedQuestionCount > 0 && <p className="text-xs font-semibold text-[#B86924] dark:text-[#E6C387]">{revisedQuestionCount}問に旧形式・改訂前の回答があります。旧回答を採点に使わず、再確認の対象にしています。</p>}
       {review.status === 'restored' && session && <p role="status" className="text-sm font-semibold">中断した復習を再開しました（{index + 1} / {queue.length}問）。選択と回答結果を引き継いでいます。</p>}

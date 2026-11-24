@@ -155,6 +155,7 @@ const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   'next/link': { __esModule: true, default: Link },
   'next/navigation': { useRouter: () => comparisonRouter },
   '@/data/tsubo/atlas/learningPairs': load('src/data/tsubo/atlas/learningPairs'),
+  '@/data/tsubo/atlas/practiceReviews': load('src/data/tsubo/atlas/practiceReviews'),
   '@/components/tsubo/atlas/AtlasLocationCheck': { __esModule: true, default: AtlasLocationCheck },
   '@/utils/search': load('src/utils/search'),
 }, { window: { print() {} }, document: { getElementById: () => ({ focus() {} }) },
@@ -169,6 +170,7 @@ renderComparison();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
 const locationCheck = () => nodes(compare.tree()).find(node => node.type === AtlasLocationCheck);
 assert.equal(locationCheck().props.question.answerCode, 'LI4');
+assert.equal(locationCheck().props.reviewQuestion.href, '/tsubo/compare?a=li4&b=lr3#review-atlas-pair-li4-lr3');
 assert.equal(scroll().props.tabIndex, 0, 'The two-direction scrolling region is reachable by keyboard');
 assert.equal(scroll().props.role, 'region');
 assert.equal(scroll().props['aria-describedby'], nodes(compare.tree()).find(node => node.props?.id === 'tsubo-compare-scroll-hint').props.id);

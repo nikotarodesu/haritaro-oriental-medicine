@@ -17,6 +17,7 @@ import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
 import { PUBLIC_CASE_STUDY_IDS } from "@/data/cases/caseStudyCatalog";
+import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
 import { getPublicLectureArticle } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
@@ -188,11 +189,18 @@ export default async function ReadingLecturePage({ params }: Props) {
         {unit.parts.map(part => {
           const article = getPublicLectureArticle(part.lectureId);
           if (!article) notFound();
+          const topic = ATLAS_STUDY_ROUTES.find(route => route.readingHref === `${unit.href}#${part.anchor}`);
+          const exercise = topic && atlasStudyExercise(topic);
           return (
             <section key={part.lectureId} id={part.anchor} tabIndex={-1} className="lecture-unit-part" data-lecture-part={part.lectureId} aria-labelledby={`${part.anchor}-heading`}>
               <h2 id={`${part.anchor}-heading`} className="reader-section-title">{part.label}</h2>
               {part.lectureId === CASE_REVIEW_LECTURE_ID && (
                 <Suspense fallback={null}><CaseReviewReturnLink publicCaseIds={PUBLIC_CASE_STUDY_IDS} /></Suspense>
+              )}
+              {exercise && (
+                <ContentNavigationLink href={exercise.href} placement="reading_unit_practice" className="page-secondary-action mb-3 print:hidden">
+                  {exercise.label}<ArrowRight size={16} aria-hidden="true" />
+                </ContentNavigationLink>
               )}
               <PublicLectureSections
                 lectureId={part.lectureId}
