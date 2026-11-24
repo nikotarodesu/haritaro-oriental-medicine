@@ -14,6 +14,7 @@ import { SYMPTOMS } from "@/data/symptomData";
 import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from "@/utils/symptomGuidePaths";
 import { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
+import { ACUPOINT_LOCATION_IMAGES } from "@/data/tsubo/atlas/locationImages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_ORIGIN;
@@ -72,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/tsubo/compare`,
-      lastModified: new Date("2026-09-20"),
+      lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
     },
     {
       url: `${baseUrl}/tsubo/names`,
@@ -138,10 +139,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // 全361経穴詳細ページ
-  const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((pt) => ({
-    url: `${baseUrl}/tsubo/${pt.code.toLowerCase()}`,
-    lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
-  }));
+  const acupointPages: MetadataRoute.Sitemap = ALL_ACUPOINTS.map((point) => {
+    const image = ACUPOINT_LOCATION_IMAGES[point.codeLower];
+    return {
+      url: `${baseUrl}/tsubo/${point.codeLower}`,
+      lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
+      ...(image && { images: [baseUrl + image.src] }),
+    };
+  });
 
   // 学術アーカイブ記事ページ（個別記事公開日を反映）
   const articlePages: MetadataRoute.Sitemap = ARTICLES.map((article) => ({

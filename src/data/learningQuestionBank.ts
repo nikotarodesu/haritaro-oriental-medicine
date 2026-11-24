@@ -1,6 +1,7 @@
 import { CURRICULUM_QUIZZES } from './curriculumQuizzes';
 import { KOKUSHI_PAST_EXAMS } from './kokushiPastExams';
 import { questionRevision } from '@/utils/learningReview';
+import { originalLectureHref } from '@/utils/curriculumLegacyPaths';
 
 export interface LearningQuestion {
   id: string;
@@ -21,13 +22,13 @@ export const LEARNING_QUESTIONS: LearningQuestion[] = [
   ...Object.values(CURRICULUM_QUIZZES).flatMap(group => group.questions.map(q => ({
     ...q, lectureId: group.lectureId, lectureTitle: group.lectureTitle,
     chapterId: group.chapterId, chapterTitle: group.chapterTitle,
-    kind: 'lecture' as const, href: `/curriculum/${group.lectureId}#interactive-quiz-container`,
+    kind: 'lecture' as const, href: originalLectureHref(group.lectureId, 'interactive-quiz-container'),
     revision: questionRevision(q.question, q.options, q.correctIndex, q.explanation),
   }))),
   ...KOKUSHI_PAST_EXAMS.map(q => ({
     ...q, lectureId: q.relatedLectureId || 'lecture-treatment-8',
     lectureTitle: q.relatedLectureTitle || q.subject, chapterId: 'kokushi', chapterTitle: q.subject,
-    kind: 'exam' as const, href: `/curriculum/${q.relatedLectureId || "lecture-treatment-8"}#lecture-quiz`,
+    kind: 'exam' as const, href: originalLectureHref(q.relatedLectureId || 'lecture-treatment-8', 'lecture-quiz'),
     revision: questionRevision(q.question, q.options, q.correctIndex, q.explanation),
   })),
 ];

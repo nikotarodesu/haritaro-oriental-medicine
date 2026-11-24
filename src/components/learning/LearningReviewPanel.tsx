@@ -9,6 +9,7 @@ import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { getLearningCourseForSeries } from '@/data/learningCourses';
 import { readCaseLearningRecords } from '@/utils/learningFocus';
 import { LEARNING_QUESTIONS, LearningQuestion } from '@/data/learningQuestionBank';
+import { restoreLegacyExerciseHref } from '@/utils/curriculumLegacyPaths';
 import { localStudyDate, shuffledIndices } from '@/utils/learningReview';
 import QuestionEvidence from './QuestionEvidence';
 import { recordAnswerInStore } from '@/data/tsubo/studyStorage';
@@ -187,7 +188,7 @@ function ReviewWorkspace({ owner, compact, readingQuestions }: ReviewPanelProps 
       </div>
   </>;
   const reviewSupport = <div className="review-support space-y-3">
-      {isMounted && quizHistory.length > 0 && <details className="review-support-detail"><summary>最近の回答・復習履歴（保存済み {quizHistory.length}件）</summary><ol className="space-y-2">{quizHistory.slice(-10).reverse().map((record, i) => <li key={`${record.questionId}-${record.answeredAt}-${i}`} className="border-t pt-2"><Link href={record.practiceHref || `/curriculum/${record.lectureId}`} className="underline">{record.lectureTitle}</Link>：{record.isCorrect ? '正解' : '要復習'}<br/><time dateTime={record.answeredAt} className="text-xs">{new Date(record.answeredAt).toLocaleString('ja-JP')}</time></li>)}</ol><p className="text-xs mt-2">回答履歴は残し、現在の出題内容と一致する記録を復習予定に使用します。</p></details>}
+      {isMounted && quizHistory.length > 0 && <details className="review-support-detail"><summary>最近の回答・復習履歴（保存済み {quizHistory.length}件）</summary><ol className="space-y-2">{quizHistory.slice(-10).reverse().map((record, i) => <li key={`${record.questionId}-${record.answeredAt}-${i}`} className="border-t pt-2"><Link href={record.practiceHref ? restoreLegacyExerciseHref(record.practiceHref) : `/curriculum/${record.lectureId}`} className="underline">{record.lectureTitle}</Link>：{record.isCorrect ? '正解' : '要復習'}<br/><time dateTime={record.answeredAt} className="text-xs">{new Date(record.answeredAt).toLocaleString('ja-JP')}</time></li>)}</ol><p className="text-xs mt-2">回答履歴は残し、現在の出題内容と一致する記録を復習予定に使用します。</p></details>}
       <details className="review-support-detail"><summary>復習のしくみ</summary><p className="pb-3 leading-relaxed">正解を別の日に確認できた回数に応じ、1・3・7・14・30日後に復習します。同日の再挑戦は練習として記録し、復習間隔を延ばしません。保存・同期の状態は上の表示で確認できます。</p></details>
       {showCaseReview ? <>
         <Link href="/simulator#case-training" className="inline-block min-h-11 content-center text-sm font-semibold underline text-[#1E3D34] dark:text-[#83BEA8]">症例で判断の根拠を練習する →</Link>

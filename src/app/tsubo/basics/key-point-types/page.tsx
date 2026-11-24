@@ -70,15 +70,20 @@ export default function KeyPointTypesPage() {
       </header>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        {KEY_POINT_TYPES.map(({ id, label, reading, description, codes, exampleCode }) => {
+        {KEY_POINT_TYPES.map(({ id, label, reading, description, codes, exampleCode, exampleLocation }) => {
           const example = getAcupointByCode(exampleCode);
+          const exampleSection = exampleLocation ? "acupoint-location" : "acupoint-classifications";
 
           return (
             <section id={id} key={id} aria-labelledby={`${id}-heading`} className={`atlas-target min-w-0 space-y-2 rounded-xl border border-frame bg-panel p-4 ${id === "five-transport" ? "sm:col-span-2" : ""}`}>
               <h2 id={`${id}-heading`} className="atlas-section-title">{label}<span className="ml-2 text-sm font-normal ui-muted">（{reading}）</span></h2>
               <p>{description}</p>
               {example && (
-                <p className="text-sm ui-muted">例 <Link href={`/tsubo/${example.codeLower}#acupoint-classifications`} className="atlas-source-link">{example.name}（{example.code}）</Link></p>
+                <p className="text-sm ui-muted">
+                  {exampleLocation ? "位置の例 " : "例 "}
+                  <Link href={`/tsubo/${example.codeLower}#${exampleSection}`} className="atlas-source-link">{example.name}（{example.code}）</Link>
+                  {exampleLocation && `は、${exampleLocation}`}
+                </p>
               )}
               <Link href={keyPointFilterHref(label)} prefetch={false} className="atlas-text-action">
                 {label}のツボ一覧（{codes.length}穴） <ArrowRight aria-hidden="true" size={15} />

@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
 import { trackEvent } from '@/utils/analytics';
+import { originalLectureHref } from '@/utils/curriculumLegacyPaths';
 
 export default function LearningPathLinks({ lectureId, lectureHref, caseId, lectureTitle, caseTitle }: { lectureId: string; lectureHref: string; caseId: string; lectureTitle?: string; caseTitle?: string }) {
   const links = [
     { href: lectureHref, label: '1. 講義で確認する', description: lectureTitle, destination: 'lecture' },
-    { href: `/curriculum/${lectureId}#interactive-quiz-container`, label: '2. 確認クイズを解く', description: 'この講義の理解を問題で確かめる', destination: 'quiz' },
+    { href: originalLectureHref(lectureId, 'interactive-quiz-container'), label: '2. 確認クイズを解く', description: 'この講義の理解を問題で確かめる', destination: 'quiz' },
     { href: `/simulator?case=${caseId}#case-training`, label: '3. 症例で理由を考える', description: caseTitle, destination: 'case' },
   ];
   return <nav aria-label="この記事から進む学習" className="grid gap-4 sm:grid-cols-3 text-base">{links.map(link => <div key={link.destination} className="min-w-0 space-y-2">

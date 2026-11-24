@@ -30,6 +30,7 @@ type KeyPointType = {
   description: string;
   codes: readonly string[];
   exampleCode: string;
+  exampleLocation?: string;
 };
 
 // Codes are explicit memberships, independent of free-text tags in the atlas.
@@ -62,7 +63,8 @@ export const KEY_POINT_TYPES: readonly KeyPointType[] = [
     id: "back-shu", label: "背部兪穴", reading: "はいぶゆけつ",
     description: "臓腑と対応づける背中・腰・仙骨部のツボです。十二の背部兪穴はすべて膀胱経に属します。",
     codes: ["bl13", "bl14", "bl15", "bl18", "bl19", "bl20", "bl21", "bl22", "bl23", "bl25", "bl27", "bl28"],
-    exampleCode: "bl18",
+    exampleCode: "bl14",
+    exampleLocation: "第4胸椎の突起の下縁と同じ高さで、背中の中央から横へ1.5寸のところにあります。",
   },
   {
     id: "five-transport", label: "五輸穴", reading: "ごゆけつ",
@@ -80,7 +82,8 @@ export const KEY_POINT_TYPES: readonly KeyPointType[] = [
     id: "four-command", label: "四総穴", reading: "しそうけつ",
     description: "古典の歌で、体の四つの部位とツボを対応づけた分類です。顔と口に合谷、お腹に足三里、頭と首の後ろに列缺、腰と背中に委中を当てます。",
     codes: ["li4", "st36", "lu7", "bl40"],
-    exampleCode: "li4",
+    exampleCode: "bl40",
+    exampleLocation: "ひざ裏の横じわの中央にあります。",
   },
   {
     id: "eight-confluent", label: "八脈交会穴", reading: "はちみゃくこうかいけつ",

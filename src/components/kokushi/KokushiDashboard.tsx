@@ -33,6 +33,7 @@ function chapterSummary(seriesIds: string[]) {
 }
 import QuestionEvidence from "@/components/learning/QuestionEvidence";
 import { questionRevision, shuffledIndices } from "@/utils/learningReview";
+import { restoreLegacyExerciseHref } from "@/utils/curriculumLegacyPaths";
 import AcupointQuickModal from "@/components/tsubo/AcupointQuickModal";
 import { extractAcupointsFromText } from "@/utils/acupointTextExtractor";
 
@@ -1003,7 +1004,7 @@ export default function KokushiDashboard() {
                       正解: {item.options[item.correctAnswerIndex]}
                     </span>
                     <Link
-                      href={item.practiceHref || `/curriculum/${item.lectureId}?focus=${encodeURIComponent(topic)}`}
+                      href={item.practiceHref ? restoreLegacyExerciseHref(item.practiceHref) : `/curriculum/${item.lectureId}?focus=${encodeURIComponent(topic)}`}
                       className="font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline flex items-center gap-0.5"
                     >
                       <span>復習 ➜</span>

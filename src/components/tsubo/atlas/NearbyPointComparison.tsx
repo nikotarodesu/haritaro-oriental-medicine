@@ -40,6 +40,11 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
         <NearbyComparisonControls key={code} {...(comparison.size ?? comparisonSize)} label={comparison.figureLabel} points={points} initialCode={code}>
           <NearbyComparisonArtwork id={comparison.id} />
         </NearbyComparisonControls>
+        {comparison.id === "shoulder" && (
+          <p>
+            肩の上にある<Link href="/tsubo/gb21#acupoint-location" prefetch={false} className="atlas-source-link">肩井（GB21）</Link>は、首の付け根と肩先を結ぶ線の中ほどです。
+          </p>
+        )}
         <AtlasLocationCheck key={code} question={comparison.question} options={points} placement="nearby_diagram" />
       </div>
     </HashTargetDetails>

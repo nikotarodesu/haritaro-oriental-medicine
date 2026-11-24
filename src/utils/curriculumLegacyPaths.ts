@@ -20,3 +20,23 @@ const OLD_ID_MAP: Readonly<Record<string, string>> = {
 export function resolveLegacyLectureId(rawId: string): string {
   return Object.hasOwn(OLD_ID_MAP, rawId) ? OLD_ID_MAP[rawId] : rawId;
 }
+
+export function originalLectureHref(lectureId: string, anchor?: string): string {
+  return `/curriculum/${encodeURIComponent(lectureId)}?view=full${anchor ? `#${anchor}` : ""}`;
+}
+
+export function restoreLegacyExerciseHref(href: string): string {
+  const bookmark = /^\/curriculum\/(lecture-[a-z0-9-]+)#(interactive-quiz-container|lecture-quiz|lecture-supplements)$/.exec(href);
+  return bookmark ? originalLectureHref(bookmark[1], bookmark[2]) : href;
+}
+
+export function legacyLectureViewParams(params: URLSearchParams): URLSearchParams {
+  const retained = new URLSearchParams();
+  for (const key of ["focus", "review", "reviewSession", "course", "view"]) {
+    const values = params.getAll(key);
+    if (values.length === 1 && values[0] && (key !== "view" || values[0] === "full")) {
+      retained.set(key, values[0]);
+    }
+  }
+  return retained;
+}

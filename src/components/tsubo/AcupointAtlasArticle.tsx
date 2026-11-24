@@ -4,6 +4,7 @@ import { AcupointComparisonLink, AcupointReadingLinks } from "./AcupointArticleL
 import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
+import AcupointLocationImage from "./AcupointLocationImage";
 import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
 import WhoPointLocation from "./WhoPointLocation";
@@ -49,6 +50,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
+          <AcupointLocationImage code={point.codeLower} />
         </PointAtlasDiagrams>
       </section>
 

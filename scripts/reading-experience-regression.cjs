@@ -6,6 +6,7 @@ const vm = require('node:vm');
 const ts = require('typescript');
 const React = require('react');
 const { renderToStaticMarkup } = require('react-dom/server');
+const { NextRequest } = require('next/server');
 const root = path.resolve(__dirname, '..');
 const cache = new Map();
 function load(relative) {
@@ -26,7 +27,7 @@ function load(relative) {
     if (id.startsWith('.')) return load(path.resolve(path.dirname(file), id));
     return require(id);
   };
-  vm.runInNewContext(js, { exports, require: localRequire, URL, console, process }, { filename: file });
+  vm.runInNewContext(js, { exports, require: localRequire, URL, URLSearchParams, console, process }, { filename: file });
   return exports;
 }
 const { parseMarkdownBlocks } = load('src/utils/markdownParser');
@@ -40,6 +41,8 @@ const StudyDiagram = load('src/components/reading/StudyDiagram').default;
 const { getPublicLectureGroups, getPublicLectureArticle } = load('src/data/publicLectures/index');
 const { getPublicLectureDiagram, publicLectureDiagrams } = load('src/data/publicLectures/diagrams/index');
 const { readingUnits } = load('src/data/publicLectures/readingUnits');
+const { proxy } = load('src/proxy');
+const { originalLectureHref, restoreLegacyExerciseHref } = load('src/utils/curriculumLegacyPaths');
 const { readingLectureMerges } = load('src/data/publicLectures/readingLectureMerges');
 const { readingUnitRevisions } = load('src/data/publicLectures/revisions/index');
 const { reviseLectureSections } = load('src/data/publicLectures/revisions/types');
@@ -114,6 +117,34 @@ for (const unit of readingUnits) {
   }
 }
 console.log(`Passed: ${readingUnits.length} consolidated lectures preserve section anchors, source links, a three-point recap, and all optional questions.`);
+
+const origin = 'https://www.haritaro.jp';
+const legacyResponse = path => proxy(new NextRequest(new URL(path, origin)));
+function expectLegacyRedirect(path, destination) {
+  const response = legacyResponse(path);
+  assert.equal(response.status, 308, path);
+  assert.equal(response.headers.get('location'), origin + destination, path);
+}
+for (const unit of readingUnits) {
+  for (const { lectureId, anchor } of unit.parts) {
+    expectLegacyRedirect(`/curriculum/${lectureId}`, `${unit.href}#${anchor}`);
+    expectLegacyRedirect(`/curriculum?lecture=${lectureId}`, `${unit.href}#${anchor}`);
+    assert.equal(legacyResponse(originalLectureHref(lectureId)).headers.get('x-middleware-next'), '1');
+  }
+}
+const legacyId = 'lecture-yinyang-1';
+const legacyPath = `/curriculum/${legacyId}`;
+const focused = '?focus=' + encodeURIComponent('陰陽');
+expectLegacyRedirect('/curriculum/lecture-1', `/learn/lectures/yin-yang-basics#part-${legacyId}`);
+expectLegacyRedirect(`/curriculum?lecture=lecture-1&${focused.slice(1)}`, legacyPath + focused);
+expectLegacyRedirect('/curriculum/lecture-1?review=lecture-yinyang-1-q1&reviewSession=review-123', `${legacyPath}?review=lecture-yinyang-1-q1&reviewSession=review-123`);
+for (const path of [legacyPath + focused, `${legacyPath}?course=yin-yang`, '/curriculum/lecture-treatment-9', '/curriculum?lecture=unknown', '/curriculum?lecture=lecture-1&lecture=lecture-2']) {
+  assert.equal(legacyResponse(path).headers.get('x-middleware-next'), '1', path);
+}
+for (const anchor of ['interactive-quiz-container', 'lecture-quiz', 'lecture-supplements']) {
+  assert.equal(restoreLegacyExerciseHref(`${legacyPath}#${anchor}`), `${legacyPath}?view=full#${anchor}`);
+}
+console.log('Passed: direct reading redirects, original exercise access, focus and review aliases, and retained clinical routes.');
 
 function checkInsertions(id, content, inserts) {
   const blocks = parseMarkdownBlocks(content);

@@ -66,7 +66,7 @@ export default function TsuboPage() {
       </>} nearbyComparisons={
         <section id="nearby-comparisons" tabIndex={-1} className="atlas-target space-y-2" aria-labelledby="nearby-comparisons-title">
           <h2 id="nearby-comparisons-title" className="atlas-section-title">近いツボを比べる</h2>
-          <p className="atlas-muted text-sm">図で場所の違いを見たら、1問で見分け方を確認できます。</p>
+          <p className="atlas-muted text-sm">手首のしわやひじの腱など、近いツボを見分ける目印を図で確認できます。</p>
           <ul className="grid grid-cols-2 gap-2 lg:grid-cols-3">
             {NEARBY_COMPARISON_LINKS.map(({ id, region, names, href }) => (
               <li key={id}>

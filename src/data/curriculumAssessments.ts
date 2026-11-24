@@ -2,6 +2,7 @@ import { CURRICULUM_CHAPTERS_META } from './curriculumOutline';
 import { CHAPTER_APPLIED_QUESTIONS, CHAPTER_WRITING_EXERCISES } from './curriculumAssessmentQuestions';
 import { CURRICULUM_DATA } from './curriculumData';
 import { parseMarkdownBlocks } from '../utils/markdownParser';
+import { originalLectureHref } from '../utils/curriculumLegacyPaths';
 
 export interface ChapterAssessmentData {
   id: string;
@@ -39,7 +40,7 @@ export function getChapterAssessment(lectureId: string): ChapterAssessmentData |
     return { id: `chapter-${chapter.seriesId}-q${i + 1}`, question, options, correctIndex, explanation, href: `/curriculum/${sourceId}?focus=${encodeURIComponent(section)}#curriculum-heading-${headingIndex}` };
   });
   const [question, options, correctIndex, explanation] = integrated[chapter.seriesId];
-  questions.push({ id: `chapter-${chapter.seriesId}-q9`, question, options, correctIndex, explanation, href: `/curriculum/${lectureId}#lecture-content` });
+  questions.push({ id: `chapter-${chapter.seriesId}-q9`, question, options, correctIndex, explanation, href: originalLectureHref(lectureId, 'lecture-content') });
   return {
     id: `chapter-${chapter.seriesId}`, title: chapter.title, lectureId, questions,
     writing: CHAPTER_WRITING_EXERCISES[chapter.seriesId],

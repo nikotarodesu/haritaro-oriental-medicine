@@ -8,7 +8,7 @@ const React = require('react');
 const postcss = require('postcss');
 const { createDataLoader } = require('./data-loader.cjs');
 const root = path.resolve(__dirname, '..');
-const load = createDataLoader({});
+const load = createDataLoader({ URLSearchParams });
 const safety = load('src/data/medicalSafety');
 const navigation = load('src/config/navigationItems');
 const menuEvents = load('src/utils/siteMenu');
@@ -28,6 +28,7 @@ function client(relative, overrides = {}, globals = {}) {
     useMemo(callback) { return callback(); },
     useCallback(callback) { return callback; },
     useRef(initial) { const index = cursor++; return state[index] ||= { current: initial }; },
+    useTransition() { return [false, callback => callback()]; },
     useEffect(callback, dependencies) { const index = cursor++, previous = state[index]; if (!previous || dependencies?.some((value, i) => value !== previous.dependencies?.[i])) { state[index] = { dependencies }; effects.push(() => { previous?.cleanup?.(); state[index].cleanup = callback(); }); } },
   };
   const filename = path.join(root, relative), exported = {};
@@ -137,30 +138,33 @@ assert(!nodes(picker()).filter(node => node.type === 'button').some(node => node
 
 // Compare markup keeps row/column semantics and all original selection behavior.
 const atlasLocations = load('src/data/tsubo/friendlyLocations');
-const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, romaji: name, meridian: '検証経絡', meridianShort: '検証経絡', bodyPart: '検証部位', category: [], indications: ['旧版の疾患タグ'], traditional: '公開済みの伝統的な背景', clinicalNote: '公開済みの補足', caution: '公開済みの注意', locationSimple: atlasLocations.getAtlasLocationSimple(code.toLowerCase()) });
+const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, romaji: name, meridian: '検証経絡', meridianShort: '検証経絡', bodyPart: '検証部位', category: [], indications: ['旧版の疾患タグ'], traditional: '公開済みの伝統的な背景', clinicalNote: '公開済みの補足', caution: '公開済みの注意', locationSimple: atlasLocations.getAtlasLocationSimple(code.toLowerCase()), locationFigure: React.createElement('svg', { role: 'img', 'aria-label': name }) });
 const TSUBOS = [
   { ...tsubo('LI4','合谷'), hasResearch: true },
   tsubo('LR3','太衝'),
   { ...tsubo('ST36','足三里'), kana: 'あしさんり', romaji: 'Zusanli', locationDetail: '旧版の部位説明' },
 ];
-let queryParams = new URLSearchParams(), frameId = 0;
-const comparisonFrames = new Map();
+const comparisonSelection = load('src/app/tsubo/compare/selection');
+let comparisonHref = '/tsubo/compare';
+const comparisonRouter = { replace(href, options) { assert.equal(options.scroll, false); comparisonHref = href; } };
 const AtlasLocationCheck = () => null;
 const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   './presets': load('src/app/tsubo/compare/presets'),
+  './selection': comparisonSelection,
   'next/link': { __esModule: true, default: Link },
-  'next/navigation': { useSearchParams: () => queryParams },
-  '@/components/design/PageIntro': { __esModule: true, default: () => null },
+  'next/navigation': { useRouter: () => comparisonRouter },
   '@/data/tsubo/atlas/learningPairs': load('src/data/tsubo/atlas/learningPairs'),
   '@/components/tsubo/atlas/AtlasLocationCheck': { __esModule: true, default: AtlasLocationCheck },
   '@/utils/search': load('src/utils/search'),
-}, { window: { print() {} }, document: { getElementById: () => ({ focus() {}, scrollIntoView() {} }) },
-  requestAnimationFrame(callback) { comparisonFrames.set(++frameId, callback); return frameId; }, cancelAnimationFrame(id) { comparisonFrames.delete(id); },
+}, { window: { print() {} }, document: { getElementById: () => ({ focus() {} }) },
 });
-for (const point of TSUBOS.slice(0, 2)) {
-  point.locationFigure = React.createElement('svg', { role: 'img', 'aria-label': point.name });
-}
-compare.boundaryChild({ points: TSUBOS }); compare.render();
+const renderComparison = (href = comparisonHref) => {
+  comparisonHref = href;
+  const params = Object.fromEntries(new URL(href, 'https://www.haritaro.jp').searchParams);
+  const selectedTsubos = Array.from(comparisonSelection.resolveComparisonCodes(params, TSUBOS), code => TSUBOS.find(point => point.code === code));
+  compare.render({ choices: TSUBOS, selectedTsubos });
+};
+renderComparison();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
 const relatedCase = () => nodes(compare.tree()).find(node => node.props?.['data-analytics-action'] === 'compare_case');
 assert.equal(relatedCase().props.href, '/cases/case-01-headache-liver-fire');
@@ -195,36 +199,40 @@ assert.deepEqual(itemRows().slice(0, 2).map(row => text(row.props.children[0])),
 assert.deepEqual(nodes(itemRows()[0]).filter(node => node.type === 'svg').map(node => node.props['aria-label']), ['合谷', '太衝']);
 assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝'), 'Every item labels both points in the narrow layout');
 for (const query of ['ＳＴ３６', 'アシサンリ', 'Zusanli']) {
-  compareInput().props.onChange({ target: { value: query } }); compare.render();
+  compareInput().props.onChange({ target: { value: query } }); renderComparison();
   assert(nodes(compare.tree()).some(node => node.type === 'button' && text(node).startsWith('足三里ST36')), query + ' finds the existing compare option');
 }
-compareInput().props.onChange({ target: { value: 'LU1' } }); compare.render();
+compareInput().props.onChange({ target: { value: 'LU1' } }); renderComparison();
 assert(nodes(compare.tree()).some(node => node.type === 'a' && node.props.href === '/tsubo?q=LU1'), 'The complete atlas lookup uses a full navigation to keep the query out of analytics');
 const unmatchedQuery = '該当しない + /?';
-compareInput().props.onChange({ target: { value: unmatchedQuery } }); compare.render();
+compareInput().props.onChange({ target: { value: unmatchedQuery } }); renderComparison();
 const fullAtlasLookup = nodes(compare.tree()).find(node => node.type === 'a' && node.props.href?.startsWith('/tsubo?q='));
 assert.equal(new URL(fullAtlasLookup.props.href, 'https://www.haritaro.jp').searchParams.get('q'), unmatchedQuery, 'The native link preserves literal spaces, punctuation and Japanese');
-compareInput().props.onChange({ target: { value: '' } }); compare.render();
-compare.button('合谷を比較から外す').props.onClick(); compare.render();
+compareInput().props.onChange({ target: { value: '' } }); renderComparison();
+compare.button('合谷を比較から外す').props.onClick();
+assert.equal(comparisonHref, '/tsubo/compare?a=lr3');
+renderComparison();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 6);
 assert.equal(relatedCase(), undefined, 'A single point has no pair-specific case');
 assert.equal(locationCheck(), undefined, 'A single point has no pair-specific question');
 
-queryParams = new URLSearchParams({ a: 'LI4', b: 'LR3', c: 'ＳＴ３６' }); compare.render();
-for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
+compare.button('太衝を比較から外す').props.onClick();
+assert.equal(comparisonHref, '/tsubo/compare?empty=1');
+renderComparison();
+assert.equal(scroll(), undefined, 'Removing all points leaves the picker visible without a comparison table');
+
+renderComparison('/tsubo/compare?code=LI4&b=LR3&c=ＳＴ３６');
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 4, 'URL synchronization displays all three points without an account');
 assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝,足三里'), 'Each item stays labeled when three points stack');
 assert.equal(relatedCase(), undefined, 'The case link is limited to the exact pair');
-queryParams = new URLSearchParams('a=ST36&b=LI4'); compare.render();
-queryParams = new URLSearchParams('a=LR3&b=ST36'); compare.render();
-assert.equal(comparisonFrames.size, 1, 'A newer route cancels a pending older route selection');
-for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
+renderComparison('/tsubo/compare?a=ST36&b=LI4');
+renderComparison('/tsubo/compare?a=LR3&b=ST36');
 const comparisonHeaders = nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col');
 assert(text(comparisonHeaders[1]).includes('太衝') && text(comparisonHeaders[2]).includes('足三里'), 'Only the latest route supplies the visible columns');
 TSUBOS.push({ ...tsubo('GV20', '百会'), locationDetail: '旧版の部位説明' });
-queryParams = new URLSearchParams('a=GV20&b=ST36'); compare.render();
-for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();
+renderComparison('/tsubo/compare?a=GV20&b=ST36');
+assert.deepEqual(nodes(itemRows()[0]).filter(node => node.type === 'svg').map(node => node.props['aria-label']), ['百会', '足三里'], 'Non-default points both show their diagrams');
 assert(text(scroll()).includes(atlasLocations.getAtlasLocationSimple('gv20')), 'Comparison shows the same verified location as the atlas');
 assert(text(scroll()).includes(atlasLocations.getAtlasLocationSimple('st36')), 'Comparison uses the same canonical location for specialized figure entries');
 assert(!text(scroll()).includes('旧版の部位説明'));

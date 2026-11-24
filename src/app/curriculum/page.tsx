@@ -4,8 +4,8 @@ import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getPublicLectureArticle } from "@/data/publicLectures";
-import { getLectureIndexGroups } from "@/data/publicLectures/readingUnits";
-import { resolveLegacyLectureId } from "@/utils/curriculumLegacyPaths";
+import { getLectureIndexGroups, readingPartHref } from "@/data/publicLectures/readingUnits";
+import { legacyLectureViewParams, resolveLegacyLectureId } from "@/utils/curriculumLegacyPaths";
 
 const origin = "https://www.haritaro.jp";
 const items = getLectureIndexGroups().flatMap(group => group.entries);
@@ -19,13 +19,17 @@ export const metadata: Metadata = {
   ...pageSocialMetadata(title, description, "/curriculum"),
 };
 
-export default async function CurriculumPage({ searchParams }: { searchParams: Promise<{ lecture?: string | string[]; focus?: string | string[] }> }) {
-  const { lecture, focus } = await searchParams;
+export default async function CurriculumPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const { lecture, ...query } = await searchParams;
   if (typeof lecture === "string" && lecture) {
     const id = resolveLegacyLectureId(lecture);
     if (!getPublicLectureArticle(id)) notFound();
-    const query = typeof focus === "string" && focus ? `?${new URLSearchParams({ focus })}` : "";
-    permanentRedirect(`/curriculum/${id}${query}`);
+    const incoming = new URLSearchParams();
+    for (const [key, value] of Object.entries(query)) {
+      if (typeof value === "string") incoming.set(key, value);
+    }
+    const view = legacyLectureViewParams(incoming);
+    permanentRedirect(view.size ? `/curriculum/${id}?${view}` : readingPartHref(id));
   }
 
   const schema = {

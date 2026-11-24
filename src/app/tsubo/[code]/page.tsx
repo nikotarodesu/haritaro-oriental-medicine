@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES, acupointPageTitle, SITE_NAME } from "@/config/seo";
+import { SHARED_OG_IMAGES, acupointPageTitle, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
@@ -28,6 +28,7 @@ import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ACUPOINT_SEARCH_COPY } from "@/data/tsubo/atlas/searchCopy";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
+import { ACUPOINT_LOCATION_IMAGES } from "@/data/tsubo/atlas/locationImages";
 import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas/evidence";
 import { getAcupointName } from "@/data/tsubo/names";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
@@ -90,6 +91,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const copy = ACUPOINT_SEARCH_COPY[point.codeLower];
   const title = (copy || atlasArticle) ? atlasPageTitle(point, atlasArticle?.titleTopic) : acupointPageTitle(point);
   const description = copy?.lead ?? atlasArticle?.description ?? `${point.name}（${point.code}）の場所と目印。${point.locationSimple} ${point.meridian}の中での位置、近くのツボ、注意点を紹介します。`;
+  const share = ACUPOINT_LOCATION_IMAGES[point.codeLower]?.share;
+  const shareImage = share && { url: SITE_ORIGIN + share.path, width: share.width, height: share.height, alt: share.alt };
 
   return {
     title: { absolute: title },
@@ -98,12 +101,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       canonical: `/tsubo/${point.codeLower}`,
     },
     openGraph: {
-      images: SHARED_OG_IMAGES,
+      images: shareImage ? [shareImage] : SHARED_OG_IMAGES,
       siteName: SITE_NAME,
       title,
       description,
-      url: `https://www.haritaro.jp/tsubo/${point.codeLower}`,
+      url: `${SITE_ORIGIN}/tsubo/${point.codeLower}`,
     },
+    ...(shareImage && { twitter: { card: "summary_large_image", title, description, images: [shareImage] } }),
   };
 }
 
@@ -150,7 +154,8 @@ export default async function AcupointDetailPage({ params }: Props) {
   const relationId = point.meridianId === 'governor-vessel' ? 'governor' : point.meridianId === 'conception-vessel' ? 'conception' : point.meridianId;
   const meridianRelations = MERIDIAN_RELATIONS[relationId] || [];
 
-  const pageUrl = `https://www.haritaro.jp/tsubo/${point.codeLower}`;
+  const pageUrl = `${SITE_ORIGIN}/tsubo/${point.codeLower}`;
+  const locationImage = ACUPOINT_LOCATION_IMAGES[point.codeLower];
   const pointRevisedAt = PAGE_REVISIONS[`/tsubo/${point.codeLower}`];
   const dateModified = pointRevisedAt && pointRevisedAt > PUBLIC_VISUALS_REVISED_AT ? pointRevisedAt : PUBLIC_VISUALS_REVISED_AT;
   const nameGuide = getAcupointName(point.codeLower);
@@ -190,6 +195,15 @@ export default async function AcupointDetailPage({ params }: Props) {
         "name": pageTitle,
         "inLanguage": "ja",
         "dateModified": dateModified,
+        ...(locationImage && {
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "contentUrl": SITE_ORIGIN + locationImage.src,
+            "width": locationImage.width,
+            "height": locationImage.height,
+            "caption": locationImage.alt,
+          },
+        }),
         "publisher": { "@id": "https://www.haritaro.jp/#organization" },
         "editor": { "@type": "Person", "name": "はり太郎", "url": "https://www.haritaro.jp/about" },
         ...(sources.length > 0 && { citation: sources.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })) }),

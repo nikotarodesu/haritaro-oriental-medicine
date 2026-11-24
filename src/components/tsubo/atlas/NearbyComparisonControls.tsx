@@ -25,7 +25,7 @@ export default function NearbyComparisonControls({ width, height, label, points,
 
   return (
     <>
-      <p className="atlas-muted">ツボ名を選ぶと、図の位置と説明が切り替わります。</p>
+      <p className="atlas-muted">図のツボ名を選ぶと、丸印と下の説明が強調されます。</p>
       <div className="atlas-comparison-figure" style={{ aspectRatio: `${width} / ${height}` }}>
         <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} focusable="false">
           {children}
@@ -45,17 +45,27 @@ export default function NearbyComparisonControls({ width, height, label, points,
           </button>
         ))}
       </div>
-      <div className="atlas-comparison-reading">
-        <div aria-live="polite" aria-atomic="true">
-          <p className="atlas-comparison-selected">{selected.name} <span>{selected.code.toUpperCase()}</span></p>
-          <p>{selected.difference}</p>
-        </div>
-        {selected.code !== initialCode && (
-          <Link href={`/tsubo/${selected.code}#acupoint-location`} prefetch={false} className="atlas-text-action">
-            {selected.name}の詳しい図を見る
-          </Link>
-        )}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {selected.name}。{selected.difference}
       </div>
+      <ol className="atlas-comparison-reading" role="list" aria-label="ツボごとの位置と詳しい図">
+        {points.map(({ code, name, difference }, index) => (
+          <li key={code} data-selected={code === selected.code || undefined}>
+            <span className="atlas-comparison-number" aria-hidden="true">{index + 1}</span>
+            <div>
+              <Link
+                href={`/tsubo/${code}#acupoint-location`}
+                prefetch={false}
+                className="atlas-comparison-link"
+                aria-label={`${name}の詳しい図を見る（${code.toUpperCase()}）`}
+              >
+                {name} <span className="atlas-comparison-code">{code.toUpperCase()}</span>
+              </Link>
+              <p>{difference}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </>
   );
 }

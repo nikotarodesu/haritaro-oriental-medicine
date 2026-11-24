@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowDown, ChevronDown, ListChecks } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
@@ -13,6 +14,7 @@ import ReadingSequence from "@/components/reading/ReadingSequence";
 import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
+import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
 import { getPublicLectureArticle } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
 import { getPublicLectureDiagram } from "@/data/publicLectures/diagrams";
@@ -21,6 +23,7 @@ import { getReadingUnitQuestions } from "@/data/publicLectures/readingUnitQuesti
 import { getPublicLectureReferences, publishedLectureRecords } from "@/data/publicLectures/resources";
 import { readingUnitRevisions } from "@/data/publicLectures/revisions";
 import { reviseLectureSections } from "@/data/publicLectures/revisions/types";
+import { originalLectureHref } from "@/utils/curriculumLegacyPaths";
 import styles from "./lecture-reading.module.css";
 
 const practiceByUnit: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
@@ -239,6 +242,16 @@ export default async function ReadingLecturePage({ params }: Props) {
           </section>
         </details>
       )}
+      <details className="page-help print:hidden">
+        <summary>節ごとの確認問題・資料</summary>
+        <ul className="lecture-unit-resources">
+          {unit.parts.map(({ lectureId, label }) => (
+            <li key={lectureId}>
+              <Link className="ui-text-link inline-flex min-h-11 items-center" href={originalLectureHref(lectureId, CURRICULUM_QUIZZES[lectureId] ? "lecture-supplements" : undefined)}>{label}</Link>
+            </li>
+          ))}
+        </ul>
+      </details>
       <AuthorSupervisorCard revisedAt={revisedAt} />
       <ContentEndAd key={unit.slug} />
     </article>

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, Suspense } from "react";
+import React, { useState, useMemo, useEffect, useRef, useTransition } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { 
   Search, 
   X, 
@@ -16,16 +16,21 @@ import { ATLAS_LEARNING_PAIRS } from "@/data/tsubo/atlas/learningPairs";
 import AtlasLocationCheck from "@/components/tsubo/atlas/AtlasLocationCheck";
 import type { Tsubo } from "@/types/oriental";
 import { PRESET_TSUBO_COMPARISONS } from "./presets";
+import { comparisonSelectionHref } from "./selection";
 
-export type ComparisonPoint = Pick<Tsubo, "id" | "code" | "name" | "kana" | "romaji" | "meridian" | "meridianShort" | "bodyPart" | "locationSimple" | "clinicalNote"> & {
+export type ComparisonChoice = Pick<Tsubo, "id" | "code" | "name" | "kana" | "romaji" | "meridian" | "meridianShort">;
+export type ComparisonPoint = ComparisonChoice & Pick<Tsubo, "bodyPart" | "locationSimple" | "clinicalNote"> & {
   category: readonly string[];
   traditional: string;
   caution: string;
   hasResearch: boolean;
-  locationFigure?: React.ReactNode;
+  locationFigure: React.ReactNode;
 };
 
-type CompareProps = { points: readonly ComparisonPoint[] };
+type CompareProps = {
+  choices: readonly ComparisonChoice[];
+  selectedTsubos: readonly ComparisonPoint[];
+};
 
 const COMPARISON_FIELDS = [
   {
@@ -35,7 +40,7 @@ const COMPARISON_FIELDS = [
       <>
         {point.locationFigure && <div className="tsubo-compare-location-figure">{point.locationFigure}</div>}
         <p>{point.locationSimple}</p>
-        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">図で場所を確認</Link>
+        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link" aria-label={`${point.name}の図で場所を確認`} data-analytics-action="compare_atlas">図で場所を確認</Link>
       </>
     ),
   },
@@ -83,46 +88,22 @@ const COMPARISON_FIELDS = [
   },
 ];
 
-function getRequestedComparisonCodes(params: Pick<URLSearchParams, "get">, points: CompareProps["points"]): string[] {
-  const requested = [params.get("a") || params.get("code"), params.get("b"), params.get("c")];
-  const resolved = new Set<string>();
-  for (const value of requested) {
-    if (!value) continue;
-    const query = normalizeSearchText(value);
-    const point = points.find(t => normalizeSearchText(t.code) === query || normalizeSearchText(t.id) === query);
-    if (point) resolved.add(point.code);
-  }
-  return [...resolved];
-}
-
-function TsuboCompareContent({ points }: CompareProps) {
-  const searchParams = useSearchParams();
+export default function CompareClient({ choices, selectedTsubos }: CompareProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const focusResultsAfterNavigation = useRef(false);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [pendingSwapTsubo, setPendingSwapTsubo] = useState<ComparisonPoint | null>(null);
+  const [pendingSwapTsubo, setPendingSwapTsubo] = useState<ComparisonChoice | null>(null);
   const [targetReplaceIndex, setTargetReplaceIndex] = useState<number | null>(null);
 
-  // 初期値：URLクエリパラメータ（?a=lu1&b=li4 など）を優先
-  const [selectedCodes, setSelectedCodes] = useState<string[]>(() => {
-    const requested = getRequestedComparisonCodes(searchParams, points);
-    return requested.length ? requested : ["LI4", "LR3"];
-  });
-
-  // URLパラメータが動的に変化した際にも追従
   useEffect(() => {
-    const resolved = getRequestedComparisonCodes(searchParams, points);
-    if (resolved.length > 0) {
-      const frame = requestAnimationFrame(() => setSelectedCodes(current => current.length === resolved.length && current.every((code, index) => code === resolved[index]) ? current : resolved));
-      return () => cancelAnimationFrame(frame);
-    }
-  }, [searchParams, points]);
+    if (isPending || !focusResultsAfterNavigation.current) return;
+    focusResultsAfterNavigation.current = false;
+    document.getElementById("tsubo-compare-result-title")?.focus();
+  }, [isPending, selectedTsubos]);
 
-  // 選択されているツボの配列
-  const selectedTsubos = useMemo(() => {
-    return selectedCodes
-      .map(code => points.find(t => t.code === code))
-      .filter((t): t is ComparisonPoint => Boolean(t));
-  }, [selectedCodes, points]);
+  const selectedCodes = selectedTsubos.map(point => point.code);
   const learningPair = selectedTsubos.length === 2
     ? ATLAS_LEARNING_PAIRS.find(({ codes }) => codes.every(code => selectedCodes.includes(code)))
     : undefined;
@@ -131,22 +112,28 @@ function TsuboCompareContent({ points }: CompareProps) {
   const searchResults = useMemo(() => {
     const query = normalizeSearchText(searchQuery);
     if (!query) return [];
-    return points.filter(t =>
+    return choices.filter(t =>
       [t.name, t.kana, t.romaji, t.code, t.meridian].some(field => normalizeSearchText(field).includes(query)),
     ).slice(0, 10);
-  }, [searchQuery, points]);
+  }, [searchQuery, choices]);
+
+  const changeSelection = (codes: readonly string[], focusResults = false) => {
+    setTargetReplaceIndex(null);
+    setPendingSwapTsubo(null);
+    setSearchQuery("");
+    focusResultsAfterNavigation.current = focusResults;
+    startTransition(() => router.replace(comparisonSelectionHref(codes), { scroll: false }));
+  };
 
   // ツボの追加・入れ替えハンドラー
-  const handleSelectTsubo = (tsubo: ComparisonPoint) => {
+  const handleSelectTsubo = (tsubo: ComparisonChoice) => {
     if (selectedCodes.includes(tsubo.code)) return;
 
     // 特定の列の「変更」から指定された場合
     if (targetReplaceIndex !== null && targetReplaceIndex < selectedCodes.length) {
       const updated = [...selectedCodes];
       updated[targetReplaceIndex] = tsubo.code;
-      setSelectedCodes(updated);
-      setTargetReplaceIndex(null);
-      setSearchQuery("");
+      changeSelection(updated);
       return;
     }
 
@@ -156,22 +143,7 @@ function TsuboCompareContent({ points }: CompareProps) {
     }
 
     // 空き枠がある場合はそのまま追加
-    setSelectedCodes([...selectedCodes, tsubo.code]);
-    setSearchQuery("");
-  };
-
-  // ツボの削除
-  const handleRemoveTsubo = (code: string) => {
-    setSelectedCodes(selectedCodes.filter(c => c !== code));
-    setTargetReplaceIndex(null);
-  };
-
-  // プリセット適用
-  const handleApplyPreset = (codes: readonly string[]) => {
-    setSelectedCodes([...codes]);
-    setTargetReplaceIndex(null);
-    setSearchQuery("");
-    requestAnimationFrame(() => document.getElementById("tsubo-compare-result-title")?.focus());
+    changeSelection([...selectedCodes, tsubo.code]);
   };
 
   const beginReplacement = (index: number) => {
@@ -186,7 +158,7 @@ function TsuboCompareContent({ points }: CompareProps) {
         <section className="tsubo-compare-picker print:hidden" aria-labelledby="tsubo-compare-picker-title">
           <div className="tsubo-compare-picker-heading">
             <h2 id="tsubo-compare-picker-title">比較するツボ</h2>
-            <p role="status">{selectedTsubos.length} / 3穴</p>
+            <p role="status">{isPending ? "比較を更新しています。" : `${selectedTsubos.length} / 3穴`}</p>
           </div>
 
           {targetReplaceIndex !== null && selectedTsubos[targetReplaceIndex] && (
@@ -227,7 +199,7 @@ function TsuboCompareContent({ points }: CompareProps) {
                     type="button"
                     key={t.id}
                     onClick={() => handleSelectTsubo(t)}
-                    disabled={isAlreadySelected}
+                    disabled={isPending || isAlreadySelected}
                   >
                     <span>
                       <strong>{t.name}</strong>
@@ -244,12 +216,12 @@ function TsuboCompareContent({ points }: CompareProps) {
             <ul className="tsubo-compare-selection" aria-label="選んだツボ">
               {selectedTsubos.map((point, index) => (
                 <li key={point.id} data-editing={targetReplaceIndex === index || undefined}>
-                  <button type="button" onClick={() => beginReplacement(index)} aria-label={`${point.name}を変更`} title={`${point.name}を変更`}>
+                  <button type="button" disabled={isPending} onClick={() => beginReplacement(index)} aria-label={`${point.name}を変更`} title={`${point.name}を変更`}>
                     <strong>{point.name}</strong>
                     <span>{point.code}</span>
                     <Pencil aria-hidden="true" size={14} />
                   </button>
-                  <button type="button" onClick={() => handleRemoveTsubo(point.code)} aria-label={`${point.name}を比較から外す`} title="比較から外す">
+                  <button type="button" disabled={isPending} onClick={() => changeSelection(selectedCodes.filter(code => code !== point.code))} aria-label={`${point.name}を比較から外す`} title="比較から外す">
                     <X aria-hidden="true" size={16} />
                   </button>
                 </li>
@@ -262,7 +234,7 @@ function TsuboCompareContent({ points }: CompareProps) {
           <summary>比較例から選ぶ</summary>
           <div className="tsubo-compare-preset-grid">
             {PRESET_TSUBO_COMPARISONS.map(preset => (
-              <button type="button" key={preset.name} onClick={() => handleApplyPreset(preset.tsuboCodes)}>
+              <button type="button" key={preset.name} disabled={isPending} onClick={() => changeSelection(preset.tsuboCodes, true)}>
                 <strong>{preset.name}</strong>
                 <span>{preset.desc}</span>
               </button>
@@ -273,13 +245,13 @@ function TsuboCompareContent({ points }: CompareProps) {
         {selectedTsubos.length === 0 ? (
           <p className="tsubo-compare-empty">比較するツボが選ばれていません。検索欄や比較例から追加できます。</p>
         ) : (
-          <section aria-labelledby="tsubo-compare-result-title">
+          <section aria-labelledby="tsubo-compare-result-title" aria-busy={isPending}>
             <div className="tsubo-compare-result-heading">
               <h2 id="tsubo-compare-result-title" className="atlas-target" tabIndex={-1}>選んだツボの比較</h2>
               <ComparePrintButton />
             </div>
             <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">
-              {selectedTsubos.some(point => Boolean(point.locationFigure)) ? "図の丸印がツボの位置です。「図で場所を確認」で、目印を示した拡大図が開きます。" : "「図で場所を確認」で、目印を示した図が開きます。"}
+              図の丸印がツボの位置です。「図で場所を確認」で、目印を示した拡大図が開きます。
             </p>
             <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-result-title" aria-describedby="tsubo-compare-scroll-hint">
               <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
@@ -336,16 +308,17 @@ function TsuboCompareContent({ points }: CompareProps) {
         )}
       </div>
 
-      {/* 経穴入れ替え選択モーダル（2穴選択済み時に新しい経穴を追加しようとした場合） */}
+      {/* 3穴選んだ状態で別のツボを追加するときの入れ替え先 */}
       {pendingSwapTsubo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white dark:bg-[#17212A] rounded-3xl max-w-md w-full p-6 border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl space-y-4">
+          <div role="dialog" aria-modal="true" aria-labelledby="tsubo-compare-swap-title" className="bg-white dark:bg-[#17212A] rounded-3xl max-w-md w-full p-6 border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+              <h3 id="tsubo-compare-swap-title" className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
                 比較する経穴の入れ替え
               </h3>
               <button
                 type="button"
+                aria-label="入れ替えを閉じる"
                 onClick={() => setPendingSwapTsubo(null)}
                 className="p-1.5 rounded-lg text-[#737C77] hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
@@ -354,7 +327,7 @@ function TsuboCompareContent({ points }: CompareProps) {
             </div>
 
             <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              新しく「<strong className="text-[#1E3D34] dark:text-[#74BA9E]">{pendingSwapTsubo.name}（{pendingSwapTsubo.code}）</strong>」を追加します。どちらの経穴と入れ替えますか？
+              新しく「<strong className="text-[#1E3D34] dark:text-[#74BA9E]">{pendingSwapTsubo.name}（{pendingSwapTsubo.code}）</strong>」を追加します。どのツボと入れ替えますか？
             </p>
 
             <div className="space-y-2 pt-1">
@@ -365,9 +338,7 @@ function TsuboCompareContent({ points }: CompareProps) {
                   onClick={() => {
                     const updated = [...selectedCodes];
                     updated[idx] = pendingSwapTsubo.code;
-                    setSelectedCodes(updated);
-                    setPendingSwapTsubo(null);
-                    setSearchQuery("");
+                    changeSelection(updated);
                   }}
                   className="w-full p-3.5 rounded-2xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] text-left flex items-center justify-between transition-all group"
                 >
@@ -410,13 +381,5 @@ function ComparePrintButton() {
       <Printer aria-hidden="true" size={16} />
       比較表を印刷
     </button>
-  );
-}
-
-export default function CompareClient({ points }: CompareProps) {
-  return (
-    <Suspense fallback={<div className="page-layout page-layout--continuation"><p className="tsubo-compare-empty" role="status">経穴比較を読み込んでいます。</p></div>}>
-      <TsuboCompareContent points={points} />
-    </Suspense>
   );
 }
