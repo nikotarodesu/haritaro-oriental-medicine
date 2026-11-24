@@ -5,23 +5,17 @@ import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
-import AcupointLocationImage from "@/components/tsubo/AcupointLocationImage";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
+import AcupointUses from "@/components/tsubo/AcupointUses";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
 import { HEGU_SEARCH_COPY } from "@/data/tsubo/atlas/searchCopy";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
-const traditionalUse = {
-  introduction: "伝統的な鍼灸では、合谷は",
-  symptoms: "頭痛や歯の痛みなど、頭や顔の不調",
-  ending: "に使われてきました。",
-};
-
 export const heguAtlasReading = {
-  traditional: traditionalUse.introduction + traditionalUse.symptoms + traditionalUse.ending,
+  traditional: "伝統的な鍼灸では、合谷は頭痛や歯の痛みなど、頭や顔の不調に使われてきました。",
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
 };
 
@@ -51,7 +45,6 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
           </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading="てのようめいだいちょうけい" />
-          <AcupointLocationImage code={point.codeLower} />
         </AcupointAtlasDiagrams>
       </section>
 
@@ -70,13 +63,10 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         { code: "LR3", text: "手の甲と足の甲で、目印になる骨が違います。" },
       ]} />
 
-      <section id="acupoint-traditional" className="atlas-target">
-        <h2 className={headingClass}>伝統的な使われ方</h2>
-        <p>
-          {traditionalUse.introduction}<strong className="font-bold">{traditionalUse.symptoms}</strong>{traditionalUse.ending}
-        </p>
-        <AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />
-      </section>
+      <AcupointUses
+        code={point.codeLower}
+        links={<AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />}
+      />
 
       <section>
         <h2 className={headingClass}>自分で押してみる</h2>

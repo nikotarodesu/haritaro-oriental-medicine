@@ -130,8 +130,66 @@
 .atlas-directory-header .atlas-breadcrumb { margin-bottom: .5rem; }
 .atlas-source-link, .atlas-source-links a { color: var(--atlas-accent); font-weight: 600; text-decoration: underline; text-underline-offset: .23em; }
 .atlas-source-link:hover, .atlas-source-links a:hover, .atlas-text-action:hover { text-decoration-thickness: 2px; }
-.atlas-location-image { width: clamp(4.5rem, 20vw, 6rem); height: auto; border-radius: .5rem; }
 .atlas-code { border-radius: .375rem; padding: .125rem .5rem; color: var(--atlas-accent); background: var(--atlas-soft); font: 600 .85rem/1.55 ui-monospace, monospace; white-space: nowrap; }
+
+.atlas-uses-grid {
+  display: grid;
+  align-items: start;
+  gap: .75rem;
+}
+.atlas-use-card {
+  min-width: 0;
+  padding: .875rem clamp(.875rem, 2vw, 1.125rem);
+  border: 1px solid var(--atlas-line);
+  border-radius: .875rem;
+  background: var(--atlas-paper);
+}
+.atlas-use-card h3 {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  color: var(--atlas-accent);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.atlas-use-card svg { flex: none; }
+.atlas-use-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .75rem;
+}
+.atlas-use-topics li {
+  padding: .32rem .65rem;
+  border-radius: .45rem;
+  background: var(--atlas-soft);
+  color: var(--atlas-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.atlas-use-studies, .atlas-use-status { margin-top: .65rem; }
+.atlas-use-studies li + li { border-top: 1px solid var(--atlas-line); }
+.atlas-use-studies a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .375rem;
+  min-height: 2.75rem;
+  padding-block: .45rem;
+  line-height: 1.45;
+}
+.atlas-use-studies a:hover strong { text-decoration: underline; text-underline-offset: .18em; }
+.atlas-use-studies a svg { color: var(--atlas-accent); }
+.atlas-use-studies small, .atlas-use-studies strong { display: block; overflow-wrap: anywhere; }
+.atlas-use-studies small, .atlas-use-status { color: var(--atlas-muted); font-size: .875rem; }
+.atlas-use-studies strong { margin-top: .15rem; font-weight: 700; }
+.atlas-use-source { margin-top: .2rem; overflow-wrap: anywhere; }
+.atlas-use-context { margin-top: .65rem; border-block: 1px solid var(--atlas-line); }
+@media (min-width: 44rem) {
+  .atlas-uses-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 .atlas-search-layout { display: grid; min-width: 0; gap: 1.25rem; }
 .atlas-search-panel { display: grid; gap: .5rem; }

@@ -13,7 +13,7 @@ const sectionLinks = [
   { href: "#acupoint-cautions", label: "注意点" },
   { href: "#acupoint-anatomy", label: "断面図" },
   { href: "#acupoint-compare", label: "近くのツボ" },
-  { href: "#acupoint-research", label: "研究・配穴" },
+  { href: "#acupoint-traditional", label: "使われ方・研究" },
 ];
 const linkClass = "inline-flex min-h-11 items-center font-semibold underline underline-offset-4";
 const diagnosisPointPaths = new Set(

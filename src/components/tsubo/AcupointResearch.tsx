@@ -3,7 +3,7 @@ import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, RADIATION_DRY_MOUTH_RESEARCH_HREF, S
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { EXTRA_POINTS } from "@/data/tsubo/extraPoints";
-import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from "@/data/tsubo/atlas/evidence";
+import { getAcupointStudies, getClassicalCombinations, getStudyPointRole, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
@@ -44,11 +44,7 @@ function StudyPointNote({ text }: { text: string }) {
 export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; currentCode?: string }) {
   const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
   const reading = studyReadingLinks[study.id];
-  const describedGroup = currentCode && study.additionalPointGroups?.find(group => (group.candidate || group.shared) && group.points.includes(currentCode));
-  const label = describedGroup ? describedGroup.label
-    : role === "comparison" ? "比較群で使われたツボ"
-    : role === "additional" ? "条件に応じて追加されたツボ"
-      : study.kind === "point" ? "ツボ一つを調べた研究" : "複数のツボを使った研究";
+  const label = getStudyScopeLabel(study, currentCode);
   const showMainPoints = study.points.length > 0 && (study.kind === "combination" || role === "comparison");
   const mainPointsOnly = showMainPoints && !study.comparisonPoints?.length && !study.additionalPointGroups?.length && !study.otherPoints;
   const hasPointDetails = showMainPoints || study.comparisonPoints?.length || study.additionalPointGroups?.length || study.otherPoints;
@@ -107,7 +103,7 @@ function AtlasStudyList({ studies, code }: { studies: readonly AtlasStudy[]; cod
   );
 }
 
-export default function AcupointResearch({ point, traditionalTitle = "伝統的な使われ方" }: { point: AcupointDetail; traditionalTitle?: string }) {
+export default function AcupointResearch({ point }: { point: AcupointDetail }) {
   const studies = getAcupointStudies(point.codeLower);
   const firstStudies = studies.slice(0, 3);
   const remainingStudies = studies.slice(firstStudies.length);
@@ -132,7 +128,7 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
       {studies.length ? (
         <AtlasStudyList studies={firstStudies} code={point.codeLower} />
       ) : (
-        <p className="atlas-evidence-empty">人を対象とした比較試験は、このページでは紹介していません。<a href="#acupoint-traditional" className="atlas-source-link">{traditionalTitle}</a>も読めます。</p>
+        <p className="atlas-evidence-empty">人を対象にした研究は、このページでは紹介していません。</p>
       )}
       {remainingStudies.length > 0 && (
         <HashTargetDetails

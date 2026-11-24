@@ -6,9 +6,9 @@ import { AcupointComparisonLink, AcupointReadingLinks } from "./AcupointArticleL
 import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
-import AcupointLocationImage from "./AcupointLocationImage";
 import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
+import AcupointUses from "./AcupointUses";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
@@ -37,7 +37,8 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   meridianPoints: readonly AcupointMaster[];
   individualModel: boolean;
 }) {
-  const traditionalTitle = article.traditionalTitle ?? "伝統的な使われ方";
+  const { traditionalTitle } = article;
+  const contextTitle = traditionalTitle && traditionalTitle !== "伝統的な使われ方" ? traditionalTitle : "補足を読む";
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
@@ -56,7 +57,6 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
-          <AcupointLocationImage code={point.codeLower} />
         </PointAtlasDiagrams>
       </section>
 
@@ -94,11 +94,11 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <AcupointComparisonLink code={point.code} />
       </AcupointLocationComparison>
 
-      <section id="acupoint-traditional" className="atlas-target">
-        <h2 className={headingClass}>{traditionalTitle}</h2>
-        <Paragraphs paragraphs={article.traditional} />
-        <AcupointReadingLinks code={point.codeLower} editorialLinks={article.symptomLinks} />
-      </section>
+      <AcupointUses
+        code={point.codeLower}
+        context={{ title: contextTitle, paragraphs: article.traditional }}
+        links={<AcupointReadingLinks code={point.codeLower} editorialLinks={article.symptomLinks} />}
+      />
 
       {!article.visualOnly && (
         <section>
@@ -107,7 +107,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </section>
       )}
 
-      <AcupointResearch point={point} traditionalTitle={traditionalTitle} />
+      <AcupointResearch point={point} />
       <AcupointNameGuide code={point.codeLower} />
 
       {!hasIndividualAnatomy && article.expert.length > 0 && (
