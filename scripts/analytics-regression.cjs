@@ -96,6 +96,9 @@ trackEvent('case_study_start', { placement: 'case_study', answers: 'private', pa
 assert.equal(events.at(-1).name, 'case_study_start');
 assert.deepEqual(Object.keys(events.at(-1).params).sort(), ['page_location', 'page_path', 'page_referrer', 'placement', 'send_to']);
 assert.equal(events.at(-1).params.page_location, windowStub.location.origin + windowStub.location.pathname);
+trackEvent('case_study_complete', { placement: 'case_study', answers: 'private' });
+assert.equal(events.at(-1).name, 'case_study_complete');
+assert.deepEqual(Object.keys(events.at(-1).params).sort(), ['page_location', 'page_path', 'page_referrer', 'placement', 'send_to']);
 const beforeBadRead = events.length;
 trackPublicNavigationAction('atlas_compare');
 trackPublicNavigationAction('compare_case');

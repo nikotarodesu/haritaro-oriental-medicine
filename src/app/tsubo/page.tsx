@@ -12,6 +12,7 @@ import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/
 import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
 import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
+import { NEARBY_COMPARISON_LINKS } from "@/data/tsubo/atlas/nearbyComparisonLinks";
 
 const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(region => ({
   region, points: ALL_ACUPOINTS.filter(point => point.bodyPart === region),
@@ -63,6 +64,19 @@ export default function TsuboPage() {
           <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
           <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
         </nav>
+        <section id="nearby-comparisons" className="atlas-target space-y-2" aria-labelledby="nearby-comparisons-title">
+          <h2 id="nearby-comparisons-title" className="atlas-section-title">近いツボを比べる</h2>
+          <ul className="grid grid-cols-2 gap-2 lg:grid-cols-3">
+            {NEARBY_COMPARISON_LINKS.map(({ id, region, names, href }) => (
+              <li key={id}>
+                <Link href={href} prefetch={false} className="block h-full min-h-11 rounded-lg border border-frame bg-panel px-3 py-2 hover:border-accent">
+                  <strong className="block text-sm text-accent">{region}</strong>
+                  <span className="block text-sm leading-relaxed">{names.join("・")}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       </>} />
 
       <details className="atlas-disclosure atlas-region-index">

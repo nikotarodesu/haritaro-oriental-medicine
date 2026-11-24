@@ -11,6 +11,7 @@ export interface PurposeSearchItem extends SearchableItem {
   type: SearchItemType;
   searchRole?: "professional-guide";
   reviewStatus?: "source-checked" | "needs-review" | "do-not-use";
+  comparisonCodes?: readonly string[];
 }
 
 // These standalone words describe what the reader wants, rather than the condition.
@@ -26,6 +27,57 @@ const SPOKEN_TOPICS = new Map([
   ["肩がこる", "肩こり"], ["肩が凝る", "肩こり"], ["肩のこり", "肩こり"],
   ["眠れない", "不眠"], ["寝つけない", "不眠"], ["寝付けない", "不眠"],
 ]);
+const POINT_LOCATION_END = /\s*(?:の\s*)?(?:(?:(?:つぼ|経穴)\s*の\s*)?(?:場所|位置|部位|目印)(?:\s*(?:は\s*どこ(?:ですか)?|を\s*(?:知りたい|教えて(?:ください)?)))?|(?:は\s*)?どこ(?:にある)?(?:ですか)?)$/u;
+const POINT_COMPARISON_END = /\s*(?:の\s*)?(?:(?:場所|位置)\s*の\s*)?(?:違い|ちがい|比較|見分け方)\s*$/u;
+const POINT_SEPARATORS = /[\s・、,/]+/u;
+const MAX_COMPARISON_POINTS = 4;
+
+function joinedPointCodes(term: string, pointCode: (name: string) => string | undefined, limit: number): string[] | null {
+  const exact = pointCode(term);
+  if (exact) return [exact];
+  if (limit <= 1) return null;
+
+  // A reading can contain 「と」 itself. Split only where both sides resolve.
+  for (let joiner = term.lastIndexOf("と"); joiner > 0; joiner = term.lastIndexOf("と", joiner - 1)) {
+    const first = pointCode(term.slice(0, joiner));
+    if (!first) continue;
+    const rest = joinedPointCodes(term.slice(joiner + 1), pointCode, limit - 1);
+    if (rest) return [first, ...rest];
+  }
+  return null;
+}
+
+function pointLookupResult<T extends PurposeSearchItem>(
+  indexes: Array<ReturnType<typeof prepareSearchItem<T>>>,
+  normalized: string,
+) {
+  const locationTopic = normalized.replace(POINT_LOCATION_END, "").trim();
+  const comparisonTopic = locationTopic.replace(POINT_COMPARISON_END, "").trim();
+  if (locationTopic === normalized && comparisonTopic === normalized &&
+      !POINT_SEPARATORS.test(normalized) && !normalized.includes("と")) return;
+
+  const points = indexes.filter(index => index.item.type === "acupoint");
+  const exactPoint = (name: string) => points.find(index => index.code === name) ??
+    points.find(index => index.exactTerms.includes(name));
+  if (locationTopic !== normalized && locationTopic) {
+    const point = exactPoint(locationTopic);
+    if (point) return { item: point.item, score: 150, hint: "経穴の位置" };
+  }
+
+  const terms = comparisonTopic.replace(/\s*と\s*/gu, "と").split(POINT_SEPARATORS).filter(Boolean);
+  if (terms.length > MAX_COMPARISON_POINTS) return;
+  const codes: string[] = [];
+  for (const term of terms) {
+    const resolved = joinedPointCodes(term, name => exactPoint(name)?.code, MAX_COMPARISON_POINTS - codes.length);
+    if (!resolved || codes.length + resolved.length > MAX_COMPARISON_POINTS) return;
+    codes.push(...resolved);
+  }
+  const distinct = [...new Set(codes)];
+  if (distinct.length < 2) return;
+  const comparison = indexes.find(({ item: { comparisonCodes } }) => comparisonCodes &&
+    distinct.every(code => comparisonCodes.includes(code)));
+  if (comparison) return { item: comparison.item, score: 150, hint: "経穴名に一致" };
+}
 
 export function preparePurposeSearchQuery(query: string, requestedPurpose: SearchPurpose = "auto") {
   const originalQuery = prepareSearchQuery(query.replace(/[?？。!！]+\s*$/, ""));
@@ -55,6 +107,7 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
   indexes: Array<ReturnType<typeof prepareSearchItem<T>>>,
   context: ReturnType<typeof preparePurposeSearchQuery>,
 ) {
+  const pointLookup = context.purpose === "research" ? undefined : pointLookupResult(indexes, context.query.normalized);
   const matches = indexes
     .filter(index => index.item.reviewStatus !== "do-not-use")
     .map(index => ({ index, item: index.item, score: scoreSearchItem(index, context.query), hint: searchMatchHint(index, context.query) }))
@@ -90,7 +143,8 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
     return 60;
   }
 
-  return matches.map(result => ({ ...result, priority: priority(result) }))
+  const ranked = matches.map(result => ({ ...result, priority: priority(result) }))
     .sort((a, b) => b.priority - a.priority || b.score - a.score)
     .map(({ item, score, hint }) => ({ item, score, hint }));
+  return pointLookup ? [pointLookup, ...ranked.filter(result => result.item !== pointLookup.item)] : ranked;
 }

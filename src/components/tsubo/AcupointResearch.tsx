@@ -7,7 +7,7 @@ import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from 
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
-import AtlasStudyDisclosure from "./AtlasStudyDisclosure";
+import HashTargetDetails from "@/components/common/HashTargetDetails";
 
 const urinaryResearch = { href: URINARY_INCONTINENCE_RESEARCH_HREF, label: "尿もれの量と回数をどう測ったかを読む" };
 const extraPointLinks = new Map(EXTRA_POINTS.map(point => [`${point.name}（${point.code}）`, point.href]));
@@ -131,9 +131,13 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
         <p className="atlas-evidence-empty">人を対象とした比較試験は、このページでは紹介していません。<a href="#acupoint-traditional" className="atlas-source-link">{traditionalTitle}</a>も読めます。</p>
       )}
       {remainingStudies.length > 0 && (
-        <AtlasStudyDisclosure key={point.codeLower} count={remainingStudies.length}>
+        <HashTargetDetails
+          key={point.codeLower}
+          className="atlas-disclosure rounded-xl border border-frame px-3 open:pb-3"
+          summary={<>研究をすべて見る <span className="atlas-muted font-normal">残り{remainingStudies.length}件</span></>}
+        >
           <AtlasStudyList studies={remainingStudies} code={point.codeLower} />
-        </AtlasStudyDisclosure>
+        </HashTargetDetails>
       )}
       {point.codeLower === "pc6" && (
         <p className="atlas-evidence-empty">

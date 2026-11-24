@@ -36,6 +36,18 @@ const RECENT_SEARCHES_KEY = "haritaro_recent_searches";
 const ACTIVE_FILTER = "border border-[var(--accent-readable)] bg-[var(--accent-soft)] text-[var(--accent-readable)]";
 const INACTIVE_FILTER = "border border-[var(--border-washi)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-washi)] hover:text-[var(--text-sumi)]";
 
+function revealCurrentComparison(item: SearchResultItem) {
+  if (!item.comparisonCodes) return;
+  const [pathname, fragment] = item.url.split("#");
+  if (pathname !== window.location.pathname || !fragment) return;
+
+  const target = document.getElementById(fragment);
+  if (!target) return;
+  const disclosure = target.closest("details");
+  if (disclosure) disclosure.open = true;
+  requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+}
+
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -163,6 +175,7 @@ export default function GlobalSearchModal({
       if (target) {
         event.preventDefault();
         recordResultClick(target.item);
+        revealCurrentComparison(target.item);
         onClose();
         router.push(target.item.url);
       }
@@ -396,7 +409,7 @@ export default function GlobalSearchModal({
                     aria-posinset={idx + 1}
                     aria-setsize={filteredResults.length}
                     onClick={() => recordResultClick(item)}
-                    onNavigate={onClose}
+                    onNavigate={() => { revealCurrentComparison(item); onClose(); }}
                     onMouseMove={(event) => {
                       // 結果の再描画で静止中のポインタが重なっても、キーボードの選択は保つ。
                       if (event.movementX !== 0 || event.movementY !== 0) { shouldScrollSelection.current = false; setSelectedIndex(idx); }

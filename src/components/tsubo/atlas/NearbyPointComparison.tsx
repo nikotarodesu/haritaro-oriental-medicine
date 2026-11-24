@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HashTargetDetails from "@/components/common/HashTargetDetails";
 import { getAcupointByCode } from "@/data/tsubo";
 import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
@@ -17,8 +18,11 @@ export default function NearbyPointComparison({ comparison, code, anchorId }: {
   if (points.length < 2) return null;
 
   return (
-    <details className="atlas-disclosure atlas-nearby" data-nearby-comparison={comparison.id}>
-      <summary>{comparison.heading ?? "近くのツボを図で比べる"}<span>{comparison.region}</span></summary>
+    <HashTargetDetails
+      className="atlas-disclosure atlas-nearby"
+      data-nearby-comparison={comparison.id}
+      summary={<>{comparison.heading ?? "近くのツボを図で比べる"}<span>{comparison.region}</span></>}
+    >
       <div id={anchorId} className="atlas-target atlas-comparison-content">
         {comparison.id === "shin" && (
           <p>
@@ -35,6 +39,6 @@ export default function NearbyPointComparison({ comparison, code, anchorId }: {
         </NearbyComparisonControls>
         {comparison.question && <AtlasLocationCheck key={code} question={comparison.question} options={points} placement="nearby_diagram" />}
       </div>
-    </details>
+    </HashTargetDetails>
   );
 }

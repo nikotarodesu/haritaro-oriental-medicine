@@ -103,6 +103,23 @@ for (const query of ['陰陽', 'いんよう', '陰陽とは', '陰陽 意味', 
     ['definition', 'lecture', 'article'], query + ': define the term, then teach it, then expand it');
 }
 assert.equal(rankPurposeSearchResults(learningFixtures, preparePurposeSearchQuery('陰陽 論文'))[0].item.id, 'research', 'Explicit research intent keeps precedence over term definitions');
+
+const publicIndex = load('src/data/searchCatalog').SEARCH_CATALOG.map(prepareSearchItem);
+for (const [query, href] of [
+  ['合谷 場所', '/tsubo/li4'],
+  ['ごうこくの位置はどこですか？', '/tsubo/li4'],
+  ['ＬＩ ４ の目印', '/tsubo/li4'],
+  ['内関と間使の違い', '/tsubo/pc6#acupoint-nearby-forearm'],
+  ['ないかん と かんしのちがい', '/tsubo/pc6#acupoint-nearby-forearm'],
+  ['ＰＣ ５ ＰＣ ４ 比較', '/tsubo/pc6#acupoint-nearby-forearm'],
+  ['足三里 上巨虚 条口', '/tsubo/st36#acupoint-nearby'],
+  ['条口・足三里の位置の違い', '/tsubo/st36#acupoint-nearby'],
+  ['合谷と太衝の違い', '/tsubo/compare?a=li4&b=lr3'],
+]) {
+  const ranked = rankPurposeSearchResults(publicIndex, preparePurposeSearchQuery(query));
+  assert.equal(ranked[0]?.item.url, href, query);
+  assert.equal(ranked.filter(result => result.item.url === href).length, 1, query + ' produces one direct result');
+}
 assert.equal(preparePurposeSearchQuery('学習').query.normalized, '学習', 'An intent-only learning word remains searchable');
 
 const GlobalSearchModal = load('src/components/search/GlobalSearchModal').default;

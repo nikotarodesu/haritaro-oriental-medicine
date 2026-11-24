@@ -9,6 +9,7 @@ const { createDataLoader } = require('./data-loader.cjs');
 
 const load = createDataLoader();
 const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
+const { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } = load('src/utils/caseStudyProgress');
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
 const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
 
@@ -29,6 +30,7 @@ function component(file) {
     '@/components/design/PageIntro': ({ title, children }) => React.createElement('header', null, title, children),
     '@/components/design/PageArtwork': () => null,
     '@/components/MedicalSafetyNotice': () => null,
+    '@/components/cases/CaseStudyResume': () => null,
     '@/components/clinical/ClinicalToolBridge': () => null,
     '@/components/learning/PrescriptionScoringGuide': () => null,
     '@/components/kikei/KikeiPathwaySvg': () => React.createElement('svg', { 'data-test': 'pathway' }),
@@ -43,6 +45,7 @@ function component(file) {
       if (id === '@/components/design/PageArtwork') return { PageSymbol: mockComponents[id] };
       if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams() };
       if (id === '@/utils/analytics') return { trackEvent() {} };
+      if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: {}, status: 'local', setEntry() {} }) };
       if (mockComponents[id]) return { __esModule: true, default: mockComponents[id] };
       if (id.startsWith('@/')) return load('src/' + id.slice(2));
       return require(id);
@@ -61,6 +64,17 @@ for (const clinicalCase of CLINICAL_CASES) {
   assert(html.includes('href="#case-examination"') && html.includes('id="case-examination"'), clinicalCase.id);
   assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
   assert(html.includes('aria-label="表示する所見"') && html.includes('aria-pressed="true"'), clinicalCase.id);
+  const values = {};
+  const steps = clinicalCase.reasoningSteps;
+  const last = steps.at(-1);
+  values[caseStudyAnswerKey(clinicalCase.id, last.stepNumber)] = { attempt: 'initial', optionId: last.options[0].id, answeredAt: 20 };
+  assert.equal(getCaseStudyProgress(values, clinicalCase).complete, false, clinicalCase.id + ': answering only the last step does not complete the case');
+  for (const step of steps) values[caseStudyAnswerKey(clinicalCase.id, step.stepNumber)] = { attempt: 'initial', optionId: step.options[0].id, answeredAt: 30 };
+  assert.equal(getCaseStudyProgress(values, clinicalCase).complete, true, clinicalCase.id);
+  values[caseStudyAttemptKey(clinicalCase.id)] = 'new-attempt';
+  assert.equal(getCaseStudyProgress(values, clinicalCase).answered, 0, clinicalCase.id + ': restarting excludes the previous attempt');
+  values[caseStudyAnswerKey(clinicalCase.id, last.stepNumber)] = { attempt: 'new-attempt', optionId: 'unavailable', answeredAt: 40 };
+  assert.equal(getCaseStudyProgress(values, clinicalCase).answered, 0, clinicalCase.id + ': stale answer IDs are ignored');
 }
 
 const Vessel = component('src/components/kikei/KikeiDetailClient.tsx');

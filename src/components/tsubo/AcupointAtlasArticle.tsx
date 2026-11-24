@@ -11,7 +11,7 @@ import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams from "./atlas/PointAtlasDiagrams";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getAcupointByCode } from "@/data/tsubo";
-import { getNearbyComparisons } from "@/data/tsubo/atlas/nearbyComparisons";
+import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
 
@@ -52,12 +52,12 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
           <AcupointSectionLinks />
         </PointAtlasDiagrams>
-        {nearbyComparisons.map((comparison, index) => (
+        {nearbyComparisons.map(comparison => (
           <NearbyPointComparison
-            key={comparison.id}
+            key={`${point.codeLower}-${comparison.id}`}
             comparison={comparison}
             code={point.codeLower}
-            anchorId={index === 0 ? "acupoint-nearby" : `acupoint-nearby-${comparison.id}`}
+            anchorId={nearbyComparisonAnchor(point.codeLower, comparison.id)}
           />
         ))}
       </section>

@@ -127,3 +127,7 @@ export function getNearbyComparisons(code: string) {
     group.referenceCodes?.includes(code) || group.points.some(point => point.code === code),
   );
 }
+
+export function nearbyComparisonAnchor(code: string, id: NearbyComparison["id"]) {
+  return getNearbyComparisons(code)[0]?.id === id ? "acupoint-nearby" : `acupoint-nearby-${id}`;
+}

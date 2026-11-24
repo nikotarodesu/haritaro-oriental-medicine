@@ -8,13 +8,18 @@ function generateSearchCatalog() {
   const { buildSearchCatalog } = load('src/data/searchCatalogSource');
   const items = buildSearchCatalog();
   const ids = new Set();
-  const allowedKeys = new Set(['id', 'type', 'title', 'subtitle', 'badge', 'url', 'tags', 'exactCode', 'exactTerms', 'searchRole', 'reviewStatus']);
+  const allowedKeys = new Set(['id', 'type', 'title', 'subtitle', 'badge', 'url', 'tags', 'exactCode', 'exactTerms', 'searchRole', 'reviewStatus', 'comparisonCodes']);
   for (const item of items) {
     if (!item.id || ids.has(item.id)) throw new Error(`Duplicate or missing search ID: ${item.id}`);
     ids.add(item.id);
     if (!item.title || !item.url?.startsWith('/') || item.url.startsWith('//')) throw new Error(`Invalid public destination: ${item.id}`);
     for (const key of Object.keys(item)) if (!allowedKeys.has(key)) throw new Error(`Unexpected search data field: ${item.id}.${key}`);
     if (item.tags?.some(term => typeof term !== 'string')) throw new Error(`Invalid search term: ${item.id}`);
+    if (item.comparisonCodes && (item.type !== 'tool' || item.comparisonCodes.length < 2 ||
+      new Set(item.comparisonCodes).size !== item.comparisonCodes.length ||
+      item.comparisonCodes.some(code => !/^[a-z]{2}\d{1,2}$/.test(code)))) {
+      throw new Error(`Invalid comparison codes: ${item.id}`);
+    }
   }
   return '// Generated public search metadata. Run node scripts/generate-search-catalog.cjs after content edits.\n'
     + 'import type { SearchResultItem } from "@/types/searchCatalog";\n\n'

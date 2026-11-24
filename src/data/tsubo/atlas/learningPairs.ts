@@ -51,3 +51,7 @@ export const ATLAS_LEARNING_PAIRS: readonly AtlasLearningPair[] = [
     casePrompt: "百会と風池が登場します。目がかすむ時刻や、一緒に出る所見を確かめます。",
   },
 ];
+
+export function atlasLearningPairHref([first, second]: readonly [string, string]) {
+  return `/tsubo/compare?a=${first.toLowerCase()}&b=${second.toLowerCase()}`;
+}

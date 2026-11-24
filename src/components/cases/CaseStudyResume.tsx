@@ -1,0 +1,31 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { useLearningSync } from "@/contexts/LearningSyncContext";
+import { getCaseStudyProgress, type CaseStudyDescriptor } from "@/utils/caseStudyProgress";
+
+export default function CaseStudyResume({ studies }: { studies: readonly CaseStudyDescriptor[] }) {
+  const { ready, values } = useLearningSync();
+  if (!ready) return null;
+
+  const resume = studies
+    .map(study => ({ study, progress: getCaseStudyProgress(values, study) }))
+    .filter(({ progress }) => progress.answered > 0 && !progress.complete)
+    .sort((left, right) => right.progress.updatedAt - left.progress.updatedAt)[0];
+  if (!resume) return null;
+
+  const { study, progress } = resume;
+  return (
+    <section aria-labelledby="case-resume-title" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-frame bg-panel p-4">
+      <div className="min-w-0">
+        <h2 id="case-resume-title" className="font-semibold">前回の続き</h2>
+        <p className="text-sm leading-relaxed">{study.title}</p>
+        <p className="ui-muted text-sm">{progress.answered} / {progress.total}問 回答済み</p>
+      </div>
+      <Link href={`/cases/${study.id}#case-reasoning`} className="page-secondary-action">
+        続きから解く<ArrowRight size={16} aria-hidden="true" />
+      </Link>
+    </section>
+  );
+}

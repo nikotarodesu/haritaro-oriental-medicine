@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { 
   CheckCircle2, 
@@ -24,6 +24,9 @@ import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
 import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
 import { SlidersHorizontal, FlaskConical } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
+import { useLearningSync } from "@/contexts/LearningSyncContext";
+import { getLearningStorageAdapter } from "@/utils/learningStorageBridge";
+import { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } from "@/utils/caseStudyProgress";
 
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
 
@@ -32,21 +35,31 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
   const [activeExamTab, setActiveExamTab] = useState<"inspection" | "tongue" | "inquiry" | "palpation">("inspection");
 
   // 推論ステップの回答状態
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
+  const { ready, values, status, setEntry } = useLearningSync();
+  const progress = getCaseStudyProgress(values, clinicalCase);
   const [showExplanation, setShowExplanation] = useState(false);
-  const startedCaseId = useRef<string | null>(null);
 
 
   const handleSelectOption = (stepNumber: number, optionId: string) => {
-    if (startedCaseId.current !== clinicalCase.id) {
-      startedCaseId.current = clinicalCase.id;
-      trackEvent("case_study_start", { placement: "case_study" });
-    }
-    setSelectedAnswers((prev) => ({
-      ...prev,
-      [stepNumber]: optionId,
-    }));
+    if (!ready) return;
+    const adapter = getLearningStorageAdapter();
+    const before = getCaseStudyProgress(adapter?.values() ?? values, clinicalCase);
+    if (before.answers[stepNumber] === optionId) return;
+
+    const key = caseStudyAnswerKey(clinicalCase.id, stepNumber);
+    const answer = { attempt: before.attempt, optionId, answeredAt: Date.now() };
+    setEntry(key, answer);
+    const after = getCaseStudyProgress(adapter?.values() ?? { ...values, [key]: answer }, clinicalCase);
+    if (after.attempt !== before.attempt) return;
+    if (before.answered === 0 && after.answered > 0) trackEvent("case_study_start", { placement: "case_study" });
+    if (!before.complete && after.complete) trackEvent("case_study_complete", { placement: "case_study" });
   };
+
+  function restartStudy() {
+    setEntry(caseStudyAttemptKey(clinicalCase.id), crypto.randomUUID());
+    setShowExplanation(false);
+    document.getElementById("case-reasoning")?.focus({ preventScroll: true });
+  }
 
   return (
     <div className="case-practice space-y-5 sm:space-y-8">
@@ -220,9 +233,19 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
           <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />臨床推論の演習
         </h2>
 
+        {ready && (
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+            <p role="status">{progress.answered} / {progress.total}問 回答済み{progress.complete && "・演習完了"}</p>
+            {status === "memory" && <p className="ui-muted">このブラウザーでは進捗を保存できません。</p>}
+            {progress.complete && (
+              <button type="button" className="ui-text-link min-h-11" onClick={restartStudy}>もう一度解く</button>
+            )}
+          </div>
+        )}
+
         <div className="space-y-6">
           {clinicalCase.reasoningSteps.map((step) => {
-            const selected = selectedAnswers[step.stepNumber];
+            const selected = progress.answers[step.stepNumber];
             return (
               <div key={step.stepNumber} className="case-question space-y-3">
                 <div className="flex items-center gap-2">
@@ -245,6 +268,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
                       <button
                         key={opt.id}
                         type="button"
+                        disabled={!ready}
                         aria-pressed={isSelected}
                         onClick={() => handleSelectOption(step.stepNumber, opt.id)}
                         className={`flex min-h-11 w-full cursor-pointer items-start gap-2.5 rounded-lg border p-3 text-left text-base leading-[1.65] ${

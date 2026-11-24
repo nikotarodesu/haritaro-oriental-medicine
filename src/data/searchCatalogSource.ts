@@ -1,5 +1,5 @@
 // Build-time source only: client components import the generated searchCatalog instead.
-import { getAllAcupoints } from "@/data/tsubo/index";
+import { getAcupointByCode, getAllAcupoints } from "@/data/tsubo/index";
 import { CURRICULUM_DATA } from "@/data/curriculumData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { GLOSSARY_TERMS } from "@/data/glossaryData";
@@ -20,6 +20,8 @@ import type { SearchResultItem } from "@/types/searchCatalog";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 import { EXTRA_POINTS, EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
+import { NEARBY_COMPARISON_LINKS } from "@/data/tsubo/atlas/nearbyComparisonLinks";
+import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
 
 const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
 const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
@@ -161,6 +163,17 @@ export function buildSearchCatalog(): SearchResultItem[] {
 
     // 1. ツール群
     list.push(...STATIC_TOOLS);
+    list.push(...NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href }): SearchResultItem => ({
+      id: `atlas-comparison-${id}`, type: "tool", badge: "ツボの比較図",
+      title: `${names.join("・")}を図で比べる`, subtitle: `${region}の位置と目印`,
+      url: href, comparisonCodes: codes, tags: [region, "経穴比較", "違い", "見分け方"],
+    })));
+    list.push(...ATLAS_LEARNING_PAIRS.map(({ codes, comparisonPrompt }): SearchResultItem => ({
+      id: `atlas-pair-${codes.join("-").toLowerCase()}`, type: "tool", badge: "経穴比較",
+      title: `${codes.map(code => getAcupointByCode(code)?.name ?? code).join("・")}を比べる`,
+      subtitle: comparisonPrompt, url: atlasLearningPairHref(codes),
+      comparisonCodes: codes.map(code => code.toLowerCase()), tags: ["経穴比較", "違い", "見分け方"],
+    })));
     list.push({
       id: "article-acupuncture-introduction", type: "article", title: ACUPUNCTURE_GUIDE.title,
       subtitle: ACUPUNCTURE_GUIDE.description, badge: "鍼灸入門", url: ACUPUNCTURE_GUIDE.href,

@@ -23,7 +23,7 @@ const hostFilter = { filter: { fieldName: 'hostName', stringFilter: { matchType:
 const publicFilter = { andGroup: { expressions: [hostFilter, { notExpression: {
   filter: { fieldName: 'pagePath', stringFilter: { matchType: 'FULL_REGEXP', value: '^/(notes|auth|account|api)(/.*)?$', caseSensitive: false } },
 } }] } };
-const atlasLearningEvents = ['atlas_compare_open', 'atlas_location_check_start', 'compare_case_open', 'case_study_start'];
+const atlasLearningEvents = ['atlas_compare_open', 'atlas_location_check_start', 'compare_case_open', 'case_study_start', 'case_study_complete'];
 const eventNames = [
   'article_view', 'lecture_view', 'quiz_start', 'quiz_answer', 'quiz_complete', 'review_start', 'review_complete',
   'case_training_start', 'case_training_complete', 'context_link_click', 'learning_activity', 'learning_return_7d',

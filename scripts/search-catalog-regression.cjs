@@ -17,10 +17,18 @@ const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
 const { ARTICLES } = load('src/data/articleData');
 const { KOKUSHI_PAST_EXAMS } = load('src/data/kokushiPastExams');
 const { PUBLIC_ARCHIVE_CASES, ALL_ARCHIVE_CASES } = load('src/data/cases/archiveCases');
+const { NEARBY_COMPARISON_LINKS } = load('src/data/tsubo/atlas/nearbyComparisonLinks');
 const generated = fs.readFileSync(path.join(root, 'src/data/searchCatalog.ts'), 'utf8').replace(/\r\n/g, '\n');
 assert.equal(generated, generateSearchCatalog(), 'Content edits must regenerate the browser metadata');
 assert.equal(new Set(SEARCH_CATALOG.map(item => item.id)).size, SEARCH_CATALOG.length, 'Search IDs are unique');
 const byId = new Map(SEARCH_CATALOG.map(item => [item.id, item]));
+assert.equal(NEARBY_COMPARISON_LINKS.length, 5);
+for (const comparison of NEARBY_COMPARISON_LINKS) {
+  const result = byId.get('atlas-comparison-' + comparison.id);
+  assert.equal(result?.url, comparison.href);
+  assert.deepEqual(Array.from(result.comparisonCodes), Array.from(comparison.codes));
+  for (const code of result.comparisonCodes) assert(byId.has('tsubo-' + code));
+}
 for (const point of ACUPOINTS_MASTER) assert.equal(byId.get(`tsubo-${point.code.toLowerCase()}`)?.url, `/tsubo/${point.code.toLowerCase()}`);
 for (const point of EXTRA_POINTS) {
   const item = byId.get(`extra-point-${point.slug}`);
@@ -57,7 +65,7 @@ const types = ['article', 'acupoint', 'lecture', 'case', 'tool', 'glossary', 'cl
 for (const type of types) assert(SEARCH_CATALOG.some(item => item.type === type), `${type}: search category retained`);
 assert.deepEqual([...new Set(SEARCH_CATALOG.map(item => item.type))].sort(), [...types].sort(), 'Exactly nine public search types remain');
 
-const allowedKeys = new Set(['id', 'type', 'title', 'subtitle', 'badge', 'url', 'tags', 'exactCode', 'exactTerms', 'searchRole', 'reviewStatus']);
+const allowedKeys = new Set(['id', 'type', 'title', 'subtitle', 'badge', 'url', 'tags', 'exactCode', 'exactTerms', 'searchRole', 'reviewStatus', 'comparisonCodes']);
 const textValues = [];
 for (const item of SEARCH_CATALOG) {
   for (const [key, value] of Object.entries(item)) {
