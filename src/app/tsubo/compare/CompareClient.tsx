@@ -12,7 +12,7 @@ import {
   Printer,
 } from "lucide-react";
 import { normalizeSearchText } from "@/utils/search";
-import { ATLAS_LEARNING_PAIRS } from "@/data/tsubo/atlas/learningPairs";
+import { getAtlasLearningPair } from "@/data/tsubo/atlas/learningPairs";
 import AtlasLocationCheck from "@/components/tsubo/atlas/AtlasLocationCheck";
 import type { Tsubo } from "@/types/oriental";
 import { PRESET_TSUBO_COMPARISONS } from "./presets";
@@ -104,9 +104,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
   }, [isPending, selectedTsubos]);
 
   const selectedCodes = selectedTsubos.map(point => point.code);
-  const learningPair = selectedTsubos.length === 2
-    ? ATLAS_LEARNING_PAIRS.find(({ codes }) => codes.every(code => selectedCodes.includes(code)))
-    : undefined;
+  const learningPair = getAtlasLearningPair(selectedCodes);
 
   // 検索ヒットツボ一覧
   const searchResults = useMemo(() => {
@@ -284,24 +282,13 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
               </table>
             </div>
             {learningPair && (
-              <div className="mt-4 space-y-3 print:hidden">
+              <div className="mt-4 print:hidden">
                 <AtlasLocationCheck
                   key={learningPair.codes[0]}
                   question={learningPair.question}
                   options={selectedTsubos}
                   placement="atlas_comparison"
                 />
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-frame bg-panel p-3">
-                  <p className="min-w-0 flex-1 basis-48 text-sm leading-relaxed">{learningPair.casePrompt}</p>
-                  <Link
-                    href={`/cases/${learningPair.caseId}`}
-                    prefetch={false}
-                    className="page-secondary-action"
-                    data-analytics-action="compare_case"
-                  >
-                    {learningPair.caseLabel}
-                  </Link>
-                </div>
               </div>
             )}
           </section>

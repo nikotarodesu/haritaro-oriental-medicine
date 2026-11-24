@@ -52,6 +52,11 @@ export const ATLAS_LEARNING_PAIRS: readonly AtlasLearningPair[] = [
   },
 ];
 
+export function getAtlasLearningPair(codes: readonly string[]) {
+  if (codes.length !== 2) return undefined;
+  return ATLAS_LEARNING_PAIRS.find(pair => pair.codes.every(code => codes.includes(code)));
+}
+
 export function atlasLearningPairHref([first, second]: readonly [string, string]) {
   return `/tsubo/compare?a=${first.toLowerCase()}&b=${second.toLowerCase()}`;
 }

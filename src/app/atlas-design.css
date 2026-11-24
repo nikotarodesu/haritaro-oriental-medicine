@@ -249,6 +249,9 @@
 .atlas-point-kana { color: var(--atlas-muted); font-size: 1rem; }
 .atlas-point-meta { color: var(--atlas-muted); font-size: .9375rem; }
 .atlas-point-lead { margin-top: 0; color: var(--atlas-ink); }
+.atlas-study-links { display: flex; flex-wrap: wrap; align-items: center; gap: .375rem .5rem; }
+.atlas-study-links .page-secondary-action { min-height: 2.75rem; padding-inline: .7rem; font-size: .875rem; }
+.atlas-study-links svg { flex: none; }
 .atlas-disclosure > summary { display: flex; min-height: 2.75rem; align-items: center; gap: .5rem; cursor: pointer; color: var(--atlas-accent); font-size: .875rem; font-weight: 600; list-style: none; }
 .atlas-disclosure > summary::-webkit-details-marker { display: none; }
 .atlas-disclosure > summary::after { content: ''; display: block; flex: none; width: .43rem; height: .43rem; margin-inline: auto .2rem; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); }

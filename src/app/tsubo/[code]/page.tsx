@@ -17,7 +17,7 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
-import { AcupointKeyPointLinks } from "@/components/tsubo/AcupointArticleLinks";
+import { AcupointKeyPointLinks, AcupointStudyLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
@@ -388,6 +388,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                   <dd className="mt-1 text-[#232826] dark:text-[#E6EFEA]">{point.locationSimple}</dd>
                 </div>
               </dl>
+              <AcupointStudyLinks code={point.code} />
             </div>
 
             {/* アクションボタン群（主アクション：配穴追加・クリップ保存、副アクション：推論・比較・復習） */}

@@ -90,7 +90,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   useEffect(() => {
     if (!ready) return;
     const anchor = window.location.hash.slice(1);
-    if (!clinicalCase.reasoningSteps.some(step => caseQuestionAnchor(step.stepNumber) === anchor)) return;
+    if (anchor !== CASE_REASONING_ANCHOR && !clinicalCase.reasoningSteps.some(step => caseQuestionAnchor(step.stepNumber) === anchor)) return;
     const frame = requestAnimationFrame(() => focusCaseAnchor(anchor));
     return () => cancelAnimationFrame(frame);
   }, [ready, clinicalCase.reasoningSteps]);

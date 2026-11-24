@@ -11,3 +11,11 @@ export const CASE_STUDY_DESCRIPTORS: readonly CaseStudyDescriptor[] = CLINICAL_C
 }));
 
 export const PUBLIC_CASE_STUDY_IDS = CASE_STUDY_DESCRIPTORS.map(({ id }) => id);
+
+export function getCaseStudyUsingAcupoint(code: string) {
+  const upperCode = code.toUpperCase();
+  const matchesPoint = (label: string) => label.match(/\(([A-Z]{2}\d{1,2})\b/i)?.[1].toUpperCase() === upperCode;
+
+  return CLINICAL_CASES.find(({ correctDiagnosis }) => correctDiagnosis.primaryPoints.some(matchesPoint))
+    ?? CLINICAL_CASES.find(({ correctDiagnosis }) => correctDiagnosis.secondaryPoints.some(matchesPoint));
+}

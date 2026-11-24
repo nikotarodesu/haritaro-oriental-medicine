@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 import { ALL_NAV_ITEMS, loadNavUserConfig, DEFAULT_NAV_CONFIG, type NavUserConfig, getCurrentBottomNavItem } from "@/config/navigationItems";
+import { useAtlasReturn } from "@/hooks/useAtlasReturn";
 import { useViewportLayout } from "@/hooks/useViewportLayout";
 import NavCustomizeModal from "./NavCustomizeModal";
 import { SITE_MENU_ID, SITE_MENU_STATE_EVENT, SITE_MENU_TOGGLE_EVENT, NAV_CUSTOMIZE_EVENT } from "@/utils/siteMenu";
@@ -16,6 +17,7 @@ export default function MobileBottomNav() {
 function MobileBottomNavContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const returnToAtlas = useAtlasReturn(pathname, searchParams.toString());
   const [config, setConfig] = useState<NavUserConfig>(DEFAULT_NAV_CONFIG);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
@@ -78,7 +80,7 @@ function MobileBottomNavContent() {
           const current = active ? (pathname === item.href.split(/[?#]/)[0] ? "page" : "location") : undefined;
           return item.isAction
             ? <button key={item.id + index} type="button" onClick={handleOpenSearch} className="mobile-nav-item" aria-label={item.label} aria-haspopup="dialog"><Icon aria-hidden="true" /><span>{item.shortLabel}</span></button>
-            : <Link key={item.id + index} href={item.href} className="mobile-nav-item" aria-label={item.label} aria-current={current}><Icon aria-hidden="true" className={active ? "stroke-[2.5]" : "stroke-2"} /><span>{item.shortLabel}</span></Link>;
+            : <Link key={item.id + index} href={item.href} onNavigate={item.id === "tsubo" ? returnToAtlas : undefined} className="mobile-nav-item" aria-label={item.label} aria-current={current}><Icon aria-hidden="true" className={active ? "stroke-[2.5]" : "stroke-2"} /><span>{item.shortLabel}</span></Link>;
         })}
         <button id="mobile-more-trigger" type="button" onClick={() => window.dispatchEvent(new CustomEvent(SITE_MENU_TOGGLE_EVENT, { detail: { triggerId: "mobile-more-trigger" } }))} className="mobile-nav-item" aria-label={isMenuOpen ? "メニューを閉じる" : "その他メニューを開く"} aria-controls={SITE_MENU_ID} aria-expanded={isMenuOpen}>
           <MoreHorizontal aria-hidden="true" /><span>その他</span>

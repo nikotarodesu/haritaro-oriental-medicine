@@ -11,7 +11,8 @@ const load = createDataLoader();
 const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
 const { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } = load('src/utils/caseStudyProgress');
 const { caseReviewLectureHref, caseReviewReturnHref } = load('src/utils/caseStudyNavigation');
-const { CASE_STUDY_DESCRIPTORS, PUBLIC_CASE_STUDY_IDS } = load('src/data/cases/caseStudyCatalog');
+const { CASE_STUDY_DESCRIPTORS, PUBLIC_CASE_STUDY_IDS, getCaseStudyUsingAcupoint } = load('src/data/cases/caseStudyCatalog');
+const { ATLAS_LEARNING_PAIRS, getAtlasLearningPair } = load('src/data/tsubo/atlas/learningPairs');
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
 const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
 const { NEARBY_COMPARISONS } = load('src/data/tsubo/atlas/nearbyComparisons');
@@ -135,6 +136,15 @@ for (const [study, steps, answeredAt] of [
 const resume = renderToStaticMarkup(React.createElement(component('src/components/cases/CaseStudyResume.tsx'), { studies: CASE_STUDY_DESCRIPTORS }));
 assert(resume.includes('href="/cases/' + latestCase.id + '#case-question-3"'), 'Resume opens the first unanswered question in the latest unfinished case');
 learningValues = {};
+assert.equal(getCaseStudyUsingAcupoint('pc6')?.id, 'case-05-insomnia-heart-kidney');
+assert.equal(getCaseStudyUsingAcupoint('LI4')?.id, 'case-11-cervicobrachial-syndrome');
+assert.equal(getCaseStudyUsingAcupoint('missing'), undefined);
+for (const pair of ATLAS_LEARNING_PAIRS) {
+  assert(PUBLIC_CASE_STUDY_IDS.includes(pair.caseId), pair.caseId);
+  assert.equal(getAtlasLearningPair(pair.codes), pair);
+  assert.equal(getAtlasLearningPair([...pair.codes].reverse()), pair);
+  assert.equal(getAtlasLearningPair([...pair.codes, 'PC7']), undefined);
+}
 
 const Vessel = component('src/components/kikei/KikeiDetailClient.tsx');
 assert.equal(KIKEI_VESSELS.length, 8);

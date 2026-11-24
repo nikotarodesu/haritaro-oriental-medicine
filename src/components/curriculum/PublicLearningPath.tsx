@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import TaijiSymbol from "@/components/graphics/TaijiSymbol";
 import { getLectureIndexGroups } from "@/data/publicLectures/readingUnits";
 
@@ -53,10 +53,7 @@ export default function PublicLearningPath() {
 
   return (
     <nav className="learning-path" aria-labelledby="learning-path-title">
-      <div className="learning-path-heading">
-        <h2 id="learning-path-title" className="reader-section-title">講義を順に読む</h2>
-        <a href="#learn-courses-heading" className="ui-text-link">講義の目次<ArrowDown size={16} aria-hidden="true" /></a>
-      </div>
+      <h2 id="learning-path-title" className="reader-section-title">講義を順に読む</h2>
       <ol className="learning-path-stops" role="list">
         {STOPS.map(stop => {
           const entry = chapters.find(chapter => chapter.id === stop.chapter)?.entries[0];

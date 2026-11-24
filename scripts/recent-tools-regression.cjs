@@ -18,6 +18,17 @@ function load(relative) {
   return exports;
 }
 const { RECENT_TOOL_CATALOG, RECENT_TOOLS_STORAGE_KEY, recentToolHref, readRecentToolPaths, updateRecentToolPaths } = load('src/utils/recentTools');
+const { readAtlasReturnPosition } = load('src/utils/atlasReturnPosition');
+for (const href of ['/tsubo?q=%E5%86%85%E9%96%A2&meridian=PC', '/tsubo/pc6#acupoint-location', '/tsubo/compare?a=li4&b=lr3', '/tsubo/extra-points/yintang']) {
+  const position = readAtlasReturnPosition(JSON.stringify({ href, scrollY: 234 }));
+  assert.equal(position?.href, href);
+  assert.equal(position?.scrollY, 234);
+}
+for (const href of ['javascript:alert(1)', '//example.com/tsubo', '/\\example.com/tsubo', '/tsubo/../clinical', '/notes', '/tsubo/practice']) {
+  assert.equal(readAtlasReturnPosition(JSON.stringify({ href, scrollY: 234 })), null, href);
+}
+assert.equal(readAtlasReturnPosition('invalid'), null);
+assert.equal(readAtlasReturnPosition('{"href":"/tsubo","scrollY":-1}'), null);
 assert.equal(RECENT_TOOLS_STORAGE_KEY, 'haritaro_recent_tools', 'old storage is retained');
 assert.equal(new Set(RECENT_TOOL_CATALOG.map(tool => tool.href)).size, RECENT_TOOL_CATALOG.length);
 assert.equal(recentToolHref('/notes', 'learning'), null);
@@ -149,6 +160,7 @@ vm.runInNewContext(navCode, { exports: navExports, require: id => {
   if (id === 'next/link') return { __esModule: true, default: NavigationLink };
   if (id === 'next/navigation') return { usePathname: () => pathname, useSearchParams: () => { queryReads++; return searchParams; } };
   if (id === '@/config/navigationItems') return { ...navigationData, DEFAULT_NAV_CONFIG: { ...DEFAULT_NAV_CONFIG, items: ['diagnosis', 'gorou', 'review', 'curriculum'] } };
+  if (id === '@/hooks/useAtlasReturn') return { useAtlasReturn: () => undefined };
   if (id === '@/hooks/useViewportLayout') return { useViewportLayout() {} };
   if (id === '@/utils/siteMenu') return load('src/utils/siteMenu');
   if (id === './NavCustomizeModal') return { __esModule: true, default: () => null };

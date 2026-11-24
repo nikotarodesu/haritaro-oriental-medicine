@@ -9,6 +9,7 @@ import type { AcupointMaster } from "@/data/tsubo/types";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
+import { getAtlasLearningPair } from "@/data/tsubo/atlas/learningPairs";
 import type { Metadata } from "next";
 import CompareClient, { type ComparisonChoice, type ComparisonPoint } from "./CompareClient";
 import { resolveComparisonCodes, type ComparisonSearchParams } from "./selection";
@@ -53,6 +54,7 @@ function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
 
 export default async function TsuboComparePage({ searchParams }: { searchParams: Promise<ComparisonSearchParams> }) {
   const selectedCodes = resolveComparisonCodes(await searchParams, comparisonChoices);
+  const learningPair = getAtlasLearningPair(selectedCodes);
   const selectedTsubos = selectedCodes.flatMap(code => {
     const point = pointsByCode.get(code);
     return point ? [getComparisonPoint(point)] : [];
@@ -70,6 +72,19 @@ export default async function TsuboComparePage({ searchParams }: { searchParams:
             </nav>
             <h1>経穴を比べる</h1>
             <p>{comparisonChoices.length}穴から2〜3穴を選び、場所の目印や注意点を比べます。</p>
+            {learningPair && (
+              <div className="mt-3 print:hidden">
+                <Link
+                  href={`/cases/${learningPair.caseId}`}
+                  prefetch={false}
+                  className="page-secondary-action"
+                  data-analytics-action="compare_case"
+                >
+                  {learningPair.caseLabel}
+                </Link>
+                <p className="text-sm">{learningPair.casePrompt}</p>
+              </div>
+            )}
           </div>
           <AtlasOverviewArt />
         </header>

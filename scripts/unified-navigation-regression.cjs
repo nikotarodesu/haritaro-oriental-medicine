@@ -10,7 +10,9 @@ const root = path.resolve(__dirname, '..');
 const load = createDataLoader({});
 const nav = load('src/config/navigationItems');
 const menu = load('src/utils/siteMenu');
+const { ATLAS_RETURN_STORAGE_KEY } = load('src/utils/atlasReturnPosition');
 const events = new Map(), documentEvents = new Map(), instances = new Map(), frames = new Map();
+const savedPositions = new Map(), navigations = [];
 let activeHooks, dirty = false, nextFrame = 1, desktop = false, pathname = '/clinical';
 const pendingEffects = [];
 const add = (map, name, callback) => { if (!map.has(name)) map.set(name, new Set()); map.get(name).add(callback); };
@@ -41,7 +43,10 @@ const document = {
   removeEventListener(name, callback) { remove(documentEvents, name, callback); },
 };
 const window = {
-  location: { search: '' },
+  location: { get pathname() { return pathname; }, search: '', hash: '' },
+  scrollY: 0,
+  scrollTo({ top }) { this.scrollY = top; },
+  sessionStorage: { getItem: key => savedPositions.get(key) ?? null, setItem: (key, value) => savedPositions.set(key, value) },
   addEventListener(name, callback) { add(events, name, callback); },
   removeEventListener(name, callback) { remove(events, name, callback); },
   dispatchEvent(event) { emit(events, event); return true; },
@@ -68,13 +73,13 @@ const hooks = {
 const Link = () => null, Customize = () => null, SearchModal = () => null;
 let installRequested = 0;
 add(events, 'haritaro:install-app', () => installRequested++);
-function component(relative) {
+function component(relative, name = 'default') {
   const filename = path.join(root, relative), exports = {};
   const code = ts.transpileModule(fs.readFileSync(filename, 'utf8'), { fileName: filename,
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
   }).outputText;
   vm.runInNewContext(code, {
-    exports, window, document, URLSearchParams, HTMLElement: Element, Node: Element, Event: BrowserEvent, CustomEvent: BrowserEvent,
+    exports, window, document, URLSearchParams, Element, HTMLElement: Element, Node: Element, Event: BrowserEvent, CustomEvent: BrowserEvent,
     requestAnimationFrame(callback) { const id = nextFrame++; frames.set(id, callback); return id; },
     cancelAnimationFrame(id) { frames.delete(id); },
     ResizeObserver: class { observe() {} disconnect() {} }, MutationObserver: class { observe() {} disconnect() {} },
@@ -83,18 +88,21 @@ function component(relative) {
       if (id === 'react') return hooks;
       if (id === 'next/link') return { __esModule: true, default: Link };
       if (id === 'next/dynamic') return { __esModule: true, default: () => SearchModal };
-      if (id === 'next/navigation') return { usePathname: () => pathname, useSearchParams: () => new URLSearchParams() };
+      if (id === 'next/navigation') return { usePathname: () => pathname, useSearchParams: () => new URLSearchParams(window.location.search), useRouter: () => ({ push: (href, { scroll }) => navigations.push([href, scroll]) }) };
       if (id === '@/config/navigationItems') return nav;
       if (id === '@/config/acupunctureLearning') return load('src/config/acupunctureLearning');
       if (id === '@/config/series') return load('src/config/series');
       if (id === '@/utils/siteMenu') return menu;
+      if (id === '@/utils/atlasReturnPosition') return load('src/utils/atlasReturnPosition');
+      if (id === '@/utils/analytics') return { setAnalyticsDisabled() {} };
+      if (id === '@/hooks/useAtlasReturn') return { useAtlasReturn: component('src/hooks/useAtlasReturn.ts', 'useAtlasReturn') };
       if (id === '@/hooks/useViewportLayout') return { useViewportLayout() {} };
       if (id === './NavCustomizeModal') return { __esModule: true, default: Customize };
       if (id.startsWith('./') || id === '@/components/brand/BrandLogo') return { __esModule: true, default: () => null };
       return require(id);
     },
   }, { filename });
-  return exports.default;
+  return exports[name];
 }
 const Header = component('src/components/Header.tsx');
 const BottomBoundary = component('src/components/navigation/MobileBottomNav.tsx');
@@ -250,6 +258,34 @@ emit(documentEvents, { type: 'transitionend', target: new Element(), propertyNam
 assert.equal(document.documentElement.dataset.navigationLayout, 'wide', 'Descendant font transitions are ignored');
 emit(documentEvents, { type: 'transitionend', target: document.documentElement, propertyName: 'font-size' }); flushFrames();
 assert.equal(document.documentElement.dataset.navigationLayout, 'compact', 'Larger-text compact layouts restore their lower-navigation decision after transition');
+
+function tapAtlasShortcut() {
+  const atlas = nodes(owners[1].tree).find(node => node.type === Link && node.props.href === '/tsubo');
+  let intercepted = false;
+  atlas.props.onNavigate({ preventDefault() { intercepted = true; } });
+  return intercepted;
+}
+assert.equal(tapAtlasShortcut(), false, 'A first visit opens the atlas normally');
+pathname = '/tsubo/compare';
+window.location.search = '?a=li4&b=lr3';
+render();
+window.scrollY = 510;
+emit(events, { type: 'scroll' });
+pathname = '/learn';
+window.location.search = '';
+window.scrollY = 0;
+render();
+assert.equal(tapAtlasShortcut(), true);
+assert.deepEqual(navigations.at(-1), ['/tsubo/compare?a=li4&b=lr3', false]);
+assert.equal(JSON.parse(savedPositions.get(ATLAS_RETURN_STORAGE_KEY)).scrollY, 510);
+pathname = '/tsubo/compare';
+window.location.search = '?a=li4&b=lr3';
+render();
+flushFrames();
+flushFrames();
+assert.equal(window.scrollY, 510, 'The atlas shortcut restores the previous scroll position');
+assert.equal(tapAtlasShortcut(), false, 'Tapping the active atlas shortcut still opens the main atlas');
+
 for (const owner of owners) for (const slot of owner.state) slot?.cleanup?.();
 assert.equal(documentEvents.get('transitionend')?.size || 0, 0, 'Unmount removes the font-transition listener');
 console.log('Unified navigation regression passed: clinical home, concise guide and comparison links, collapsed practice, public constitution and Gorou modes, retained custom comparison shortcut, one panel for both controls, focus return, search/install handoff, and preserved four-slot customization.');

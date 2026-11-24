@@ -69,6 +69,7 @@ const bottom = client('src/components/navigation/MobileBottomNav.tsx', {
   'next/navigation': { usePathname: () => '/clinical', useSearchParams: () => new URLSearchParams() },
   '@/config/navigationItems': { ...navigation, loadNavUserConfig: () => customConfig },
   '@/utils/siteMenu': menuEvents,
+  '@/hooks/useAtlasReturn': { useAtlasReturn: () => undefined },
   '@/hooks/useViewportLayout': { useViewportLayout() {} },
   './NavCustomizeModal': { __esModule: true, default: Customize },
 }, {
@@ -166,8 +167,6 @@ const renderComparison = (href = comparisonHref) => {
 };
 renderComparison();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
-const relatedCase = () => nodes(compare.tree()).find(node => node.props?.['data-analytics-action'] === 'compare_case');
-assert.equal(relatedCase().props.href, '/cases/case-01-headache-liver-fire');
 const locationCheck = () => nodes(compare.tree()).find(node => node.type === AtlasLocationCheck);
 assert.equal(locationCheck().props.question.answerCode, 'LI4');
 assert.equal(scroll().props.tabIndex, 0, 'The two-direction scrolling region is reachable by keyboard');
@@ -214,7 +213,6 @@ assert.equal(comparisonHref, '/tsubo/compare?a=lr3');
 renderComparison();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 6);
-assert.equal(relatedCase(), undefined, 'A single point has no pair-specific case');
 assert.equal(locationCheck(), undefined, 'A single point has no pair-specific question');
 
 compare.button('太衝を比較から外す').props.onClick();
@@ -225,7 +223,6 @@ assert.equal(scroll(), undefined, 'Removing all points leaves the picker visible
 renderComparison('/tsubo/compare?code=LI4&b=LR3&c=ＳＴ３６');
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 4, 'URL synchronization displays all three points without an account');
 assert(itemRows().every(row => mobilePointNames(row) === '合谷,太衝,足三里'), 'Each item stays labeled when three points stack');
-assert.equal(relatedCase(), undefined, 'The case link is limited to the exact pair');
 renderComparison('/tsubo/compare?a=ST36&b=LI4');
 renderComparison('/tsubo/compare?a=LR3&b=ST36');
 const comparisonHeaders = nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col');
@@ -352,4 +349,41 @@ assert(rules.some(rule => rule.parent.type === 'atrule' && rule.parent.params ==
 assert(rules.some(rule => rule.parent.type === 'atrule' && rule.parent.params === 'print' && rule.selector === '.tsubo-compare-scroll' && rule.nodes.some(node => node.prop === 'overflow' && node.value === 'visible')), 'Printing does not clip the scrolling table');
 assert(rules.some(rule => rule.parent.type === 'atrule' && rule.parent.params === 'print' && rule.selector === '.tsubo-compare-table thead th, .tsubo-compare-table tr > :first-child' && rule.nodes.some(node => node.prop === 'position' && node.value === 'static')), 'Print rules use equal specificity to disable both sticky axes');
 assert(declares('.tsubo-compare-page :is(button, input), .anatomy-viewer :is(button, a)', 'min-height', '44px'));
-console.log('Tablet usability regression passed: shared header layout, retained custom slots, measured gutters, published anatomy selection, keyboard/reset synchronization, labeled two-axis comparison, fixed headers and print recovery.');
+
+async function checkComparisonHeader() {
+  const emptyComponent = { __esModule: true, default: () => null };
+  const page = client('src/app/tsubo/compare/page.tsx', {
+    'next/link': { __esModule: true, default: Link },
+    '@/config/seo': { pageSocialMetadata: () => ({}), seriesPageTitle: title => title },
+    '@/components/tsubo/AtlasOverviewArt': emptyComponent,
+    '@/components/tsubo/HeguAtlasPreview': { heguAtlasReading: { traditional: '', caution: '' } },
+    '@/components/tsubo/atlas/HeguHandDiagram': emptyComponent,
+    '@/components/tsubo/atlas/PointAtlasDiagrams': { PointAtlasThumbnail: () => null },
+    '@/data/tsubo': {
+      ALL_ACUPOINTS: TSUBOS.map(point => ({ ...point, codeLower: point.id, legacyId: point.id, categories: point.category })),
+      DETAILED_ACUPOINTS: {},
+    },
+    '@/data/tsubo/atlas/articles': { ATLAS_ARTICLES: Object.fromEntries(TSUBOS.map(point => [point.id, { traditional: [''], cautions: [''] }])) },
+    '@/data/tsubo/atlas/evidence': { getAcupointStudies: () => [] },
+    '@/data/tsubo/atlas/markers': { ATLAS_POINT_MARKERS: {} },
+    '@/data/tsubo/atlas/learningPairs': load('src/data/tsubo/atlas/learningPairs'),
+    './CompareClient': emptyComponent,
+    './selection': comparisonSelection,
+  });
+  for (const [params, href] of [
+    [{}, '/cases/case-01-headache-liver-fire'],
+    [{ a: 'lr3', b: 'li4' }, '/cases/case-01-headache-liver-fire'],
+    [{ a: 'lr3' }, undefined],
+    [{ a: 'li4', b: 'lr3', c: 'st36' }, undefined],
+  ]) {
+    const tree = await page.render({ searchParams: Promise.resolve(params) });
+    const header = nodes(tree).find(node => node.type === 'header');
+    const links = nodes(header).filter(node => node.props?.['data-analytics-action'] === 'compare_case');
+    assert.equal(links.length, href ? 1 : 0, 'Only the matching pair shows a case at the top');
+    assert.equal(links[0]?.props.href, href);
+  }
+}
+
+checkComparisonHeader().then(() => {
+  console.log('Tablet usability regression passed: shared header layout, retained custom slots, measured gutters, published anatomy selection, keyboard/reset synchronization, labeled two-axis comparison, case shortcuts, fixed headers and print recovery.');
+}).catch(error => { console.error(error); process.exitCode = 1; });

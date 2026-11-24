@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Droplets, LibraryBig, List, Network, Scale } from "lucide-react";
+import { ArrowDown, ArrowRight, Droplets, LibraryBig, List, Network, Scale } from "lucide-react";
 import PublicLearningPath from "@/components/curriculum/PublicLearningPath";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PublicReadingStart from "@/components/curriculum/PublicReadingStart";
@@ -41,7 +41,11 @@ export default function LearnGuidePage() {
         readingUnits.map(({ href, title }) => ({ href, name: title })),
       ) }} />
       <div className="learning-guide-intro">
-        <PageIntro title={heading} description={introduction} art="study" />
+        <PageIntro title={heading} description={introduction} art="study">
+          <a href="#learn-courses-heading" className="ui-text-link mt-1 inline-flex min-h-11 items-center">
+            講義の目次<ArrowDown size={16} aria-hidden="true" />
+          </a>
+        </PageIntro>
         <nav aria-label="学び方を選ぶ" className={`learning-options ${styles.options}`}>
           <PublicReadingStart firstHref={readingUnits[0].href} className={`learning-option ${styles.primaryOption}`} />
           <Link href={ACUPUNCTURE_GUIDE.href} className="learning-option">

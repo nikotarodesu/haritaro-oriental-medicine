@@ -2,23 +2,28 @@
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import type { ReactNode } from "react";
 import { useLearningSync } from "@/contexts/LearningSyncContext";
 import { caseQuestionAnchor } from "@/utils/caseStudyNavigation";
 import { getCaseStudyProgress, type CaseStudyDescriptor } from "@/utils/caseStudyProgress";
 
-export default function CaseStudyResume({ studies, className = "" }: { studies: readonly CaseStudyDescriptor[]; className?: string }) {
+export default function CaseStudyResume({ studies, className = "", fallback = null }: {
+  studies: readonly CaseStudyDescriptor[];
+  className?: string;
+  fallback?: ReactNode;
+}) {
   const { ready, values } = useLearningSync();
-  if (!ready) return null;
+  if (!ready) return fallback;
 
   const resume = studies
     .map(study => ({ study, progress: getCaseStudyProgress(values, study) }))
     .filter(({ progress }) => progress.answered > 0 && !progress.complete)
     .sort((left, right) => right.progress.updatedAt - left.progress.updatedAt)[0];
-  if (!resume) return null;
+  if (!resume) return fallback;
 
   const { study, progress } = resume;
   const nextQuestion = study.reasoningSteps.find(({ stepNumber }) => !progress.answers[stepNumber]);
-  if (!nextQuestion) return null;
+  if (!nextQuestion) return fallback;
 
   return (
     <section aria-labelledby="case-resume-title" className={`flex flex-wrap items-center justify-between gap-3 rounded-xl border border-frame bg-panel p-4 ${className}`}>

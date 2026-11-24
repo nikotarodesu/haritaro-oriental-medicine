@@ -7,6 +7,7 @@ import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from '@/config/acupuncture
 import { pageSocialMetadata, SITE_ORIGIN } from '@/config/seo';
 import { CASE_STUDY_DESCRIPTORS } from '@/data/cases/caseStudyCatalog';
 import CaseStudyResume from '@/components/cases/CaseStudyResume';
+import { CASE_REASONING_ANCHOR } from '@/utils/caseStudyNavigation';
 import { ClinicalCheckArtwork } from '@/components/clinical/ClinicalArtwork';
 import ClinicalDashboard from '@/components/clinical/ClinicalDashboard';
 import styles from '@/components/clinical/ClinicalPractice.module.css';
@@ -78,6 +79,8 @@ const schema = {
 };
 
 export default function ClinicalLandingPage() {
+  const firstCase = CASE_STUDY_DESCRIPTORS[0];
+  const firstCaseHref = firstCase ? `/cases/${firstCase.id}` : undefined;
   return (
     <div className={`clinical-page clinical-page--focused ${styles.landing}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }} />
@@ -85,7 +88,16 @@ export default function ClinicalLandingPage() {
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
           <p>架空の症例を読み、どの所見をもとに見立てやツボを選ぶか考えます。</p>
-          <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" />
+          <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" fallback={firstCaseHref && (
+            <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 print:hidden">
+              <Link href={firstCaseHref} className="page-primary-action">
+                最初の模擬症例を開く<ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link href={`${firstCaseHref}#${CASE_REASONING_ANCHOR}`} scroll={false} className="ui-text-link inline-flex min-h-11 items-center">
+                設問から始める
+              </Link>
+            </div>
+          )} />
         </div>
         <figure className={styles.casePreview}>
           <figcaption>模擬症例で集める情報</figcaption>
