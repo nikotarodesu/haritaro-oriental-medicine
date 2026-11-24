@@ -25,8 +25,6 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints, children 
         <figcaption>
           <span className="block text-sm font-semibold">右手の甲</span>
           ①人差し指につながる骨の中央から、②親指につながる骨の方へ少し寄ったところです。
-          <br />
-          <a href="#acupoint-anatomy-diagram" className="atlas-source-link inline-flex min-h-11 items-center">同じ番号を断面図で見る</a>
         </figcaption>
       </figure>
     }>

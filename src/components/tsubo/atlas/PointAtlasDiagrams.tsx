@@ -157,7 +157,6 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
             <p className="atlas-dimension-guide">白丸が起点、矢印が測る方向です。{measurements.some(({ alternative }) => alternative) && "ひし形は代替位置です。"}</p>
             <CloseUpMeasurementKey measurements={measurements} />
           </>}
-          {(guidedPoint || elbowPoint) && <a href="#acupoint-anatomy-diagram" className="atlas-source-link inline-flex min-h-11 items-center">同じ番号を断面図で見る</a>}
         </figcaption>
       </figure>
     }>
