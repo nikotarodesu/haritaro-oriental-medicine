@@ -1,7 +1,7 @@
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
-import { circledLandmarkNumber, sharedAnatomyLandmarks } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
+import { circledLandmarkNumber, forearmSurfaceLandmarks } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
 
-const { palmarisLongus, flexorCarpiRadialis } = sharedAnatomyLandmarks.pc6;
+const { palmarisLongus, flexorCarpiRadialis } = forearmSurfaceLandmarks;
 
 export function VolarForearmArtwork() {
   return (

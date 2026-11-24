@@ -1,6 +1,8 @@
 import { AcupointDetail } from "./types";
 import { ACUPOINTS_MASTER } from "./acupointsMaster";
 import { CROSS_SECTIONS } from "./crossSectionsData";
+import { forearmSurfaceLandmarks } from "./atlas/sharedAnatomyLandmarks";
+import { whoLocationNotes, whoLocations } from "./atlas/whoLocations";
 
 function elbowTendonPoint(code: "lu5" | "pc3"): AcupointDetail {
   const point = ACUPOINTS_MASTER.find(point => point.codeLower === code);
@@ -19,9 +21,24 @@ function elbowTendonPoint(code: "lu5" | "pc3"): AcupointDetail {
   };
 }
 
+function forearmTendonPoint(code: "pc4" | "pc5"): AcupointDetail {
+  const point = ACUPOINTS_MASTER.find(point => point.codeLower === code);
+  if (!point) throw new Error(`Missing master record for ${code}`);
+  return {
+    ...point,
+    hasDetailedAnatomy: true,
+    howToLocate: [whoLocations[code]],
+    palpationLandmarks: ["手のひら側の手首のしわ", ...Object.values(forearmSurfaceLandmarks).map(({ name }) => name)],
+    pitfalls: whoLocationNotes[code] ?? "",
+    crossSection: CROSS_SECTIONS[code],
+  };
+}
+
 export const DETAILED_ACUPOINTS: Record<string, AcupointDetail> = {
   lu5: elbowTendonPoint("lu5"),
   pc3: elbowTendonPoint("pc3"),
+  pc4: forearmTendonPoint("pc4"),
+  pc5: forearmTendonPoint("pc5"),
   li4: {
     id: "li4",
     legacyId: "gokoku",

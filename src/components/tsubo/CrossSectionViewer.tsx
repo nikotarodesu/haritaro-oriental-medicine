@@ -313,7 +313,7 @@ export default function CrossSectionViewer({
           <div className="min-w-0 space-y-1">
             {model.surfacePoint && <p id={surfacePointId}>
               <strong>丸印は体表の位置です。</strong> {model.surfacePoint.description}
-              {" "}ひじの前の横じわ付近を一つの模式図にまとめています。
+              {" "}{model.surfacePoint.diagramNote}
             </p>}
             {numberedLandmarks.length > 0 && <p id={landmarkSummaryId}>
               位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。{" "}

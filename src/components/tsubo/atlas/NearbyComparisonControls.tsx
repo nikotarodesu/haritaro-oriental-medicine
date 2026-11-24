@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Layers } from "lucide-react";
 import { useId, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 import type { NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
@@ -13,6 +14,7 @@ type PointChoice = {
   button: readonly [number, number];
   leader: readonly [number, number];
   difference: string;
+  anatomyHref?: string;
 };
 
 type ComparisonCopy = Pick<NearbyComparison, "id" | "region" | "heading" | "figureLabel" | "quizFigureLabel" | "question">;
@@ -155,18 +157,25 @@ export default function NearbyComparisonControls({
         )}
         {(!isQuiz || isSolved) && (
           <ol className="atlas-comparison-reading" role="list" aria-label="ツボごとの位置と詳しい図">
-            {points.map(({ code, name, difference }, index) => (
+            {points.map(({ code, name, difference, anatomyHref }, index) => (
               <li key={code} data-selected={code === markedCode || undefined}>
                 <span className="atlas-comparison-number" aria-hidden="true">{index + 1}</span>
                 <div>
-                  <Link
-                    href={`/tsubo/${code}#acupoint-location`}
-                    prefetch={false}
-                    className="atlas-comparison-link"
-                    aria-label={`${name}の詳しい図を見る（${code.toUpperCase()}）`}
-                  >
-                    {name} <span className="atlas-comparison-code">{code.toUpperCase()}</span>
-                  </Link>
+                  <div className="atlas-comparison-links">
+                    <Link
+                      href={`/tsubo/${code}#acupoint-location`}
+                      prefetch={false}
+                      className="atlas-comparison-link"
+                      aria-label={`${name}の詳しい図を見る（${code.toUpperCase()}）`}
+                    >
+                      {name} <span className="atlas-comparison-code">{code.toUpperCase()}</span>
+                    </Link>
+                    {anatomyHref && (
+                      <a href={anatomyHref} className="atlas-comparison-link atlas-comparison-anatomy-link" aria-label={`${name}の断面図を見る`}>
+                        <Layers size={16} aria-hidden="true" />断面図
+                      </a>
+                    )}
+                  </div>
                   <p>{difference}</p>
                 </div>
               </li>

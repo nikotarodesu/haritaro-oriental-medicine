@@ -111,7 +111,10 @@ function elbowSection({ code, name, x, location }: {
       horizontal: ["親指側", "小指側"],
       vertical: ["ひじの前", "ひじの後ろ"],
     },
-    surfacePoint: { x, y: 74, label: `${name} ${code}`, description: location },
+    surfacePoint: {
+      x, y: 74, label: `${name} ${code}`, description: location,
+      diagramNote: "ひじの前の横じわ付近を一つの模式図にまとめています。",
+    },
     needleTrack: { angle: "専門家確認待ち", safeDepth: "専門家確認待ち", targetStructure: "個別手順は掲載保留" },
     layers: anatomyLayers,
     boundaries: anatomyBoundaries,

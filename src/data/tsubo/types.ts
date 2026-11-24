@@ -138,7 +138,7 @@ export interface CrossSectionModel {
   surfaceMap?: SurfaceMapData; // 体表切断線連動マップ
   svgElements: SvgAnatomicalElement[];
   diagramViewBox?: string;
-  surfacePoint?: { x: number; y: number; label: string; description: string };
+  surfacePoint?: { x: number; y: number; label: string; description: string; diagramNote: string };
   explodedSvgElements?: SvgAnatomicalElement[]; // 層分解表示用SVG
   references: string[];
   referenceLedger?: ReferenceLedgerItem[]; // 詳細資料台帳

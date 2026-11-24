@@ -143,7 +143,8 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
       )}
     </ZoomableAtlasDiagram>
   );
-  const guidedPoint = point.codeLower === "pc6" || point.codeLower === "st36" ? point.codeLower : undefined;
+  const code = point.codeLower;
+  const guidedPoint = code === "pc4" || code === "pc5" || code === "pc6" || code === "st36" ? code : undefined;
 
   return (
     <AtlasLocationFigures notes={children} primary={

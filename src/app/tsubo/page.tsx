@@ -20,12 +20,14 @@ const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(reg
 const flagshipCodes = ["li4", "st36", "lr3", "pc6", "sp6", "gv20", "lu7", "ki1", "bl23", "cv12", "gb20", "ht7"];
 const flagshipPoints = flagshipCodes.map(code => ALL_ACUPOINTS.find(point => point.codeLower === code)).filter(point => !!point);
 const anatomyCards = [
-  { code: "li4", structure: "中手骨と筋" },
-  { code: "pc6", structure: "前腕の腱" },
-  { code: "st36", structure: "すねの骨と筋" },
+  { code: "pc6", structure: "手首から2寸" },
+  { code: "pc5", structure: "手首から3寸" },
+  { code: "pc4", structure: "手首から5寸" },
   { code: "li11", structure: "ひじの外側" },
   { code: "lu5", structure: "腱の親指側" },
   { code: "pc3", structure: "腱の小指側" },
+  { code: "li4", structure: "中手骨と筋" },
+  { code: "st36", structure: "すねの骨と筋" },
 ].flatMap(({ code, structure }) => {
   const point = ALL_ACUPOINTS.find(point => point.codeLower === code);
   return point && DETAILED_ACUPOINTS[code]?.crossSection ? [{ point, structure }] : [];
@@ -36,7 +38,7 @@ const studyGroups = [
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
 ];
 
-const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。体表の位置図や名前の由来に加え、合谷や曲池・尺沢・曲沢などでは周りの骨や腱を断面図で学べます。";
+const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。体表の位置図や名前の由来に加え、内関・間使・郄門や曲池などは断面図でも学べます。";
 
 export default function TsuboPage() {
   const guideLinks = (

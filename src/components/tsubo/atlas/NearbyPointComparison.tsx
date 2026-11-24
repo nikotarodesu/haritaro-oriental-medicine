@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAcupointByCode } from "@/data/tsubo";
+import { DETAILED_ACUPOINTS, getAcupointByCode } from "@/data/tsubo";
 import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
 import NearbyComparisonControls from "./NearbyComparisonControls";
@@ -12,7 +12,10 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
 }) {
   const points = comparison.points.flatMap(position => {
     const point = getAcupointByCode(position.code);
-    return point ? [{ ...position, name: point.name }] : [];
+    if (!point) return [];
+    const anatomyHref = comparison.id === "forearm" && DETAILED_ACUPOINTS[point.codeLower]?.crossSection
+      ? `/tsubo/${point.codeLower}#acupoint-anatomy-diagram` : undefined;
+    return [{ ...position, name: point.name, anatomyHref }];
   });
   if (points.length < 2) return null;
   const { id, region, heading, figureLabel, quizFigureLabel, question } = comparison;
@@ -36,7 +39,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
           </p>
         )}
         {id === "forearm" && (
-          <p>手のひら側の手首とひじのしわの間を12等分します。3穴とも二本のすじ（腱）の間で、手首からひじへ何寸進むかが見分ける目印です。</p>
+          <p>手のひら側の手首とひじのしわの間を12等分します。二本の腱を目印に、手首からひじへ何寸進むかで3穴を見分けます。</p>
         )}
       </>}
       relatedReading={id === "shoulder" && (

@@ -1,5 +1,6 @@
 import { CrossSectionModel } from "./types";
 import { ELBOW_CROSS_SECTIONS } from "./elbowCrossSections";
+import { FOREARM_CROSS_SECTIONS } from "./forearmCrossSections";
 
 /**
  * 個別に編集した経穴の断面解剖データ
@@ -8,6 +9,7 @@ import { ELBOW_CROSS_SECTIONS } from "./elbowCrossSections";
  */
 export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
   ...ELBOW_CROSS_SECTIONS,
+  ...FOREARM_CROSS_SECTIONS,
   li4: {
     id: "cs-li4",
     procedureReviewStatus: "pending_expert_review",

@@ -57,7 +57,11 @@ export function getPublicCrossSectionModel(model: CrossSectionModel): CrossSecti
     adjacentStructures: model.adjacentStructures?.map(anatomyOnly),
     svgElements: getPublicCrossSectionElements(model),
     diagramViewBox: model.diagramViewBox,
-    ...(model.surfacePoint && { surfacePoint: { ...model.surfacePoint, description: getPublicAnatomyDescription(model.surfacePoint) } }),
+    ...(model.surfacePoint && { surfacePoint: {
+      ...model.surfacePoint,
+      description: getPublicAnatomyDescription(model.surfacePoint),
+      diagramNote: getPublicAnatomyDescription({ description: model.surfacePoint.diagramNote }),
+    } }),
     references: model.references,
     referenceLedger: model.referenceLedger,
     referencesLedger: model.referencesLedger,

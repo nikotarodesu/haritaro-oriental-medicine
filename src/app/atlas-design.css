@@ -456,6 +456,9 @@
   text-underline-offset: .2em;
 }
 .atlas-comparison-link:hover { text-decoration-thickness: 2px; }
+.atlas-comparison-links { display: flex; flex-wrap: wrap; gap: 0 .875rem; }
+.atlas-comparison-anatomy-link { color: var(--atlas-accent); font-size: .875rem; white-space: nowrap; }
+.atlas-comparison-anatomy-link svg { flex: none; }
 .atlas-comparison-code { color: var(--atlas-muted); font-size: .8125rem; }
 .atlas-comparison-reading p { font-size: .9375rem; line-height: 1.65; }
 
