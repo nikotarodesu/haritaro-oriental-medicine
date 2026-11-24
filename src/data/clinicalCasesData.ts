@@ -17,7 +17,14 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "IT企業企画職（長時間のPC作業）",
       chiefComplaint: "右のこめかみが強くズキズキして、目も赤くなります。いらいらすることが増えました。",
-      historyOfPresentIllness: "半年前の昇進から仕事が増え、1か月ほど前から強い頭痛を繰り返している。腹が立ったときや仕事が立て込んだときに痛みが強まるという。耳鳴りと口の苦さもあり、市販の鎮痛薬は以前より効きにくい。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "半年前", description: "昇進して仕事が増えた。" },
+          { when: "約1か月前", description: "強い頭痛を繰り返すようになった。" },
+          { when: "現在", description: "腹が立ったときや仕事が立て込むときに痛みが強まるという。市販の鎮痛薬が以前より効きにくい。" },
+        ],
+        context: "耳鳴りと口の苦さもある。",
+      },
       pastHistory: ["特記事項なし"],
       lifestyle: "寝るのは毎日、午前1時を過ぎてからです。夕食は遅く、脂っこいものや辛いものをよく食べます。コーヒーは1日4杯飲みます。",
     },
@@ -94,6 +101,11 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "目の赤み、口の苦さ、こめかみの拍動する痛みを、肝火上炎の説明と照らします。ここでいう「火」は伝統医学の言葉です。頭痛や目の症状の原因は医療機関で確認します。",
+      observations: [
+        { target: "complaint", label: "こめかみの痛みの訴え" },
+        { target: "inspection", label: "目の充血と顔色" },
+        { target: "history", label: "頭痛の経過と口の苦さ" },
+      ],
       differentialDiagnosis: "肝陽上亢を比べるなら、長く続く腰のだるさや舌苔の少なさなど、陰虚を考える所見も聞きます。この例では、黄色く乾いた舌苔と便秘があり、熱の強さを考えます。",
       pointRationale: "行間と太衝は同じ肝経で、清肝瀉火を読むときに比べる二穴です。頭や首で位置を調べる例として、風池や太陽も挙げています。",
       clinicalPitfall: "新しく増悪する頭痛と眼の充血を、ストレスや肝火だけで説明しない。突然の激痛、意識・言語・手足の異常があるときは、すぐに119番へ連絡してください。急な強い眼痛や見え方の変化も緊急評価を優先し、遠隔穴への施術の反応を待たない。",
@@ -117,7 +129,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "事務職",
       chiefComplaint: "昼ごはんの後は眠くて起きていられないくらいです。体が重くて、軟らかい便も続いています。",
-      historyOfPresentIllness: "半年前から、食後に強い眠気と胃もたれがある。朝から疲れが残り、少し動くと汗が出るという。泥状の便が1日2〜3回あり、ここ3か月で体重が2 kg減った。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "半年前から", description: "食後に強い眠気と胃もたれがある。" },
+          { when: "ここ3か月", description: "体重が2 kg減った。" },
+        ],
+        context: "朝から疲れが残り、少し動くと汗が出るという。泥状の便は1日2〜3回。",
+      },
       pastHistory: ["胃十二指腸潰瘍（10年前）"],
       lifestyle: "朝食は抜くことが多く、昼食は丼ものや麺類を急いで食べます。冷たい清涼飲料水をよく飲みます。",
     },
@@ -183,6 +201,11 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "食後に疲れること、軟便、淡い舌や弱い脈から、脾気虚を候補にします。冷えの有無や温めたときの変化は、寒熱を考えるために別に確認します。",
+      observations: [
+        { target: "history", label: "食後の眠気と便の状態" },
+        { target: "tongue", label: "舌の色と歯の跡" },
+        { target: "palpation", label: "脈の強さ" },
+      ],
       differentialDiagnosis: "冷えで急に胃が痛くなる例と比べると、ここでは何か月も続く食後の眠気、軟便、歯の跡がある舌が手がかりになります。胃の症状だけで証を選びません。",
       pointRationale: "足三里・中脘・脾兪を脾胃の働きと関連づけます。百会を加えるのは、下がるような感覚を「昇提」の考え方と照らした例です。",
       clinicalPitfall: "持続する疲労・軟便の受診状況、発熱・体重減少・出血・脱水などを確認する。脾気虚や舌脈の所見から、病気や免疫機能の低下を確定・除外しない。症状が続く場合は受診につなげる。",
@@ -206,7 +229,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "アパレル販売（立ち仕事・冷房環境）",
       chiefComplaint: "月経が始まって二日くらい、起き上がれないほど下腹部が痛みます。血に大きな塊が混じります。",
-      historyOfPresentIllness: "高校生の頃から月経痛があり、冷房の効いた職場で立つ仕事になってから、痛みが強くなったと話す。下腹部を絞られるように痛み、温めるといくらか楽になる。経血は暗い色で粘りがある。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "高校生の頃から", description: "月経痛がある。" },
+          { when: "今の仕事に就いてから", description: "冷房の効いた職場で立つ仕事になり、痛みが強くなったと話す。" },
+        ],
+        context: "下腹部を絞られるように痛み、温めると少し楽になる。経血は暗い色で粘りがある。",
+      },
       pastHistory: ["子宮内膜症疑い（クリニック受診歴あり）"],
       lifestyle: "スカートをはくことが多く、足首が冷えると感じています。冬は靴下を重ねてはきます。入浴はシャワーで済ませることが多いです。",
     },
@@ -272,6 +301,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "温めると楽になることを「寒」、刺すような痛みと暗紫色の舌を「瘀血」の手がかりとします。職場の冷房が月経痛の原因だと、この記録だけで決めることはできません。",
+      observations: [
+        { target: "history", label: "痛みの経過と温めたときの変化" },
+        { target: "tongue", label: "舌の暗い紫色" },
+      ],
       differentialDiagnosis: "気滞血瘀を比べるなら、月経前に胸や乳房が張るか、緊張する日に痛みが変わるかも聞きます。この症例で寒凝血瘀を挙げる理由は、冷えの訴えと温めた後の変化です。",
       pointRationale: "関元を温補、血海を活血化瘀に関連づけます。地機は脾経の郄穴です。この分類だけから、月経痛への効き方や変化の速さは分かりません。",
       clinicalPitfall: "生活に支障をきたす月経痛と子宮内膜症疑いは婦人科での評価を優先する。妊娠の可能性がある腹痛・出血を月経痛と決めない。多量の出血、激痛、失神があるときは、すぐに119番へ連絡してください。最終月経日の確認だけで妊娠を除外しない。",
@@ -295,7 +328,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "公務員",
       chiefComplaint: "急に上半身がほてって汗が出ます。寝ている間も汗で起きてしまい、着替えることがあります。",
-      historyOfPresentIllness: "閉経を迎えた1年前から、顔が赤くなるほどのほてりが1日に十数回ある。寝ている間は首から上の汗で目を覚まし、着替えが必要なこともある。手のひらと足の裏のほてり、めまい、腰のだるさもある。几帳面で、物事をきちんと終わらせようとすることが多い。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "1年前の閉経から", description: "顔が赤くなるほどのほてりが1日に十数回ある。" },
+          { when: "夜、眠っている間", description: "首から上の汗で目を覚まし、着替えが必要なこともある。" },
+        ],
+        context: "手のひらと足の裏のほてり、めまい、腰のだるさもある。几帳面で、物事をきちんと終わらせようとすることが多い。",
+      },
       pastHistory: ["軽度骨粗鬆症指摘"],
       lifestyle: "カフェインを含む飲み物を好みます。",
     },
@@ -405,6 +444,11 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "のぼせと寝汗だけで決めず、舌苔が少なく、脈が細く速いことから陰虚火旺を考えます。のぼせの原因やホルモンの状態は、舌や脈からは分かりません。",
+      observations: [
+        { target: "history", label: "ほてりと寝汗" },
+        { target: "tongue", label: "舌苔の量" },
+        { target: "palpation", label: "脈の細さと速さ" },
+      ],
       differentialDiagnosis: "実熱の教材例と比べるときは、舌苔の厚さや色、脈の太さと力、口が渇いたときに飲む量を見ます。この記録には、舌苔の少なさと脈の細さがあります。",
       pointRationale: "太谿と照海は陰を補う考え方、神門は安神、復溜は汗の訴えから挙げています。下の研究で比較した方法が、この配穴例と同じかも確認できます。",
       clinicalPitfall: "のぼせ、寝汗、動悸を年齢や陰虚だけで説明しない。持続する症状の医療機関で何を調べたか確かめ、新しい胸痛・呼吸困難があるときは、すぐに119番へ連絡してください。閉経後の出血があれば少量でも婦人科での評価が必要。",
@@ -428,7 +472,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "看護師（夜勤あり）",
       chiefComplaint: "夜中に何度も目が覚めます。胸がざわざわして、強い不安を感じます。",
-      historyOfPresentIllness: "夜勤時間が不規則で、2年前からぐっすり眠れた感じがない。最近は午前2〜3時ごろに動悸で目を覚まし、その後は朝まで眠れない。物忘れ、耳鳴り、手足のほてりも訴える。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "2年前から", description: "ぐっすり眠れた感じがない。不規則な時間帯に夜勤がある。" },
+          { when: "最近", description: "午前2〜3時ごろに動悸で目が覚め、その後は朝まで眠れない。" },
+        ],
+        context: "物忘れ、耳鳴り、手足のほてりも訴える。",
+      },
       pastHistory: ["特記事項なし"],
       lifestyle: "夜勤明けになかなか寝付けず、眠るためにお酒を飲むことがあります。",
     },
@@ -538,6 +588,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "夜に目が覚めることや動悸に、手のひら・足の裏のほてり、舌先の赤みを合わせて心腎不交を考えます。いつ目が覚めるか、翌日に何がつらいか、服薬の状況は見立てと別に確認します。",
+      observations: [
+        { target: "history", label: "動悸で目が覚める時間" },
+        { target: "tongue", label: "舌先の赤み" },
+      ],
       differentialDiagnosis: "心脾両虚を見比べるなら、食欲の低下や日中の疲れ、舌の色も聞き取ります。ここでは寝つきより、夜中に動悸で目を覚ます訴えが中心です。",
       pointRationale: "神門と内関を安神、太谿と三陰交を滋陰の考え方で挙げます。何時ごろ目が覚めたか、翌日の仕事に支障があったかは、配穴の名前とは別に記録します。",
       clinicalPitfall: "不眠の経過、日中の支障、服薬や他の病気を確認する。睡眠薬は自己判断で中止・減量させず、変更は処方医に相談する。動悸に新しい胸痛・呼吸困難や失神があれば救急評価を優先する。",
@@ -561,7 +615,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "営業職マネージャー",
       chiefComplaint: "食べた後や寝る頃に胸の奥が焼けるように痛みます。酸っぱい液が口まで上がってきます。",
-      historyOfPresentIllness: "仕事のノルマに負担を感じ、帰宅後の夜遅い時間に食事や飲酒をすることが多い。3か月前から胸の奥の灼熱感とげっぷが続く。内視鏡検査で逆流性食道炎（ロサンゼルス分類Grade B）と診断された。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "3か月前から", description: "胸の奥が焼ける感じとげっぷが続いている。" },
+          { when: "内視鏡検査で", description: "逆流性食道炎（ロサンゼルス分類Grade B）と診断された。" },
+        ],
+        context: "仕事のノルマに負担を感じ、帰宅後の夜遅い時間に食事や飲酒をすることが多い。",
+      },
       pastHistory: ["特記事項なし"],
       lifestyle: "寝る直前に飲食することが多く、たばこは1日15本吸います。",
     },
@@ -671,6 +731,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "胸やけと酸っぱいげっぷを「胃気上逆」、緊張した日の変化を「肝気犯胃」と照らして読みます。逆流性食道炎の診断は、この伝統的な説明とは別に行われています。",
+      observations: [
+        { target: "complaint", label: "胸やけと口に上がる酸っぱい液" },
+        { target: "inquiry", label: "仕事で緊張したときの変化" },
+      ],
       differentialDiagnosis: "脾胃虚寒を考える例では、吐物の様子、温めたときの変化、脈の速さなどを比べます。ここでは焼ける感じと、黄色くねばつく舌苔に注目します。",
       pointRationale: "内関は陰維脈、公孫は衝脈に通じるとされ、胃の訴えを考える組として出てきます。中脘を加える意味を読んだうえで、胸やけが出る時刻や姿勢も別に確認します。",
       clinicalPitfall: "逆流性食道炎の診断歴があっても、新しい胸痛をすべて胸焼けと判断しない。持続する胸の圧迫痛、息切れ、冷汗などがあるときは、すぐに119番へ連絡してください。吐血・黒い便・飲み込みにくさは医療機関で評価し、配穴で受診を遅らせない。",
@@ -694,7 +758,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "大学院生（就職活動中）",
       chiefComplaint: "面接や試験、電車に乗る前に緊張すると、おへその周りが差し込むように痛くなり、トイレに駆け込みます。",
-      historyOfPresentIllness: "就職活動を始めた頃から症状が強くなった。腹痛の後に軟らかい便や水のような便が出ると、いったん楽になる。途中で降りやすい各駅停車にしか乗れず、外出に困っている。大腸内視鏡検査では異常を指摘されなかった。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "腹痛が出たあと", description: "軟らかい便や水のような便が出る。" },
+          { when: "排便後", description: "腹痛がいったん楽になる。" },
+        ],
+        context: "就職活動を始めた頃から症状が強くなった。途中で降りやすい各駅停車にしか乗れず、外出に困っている。大腸内視鏡検査では異常を指摘されなかった。",
+      },
       pastHistory: ["特記事項なし"],
       lifestyle: "緊張すると食欲が落ちます。冷たいものを避けていますが、症状は続いています。",
     },
@@ -708,7 +778,7 @@ const CASE_MODELS: ClinicalCase[] = [
       auscultationAndOlfaction: "お腹からグルグル・キュルキュルと大きな腸鳴音が聞こえる。",
       inquiry: [
         { question: "腹痛と排便の関係は？", answer: "お腹が痛くなって下痢が出ると、痛みがすーっと引きます（痛んで下痢し、下痢して痛む）。" },
-        { question: "平日の休日での症状の違いは？", answer: "自宅でリラックスしている休日は全く症状が出ません。" },
+        { question: "平日と休日で症状に違いはありますか？", answer: "自宅でリラックスしている休日は全く症状が出ません。" },
       ],
       palpation: {
         pulse: "弦細脈（げんさいみゃく）",
@@ -804,6 +874,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "緊張する場面に腹痛と下痢が重なることから肝脾不和を考えます。排便後に痛みがどう変わるかも記録します。これらは発症の仕組みを測った検査結果ではありません。",
+      observations: [
+        { target: "history", label: "腹痛と排便の順番" },
+        { target: "inquiry", label: "休日の症状" },
+      ],
       differentialDiagnosis: "五更瀉の例と比べるなら、目を覚ますほど明け方に下痢をするか、冷えると悪くなるかを聞きます。ここでは、試験や外出前と休みの日との差がはっきりしています。",
       pointRationale: "太衝は肝、足三里と三陰交は脾、天枢は腸の訴えに着目する例です。研究結果を読むときは、腹痛だけでなく下痢があった日数も見ます。",
       clinicalPitfall: "ストレスに連動する下痢だけでIBSを確定しない。血便、体重減少、発熱、家族歴などを確認し、診察・必要な検査を受けたか確認する。伝統的な候補の比較で消化器疾患の評価を置き換えない。",
@@ -827,7 +901,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "農業・定年退職後",
       chiefComplaint: "右の腰からお尻、太ももの裏、ふくらはぎまで、引きつるように痛み、しびれます。",
-      historyOfPresentIllness: "寒い時期や雨の前日に痛みが強まる。歩き続けるとつらくなり、少し休むとまた歩ける。腰やお尻を触ると冷たいと感じるという。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "歩き続けると", description: "痛みがつらくなる。" },
+          { when: "少し休むと", description: "また歩けるようになる。" },
+        ],
+        context: "寒い時期や雨の前日に痛みが強まる。腰やお尻を触ると冷たいと感じるという。",
+      },
       pastHistory: ["腰椎椎間板ヘルニア"],
       lifestyle: "朝早くから農作業をします。入浴は短時間で済ませます。",
     },
@@ -937,6 +1017,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "冷えた日と入浴後の差、脚の重だるさから寒湿痺を考えます。立っているときや歩いたときに症状がどこへ広がるかは、医療機関で神経の状態を調べるためにも伝えます。",
+      observations: [
+        { target: "history", label: "歩いたときと休んだときの違い" },
+        { target: "inquiry", label: "冷えた日と入浴後の違い" },
+      ],
       differentialDiagnosis: "気滞血瘀と比べるなら、同じ場所を刺すように痛むか、けががあったかも聞きます。この記録で寒湿を考える理由は、冷えと雨の日に強まり、入浴で少し楽になることです。",
       pointRationale: "環跳と委中は、お尻からひざ裏にかけて図で位置を確認する例です。腎兪や命門は温補を考えるときに挙げています。脚の力や排尿・排便に変化がある場合は、配穴より先に医療機関で診察を受けます。",
       clinicalPitfall: "新しい排尿・排便の異常、会陰部の感覚低下、脚の脱力を確認する。腰痛・脚への放散痛と新しい排尿等の異常は緊急評価を優先する。鍼の響きや痛みの軽減で神経損傷の有無や施術の安全性を判定しない。",
@@ -1070,6 +1154,11 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "頭の重さ、吐き気、白くねばつく舌苔を合わせて痰湿を候補にします。耳の詰まり方や聞こえ方、歩きにくさは、めまいの原因を医療機関で調べるためにも確認します。",
+      observations: [
+        { target: "complaint", label: "頭が重いという訴え" },
+        { target: "history", label: "吐き気と耳の詰まり" },
+        { target: "tongue", label: "白い舌苔" },
+      ],
       differentialDiagnosis: "立ち上がったときだけの立ちくらみか、姿勢に関わらず浮く感じが続くかを聞きます。この例では後者の訴えと、白くねばつく舌苔を、痰湿の説明と照らします。",
       pointRationale: "豊隆は化痰、中脘は脾胃、陰陵泉は利湿に関連づけ、百会は昇清を読む際に挙がります。どのツボをどの伝統用語と結びつけているかを確かめます。",
       clinicalPitfall: "新しい急なめまい、神経症状、歩行困難、急な難聴は速やかな受診を優先する。舌苔や雨天悪化だけで内耳疾患を確定しない。水滞の分類を理由に水分制限・発汗を指示しない。",
@@ -1093,7 +1182,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "コールセンター勤務",
       chiefComplaint: "喉に物が挟まった感じがします。咳払いをしても取れませんが、食事は通ります。",
-      historyOfPresentIllness: "職場の人間関係に悩んでいた2か月前から、喉の違和感に気づいた。耳鼻咽喉科で内視鏡検査を受け、当時は異常を指摘されなかった。違和感は続き、水を飲むと一時的に楽になる。胸が押される感じがあり、ため息も増えた。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "2か月前", description: "職場の人間関係に悩んでいた頃、喉の違和感に気づいた。" },
+          { when: "耳鼻咽喉科を受診", description: "内視鏡検査を受け、当時は異常を指摘されなかった。" },
+          { when: "現在", description: "違和感は続いていて、水を飲むと一時的に楽になる。胸が押される感じがあり、ため息も増えた。" },
+        ],
+      },
       pastHistory: ["特記事項なし"],
       lifestyle: "思ったことを言わずに我慢することがよくあります。",
     },
@@ -1203,6 +1298,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "喉のつかえと、ため息や胸の張りが出る場面を合わせ、梅核気や気滞痰阻という古典の説明を読みます。実際に何かが喉に詰まっているかどうかは、診察で確かめます。",
+      observations: [
+        { target: "history", label: "喉のつかえとため息の経過" },
+        { target: "inquiry", label: "つかえを感じる場面" },
+      ],
       differentialDiagnosis: "食べ物が通りにくくなったか、声が変わったか、体重が減ったかを別に聞きます。食事が通ることや、緊張する日に強まることだけでは、喉や食道の病気を除外できません。",
       pointRationale: "列缺と照海は任脈と陰蹻脈を扱う組です。膻中は気会、太衝は疏肝理気の例に挙げています。喉に近い部位の図から、刺鍼の向きや深さは決められません。",
       clinicalPitfall: "持続する喉の症状は受診状況を確認し、飲み込みにくさ、体重減少、声の変化などは受診につなげる。ストレスで変わる症状や食事が通ることだけで腫瘍などを除外しない。天突への刺入角度や深度をこの教材から決めない。",
@@ -1324,6 +1423,11 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "肩甲骨の内側の固定した痛み、舌の暗い紫色、弦渋脈を瘀血の説明と照らします。首から親指までのしびれは、その分布と力の入り方を別に確かめます。",
+      observations: [
+        { target: "inquiry", label: "肩甲骨の内側に残る痛み" },
+        { target: "tongue", label: "舌の暗い紫色" },
+        { target: "palpation", label: "弦渋脈の記録" },
+      ],
       differentialDiagnosis: "首を動かしたときの変化、どの指がしびれるか、力が入りにくくなったかを分けて聞きます。一つの検査で症状が出たことだけから、神経が障害された場所や原因は決められません。",
       pointRationale: "天宗は肩甲骨の周囲、曲池・手三里・合谷は腕や手にあります。症状の近くと離れた部位の例を見比べます。首の施術手順を決めるための図ではありません。",
       clinicalPitfall: "新しい・進行する腕や脚の脱力、歩行の変化などは受診を優先する。頚部の安全な深度や方向を一律の寸・cmで決めることはできない。検査一つで原因を確定せず、頚部刺鍼で必ず事故を回避できるとは案内しない。",
@@ -1442,6 +1546,12 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "朝の疲れ、顔や舌の淡い色、弱い脈から気血両虚を考えます。立ちくらみの原因や貧血があるかどうかは、診察や検査で確認します。",
+      observations: [
+        { target: "history", label: "朝と午後の動きやすさ" },
+        { target: "inspection", label: "顔色" },
+        { target: "tongue", label: "舌の色" },
+        { target: "palpation", label: "脈の強さ" },
+      ],
       differentialDiagnosis: "部屋が回る感じか、立った直後に視界が暗くなるのかを聞き分けます。体位を変えたときの血圧、脈拍、症状は、医療機関での評価に必要な情報です。",
       pointRationale: "百会を昇提、足三里と気海を補気の考え方で挙げています。立ち上がったときの症状や転倒したことがあるかは、ツボの候補とは別に確認します。",
       clinicalPitfall: "低血圧と繰り返す立ちくらみ・息切れは医療機関で何を調べたか確かめる。失神に胸痛や呼吸困難が伴う場合などは救急評価を優先する。中気下陥を血液量不足や起立性低血圧の原因と同一視しない。",
@@ -1462,7 +1572,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "管理職",
       chiefComplaint: "頭のてっぺんと横に、500円玉くらいの丸い脱毛が急に三つできました。",
-      historyOfPresentIllness: "負担が増したと感じていた部署統合の後、2週間で脱毛斑が現れた。頭皮が熱くつっぱる感じがあり、眠りにくさやいら立ちも訴える。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "部署が統合された頃", description: "仕事の負担が増したと感じていた。" },
+          { when: "統合から2週間で", description: "部分的に髪が抜けた箇所（脱毛斑）が現れた。" },
+        ],
+        context: "頭皮が熱くつっぱる感じがあり、眠りにくさやいら立ちも訴える。",
+      },
       pastHistory: ["アトピー性皮膚炎"],
       lifestyle: "深夜まで残業する日があり、睡眠が足りていません。",
     },
@@ -1560,6 +1676,11 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "頭皮の熱感、赤い舌、張りがあり速い脈を合わせ、肝鬱化火や血熱生風を考えます。仕事の変化と脱毛の順序は記録できますが、脱毛の種類や原因は皮膚科で評価します。",
+      observations: [
+        { target: "history", label: "脱毛斑が現れた時期と頭皮の熱感" },
+        { target: "tongue", label: "舌の赤み" },
+        { target: "palpation", label: "脈の張りと速さ" },
+      ],
       differentialDiagnosis: "髪全体が徐々に薄くなる例と、境目のはっきりした脱毛斑が短期間で増える例を分けて読みます。この記録は後者です。変化の速さと範囲は受診時にも伝えます。",
       pointRationale: "風池や百会は頭と首の位置を読む例、太衝や血海は肝と血の伝統的な説明を調べる例です。頭皮にどう施術するか、発毛するかどうかは、配穴例から判断できません。",
       clinicalPitfall: "急に進行する脱毛は皮膚科等で原因評価を受けたか確認する。血熱という分類で自己免疫反応や原因を確定しない。脱毛斑の境界へ刺鍼すれば毛包を傷つけず治る、とは保証できない。",
@@ -1678,6 +1799,7 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "膝の重だるさや雨の日の変化を、着痺という伝統的な説明と照らします。膝が腫れる原因や関節の中の状態は、舌の色や舌苔だけからは分かりません。",
+      observations: [{ target: "history", label: "膝の重だるさと雨の日の変化" }],
       differentialDiagnosis: "それまでの立ち上がり痛と、突然の腫れ、赤み、熱感を分けて聞きます。急な腫れに熱や強い痛みがあるときは、変形性膝関節症の既往があっても受診を優先します。",
       pointRationale: "犢鼻と内膝眼は膝の周囲にあります。陰陵泉は脾経の合水穴、陽陵泉は筋会・胆の下合穴です。膝の周囲という位置と、要穴として選ぶ理由を分けて読みます。",
       clinicalPitfall: "赤く熱を持つ急な腫れ、発熱、強い安静時痛、体重をかけられない状態は受診を優先する。変形性膝関節症の診断歴だけで感染性関節炎などを除外しない。経穴で関節内の水分を排泄できるとは断定しない。",
@@ -1796,6 +1918,7 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "みぞおちの痛みに、口の苦さや、緊張する日との重なりを合わせて肝胃鬱熱を考えます。潰瘍や胃酸が原因かどうかは、症状の出方だけでは決まりません。",
+      observations: [{ target: "history", label: "空腹時の痛みと仕事の状況" }],
       differentialDiagnosis: "温かいものを取ると変わるか、腹部を手で押さえると楽になるかも聞くと、脾胃虚寒の例と比べられます。この例の手がかりは、口の苦さ、赤い舌、張って速い脈です。",
       pointRationale: "梁丘は胃経の郄穴、中脘は胃の募穴、太衝は肝経の原穴です。みぞおちの訴えと、肝と胃の関係を考える治法で、三つの違う分類を組み合わせています。",
       clinicalPitfall: "吐血、黒いタール状便、持続する急激な腹痛、失神などはすぐに医療機関を受診する必要があります。大量の出血・持続する激痛・意識の異常があるときは、すぐに119番へ連絡してください。止血処置の適応は医療機関が判断し、鍼灸の反応を待たない。",
@@ -1816,7 +1939,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "保育士",
       chiefComplaint: "ひじの内側やひざ裏、首が乾いて粉をふきます。夜は我慢できないほどかゆくて掻いてしまいます。",
-      historyOfPresentIllness: "子どもの頃からアトピー性皮膚炎があり、大人になって再び悪化した。ステロイドの塗り薬を使っているが、乾燥とかゆみが続く。冷えとのぼせも感じている。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "子どもの頃から", description: "アトピー性皮膚炎がある。" },
+          { when: "大人になってから", description: "再び悪化した。" },
+          { when: "現在", description: "ステロイドの塗り薬を使っている。乾燥とかゆみが続き、冷えとのぼせも感じる。" },
+        ],
+      },
       pastHistory: ["アレルギー性鼻炎"],
       lifestyle: "",
     },
@@ -1914,6 +2043,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "乾いて粉をふくことや、掻き続けて皮膚が厚くなった所見を、血虚風燥の説明と照らします。皮膚の血流やバリア機能を測った記録はありません。",
+      observations: [
+        { target: "complaint", label: "乾いて粉をふくという訴え" },
+        { target: "inspection", label: "皮膚の乾燥と厚み" },
+      ],
       differentialDiagnosis: "乾いて粉をふく場所と、水疱や液がにじむ場所があるかを分けて見ます。この記録では乾燥と、皮膚が厚くなったことが主な所見です。急に赤みが広がる場合は、証を比べる前に皮膚の状態を医療機関で確認します。",
       pointRationale: "曲池は清熱、血海と三陰交は養血・潤燥の考え方を読むために挙げています。傷やただれの有無、皮膚科での治療とその後の経過を先に確認します。",
       clinicalPitfall: "痛み・熱感・腫れ、膿や浸出液、急な拡大、発熱は感染などの受診につなげる。遠隔穴なら必ず施術できると判断せず、皮膚科治療や処方薬を自己判断で中止させない。",
@@ -1934,7 +2067,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "パート事務",
       chiefComplaint: "電車や人混みにいると急に胸がばくばくして、息が苦しくなります。死ぬのではないかと思うほど怖いです。",
-      historyOfPresentIllness: "半年前、満員電車で最初の発作があった。救急搬送された当時の心電図と血液検査では、異常を指摘されなかった。それ以来、また発作が出るのが怖く、外出しにくい。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "半年前", description: "満員電車で最初の発作があった。" },
+          { when: "救急搬送されたとき", description: "当時の心電図と血液検査では異常を指摘されなかった。" },
+          { when: "それ以来", description: "また発作が出るのが怖く、外出しにくい。" },
+        ],
+      },
       pastHistory: ["特記事項なし"],
       lifestyle: "睡眠が足りず、カフェインを含む飲み物を多くとります。",
     },
@@ -2032,6 +2171,7 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "下腹部から胸や喉へ突き上げる感覚は、古典の「奔豚気」と比べて読めます。動悸や息苦しさの原因は、古典の記述と似ていることだけでは決まりません。",
+      observations: [{ target: "inquiry", label: "下腹部から胸に突き上げる感覚" }],
       differentialDiagnosis: "過去の検査結果を確認したうえで、今回は何時に始まったか、息苦しさや胸の痛みはどのくらい続いたか、失神したかを聞きます。以前と似ていても、今回の心臓や肺の状態は医療機関で評価します。",
       pointRationale: "内関と公孫は八脈交会穴の組で、神門は安神の例です。動悸や息苦しさが新しく出たときは、配穴より先に医療機関で診察を受けます。",
       clinicalPitfall: "過去の心電図・血液検査が正常でも、新しい発作の原因を除外できない。持続する胸痛、急な呼吸困難、失神などがあるときは、すぐに119番へ連絡してください。パニックと決めて鍼や呼吸誘導の反応を待たず、必要な受診を優先する。",
@@ -2150,6 +2290,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "『素問』の「久視」は、長く見る動作を指します。この例では画面を見た時間と、見え方が変わった時刻を別に書き、肝血不足という伝統的な候補も読みます。",
+      observations: [
+        { target: "history", label: "1日に画面を見る時間" },
+        { target: "complaint", label: "目がかすむ時間帯" },
+      ],
       differentialDiagnosis: "夕方に繰り返すかすみと、急な眼痛や急に見えにくくなる変化を分けて聞きます。強い目の痛みに吐き気や見え方の変化が伴う場合は、緊急の眼科評価を優先します。",
       pointRationale: "攅竹と太陽は目に近いツボ、風池は後頭部の下にあるツボです。症状に近い位置を図で確認する例で、目の周囲の刺鍼の安全性はこの図から判断できません。",
       clinicalPitfall: "急な強い眼痛、充血、見え方の変化、吐き気などは緊急の眼科評価を優先する。慢性のかすみ目も受診状況を確認する。眼窩の外縁や遠隔穴を「安全な穴」として一律に扱わず、自己刺鍼は行わない。",
@@ -2268,6 +2412,10 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "乾いた咳と声がれ、喉の乾き、少ない舌苔を肺陰虚の説明と照らします。長引く咳については、以前の検査結果に加え、最近の息苦しさや胸痛の変化も医療機関に伝えます。",
+      observations: [
+        { target: "history", label: "咳が出る場面と喉の乾き" },
+        { target: "tongue", label: "舌苔の量" },
+      ],
       differentialDiagnosis: "痰熱の例を比べるときは、痰が出るか、どんな色や粘りかを聞きます。この記録では痰がほとんど出ず、夜や話し始めに咳が出ることが手がかりです。",
       pointRationale: "太淵は肺経の原穴、尺沢は肺経の合水穴、照海は腎経の八脈交会穴です。肺と腎の両方を考える例として、経絡と要穴の分類を読みます。",
       clinicalPitfall: "3週間を超える咳は医療機関で原因の評価を受ける。血痰、体重減少、悪化や胸痛・息苦しさも確認する。急な呼吸困難などがあるときは、すぐに119番へ連絡してください。乾いた咳や舌脈だけで肺陰虚を確定し、受診を遅らせない。",
@@ -2288,7 +2436,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "パート勤務",
       chiefComplaint: "朝、水を飲もうとしたら口の右側からこぼれました。右目も閉じ切れません。",
-      historyOfPresentIllness: "3日前、風邪気味で窓を開けたまま寝た。翌朝に顔の右側が動かしにくいことに気づき、味も分かりにくくなった。耳鼻咽喉科でベル麻痺と診断され、ステロイドの内服を始めた。",
+      historyOfPresentIllness: {
+        entries: [
+          { when: "3日前", description: "風邪気味で窓を開けたまま寝た。" },
+          { when: "翌朝", description: "顔の右側が動かしにくいことに気づいた。味も分かりにくくなった。" },
+          { when: "耳鼻咽喉科を受診", description: "ベル麻痺と診断され、ステロイドの内服を始めた。" },
+        ],
+      },
       pastHistory: ["特記事項なし"],
       lifestyle: "寝不足の日が続き、疲れを感じています。",
     },
@@ -2386,6 +2540,7 @@ const CASE_MODELS: ClinicalCase[] = [
     },
     clinicalExplanation: {
       pathomechanism: "窓を開けて眠ったことは、発症前にあった出来事として書けます。風寒外襲は伝統的な候補名です。その出来事が顔面麻痺を引き起こしたかは、この記録では分かりません。",
+      observations: [{ target: "history", label: "寝る前から受診までの経過" }],
       differentialDiagnosis: "顔のゆがみに気づいた時刻と、手足の力や言葉に変化がないかを確認します。額や目が動くかだけで脳卒中を除外せず、急な顔のゆがみなどがあれば救急評価を優先します。",
       pointRationale: "地倉は口の周り、陽白は額にあり、合谷は手のツボです。顔の近くと離れた位置の例を図で確認します。診断後の治療と閉じにくい目の保護は医師に確認します。",
       clinicalPitfall: "新しい顔の麻痺はすぐに医療機関を受診する。急な顔のゆがみや手足・言語の異常があるときは、すぐに119番へ連絡してください。額の動きだけで脳卒中を除外しない。診断後も医師の早期治療と閉眼不全への眼の保護を優先し、鍼の効果・予後改善を保証しない。",

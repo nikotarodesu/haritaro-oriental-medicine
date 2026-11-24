@@ -5,7 +5,10 @@ export function VolarForearmArtwork() {
     <>
       <path d="M91 25q32-14 66 0c-4 74-12 139-8 190l11 42 10 26H62q-3-9 15-31l16-34c2-65-7-131-2-193Z" fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
       <path d="M108 41c-4 49 4 124 1 173m35-173c-6 69-7 126-8 173" fill="none" stroke="#D9CBB9" strokeWidth="8" strokeLinecap="round" />
-      <path d="M96 29q30 9 56 0m-57 192q26 6 53 0m-55 8q23 7 56 0" fill="none" stroke="#A18D7B" strokeWidth="1.5" />
+      <g fill="none" stroke="#A18D7B" strokeWidth="1.5">
+        <path d="M96 29q30 9 56 0M93 229q23 7 56 0" />
+        <path d="M95 221q26 6 53 0" data-atlas-guide-origin="" />
+      </g>
       <path d="M97 265q19-12 27-28m24 26q-8-10-8-21" fill="none" stroke="#C8AE98" strokeWidth="1.5" />
       <g fill="none" stroke="#B86A38" strokeWidth="3.5" strokeLinecap="round">
         <path d="M130 109q0 55-2 117l-1 18" />

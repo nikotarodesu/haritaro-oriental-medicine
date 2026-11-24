@@ -26,6 +26,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
       summary={<>{comparison.heading ?? "近くのツボを図で比べる"}<span>{comparison.region}</span></>}
     >
       <div id={anchorId} className="atlas-target atlas-comparison-content">
+        {comparison.introduction && <p>{comparison.introduction}</p>}
         {comparison.id === "shin" && (
           <p>
             ひざ下の外側のくぼみ<Link href="/tsubo/st35#acupoint-location" prefetch={false} className="atlas-source-link">（犢鼻・ST35）</Link>と

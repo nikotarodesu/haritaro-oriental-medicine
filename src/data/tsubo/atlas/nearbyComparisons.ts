@@ -1,4 +1,4 @@
-import { forearmWristCreaseY } from "./expanded/arms";
+import { armPoints, forearmWristCreaseY } from "./expanded/arms";
 import { headPoints } from "./expanded/head";
 import { footLandmarks } from "./footLandmarks";
 import { ATLAS_POINT_MARKERS } from "./markers";
@@ -17,6 +17,8 @@ export const comparisonTransforms = {
   ankle: { x: 68, y: -12, scaleX: 0.84, scaleY: 0.84 },
   shin: { x: 48, y: -12, scaleX: 1, scaleY: 1 },
   forearm: { x: 48, y: 0, scaleX: 1, scaleY: 1 },
+  shoulder: { x: 70, y: 5, scaleX: 1, scaleY: 1 },
+  elbow: { x: -31, y: 8, scaleX: 1.72, scaleY: 1.72 },
 } as const satisfies Record<string, Transform>;
 
 function project(point: { x: number; y: number }, transform: Transform): Position {
@@ -32,17 +34,18 @@ type ComparisonPoint = {
 };
 
 export type NearbyComparison = {
-  id: "ear" | "wrist" | "ankle" | "shin" | "forearm";
+  id: "ear" | "wrist" | "ankle" | "shin" | "forearm" | "shoulder" | "elbow";
   region: string;
   heading?: string;
   figureLabel: string;
+  introduction?: string;
   size?: { width: number; height: number };
   referenceCodes?: readonly string[];
   points: readonly ComparisonPoint[];
   question?: AtlasLocationQuestion;
 };
 
-const { ear, palm, back, ankle, shin, forearm } = comparisonTransforms;
+const { ear, palm, back, ankle, shin, forearm, shoulder, elbow } = comparisonTransforms;
 const wristProximalY = 208;
 const shinPoints = [
   { code: "st36", button: [45, 101], leader: [111, 101], difference: "犢鼻のくぼみから下へ3寸。3穴のうち、最もひざに近い場所です。" },
@@ -119,6 +122,30 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       answerCode: "pc5",
       explanation: "間使です。内関は2寸、間使は3寸、郄門は5寸です。",
     },
+  },
+  {
+    id: "shoulder",
+    region: "肩の外側",
+    heading: "肩髃と肩髎を図で比べる",
+    figureLabel: "肩を横から見た模式図。左が胸側、右が背中側です。肩の外の骨の下に二つのくぼみがあり、肩髃は胸側、肩髎は背中側です。",
+    introduction: "肩の外にある骨（肩峰）の下にできる二つのくぼみを比べます。左が胸側、右が背中側です。",
+    size: { width: 344, height: 276 },
+    points: [
+      { code: "li15", position: project(armPoints.li15, shoulder), button: [36, 148], leader: [106, 148], difference: "肩の外の骨の下にできる二つのくぼみのうち、胸に近い方です。" },
+      { code: "te14", position: project(armPoints.te14, shoulder), button: [267, 148], leader: [250, 148], difference: "肩の外の骨の下にできる二つのくぼみのうち、背中に近い方です。" },
+    ],
+  },
+  {
+    id: "elbow",
+    region: "ひじの前",
+    heading: "曲池・尺沢・曲沢を図で比べる",
+    figureLabel: "ひじを前から見た模式図。横じわに沿い、親指側の左から曲池、尺沢、曲沢が並びます。尺沢と曲沢の間に力こぶから続く腱があります。",
+    introduction: "手のひらを上にしたときの、ひじの横じわを拡大しました。骨の出っ張りと、力こぶから続くすじ（腱）が目印です。",
+    points: [
+      { code: "li11", position: project(armPoints.li11, elbow), button: [30, 94], leader: [94, 94], difference: "ひじの外側に出ている骨と尺沢の中間です。図では三つのツボのうち最も親指側にあります。" },
+      { code: "lu5", position: project(armPoints.lu5, elbow), button: [30, 164], leader: [94, 164], difference: "ひじの横じわに沿って、力こぶから続くすじ（腱）のすぐ親指側にあるくぼみです。" },
+      { code: "pc3", position: project(armPoints.pc3, elbow), button: [265, 111], leader: [246, 111], difference: "ひじの横じわの上で、力こぶから続くすじ（腱）のすぐ小指側にあるくぼみです。" },
+    ],
   },
 ];
 

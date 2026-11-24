@@ -17,6 +17,7 @@ import VolarForearmRegion from "./VolarForearmRegion";
 import ExpandedLandmarkRegion, { expandedViews } from "./expanded/ExpandedLandmarkRegion";
 import ZoomableAtlasDiagram from "./ZoomableAtlasDiagram";
 import AtlasLocationFigures from "./AtlasLocationFigures";
+import AtlasLandmarkGuide from "./AtlasLandmarkGuide";
 import type { BodyArea } from "./expanded/views";
 
 const figureClass = "atlas-figure";
@@ -113,25 +114,29 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const step = lineLength / Math.max(nearby.length - 1, 1);
   const pointLabel = `${point.name} ${point.code}`;
   const diagramLabel = `${point.name}の場所と目印`;
+  const locationDiagram = (
+    <ZoomableAtlasDiagram label={diagramLabel}>
+      {landmarks && landmarkView ? (
+        <LandmarkCloseUp marker={closeUpMarker} pointLabel={pointLabel} landmarks={landmarks} left={landmarkView.left}
+          numbered={point.codeLower === "pc7" || point.codeLower === "lr3"}
+          description={`${pointLabel}。 ${landmarkView.caption}。 ${whoLocations[point.codeLower]}`}>
+          <CloseUp marker={closeUpMarker} label={pointLabel} labelled landmarkIds={expandedPoint && expandedLandmarkIds(expandedPoint, point.codeLower)} />
+        </LandmarkCloseUp>
+      ) : (
+        <svg viewBox="0 0 340 300" role="img" aria-label={`${closeUpAlt} ${measureAlt}`} className="mx-auto block w-full max-w-[340px]">
+          <CloseUp marker={closeUpMarker} label={pointLabel} measured />
+          <CloseUpMeasurementArrows measurements={measurements} />
+          <circle data-point-marker="" cx={closeUpMarker.x} cy={closeUpMarker.y} r="5" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
+        </svg>
+      )}
+    </ZoomableAtlasDiagram>
+  );
+  const guidedPoint = point.codeLower === "pc6" || point.codeLower === "st36" ? point.codeLower : undefined;
 
   return (
     <AtlasLocationFigures notes={children} primary={
       <figure className={`${figureClass} ${measured ? "atlas-figure--measured" : "atlas-figure--labelled"}`}>
-        <ZoomableAtlasDiagram label={diagramLabel}>
-          {landmarks && landmarkView ? (
-            <LandmarkCloseUp marker={closeUpMarker} pointLabel={pointLabel} landmarks={landmarks} left={landmarkView.left}
-              numbered={point.codeLower === "pc7" || point.codeLower === "lr3"}
-              description={`${pointLabel}。 ${landmarkView.caption}。 ${whoLocations[point.codeLower]}`}>
-              <CloseUp marker={closeUpMarker} label={pointLabel} labelled landmarkIds={expandedPoint && expandedLandmarkIds(expandedPoint, point.codeLower)} />
-            </LandmarkCloseUp>
-          ) : (
-            <svg viewBox="0 0 340 300" role="img" aria-label={`${closeUpAlt} ${measureAlt}`} className="mx-auto block w-full max-w-[340px]">
-              <CloseUp marker={closeUpMarker} label={pointLabel} measured />
-              <CloseUpMeasurementArrows measurements={measurements} />
-              <circle data-point-marker="" cx={closeUpMarker.x} cy={closeUpMarker.y} r="5" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
-            </svg>
-          )}
-        </ZoomableAtlasDiagram>
+        {guidedPoint ? <AtlasLandmarkGuide code={guidedPoint}>{locationDiagram}</AtlasLandmarkGuide> : locationDiagram}
         <figcaption>
           {(landmarkView || expandedView) && <span className="block text-sm font-semibold">{landmarkView ? landmarkView.caption : expandedView?.name}{" "}</span>}
           {(measured || illustration.closeUpCaption !== diagramLabel) && illustration.closeUpCaption}

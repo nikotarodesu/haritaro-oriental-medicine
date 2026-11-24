@@ -21,7 +21,7 @@ import {
   Layers,
   RotateCcw
 } from "lucide-react";
-import { ClinicalCase } from "@/types/clinicalCase";
+import type { CaseObservationTarget, ClinicalCase } from "@/types/clinicalCase";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
 import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
@@ -39,6 +39,17 @@ const examinationOptions = [
   { id: "palpation", label: "切診", cue: "脈やお腹", icon: Hand },
 ] as const;
 
+function observationHref(target: CaseObservationTarget) {
+  switch (target) {
+    case "complaint":
+      return "#case-complaint";
+    case "history":
+      return "#case-history";
+    default:
+      return "#case-examination-content";
+  }
+}
+
 export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: ClinicalCase }) {
 
 
@@ -49,6 +60,8 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
   const { ready, values, status, setEntry } = useLearningSync();
   const progress = getCaseStudyProgress(values, clinicalCase);
   const [showExplanation, setShowExplanation] = useState(false);
+  const history = clinicalCase.patient.historyOfPresentIllness;
+  const observations = clinicalCase.clinicalExplanation.observations;
 
 
   const handleSelectOption = (stepNumber: number, optionId: string, answeredAt: number) => {
@@ -113,7 +126,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         </div>
 
         {/* 主訴 */}
-        <div className="space-y-1.5">
+        <div id="case-complaint" tabIndex={-1} className="space-y-1.5">
           <h3 className="text-base font-semibold text-accent">主訴（患者の訴え）</h3>
           <p className="rounded-e-lg border-s-2 border-frame bg-page p-3 text-base leading-[1.8]">
             「{clinicalCase.patient.chiefComplaint}」
@@ -122,10 +135,22 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
 
         {/* 現病歴 ＆ 生活背景 */}
         <div className="space-y-3 text-base leading-[1.85]">
-          <div className="space-y-1">
-            <span className="font-bold text-ink">症状の経過と背景</span>
-            <p>{clinicalCase.patient.historyOfPresentIllness}</p>
-          </div>
+          <section id="case-history" tabIndex={-1} aria-labelledby="case-history-title" className="space-y-2">
+            <h3 id="case-history-title" className="font-bold text-ink">症状の経過と背景</h3>
+            {typeof history === "string" ? <p>{history}</p> : (
+              <>
+                <ol role="list" aria-labelledby="case-history-title" className="case-history-timeline">
+                  {history.entries.map(({ when, description }) => (
+                    <li key={when}>
+                      <strong>{when}</strong>
+                      <p>{description}</p>
+                    </li>
+                  ))}
+                </ol>
+                {history.context && <p>{history.context}</p>}
+              </>
+            )}
+          </section>
           {clinicalCase.patient.lifestyle && <div className="space-y-1">
             <span className="font-bold text-ink">仕事や日ごろの習慣</span>
             <p>{clinicalCase.patient.lifestyle}</p>
@@ -159,7 +184,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         </div>
 
         {/* タブコンテンツ */}
-        <div id="case-examination-content" className="min-h-[120px] rounded-lg border border-divider bg-page p-3 text-base leading-[1.85] sm:p-4">
+        <div id="case-examination-content" tabIndex={-1} className="min-h-[120px] rounded-lg border border-divider bg-page p-3 text-base leading-[1.85] sm:p-4">
           {activeExamTab === "inspection" && (
             <div className="space-y-2">
               <h3 className="font-bold text-ink">見て確認したこと（望診）</h3>
@@ -411,6 +436,22 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               <p className="text-sm sm:text-base text-ink leading-relaxed">
                 {clinicalCase.clinicalExplanation.pathomechanism}
               </p>
+              {observations?.length ? (
+                <ul role="list" className="case-observation-links" aria-label="この説明で使った所見">
+                  {observations.map(({ target, label }) => (
+                    <li key={target}>
+                      <a
+                        href={observationHref(target)}
+                        onClick={() => {
+                          if (target !== "complaint" && target !== "history") setActiveExamTab(target);
+                        }}
+                      >
+                        {label}を見る
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
 
             <div className="p-5 rounded-2xl bg-panel border border-divider space-y-2">
@@ -570,7 +611,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
         </div>
 
         {/* 症例の処方配穴（ツボ辞典リンク） */}
-        <div className="space-y-2.5 pt-2 border-t border-divider">
+        {showExplanation && <div className="space-y-2.5 pt-2 border-t border-divider">
           <span className="text-xs font-bold text-ink block">
             この症例に出てくるツボの位置と注意点
           </span>
@@ -591,7 +632,7 @@ export default function CaseStudyViewer({ clinicalCase }: { clinicalCase: Clinic
               );
             })}
           </div>
-        </div>
+        </div>}
       </div>
 
       {/* フッターナビゲーション */}

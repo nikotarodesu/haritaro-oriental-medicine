@@ -55,7 +55,7 @@ assert.equal(acupointNameIndexHref('谷'), '/tsubo/names?kanji=%E8%B0%B7');
 for (const character of NAME_INDEX_EXAMPLES) assert(indexedCodes(character).length > 1, character);
 const compared = new Set();
 for (const group of NEARBY_COMPARISONS) {
-  assert(group.points.length >= 3, group.id);
+  assert(group.points.length >= 2, group.id);
   assert.equal(new Set(group.points.map(point => point.code)).size, group.points.length, group.id + ' has distinct choices');
   if (group.question) assert(group.points.some(point => point.code === group.question.answerCode), group.id + ' offers its correct answer');
   const { width, height } = group.size ?? comparisonSize;
@@ -95,6 +95,20 @@ for (const [index, point] of forearm.points.entries()) {
   assert.equal((wristY - y) / (wristY - elbowY), amount / units);
   assert.deepEqual(Array.from(point.position), [x + comparisonTransforms.forearm.x, y + comparisonTransforms.forearm.y]);
   assert(point.difference.includes(`ひじへ${amount}寸`), point.code);
+}
+for (const { id, view, codes } of [
+  { id: 'shoulder', view: 'shoulderSide', codes: ['li15', 'te14'] },
+  { id: 'elbow', view: 'forearmPalm', codes: ['li11', 'lu5', 'pc3'] },
+]) {
+  const group = getNearbyComparisons(codes[0]).find(entry => entry.id === id);
+  assert.deepEqual(Array.from(group.points, point => point.code), codes);
+  const { x: offsetX, y: offsetY, scaleX, scaleY } = comparisonTransforms[id];
+  for (const [index, point] of group.points.entries()) {
+    const { x, y, expanded } = ATLAS_POINT_MARKERS[point.code];
+    assert.equal(expanded.view, view, point.code + ' uses the same atlas view as its comparison');
+    assert.deepEqual(Array.from(point.position), [offsetX + x * scaleX, offsetY + y * scaleY]);
+    if (index) assert(point.position[0] > group.points[index - 1].position[0], id + ' reads left to right');
+  }
 }
 const { ATLAS_LEARNING_PAIRS } = load('src/data/tsubo/atlas/learningPairs');
 for (const pair of ATLAS_LEARNING_PAIRS) assert(pair.codes.includes(pair.question.answerCode), pair.codes.join(', '));

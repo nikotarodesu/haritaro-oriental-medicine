@@ -135,6 +135,18 @@ for (const paper of VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'sour
   assert.equal(paper.interventionProtocol, undefined, `${paper.id}: a bounded source check cannot release procedural instructions`);
 }
 const paperById = id => VERIFIED_PAPERS.find(paper => paper.id === id);
+const { PAPER_STUDY_DESIGNS } = load('src/data/references/paperStudyDesigns');
+for (const [id, design] of Object.entries(PAPER_STUDY_DESIGNS)) {
+  const paper = paperById(id);
+  assert.equal(paper?.verificationScope, 'selected_full_text', `${id}: flow counts use the published methods and results`);
+  const enrollment = design.groups.reduce((sum, group) => sum + group.participants, 0);
+  assert(design.population.includes(`${enrollment}人`), `${id}: allocated groups match the stated enrollment`);
+  assert(new Set(design.groups.map(group => group.label)).size === design.groups.length, `${id}: distinct comparison groups`);
+  assert(design.groups.every(group => Number.isInteger(group.participants) && group.participants > 0));
+}
+const strokeDesign = PAPER_STUDY_DESIGNS['poststroke-motor-aphasia-acupuncture-xingnao-rct-li-2024'];
+assert.equal(strokeDesign.groups.map(group => group.participants).join(','), '125,127', 'Show actual allocations, distinct from the planned 126 each');
+assert.match(strokeDesign.followUp, /計231人/, 'Show the analysis count separately from allocation');
 assert.match(paperById('rct-insomnia-heart-liver-2025').keyFindings[0], /終了時と4週後の追跡まで、群間に統計的に有意な差はありません/);
 assert.equal(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').sampleSize, undefined, 'Conflicting 757/847 participant totals must remain withheld');
 assert.match(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').clinicalTakeaways.join(' '), /757.*847/);

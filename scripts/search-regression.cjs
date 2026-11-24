@@ -115,6 +115,8 @@ for (const [query, href] of [
   ['足三里 上巨虚 条口', '/tsubo/st36#acupoint-nearby'],
   ['条口・足三里の位置の違い', '/tsubo/st36#acupoint-nearby'],
   ['合谷と太衝の違い', '/tsubo/compare?a=li4&b=lr3'],
+  ['肩髃と肩髎の違い', '/tsubo/li15#acupoint-nearby'],
+  ['曲池 尺沢 曲沢 比較', '/tsubo/li11#acupoint-nearby'],
 ]) {
   const ranked = rankPurposeSearchResults(publicIndex, preparePurposeSearchQuery(query));
   assert.equal(ranked[0]?.item.url, href, query);

@@ -1,0 +1,118 @@
+.guide {
+  min-width: 0;
+  --landmark-spotlight: #086457;
+}
+
+.controls {
+  min-width: 0;
+  padding-inline: 0;
+  margin-bottom: .625rem;
+}
+
+.controls legend {
+  margin-bottom: .375rem;
+  font-size: .875rem;
+  font-weight: 700;
+  color: var(--atlas-ink);
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .25rem;
+}
+
+.choices label {
+  position: relative;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.choices span {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  padding: .25rem .125rem;
+  border: 1px solid var(--border-control);
+  border-radius: .5rem;
+  background: var(--bg-card);
+  color: var(--atlas-ink);
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.375;
+  text-align: center;
+}
+
+.choices input:checked + span {
+  border-color: var(--atlas-accent);
+  background: var(--atlas-soft);
+  color: var(--atlas-accent);
+  box-shadow: inset 0 -2px var(--atlas-accent);
+}
+
+.choices input:focus-visible + span {
+  outline: 2px solid var(--atlas-accent);
+  outline-offset: 2px;
+}
+
+.descriptions {
+  display: grid;
+  margin-top: .5rem;
+  font-size: .875rem;
+  line-height: 1.6;
+  color: var(--atlas-ink);
+}
+
+.descriptions p {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.guide:has(input[value="all"]:checked) [data-landmark-description="all"],
+.guide:has(input[value="origin"]:checked) [data-landmark-description="origin"],
+.guide:has(input[value="direction"]:checked) [data-landmark-description="direction"],
+.guide:has(input[value="point"]:checked) [data-landmark-description="point"] {
+  visibility: visible;
+}
+
+.guide [data-atlas-guide-origin-overlay] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media screen {
+  .guide:has(input[value="origin"]:checked) [data-atlas-guide-origin-overlay] {
+    visibility: visible;
+  }
+
+  .guide:has(input[value="origin"]:checked) :is([data-atlas-guide-origin], :global(.atlas-dimension-origin)) {
+    stroke: var(--landmark-spotlight);
+    stroke-width: 4;
+  }
+
+  .guide:has(input[value="origin"]:checked) :global(.atlas-dimension-origin) {
+    r: 7px;
+  }
+
+  .guide:has(input[value="direction"]:checked) :is([data-atlas-guide-route], :global(.atlas-dimension-stroke)) {
+    stroke: var(--landmark-spotlight);
+    stroke-width: 3.5;
+  }
+
+  .guide:has(input[value="direction"]:checked) :global(.atlas-dimension-halo) {
+    stroke-width: 6.5;
+  }
+
+  .guide:has(input[value="point"]:checked) [data-point-marker] {
+    r: 8px;
+    fill: var(--landmark-spotlight);
+    stroke: #fff9f0;
+    stroke-width: 3;
+  }
+}
+
+@media print {
+  .controls {
+    display: none;
+  }
+}

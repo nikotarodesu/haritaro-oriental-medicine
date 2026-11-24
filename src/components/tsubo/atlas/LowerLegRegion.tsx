@@ -81,6 +81,7 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
       <LowerLegArtwork />
       <g fill="none" strokeWidth="1.4" strokeLinejoin="round" strokeLinecap="round">
         <line
+          data-atlas-guide-route=""
           x1={kneeLandmark.x}
           y1={kneeLandmark.y}
           x2={ankleLandmark.x}

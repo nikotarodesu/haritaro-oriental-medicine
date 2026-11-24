@@ -99,9 +99,9 @@ for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.hr
 assert.equal(dateAt('/curriculum'),'2026-11-18');
 for(const pathname of ['/','/about','/articles','/cases','/glossary','/learn/review','/symptoms']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
 for (const pathname of ['/learn','/learn/essentials']) assert.equal(dateAt(pathname), '2026-11-24', pathname);
-for (const pathname of ['/diagnosis', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research', '/library']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
+for (const pathname of ['/diagnosis', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
 for (const pathname of [
-  '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei',
+  '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei', '/library',
   '/tsubo/cv21', '/tsubo/sp6', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus',
   '/symptoms/knee-joint-pain', '/cases/case-01-headache-liver-fire',
 ]) assert.equal(dateAt(pathname), PUBLIC_VISUALS_REVISED_AT, pathname);

@@ -12,12 +12,19 @@ export type CaseCategory =
   | "呼吸器・感染後"
   | "皮膚・感覚器";
 
+export type CaseHistoryTimeline = {
+  entries: readonly { when: string; description: string }[];
+  context?: string;
+};
+
+export type CaseObservationTarget = "complaint" | "history" | "inspection" | "tongue" | "inquiry" | "palpation";
+
 export interface CasePatientProfile {
   age: string;
   gender: "男性" | "女性";
   occupation: string;
   chiefComplaint: string; // 主訴
-  historyOfPresentIllness: string; // 現病歴
+  historyOfPresentIllness: string | CaseHistoryTimeline;
   pastHistory: string[]; // 既往歴
   lifestyle: string; // 生活背景（睡眠・食事・ストレス・運動）
 }
@@ -76,6 +83,7 @@ export interface ClinicalCase {
   };
   clinicalExplanation: {
     pathomechanism: string; // 病態機序の詳細解説
+    observations?: readonly { target: CaseObservationTarget; label: string }[];
     differentialDiagnosis: string; // 鑑別診断（間違えやすい他証との対比）
     pointRationale: string; // なぜこの経穴なのか（作用機序）
     clinicalPitfall: string; // 臨床の落とし穴・注意点・禁忌

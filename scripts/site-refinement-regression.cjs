@@ -58,12 +58,28 @@ const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/c
 assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
 const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
 assert.equal(CLINICAL_CASES.length, 20);
+assert.equal(CLINICAL_CASES.filter(({ patient }) => typeof patient.historyOfPresentIllness !== 'string').length, 13);
 for (const clinicalCase of CLINICAL_CASES) {
   assert(casesIndex.includes('href="/cases/' + clinicalCase.id + '"'), clinicalCase.id);
   const html = renderToStaticMarkup(React.createElement(CaseViewer, { clinicalCase }));
   assert(html.includes('href="#case-examination"') && html.includes('id="case-examination"'), clinicalCase.id);
   assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
   assert(html.includes('aria-label="表示する所見"') && html.includes('aria-pressed="true"'), clinicalCase.id);
+  assert(html.includes('id="case-history"'), clinicalCase.id + ': stable link to symptom history');
+  assert(!html.includes('class="case-observation-links"'), clinicalCase.id + ': reveal the evidence links with the explanation');
+  assert(!html.includes('この症例に出てくるツボの位置と注意点'), clinicalCase.id + ': reveal the point links with the explanation');
+  const history = clinicalCase.patient.historyOfPresentIllness;
+  if (typeof history === 'string') {
+    assert(html.includes(history) && !html.includes('class="case-history-timeline"'), clinicalCase.id + ': keep narrative history where there is no timeline');
+  } else {
+    assert(html.includes('class="case-history-timeline"'), clinicalCase.id + ': prerender the timeline');
+    let priorIndex = -1;
+    for (const { when, description } of history.entries) {
+      const index = html.indexOf('<strong>' + when + '</strong><p>' + description + '</p>');
+      assert(index > priorIndex, clinicalCase.id + ': render every timeline entry in order');
+      priorIndex = index;
+    }
+  }
   const values = {};
   const steps = clinicalCase.reasoningSteps;
   const last = steps.at(-1);

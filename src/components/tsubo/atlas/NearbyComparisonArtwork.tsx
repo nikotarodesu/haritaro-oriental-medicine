@@ -104,11 +104,53 @@ function ShinArtwork() {
   );
 }
 
+function ShoulderArtwork() {
+  const { outline, details, features } = armViews.shoulderSide;
+
+  return (
+    <>
+      <g transform={transformFor("shoulder")}>
+        <path className="atlas-comparison-outline" d={outline} />
+        {details.map(path => <path key={path} className="atlas-comparison-detail" d={path} />)}
+        <path className="atlas-comparison-detail" d={`${features.collarSide.path} ${features.shoulderSpine.path}`} />
+        <path className="atlas-comparison-landmark" d={features.acromionSide.path} />
+        <path className="atlas-comparison-landmark" d={features.upperHead.path} />
+      </g>
+      <text x="20" y="28">胸側</text>
+      <text x="324" y="28" textAnchor="end">背中側</text>
+      <path className="atlas-comparison-detail" d="M226 108l21-31h14" />
+      <text x="266" y="82">肩峰</text>
+    </>
+  );
+}
+
+function ElbowArtwork() {
+  const { outline, features } = armViews.forearmPalm;
+
+  return (
+    <>
+      <g transform={transformFor("elbow")}>
+        <path className="atlas-comparison-outline" d={outline} />
+        <path className="atlas-comparison-landmark" d={features.outerElbow.path} />
+        <path className="atlas-comparison-detail" d={features.innerElbow.path} />
+        <path className="atlas-comparison-crease" d={features.elbowCrease.path} />
+        <path className="atlas-comparison-landmark" d={features.bicepsTendon.path} />
+      </g>
+      <text x="20" y="28">親指側</text>
+      <text x="324" y="28" textAnchor="end">小指側</text>
+      <path className="atlas-comparison-detail" d="M151 82l21-34V34" />
+      <text x="172" y="28" textAnchor="middle">力こぶの腱</text>
+    </>
+  );
+}
+
 export default function NearbyComparisonArtwork({ id }: { id: NearbyComparison["id"] }) {
   if (id === "ear") return <EarOutline />;
   if (id === "wrist") return <WristArtwork />;
   if (id === "shin") return <ShinArtwork />;
   if (id === "forearm") return <ForearmArtwork />;
+  if (id === "shoulder") return <ShoulderArtwork />;
+  if (id === "elbow") return <ElbowArtwork />;
   return <AnkleArtwork />;
 }
 

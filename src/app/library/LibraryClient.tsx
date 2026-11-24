@@ -19,12 +19,14 @@ import {
   X,
 } from "lucide-react";
 import { VERIFIED_PAPERS as PAPERS_DATABASE } from "@/data/references/papersData";
+import { PAPER_STUDY_DESIGNS } from "@/data/references/paperStudyDesigns";
 import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { PUBLIC_ARCHIVE_CASES, ARCHIVE_CASES_NOTICE } from "@/data/cases/archiveCases";
 import PageIntro from "@/components/design/PageIntro";
 import { ACUPUNCTURE_RESEARCH, AROMATASE_JOINT_PAIN_RESEARCH_HREF, NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
+import PaperStudyFlow from "./PaperStudyFlow";
 
 const abstractCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length;
 const fullTextCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length;
@@ -171,6 +173,26 @@ export default function LibraryClient() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {filteredPapers.map(paper => {
+                  const design = PAPER_STUDY_DESIGNS[paper.id];
+                  const outline = (
+                    <dl className="library-study-outline">
+                      <div className="library-study-part">
+                        <dt><Focus aria-hidden="true" /><span>対象</span></dt>
+                        <dd>{paper.targetCondition}</dd>
+                      </div>
+                      {paper.studyDesign && <div className="library-study-part">
+                        <dt><FlaskConical aria-hidden="true" /><span>方法</span></dt>
+                        <dd>
+                          {paper.studyDesign}
+                          {paper.interventionProtocol && <p className="mt-2">{paper.interventionProtocol.name}（使用したツボは{paper.interventionProtocol.acupoints.join("、")}）</p>}
+                        </dd>
+                      </div>}
+                      <div className="library-study-part">
+                        <dt><ScanText aria-hidden="true" /><span>概要</span></dt>
+                        <dd>{paper.primaryOutcomes}</dd>
+                      </div>
+                    </dl>
+                  );
                   return (
                     <div
                       key={paper.id}
@@ -193,23 +215,15 @@ export default function LibraryClient() {
                           </h3>
                         </div>
 
-                        <dl className="library-study-outline">
-                          <div className="library-study-part">
-                            <dt><Focus aria-hidden="true" /><span>対象</span></dt>
-                            <dd>{paper.targetCondition}</dd>
-                          </div>
-                          {paper.studyDesign && <div className="library-study-part">
-                            <dt><FlaskConical aria-hidden="true" /><span>方法</span></dt>
-                            <dd>
-                              {paper.studyDesign}
-                              {paper.interventionProtocol && <p className="mt-2">{paper.interventionProtocol.name}（使用ツボ: {paper.interventionProtocol.acupoints.join("、")}）</p>}
-                            </dd>
-                          </div>}
-                          <div className="library-study-part">
-                            <dt><ScanText aria-hidden="true" /><span>概要</span></dt>
-                            <dd>{paper.primaryOutcomes}</dd>
-                          </div>
-                        </dl>
+                        {design ? (
+                          <>
+                            <PaperStudyFlow paperId={paper.id} design={design} />
+                            <details className="reference-disclosure library-bibliography">
+                              <summary>試験方法の補足</summary>
+                              <div className="reference-disclosure-body">{outline}</div>
+                            </details>
+                          </>
+                        ) : outline}
 
                         {paper.claimsStatus === 'source-checked' && <details className="reference-disclosure library-results">
                           <summary>結果と限界</summary>

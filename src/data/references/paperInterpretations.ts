@@ -114,12 +114,16 @@ export const PAPER_INTERPRETATIONS: Record<string, Interpretation> = {
     findings: ['8週のPSQI変化は電気鍼が偽鍼より3.6点（95％信頼区間2.8〜4.4）、通常治療のみより5.1点（4.2〜6.0）大きく、治療後の追跡でも差を報告しています。'],
     limitations: ['精神科治療への追加介入です。抗うつ薬等の中止や、うつ病のない不眠への同じ効果を支持する試験ではありません。研究内の有害事象報告を全患者の安全保証に変換しません。'],
   }),
-  'poststroke-motor-aphasia-acupuncture-xingnao-rct-li-2024': abstractCheck('38252438', {
+  'poststroke-motor-aphasia-acupuncture-xingnao-rct-li-2024': {
+    sourceUrl: 'https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2814117',
+    checkedAt: '2026-11-24',
+    verificationScope: 'selected_full_text',
+    sourceLocator: '抄録と、本文の割り付け方法、参加者の流れ（図1）、6週時点の主要評価。',
     design: '偽鍼対照ランダム化比較試験', sampleSize: 252, population: '中国の3施設の脳卒中後運動性失語患者252人（主要解析231人）',
     summary: '言語訓練・通常ケアを両群に行い、手技鍼と偽鍼の追加効果を比較しています。',
     findings: ['6週の失語指数AQの群間差は7.99（95％信頼区間3.42〜12.55）、実用的な意思疎通尺度CFCPは23.51（11.10〜35.93）でした。'],
     limitations: ['無作為割付人数と解析人数は異なります。特定の脳卒中後失語への追加介入であり、急性期の脳卒中診療や言語リハビリの代替を示しません。'],
-  }),
+  },
   'menstrual-migraine-acupuncture-acupressure-yu-2018': abstractCheck('29654841', {
     design: '小規模3群ランダム化予備試験', sampleSize: 18, population: '月経関連片頭痛の解析対象18人（実鍼7人・指圧6人・対照鍼5人）',
     summary: '3月経周期の介入と、その後3周期の追跡で片頭痛日数などを調べました。',

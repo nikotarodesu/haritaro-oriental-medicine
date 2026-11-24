@@ -22,7 +22,7 @@ const generated = fs.readFileSync(path.join(root, 'src/data/searchCatalog.ts'), 
 assert.equal(generated, generateSearchCatalog(), 'Content edits must regenerate the browser metadata');
 assert.equal(new Set(SEARCH_CATALOG.map(item => item.id)).size, SEARCH_CATALOG.length, 'Search IDs are unique');
 const byId = new Map(SEARCH_CATALOG.map(item => [item.id, item]));
-assert.equal(NEARBY_COMPARISON_LINKS.length, 5);
+assert.equal(NEARBY_COMPARISON_LINKS.length, 7);
 for (const comparison of NEARBY_COMPARISON_LINKS) {
   const result = byId.get('atlas-comparison-' + comparison.id);
   assert.equal(result?.url, comparison.href);

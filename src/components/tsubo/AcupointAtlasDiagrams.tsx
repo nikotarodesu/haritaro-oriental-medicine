@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 
 import AtlasLocationFigures from "./atlas/AtlasLocationFigures";
+import AtlasLandmarkGuide from "./atlas/AtlasLandmarkGuide";
 import HeguHandDiagram from "./atlas/HeguHandDiagram";
 import ZoomableAtlasDiagram from "./atlas/ZoomableAtlasDiagram";
 
@@ -16,9 +17,11 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints, children 
   return (
     <AtlasLocationFigures notes={children} primary={
       <figure className="atlas-figure atlas-figure--labelled">
-        <ZoomableAtlasDiagram label="合谷の場所と目印">
-          <HeguHandDiagram />
-        </ZoomableAtlasDiagram>
+        <AtlasLandmarkGuide code="li4">
+          <ZoomableAtlasDiagram label="合谷の場所と目印">
+            <HeguHandDiagram />
+          </ZoomableAtlasDiagram>
+        </AtlasLandmarkGuide>
         <figcaption><span className="block text-sm font-semibold">右手の甲</span>①人差し指につながる骨の中央から、②親指につながる骨の方へ少し寄ったところです。</figcaption>
       </figure>
     }>
