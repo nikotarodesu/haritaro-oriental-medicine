@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DETAILED_ACUPOINTS, getAcupointByCode } from "@/data/tsubo";
 import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
+import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
 import NearbyComparisonControls from "./NearbyComparisonControls";
 
@@ -13,7 +14,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
   const points = comparison.points.flatMap(position => {
     const point = getAcupointByCode(position.code);
     if (!point) return [];
-    const anatomyHref = comparison.id === "forearm" && DETAILED_ACUPOINTS[point.codeLower]?.crossSection
+    const anatomyHref = DETAILED_ACUPOINTS[point.codeLower]?.crossSection || getRegionalSection(point.codeLower)
       ? `/tsubo/${point.codeLower}#acupoint-anatomy-diagram` : undefined;
     return [{ ...position, name: point.name, anatomyHref }];
   });

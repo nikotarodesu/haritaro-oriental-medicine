@@ -14,11 +14,27 @@ const { CHARACTER_MEANINGS } = load('src/data/tsubo/names/characterMeanings');
 const { getAcupointNameCharacter, acupointNameIndexHref, NAME_INDEX_EXAMPLES } = load('src/data/tsubo/names/characterIndex');
 const { NEARBY_COMPARISONS, getNearbyComparisons, comparisonSize, comparisonTransforms } = load('src/data/tsubo/atlas/nearbyComparisons');
 const { ATLAS_POINT_MARKERS, shinEndpoints, volarForearmGeometry } = load('src/data/tsubo/atlas/markers');
+const { EXTRA_POINTS } = load('src/data/tsubo/extraPoints');
+const { regionalSectionGroups, getRegionalSection, createRegionalSectionModel } = load('src/data/tsubo/regionalSections/index');
 const dimensions = text => Array.from(text.matchAll(/\d+(?:\.\d+)?寸/g), match => match[0]);
 
 assert.equal(points.ALL_ACUPOINTS.length, 361);
 assert.equal(new Set(points.ALL_ACUPOINTS.map(point => point.code)).size, 361);
 const allCodes = Array.from(points.ALL_ACUPOINTS, point => point.codeLower).sort();
+const anatomyCodes = [...allCodes, ...Array.from(EXTRA_POINTS, point => point.code.toLowerCase())].sort();
+const regionalCodes = Array.from(regionalSectionGroups).flatMap(({ codes }) => codes.trim().split(/\s+/)).sort();
+assert.deepEqual(regionalCodes, anatomyCodes, 'Every standard or extra point has one regional anatomy assignment');
+assert.equal(new Set(regionalSectionGroups.map(({ section }) => section.name)).size, regionalSectionGroups.length);
+for (const { codes, section } of regionalSectionGroups) {
+  const code = codes.trim().split(/\s+/)[0];
+  assert.equal(getRegionalSection(code), section);
+  assert(section.structures.length >= 2 && section.structures.length <= 6, section.name);
+  assert(section.sources.length >= 1 && section.sources.every(source => /^https:\/\//.test(source.url) && source.scope), section.name);
+  const { model, landmarks } = createRegionalSectionModel(code, section);
+  assert.equal(landmarks.length, section.structures.length, section.name);
+  assert.equal(model.surfacePoint, undefined, 'Only the separate surface figure identifies the individual point');
+  assert(model.svgElements.every(element => element.layerId !== 'needle-indicator'));
+}
 assert.deepEqual(Object.keys(STANDARD_NAMES).sort(), allCodes);
 assert.deepEqual(Object.keys(NAME_READINGS).sort(), allCodes);
 assert.equal(new Set(Object.values(NAME_READINGS)).size, allCodes.length, 'Each point has its own name explanation');

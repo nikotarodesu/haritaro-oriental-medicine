@@ -38,7 +38,7 @@ const studyGroups = [
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
 ];
 
-const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。体表の位置図や名前の由来に加え、内関・間使・郄門や曲池などは断面図でも学べます。";
+const DESCRIPTION = "全361穴を名前・部位・経絡から探せます。体表図でツボの場所を調べ、断面模式図で周りの骨や筋などを学べます。";
 
 export default function TsuboPage() {
   const guideLinks = (
@@ -66,7 +66,10 @@ export default function TsuboPage() {
 
       <TsuboInteractiveClient relatedGuides={guideLinks} featuredPoints={<>
         <section id="atlas-anatomy-index" className="atlas-directory-anatomy atlas-target" aria-labelledby="atlas-anatomy-index-title">
-          <h2 id="atlas-anatomy-index-title"><Layers size={20} aria-hidden="true" />断面図から見る</h2>
+          <div>
+            <h2 id="atlas-anatomy-index-title"><Layers size={20} aria-hidden="true" />断面図から見る</h2>
+            <a href="#illustrated-points" className="atlas-text-action">全361穴を部位から探す</a>
+          </div>
           <ul>
             {anatomyCards.map(({ point, structure }) => (
               <li key={point.code}>
@@ -148,6 +151,7 @@ export default function TsuboPage() {
 
       <section aria-labelledby="illustrated-points" className="space-y-3">
         <h2 id="illustrated-points" className="atlas-section-title atlas-target">部位別の索引</h2>
+        <p className="atlas-muted">経穴ページの「断面図」から、体表の位置と周りの構造を確認できます。</p>
         <div className="grid items-start gap-3 sm:grid-cols-2">
           {regions.map(({ region, points }) => (
             <details key={region} className="atlas-disclosure atlas-region-index">

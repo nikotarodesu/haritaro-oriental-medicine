@@ -30,7 +30,7 @@ export default function AcupointAnatomy({ point, paragraphs = [] }: {
     : [];
 
   return (
-    <section id="acupoint-anatomy" className="atlas-target" aria-labelledby="acupoint-anatomy-title">
+    <section id="acupoint-anatomy" data-anatomy-kind="individual" className="atlas-target" aria-labelledby="acupoint-anatomy-title">
       <h2 id="acupoint-anatomy-title" className="atlas-section-title">詳しい解剖と位置</h2>
       {preview && <p className="mb-3">{preview}</p>}
       <HashTargetDetails className="atlas-disclosure atlas-anatomy-details" summary="断面図を開く">

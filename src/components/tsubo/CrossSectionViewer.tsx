@@ -20,6 +20,7 @@ interface CrossSectionViewerProps {
   pointName: string;
   pointCode: string;
   individualModel?: boolean;
+  regional?: boolean;
   sharedLandmarks?: readonly SharedAnatomyLandmark[];
 }
 
@@ -28,6 +29,7 @@ export default function CrossSectionViewer({
   pointName,
   pointCode,
   individualModel = false,
+  regional = false,
   sharedLandmarks = [],
 }: CrossSectionViewerProps) {
   // 選択された組織ID（null時は全体表示）
@@ -49,7 +51,7 @@ export default function CrossSectionViewer({
   const numbersByStructure = new Map(numberedLandmarks.map(({ layerId, number }) => [layerId, number]));
   const landmarkSummaryId = `${pointCode.toLowerCase()}-anatomy-landmark-summary`;
   const surfacePointId = model.surfacePoint ? `${pointCode.toLowerCase()}-anatomy-surface-description` : undefined;
-  const diagramDescriptions = [surfacePointId, numberedLandmarks.length ? landmarkSummaryId : undefined].filter(Boolean).join(" ");
+  const diagramDescriptions = [surfacePointId, !regional && numberedLandmarks.length ? landmarkSummaryId : undefined].filter(Boolean).join(" ");
   const structures = [...model.layers, ...(model.boundaries || []), ...(model.adjacentStructures || [])];
   const selectableStructures = structures.filter((structure, index) => visibleIds.has(structure.id) && structures.findIndex(item => item.id === structure.id) === index);
   const selectStructure = (id: string) => setSelectedStructureId(current => current === id ? null : id);
@@ -75,11 +77,11 @@ export default function CrossSectionViewer({
     return "標準断面モデル";
   };
 
-  const summaryText = "周辺の組織の関係を学ぶための模式図です。図の構造・配置は専門家確認待ちで、個人の刺入経路や安全域を示しません。";
+  const summaryText = regional ? model.level : "周辺の組織の関係を学ぶための模式図です。図の構造・配置は専門家確認待ちで、個人の刺入経路や安全域を示しません。";
 
   return (
     <section 
-      aria-label={`${pointName}の局所深浅・断面解剖モデル`}
+      aria-label={regional ? `${pointName}周辺の断面解剖` : `${pointName}の局所深浅・断面解剖モデル`}
       className="anatomy-viewer bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 shadow-sm space-y-5 transition-colors"
     >
       {/* 1. ヘッダー部：タイトル、1文要約、資料台帳ボタン */}
@@ -88,16 +90,16 @@ export default function CrossSectionViewer({
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
             <div className="flex items-center gap-1.5">
               <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>局所深浅・断面解剖モデル</span>
+              <span>{regional ? "部位の断面模式図" : "局所深浅・断面解剖モデル"}</span>
             </div>
             <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#1C2833] border border-[#E8E1D1] dark:border-[#2B3C4E] text-[#737C77] dark:text-[#9FB1C1]">
               {pointCode}
             </span>
             {/* 一瞬で部位・側別が分かるハイライトバッジ */}
-            <span className="font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#1E3D34] text-white dark:bg-[#2B6958] shadow-xs flex items-center gap-1">
+            {!regional && <span className="font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#1E3D34] text-white dark:bg-[#2B6958] shadow-xs flex items-center gap-1">
               <span>📍</span>
               <span>{getBodyPartSideLabel()}</span>
-            </span>
+            </span>}
           </div>
 
           <h3 className="font-serif text-lg sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
@@ -106,14 +108,14 @@ export default function CrossSectionViewer({
 
           {/* 1文要約 */}
           {summaryText && (
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
+            <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
               {summaryText}
             </p>
           )}
         </div>
 
         {/* 根拠資料台帳ボタン */}
-        <button
+        {!regional && <button
           type="button"
           onClick={() => setIsReferenceLedgerOpen(!isReferenceLedgerOpen)}
           className="inline-flex items-center gap-1.5 text-xs font-medium text-[#1E3D34] dark:text-[#74BA9E] hover:text-[#B86924] dark:hover:text-[#E6C387] self-start sm:self-auto py-1.5 px-3 rounded-xl bg-[#FAF8F5] dark:bg-[#1A2632] border border-[#E5DEC9] dark:border-[#2A3B4A] transition-colors shrink-0 shadow-xs"
@@ -121,11 +123,11 @@ export default function CrossSectionViewer({
         >
           <BookOpen className="w-3.5 h-3.5" />
           <span>参照資料と確認範囲</span>
-        </button>
+        </button>}
       </div>
 
       {/* 資料台帳アコーディオン展開部 */}
-      {isReferenceLedgerOpen && (
+      {!regional && isReferenceLedgerOpen && (
         <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#D6C8AF] dark:border-[#2A3B4A] space-y-4 animate-in fade-in duration-200">
           <div className="flex items-center justify-between border-b border-[#E8E1D1] dark:border-[#22303D] pb-3">
             <div className="flex items-center gap-2">
@@ -207,9 +209,9 @@ export default function CrossSectionViewer({
       )}
 
       {/* 2. メイン図エリア：SVG断面図（主役） */}
-      <p className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-3 text-xs leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
+      {!regional && <p className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-3 text-xs leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
         <strong>{individualModel ? '個別に編集した教育用模式図' : '部位別の共通模式図'}</strong>：層の関係を学ぶための図です。縮尺・深度・境界は個人の画像計測値ではなく、刺鍼の安全域や経路の決定には使用できません。
-      </p>
+      </p>}
       <figure className="anatomy-figure w-full rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-3 shadow-inner sm:rounded-3xl sm:p-6 dark:border-[#22303D] dark:bg-[#10171F]">
         <p className="anatomy-axis anatomy-axis--vertical">↑ {model.axes.vertical[0]}</p>
 
@@ -219,13 +221,14 @@ export default function CrossSectionViewer({
           className="w-full h-auto max-h-[380px] my-2 select-none"
           preserveAspectRatio="xMidYMid meet"
           role="img"
-          aria-label={`${pointName}の横断面解剖図`}
+          aria-label={regional ? `${model.title}の断面模式図` : `${pointName}の横断面解剖図`}
           aria-describedby={diagramDescriptions || undefined}
         >
           {/* 断面要素描画 */}
           {publicElements.map((el) => {
+            const interactive = regional ? el.layerId !== "outline" : el.layerId !== "needle-indicator";
             const isSelected = selectedStructureId === el.layerId;
-            const opacity = selectedStructureId && !isSelected ? 0.35 : 1;
+            const opacity = interactive && selectedStructureId && !isSelected ? 0.35 : 1;
             const stroke = isSelected ? "#B86924" : el.stroke || "none";
             const strokeWidth = isSelected ? 3.5 : el.strokeWidth || 1;
 
@@ -235,21 +238,13 @@ export default function CrossSectionViewer({
               stroke,
               strokeWidth,
               opacity,
-              tabIndex: el.layerId !== "needle-indicator" ? 0 : -1,
-              role: el.layerId !== "needle-indicator" ? "button" : undefined,
-              "aria-label": el.label,
-              "aria-pressed": el.layerId !== "needle-indicator" ? isSelected : undefined,
-              className: "transition-all duration-200 cursor-pointer outline-none focus:stroke-[#B86924] focus:stroke-[3.5] hover:opacity-90",
-              onClick: () => {
-                if (el.layerId !== "needle-indicator") {
-                  selectStructure(el.layerId);
-                }
-              },
-              onKeyDown: (e: React.KeyboardEvent) => {
-                if (el.layerId !== "needle-indicator") {
-                  handleKeyDown(e, el.layerId);
-                }
-              },
+              tabIndex: interactive ? 0 : -1,
+              role: interactive ? "button" : undefined,
+              "aria-label": interactive ? el.label : undefined,
+              "aria-pressed": interactive ? isSelected : undefined,
+              className: interactive ? "transition-all duration-200 cursor-pointer outline-none focus:stroke-[#B86924] focus:stroke-[3.5] hover:opacity-90" : "pointer-events-none",
+              onClick: interactive ? () => selectStructure(el.layerId) : undefined,
+              onKeyDown: interactive ? (e: React.KeyboardEvent) => handleKeyDown(e, el.layerId) : undefined,
             };
 
             return (
@@ -315,7 +310,7 @@ export default function CrossSectionViewer({
               <strong>丸印は体表の位置です。</strong> {model.surfacePoint.description}
               {" "}{model.surfacePoint.diagramNote}
             </p>}
-            {numberedLandmarks.length > 0 && <p id={landmarkSummaryId}>
+            {!regional && numberedLandmarks.length > 0 && <p id={landmarkSummaryId}>
               位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。{" "}
               <a href="#acupoint-location" className="atlas-source-link inline-flex min-h-11 items-center">体表の位置図に戻る</a>
             </p>}
@@ -366,7 +361,7 @@ export default function CrossSectionViewer({
           </div>
 
           {/* バッジ列 */}
-          <div className="flex flex-wrap gap-1.5 text-[10px]">
+          {!regional && <div className="flex flex-wrap gap-1.5 text-[10px]">
             <span className={`px-2 py-0.5 rounded-md font-bold ${
               activeStructure.dangerLevel === "hazard"
                 ? "bg-[#F87171]/20 text-[#DC2626] border border-[#F87171]/40"
@@ -388,14 +383,14 @@ export default function CrossSectionViewer({
                 関係: {activeStructure.relation}
               </span>
             )}
-          </div>
+          </div>}
 
           {/* 詳細説明 */}
           <p className="text-xs sm:text-sm text-[#404743] dark:text-[#CBD8E2] leading-relaxed">
             {getPublicAnatomyDescription(activeStructure)}
           </p>
 
-          <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">実技・刺激の説明は専門家確認待ちです。参照資料の掲載だけで、この模式図の位置や手技が検証されたことにはなりません。</p>
+          {!regional && <p className="text-xs leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">実技・刺激の説明は専門家確認待ちです。参照資料の掲載だけで、この模式図の位置や手技が検証されたことにはなりません。</p>}
         </div>
       )}
     </section>

@@ -1,6 +1,6 @@
 import type { LandmarkPosition } from "./landmarkLabels";
 
-const circledNumbers = { 1: "①", 2: "②", 3: "③" } as const;
+const circledNumbers = { 1: "①", 2: "②", 3: "③", 4: "④", 5: "⑤", 6: "⑥" } as const;
 type LandmarkNumber = keyof typeof circledNumbers;
 
 export interface SharedAnatomyLandmark {

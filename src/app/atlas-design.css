@@ -532,6 +532,25 @@
   background: var(--atlas-paper);
 }
 .atlas-anatomy-details > summary { min-height: 2.75rem; font-size: 1rem; color: var(--atlas-accent); }
+.atlas-anatomy-location {
+  display: grid;
+  grid-template-columns: minmax(4rem, 6rem) minmax(0, 1fr);
+  align-items: center;
+  gap: .75rem;
+  padding: .65rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .75rem;
+  background: var(--bg-washi);
+  font-size: .9375rem;
+  line-height: 1.65;
+}
+.atlas-anatomy-location > figure { min-width: 0; margin: 0; }
+.atlas-anatomy-location h3 { color: var(--atlas-ink); font-size: 1rem; font-weight: 700; }
+.atlas-anatomy-location svg { display: block; width: 100%; height: auto; max-height: 6.5rem; }
+.atlas-anatomy-location figcaption { text-align: center; color: var(--atlas-muted); font-size: .8125rem; }
+@media (max-width: 380px) {
+  .atlas-anatomy-location { grid-template-columns: 4.5rem minmax(0, 1fr); gap: .5rem; }
+}
 .anatomy-axis { color: var(--text-secondary); font-size: .8125rem; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
 .anatomy-axis--vertical { margin-block: .375rem; text-align: center; }
 .anatomy-axis-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
@@ -717,7 +736,7 @@
 }
 .atlas-directory-anatomy h2 svg { flex: none; color: var(--atlas-accent); }
 .atlas-directory-anatomy ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.3rem, 1vw, .75rem); }
-.atlas-directory-anatomy a {
+.atlas-directory-anatomy li > a {
   display: grid;
   align-content: start;
   height: 100%;
@@ -730,7 +749,7 @@
   font-size: .8125rem;
   line-height: 1.45;
 }
-.atlas-directory-anatomy a:hover { border-color: var(--atlas-accent); }
+.atlas-directory-anatomy li > a:hover { border-color: var(--atlas-accent); }
 .atlas-anatomy-card-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .45rem; color: var(--atlas-accent); }
 .atlas-anatomy-card-title strong { font-size: 1rem; }
 .atlas-anatomy-card-title small { color: var(--atlas-muted); font: 500 .77rem/1.4 ui-monospace, monospace; }

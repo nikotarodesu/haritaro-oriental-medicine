@@ -1,6 +1,7 @@
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "./AcupointAnatomy";
+import RegionalPointAnatomy from "./RegionalPointAnatomy";
 import { AcupointComparisonLink, AcupointReadingLinks } from "./AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
@@ -10,8 +11,11 @@ import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
-import PointAtlasDiagrams from "./atlas/PointAtlasDiagrams";
+import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
 import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
+import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
+import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
+import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
 
@@ -35,11 +39,13 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 }) {
   const traditionalTitle = article.traditionalTitle ?? "伝統的な使われ方";
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
-  const hasAnatomyDiagram = individualModel && !!point.crossSection;
+  const hasIndividualAnatomy = individualModel && !!point.crossSection;
+  const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
+  const positionPage = whoAtlasPages[point.codeLower];
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={article.lead} hasAnatomyDiagram={hasAnatomyDiagram} />
+      <AcupointArticleHeader point={point} lead={article.lead} hasAnatomyDiagram={hasIndividualAnatomy || !!regionalSection} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
@@ -58,12 +64,22 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         {article.safetyWarning && <p className="font-semibold">{article.safetyWarning}</p>}
         <Paragraphs paragraphs={article.cautions} />
         {article.visualOnly && <Paragraphs paragraphs={article.selfCare} />}
-        {hasAnatomyDiagram && (
+        {hasIndividualAnatomy && (
           <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
         )}
       </AcupointCautions>
 
-      {hasAnatomyDiagram && <AcupointAnatomy point={point} paragraphs={article.expert} />}
+      {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
+      {regionalSection && (
+        <RegionalPointAnatomy
+          code={point.code}
+          name={point.name}
+          section={regionalSection}
+          position={whoLocations[point.codeLower]}
+          locationSource={positionPage ? { title: `WHO原本 p.${positionPage - 9}（PDF）`, url: `${WHO_ATLAS_PDF}#page=${positionPage}` } : undefined}
+          surface={<PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />}
+        />
+      )}
 
       <AcupointLocationComparison point={point} related={article.relatedPoints}>
         {nearbyComparisons.map((comparison, index) => (
@@ -94,7 +110,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       <AcupointResearch point={point} traditionalTitle={traditionalTitle} />
       <AcupointNameGuide code={point.codeLower} />
 
-      {!hasAnatomyDiagram && article.expert.length > 0 && (
+      {!hasIndividualAnatomy && article.expert.length > 0 && (
         <details className="atlas-disclosure atlas-reading-details">
           <summary>位置図の補足</summary>
           <Paragraphs paragraphs={article.expert} />

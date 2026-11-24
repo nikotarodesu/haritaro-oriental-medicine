@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
+import RegionalPointAnatomy from "@/components/tsubo/RegionalPointAnatomy";
 import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
 import { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } from "@/data/tsubo/extraPoints";
+import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import ExtraPointDiagram from "../ExtraPointDiagram";
 import styles from "../extra-points.module.css";
 
@@ -37,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ExtraPointPage({ params }: Props) {
   const point = await pointFromParams(params);
+  const anatomySection = getRegionalSection(point.code.toLowerCase());
   const url = SITE_ORIGIN + point.href;
   const schema = {
     "@context": "https://schema.org",
@@ -67,6 +70,7 @@ export default async function ExtraPointPage({ params }: Props) {
           <span className={styles.code}>{point.code}</span>
         </div>
         <p>ピンイン <span lang="zh-Latn">{point.pinyin}</span></p>
+        {anatomySection && <a href="#acupoint-anatomy" className="atlas-text-action">断面図</a>}
       </header>
 
       <section id="extra-point-location" className="atlas-target" aria-labelledby="extra-point-location-heading">
@@ -85,6 +89,17 @@ export default async function ExtraPointPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {anatomySection && (
+        <RegionalPointAnatomy
+          code={point.code}
+          name={point.name}
+          section={anatomySection}
+          position={point.position}
+          locationSource={{ title: point.sources[1].title, url: point.sources[1].href }}
+          surface={<ExtraPointDiagram point={point} />}
+        />
+      )}
 
       <section className={styles.section} aria-labelledby="extra-point-nearby-heading">
         <h2 id="extra-point-nearby-heading" className={styles.sectionTitle}>近くにある経穴</h2>
