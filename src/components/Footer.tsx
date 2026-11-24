@@ -27,9 +27,8 @@ export default function Footer() {
             <nav aria-label={group.title}><ul>{group.links.map(([href, label]) => <li key={href}><Link href={href}>{label}</Link></li>)}</ul></nav>
           </details>)}
         </div>
-        <div className="site-footer-notice space-y-2">
+        <div className="site-footer-notice">
           <p>ツボの位置を図で調べ、東洋医学の講義を読み、架空の症例で練習できるサイトです。急な症状や悪化があるときは、医療機関に相談してください。</p>
-          <a href="https://note.com/hari_taro" target="_blank" rel="noopener noreferrer" className="ui-text-link">はり太郎のnote（外部サイト）</a>
         </div>
         <div className="site-footer-legal">
           <Link href="/terms">利用規約</Link>
