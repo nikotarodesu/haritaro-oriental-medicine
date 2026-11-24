@@ -4,9 +4,11 @@ import { ArrowRight, BookOpen, Droplets, LibraryBig, List, Network, Scale } from
 import PublicLearningPath from "@/components/curriculum/PublicLearningPath";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
+import StudyDiagram from "@/components/reading/StudyDiagram";
 import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getArticlePreviews } from "@/data/articleData";
-import { readingUnits } from "@/data/publicLectures/readingUnits";
+import { foundationDiagrams } from "@/data/publicLectures/diagrams/foundations";
+import { readingPartHref, readingUnits } from "@/data/publicLectures/readingUnits";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLearning";
 import styles from "./learning-entry.module.css";
 
@@ -59,6 +61,13 @@ export default function LearnGuidePage() {
       </div>
 
       <PublicLearningPath />
+
+      <div className={styles.diagramExample}>
+        <StudyDiagram id="learn-yin-yang-example" diagram={foundationDiagrams["lecture-yinyang-2"]} />
+        <Link href={readingPartHref("lecture-yinyang-2")} className="ui-text-link">
+          陰陽の講義で、比べ方を読む<ArrowRight aria-hidden="true" />
+        </Link>
+      </div>
 
       <section aria-labelledby="oriental-reading" className="space-y-4">
         <h2 id="oriental-reading" className="reader-section-title">図解記事</h2>

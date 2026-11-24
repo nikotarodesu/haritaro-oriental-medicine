@@ -146,18 +146,16 @@ function FiveElements({ id }: { id: string }) {
 function Meridian() {
   return (
     <>
-      <div className="study-artwork-plot">
-        <Canvas height={112}>
-          <path d="M22 93h86c28 0 28-16 56-16h82c22 0 27 16 49 16h43" className="study-artwork-guide study-artwork-dashed" />
-          <path d="M23 79h70c26 0 34-25 58-25h85c26 0 34 25 61 25h42" className="study-artwork-accent" strokeWidth="3" />
-          <circle cx="57" cy="79" r="4.5" className="study-artwork-accent study-artwork-paper" />
-          <circle cx="181" cy="54" r="9" className="study-artwork-warm study-artwork-paper" />
-          <circle cx="306" cy="79" r="4.5" className="study-artwork-accent study-artwork-paper" />
-          <path d="M181 33v12" className="study-artwork-warm" />
-        </Canvas>
-        <span className="study-artwork-stop">合谷 LI4</span>
+      <div className="study-artwork-line-caption">大腸経の一部（経穴の並び順）</div>
+      <Canvas height={42}>
+        <path d="M18 21h324" className="study-artwork-accent" strokeWidth="3" />
+        <circle cx="60" cy="21" r="5" className="study-artwork-accent study-artwork-paper" />
+        <circle cx="180" cy="21" r="10" className="study-artwork-warm study-artwork-highlight" />
+        <circle cx="300" cy="21" r="5" className="study-artwork-accent study-artwork-paper" />
+      </Canvas>
+      <div className="study-artwork-scale">
+        <span>三間<br />LI3</span><strong>合谷<br />LI4</strong><span>陽谿<br />LI5</span>
       </div>
-      <div className="study-artwork-line-caption">線は大腸経の道筋、丸は一つずつの経穴</div>
     </>
   );
 }

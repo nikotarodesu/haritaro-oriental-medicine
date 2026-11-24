@@ -51,18 +51,37 @@ const publicLectures = getPublicLectureGroups().flatMap(group => group.entries.m
 assert.equal(Object.keys(publicLectureDiagrams).length, publicLectures.length);
 for (const lectureId of publicLectures) {
   const diagram = getPublicLectureDiagram(lectureId);
-  assert(diagram && diagram.items.length >= 2 && diagram.items.length <= 6, lectureId);
+  assert(diagram, lectureId + ' has a diagram');
+  const count = 'rows' in diagram ? diagram.rows.length : diagram.items.length;
+  assert(count >= 2 && count <= 6, lectureId + ' readable diagram size');
   assert((diagram.afterSection ?? 1) <= getPublicLectureArticle(lectureId).sections.length, lectureId + ' figure placement');
   const id = 'reading-figure-' + (diagram.anchor ?? lectureId);
   const html = renderToStaticMarkup(React.createElement(StudyDiagram, { diagram, id }));
   assert(html.includes('aria-labelledby="' + id + '-title"') && html.includes('<figcaption'), lectureId);
-  assert(html.includes('<svg') && !html.includes('<text'), lectureId + ' has SVG connections and scalable HTML text');
+  assert(!/<text\b/.test(html), lectureId + ' renders labels as scalable HTML text');
+  if (diagram.layout === 'matrix') {
+    assert(diagram.columns.length >= 2 && diagram.columns.length <= 3, lectureId + ' readable matrix width');
+    assert(diagram.columns.every(label => label.trim()), lectureId + ' names each column');
+    assert(diagram.rows.every(row => row.label.trim() && row.cells.length === diagram.columns.length), lectureId + ' aligns each named row with the columns');
+    assert(html.includes('<table') && html.includes('<thead>') && html.includes('<tbody>'), lectureId + ' renders a semantic table');
+    assert.equal((html.match(/<th\b[^>]*scope="col"/g) || []).length, diagram.columns.length, lectureId + ' semantic column headers');
+    assert.equal((html.match(/<th\b[^>]*scope="row"/g) || []).length, diagram.rows.length, lectureId + ' semantic row headers');
+  } else if (diagram.layout === 'bars') {
+    assert(html.includes('class="study-diagram-bars" role="list"'), lectureId + ' names values in a list');
+    assert.equal((html.match(/class="study-diagram-bar-track"/g) || []).length, diagram.rows.length, lectureId + ' renders every bar');
+    for (const { label, percent } of diagram.rows) {
+      assert(label.trim() && Number.isFinite(percent) && percent >= 0 && percent <= 100, lectureId + ' percentage uses the 0–100 scale');
+      assert(html.includes(`>${percent.toFixed(1)}%</span>`) && html.includes(`style="width:${percent}%"`), lectureId + ' renders value as text and bar width');
+    }
+  } else {
+    assert(html.includes('<svg'), lectureId + ' has SVG connections or marks');
+  }
   const paths = Array.from(html.matchAll(/<svg[^>]*class="study-diagram-flow-arrow"/g)).length;
   assert.equal(paths, diagram.layout === 'flow' ? diagram.items.length - 1 : 0, lectureId + ' flow connections');
   if (diagram.layout === 'relations') assert.equal((html.match(/class="study-diagram-relation-connector"/g) || []).length, diagram.items.length, lectureId);
   if (diagram.illustration) assert(html.includes('data-study-illustration="' + diagram.illustration + '"'), lectureId);
 }
-console.log(`Passed: ${publicLectures.length} public lectures have restrained, accessible SVG diagrams placed beside the explanation.`);
+console.log(`Passed: ${publicLectures.length} public lectures have accessible diagrams, semantic matrix headers and valid percentage bars placed beside the explanation.`);
 
 assert.equal(Object.keys(readingUnitRevisions).length, readingUnits.length, 'Every published unit has tailored copy and a recap');
 for (const unit of readingUnits) {

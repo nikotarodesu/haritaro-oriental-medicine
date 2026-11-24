@@ -44,6 +44,16 @@
   color: var(--learn-ink);
 }
 
+.diagramExample {
+  display: grid;
+  gap: .3rem;
+  justify-items: start;
+  width: min(100%, 42rem);
+  margin-inline: auto;
+}
+
+.diagramExample > figure { width: 100%; }
+
 .entry .articleCard {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;

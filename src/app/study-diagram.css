@@ -46,8 +46,13 @@
 
 [data-study-diagram="compare"] .study-diagram-point {
   grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
   column-gap: .45rem;
-  padding-block: .25rem;
+  height: 100%;
+  padding: .45rem .55rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-tag);
+  background: var(--bg-card);
 }
 
 [data-study-diagram="compare"] .study-diagram-point > svg {
@@ -59,6 +64,83 @@
 [data-study-diagram="compare"] .study-diagram-point > span {
   grid-column: 2;
 }
+
+[data-study-diagram="compare"] .study-diagram-points:has(> li:nth-child(2):last-child) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@container (max-width: 24rem) {
+  [data-study-diagram="compare"] .study-diagram-points:has(> li:nth-child(2):last-child) .study-diagram-point {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [data-study-diagram="compare"] .study-diagram-points:has(> li:nth-child(2):last-child) .study-diagram-point > span {
+    grid-column: 1;
+  }
+
+  [data-study-diagram="compare"] .study-diagram-points:has(> li:nth-child(2):last-child) .study-diagram-point > svg:not(.study-diagram-point-icon) {
+    display: none;
+  }
+}
+
+.study-diagram-matrix {
+  width: 100%;
+  border: 1px solid var(--border-washi);
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  border-radius: var(--radius-tag);
+  background: var(--bg-card);
+  font-size: .9375rem;
+  line-height: 1.5;
+}
+
+.study-diagram-matrix :is(th, td) {
+  padding: clamp(.35rem, 2cqi, .65rem);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.study-diagram-matrix th {
+  color: var(--accent-readable);
+  font-weight: 650;
+  text-align: start;
+}
+
+.study-diagram-matrix tr > :not(:first-child) { border-inline-start: 1px solid var(--border-subtle); }
+.study-diagram-matrix tbody tr > * { border-block-start: 1px solid var(--border-subtle); }
+.study-diagram-matrix thead > tr > :first-child { width: 25%; }
+.study-diagram-matrix thead th { background: var(--accent-soft); }
+.study-diagram-matrix tbody th { background: var(--bg-washi); }
+
+.study-diagram-matrix-chips { display: grid; justify-items: start; gap: .3rem; }
+
+.study-diagram-chip {
+  display: inline-block;
+  padding: .16rem .36rem;
+  border-radius: .38rem;
+  background: var(--bg-muted);
+  font-weight: 600;
+}
+
+.study-diagram-chip[data-tone="warm"] { color: var(--warm-readable); background: var(--action-soft); }
+.study-diagram-chip[data-tone="cool"] { color: var(--accent-readable); background: var(--accent-soft); }
+.study-diagram-chip[data-tone="positive"] { background: var(--tokiwa-light); }
+
+.study-diagram-bars { display: grid; gap: .7rem; margin: 0; padding: 0; list-style: none; }
+.study-diagram-bars > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .18rem .65rem; }
+.study-diagram-bars > li > span { font-variant-numeric: tabular-nums; color: var(--accent-readable); font-weight: 650; }
+
+.study-diagram-bar-track {
+  grid-column: 1 / -1;
+  height: .9rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: .25rem;
+  background: var(--bg-muted);
+}
+
+.study-diagram-bar-track > div { height: 100%; border-radius: inherit; background: var(--accent-readable); }
+.study-diagram-bar-axis { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: .8125rem; }
 
 .study-diagram-point > .study-diagram-point-icon {
   width: 1.2rem;
@@ -189,7 +271,6 @@
 
 .study-artwork-node-label,
 .study-artwork-arc-label,
-.study-artwork-stop,
 .study-artwork-water-caption {
   position: absolute;
   color: var(--text-sumi);
@@ -201,7 +282,6 @@
 }
 
 .study-artwork-arc-label,
-.study-artwork-stop,
 .study-artwork-water-caption {
   inset-inline-start: 50%;
 }
@@ -212,11 +292,6 @@
 .study-artwork-arc-label {
   padding-inline: .25rem;
   background: var(--bg-washi);
-}
-
-.study-artwork-stop {
-  inset-block-start: 16%;
-  color: var(--warm-readable);
 }
 
 .study-artwork-water-caption {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
+import { Fragment } from "react";
 import StudyDiagram from "@/components/reading/StudyDiagram";
 import { getCurriculumReadingInserts } from "@/data/curriculumReadingGuides";
 import { getPublicLectureDiagram } from "@/data/publicLectures/diagrams";
@@ -29,6 +30,7 @@ export default function PublicLectureSections({ lectureId, sections, partAnchor,
   const readingInserts = getCurriculumReadingInserts(lectureId);
   const prefix = partAnchor ?? "lecture";
   const Heading = partAnchor ? "h3" : "h2";
+  const figureAfterOpening = Boolean(partAnchor && diagram && !collapseDiagram && lectureId !== "lecture-diagnosis-2");
   const figure = diagram && (
     <div id={`${prefix}-diagram`} className="lecture-diagram" tabIndex={-1}>
       {readingInserts.map(({ figure }) => (
@@ -61,8 +63,13 @@ export default function PublicLectureSections({ lectureId, sections, partAnchor,
       {(!partAnchor || index > 0) && (
         <Heading className={partAnchor ? "lecture-unit-subtitle" : "reader-section-title"}>{section.heading}</Heading>
       )}
-      {section.paragraphs.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
-      {index === diagramIndex && diagramBlock}
+      {section.paragraphs.map((paragraph, paragraphIndex) => (
+        <Fragment key={paragraphIndex}>
+          <p>{paragraph}</p>
+          {figureAfterOpening && index === diagramIndex && paragraphIndex === 0 && diagramBlock}
+        </Fragment>
+      ))}
+      {!figureAfterOpening && index === diagramIndex && diagramBlock}
       {section.links?.length ? <PublicLectureLinks links={section.links} unitHref={unitHref} /> : null}
     </section>
   ));

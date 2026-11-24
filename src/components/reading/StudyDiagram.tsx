@@ -13,6 +13,55 @@ function DiagramConnector({ directional, className }: { directional: boolean; cl
   );
 }
 
+function DiagramMatrix({ diagram }: { diagram: Extract<LectureDiagram, { layout: "matrix" }> }) {
+  return (
+    <table className="study-diagram-matrix">
+      <thead>
+        <tr>
+          <td />
+          {diagram.columns.map(label => <th key={label} scope="col">{label}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {diagram.rows.map(({ label, cells }) => (
+          <tr key={label}>
+            <th scope="row">{label}</th>
+            {cells.map((cell, index) => (
+              <td key={diagram.columns[index]}>
+                {typeof cell === "string" ? cell : (
+                  <span className="study-diagram-matrix-chips">
+                    {cell.map(({ label: chip, tone }) => (
+                      <span key={chip} className="study-diagram-chip" data-tone={tone}>{chip}</span>
+                    ))}
+                  </span>
+                )}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+function DiagramBars({ rows }: { rows: Extract<LectureDiagram, { layout: "bars" }>["rows"] }) {
+  return (
+    <>
+      <ul className="study-diagram-bars" role="list">
+        {rows.map(({ label, percent }) => (
+          <li key={label}>
+            <strong>{label}</strong><span>{percent.toFixed(1)}%</span>
+            <div className="study-diagram-bar-track" aria-hidden="true">
+              <div style={{ width: `${percent}%` }} />
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="study-diagram-bar-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+    </>
+  );
+}
+
 export default function StudyDiagram({ diagram, id }: { diagram: LectureDiagram; id: string }) {
   const titleId = `${id}-title`;
   const noteId = diagram.note ? `${id}-note` : undefined;
@@ -22,7 +71,11 @@ export default function StudyDiagram({ diagram, id }: { diagram: LectureDiagram;
     <figure id={id} className="study-diagram" aria-labelledby={titleId} aria-describedby={noteId} data-study-diagram={diagram.layout}>
       <figcaption id={titleId}>{diagram.title}</figcaption>
       {diagram.illustration && <StudyDiagramArtwork kind={diagram.illustration} id={id} />}
-      {diagram.layout === "relations" ? (
+      {diagram.layout === "bars" ? (
+        <DiagramBars rows={diagram.rows} />
+      ) : diagram.layout === "matrix" ? (
+        <DiagramMatrix diagram={diagram} />
+      ) : diagram.layout === "relations" ? (
         <ul className={diagram.illustration ? "sr-only" : "study-diagram-relations"} role="list">
           {diagram.items.map(([from, to, label]) => (
             <li key={`${from}-${to}-${label ?? ""}`}>

@@ -48,12 +48,12 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
         term: "陰陽",
         question: "陰陽とは？",
         answer: "明るい・暗いなど、対になる性質を比べる見方です。",
-        example: "昼休みに日差しのある部屋で座っていると、明るさでは陽、動きでは休む側の陰と説明できます。",
+        example: "日が差す窓辺で座っているとき、部屋の奥と比べれば明るいので陽。さっき歩いていたときと比べれば、動きが少ないので陰です。",
         lectureId: "lecture-yinyang-1",
         diagram: {
           title: "昼休みの同じ場面を、二つの基準で見る",
           layout: "compare",
-          items: [["明るさ", "昼の明るさは陽。"], ["動き", "座って休む側は陰。"]],
+          items: [["部屋の奥と比べる", "明るい窓辺が陽。", "sun"], ["歩いていた時と比べる", "座っている今が陰。", "footprints"]],
         },
       },
       {
@@ -124,21 +124,24 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
         example: "路線図で路線と駅を見分けるように、経絡図では道筋と、その図に記された個々の点を見分けます。",
         lectureId: "lecture-meridians-1",
         diagram: {
-          title: "経絡図を全体から点へたどる",
+          title: "大腸経の線と、合谷の点",
           layout: "flow",
+          illustration: "meridian",
           items: [["経絡", "体のつながりの全体像。"], ["経脈", "主な道筋。"], ["経穴", "名前の付いた点。"]],
+          note: "図の丸は、左から三間（LI3）、合谷（LI4）、陽谿（LI5）です。",
         },
       },
       {
         term: "病因と病機",
         question: "病因と病機はどう違う？",
         answer: "病因は何が関わったと考えるか、病機は不調に至る過程をどう説明するかです。",
-        example: "「夜更かしした」「翌朝にだるかった」を先に記録し、何が関わったかと、どう不調に至ったかを分けて考えます。",
+        example: "「夜更かしした。翌朝だるかった」と聞いたら、どんな出来事が関わったかと、だるさが出るまでの過程を分けて考えます。",
         lectureId: "lecture-pathomechanism-1",
         diagram: {
-          title: "記録と、その後に考える問い",
+          title: "「翌朝だるかった」から考える二つの問い",
           layout: "compare",
-          items: [["事実", "夜更かしと翌朝のだるさ。"], ["病因の問い", "何が関係したのか。"], ["病機の問い", "どんな過程で不調に至ったのか。"]],
+          items: [["病因", "夜更かしなど、何が関わったか。"], ["病機", "だるさが出るまでに、どんな変化があったと考えるか。"]],
+          note: "夜更かしの翌日に起きたという順序だけでは、だるさの原因は分かりません。",
         },
       },
       {
@@ -187,7 +190,7 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
         term: "治則と治法",
         question: "治則と治法は何を決める？",
         answer: "治則は何を優先するかという方針で、治法はその方針を進める考え方です。",
-        example: "「夕方の作業を続けたい」という目標があれば、何を優先し、どんな変化で振り返るかを考えられます。",
+        example: "「肩がつらくても、夕方に洗濯物を最後まで干したい」と聞いたら、その動作で何が変わったかを次に確かめます。",
         lectureId: "lecture-treatment-2",
         diagram: {
           title: "生活の目標から、方針と方法へ",

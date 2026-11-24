@@ -283,8 +283,13 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/updates', '/tsubo', KEY_POINT_TYPES_GUIDE,
     ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st37', 'st38', 'st41'].map(code => `/tsubo/${code}`),
   ].map(route => [route, ATLAS_LEARNING_REVISED_AT])),
+  ...Object.fromEntries([
+    '/learn', '/learn/essentials', '/learn/lectures/body-functions',
+    '/learn/lectures/meridians-and-points', '/learn/lectures/reading-evidence',
+  ].map(route => [route, '2026-11-24'])),
 };
 export const SITE_UPDATES = [
+  { date: '2026-11-24', label: '東洋医学の講義16本の図と文章を見直し', href: '/learn', text: '顔のほてりと足の冷えが出る時間帯、気と血の働き、五行の矢印などを、同じ基準で見比べられる図にしました。図と本文で同じ例を使い、長い説明は読みやすく分けています。' },
   { date: ATLAS_LEARNING_REVISED_AT, label: 'すねの比較図・要穴の分類・奇穴を追加', href: '/tsubo', text: '足三里・上巨虚・条口を一枚の図で見比べられます。要穴の分類から解説と一覧へ進めるようにし、奇穴の索引に太陽と印堂を掲載しました。' },
   { date: ACUPOINT_PAGE_REVISED_AT, label: '361のツボに名前の由来を追加', href: '/tsubo/li4#acupoint-name', text: 'ツボの場所の図に続いて、名前の由来、中国語での漢字の意味、声調付きのピンインを読めるようにしました。合谷の「谷」のように、ツボの場所と名前がどうつながるかを紹介します。' },
   { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の安全性・口の乾燥・尿もれの研究を追加', href: ACUPUNCTURE_RESEARCH.href, text: '抗凝固薬を使う人の出血、放射線治療に伴う口の乾燥、尿もれの測り方を扱った研究を紹介します。膝の研究に英国とシンガポールの診療指針を加え、胸やけのガイドラインの出典も見直しました。' },
