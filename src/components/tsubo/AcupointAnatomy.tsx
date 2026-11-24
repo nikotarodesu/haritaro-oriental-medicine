@@ -33,7 +33,7 @@ export default function AcupointAnatomy({ point, paragraphs = [] }: {
     <section id="acupoint-anatomy" data-anatomy-kind="individual" className="atlas-target" aria-labelledby="acupoint-anatomy-title">
       <h2 id="acupoint-anatomy-title" className="atlas-section-title">詳しい解剖と位置</h2>
       {preview && <p className="mb-3">{preview}</p>}
-      <HashTargetDetails className="atlas-disclosure atlas-anatomy-details" summary="断面図を開く">
+      <HashTargetDetails key={point.code} analytics={{ kind: "individual" }} className="atlas-disclosure atlas-anatomy-details" summary="断面図を開く">
         <div id="acupoint-anatomy-diagram" className="atlas-target space-y-3 pb-3">
           <WhoMeasurementFigures measures={forearmHeight} pointName={point.name} />
           <CrossSectionViewer model={model} pointName={point.name} pointCode={point.code} individualModel sharedLandmarks={getSharedAnatomyLandmarks(point.codeLower)} />

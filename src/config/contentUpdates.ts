@@ -249,7 +249,6 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ...Object.fromEntries(['/clinical', '/diagnosis', '/diagnosis?tab=gorou'].map(route => [route, '2026-11-20'])),
   // Public teaching diagrams were added or revised throughout the lecture catalog.
   ...Object.fromEntries(CURRICULUM_CHAPTERS_META.flatMap(chapter => chapter.lectureIds.map(id => [`/curriculum/${id}`, '2026-11-20']))),
-  '/tsubo': '2026-11-21',
   '/tsubo/basics/bone-cun': ACUPOINT_MEASUREMENT_REVISED_AT,
   '/symptoms': SYMPTOM_GUIDES_REVISED_AT,
   ...Object.fromEntries([
@@ -294,6 +293,11 @@ export const PAGE_REVISIONS: Record<string, string> = {
     '/articles/science-of-yinyang-gogyo', '/articles/science-of-pulse-diagnosis',
     ...SYMPTOMS.map(guide => `/symptoms/${guide.id}`),
   ].map(route => [route, PUBLIC_VISUALS_REVISED_AT])),
+  '/tsubo': '2026-11-25',
+  '/tsubo/li10': '2026-11-25',
+  '/tsubo/st37': '2026-11-25',
+  '/symptoms/constipation-ibs': '2026-11-25',
+  '/symptoms/headache-stiff-neck': '2026-11-25',
 };
 export const SITE_UPDATES = [
   { date: '2026-11-24', label: '比較図の確認問題と、講義・症例の振り返り', href: '/learn/review', text: '比較図7組すべてに位置の確認問題を付けました。16講の確認問題は講義の復習で解き直せます。症例を解いたあとは、迷った設問の解説や登場したツボの比較を開けます。' },

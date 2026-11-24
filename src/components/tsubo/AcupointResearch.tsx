@@ -118,6 +118,7 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
   return (
     <HashTargetDetails
       key={point.codeLower}
+      analytics={studies.length ? { kind: "research", studyIds: studies.map(study => study.id) } : undefined}
       className="atlas-disclosure atlas-evidence-disclosure"
       summary={<h2 id="acupoint-research-title"><BookOpen size={17} aria-hidden="true" />研究と古典の配穴</h2>}
     >

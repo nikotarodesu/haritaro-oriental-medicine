@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const ts = require('typescript');
 const root = path.resolve(__dirname, '..');
 process.env.NEXT_PUBLIC_GA_ID='G-HARITARO123';
 const events = [];
@@ -14,7 +15,8 @@ const windowStub = {
 };
 const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader({ window: windowStub, document: { referrer: 'https://www.haritaro.jp/notes?patient=private#private' }, URL, console, Date, setTimeout, clearTimeout });
-const { publicAnalyticsPath, analyticsDocumentPath, analyticsReferrer, sanitizeAnalyticsParams, learningReturnGap, trackEvent, trackPublicNavigationAction, flushAnalyticsEvents, trackLearningPageView, trackWebVital, trackSubscriptionStep, trackSubscriptionPurchase } = load('src/utils/analytics');
+const analytics = load('src/utils/analytics');
+const { publicAnalyticsPath, analyticsDocumentPath, analyticsReferrer, sanitizeAnalyticsParams, learningReturnGap, trackEvent, trackPublicNavigationAction, trackAtlasDisclosure, flushAnalyticsEvents, trackLearningPageView, trackWebVital, trackSubscriptionStep, trackSubscriptionPurchase } = analytics;
 
 (async()=>{
 assert.equal(publicAnalyticsPath('/notes?patient=private'), null);
@@ -26,6 +28,10 @@ assert.equal(publicAnalyticsPath('/learn/courses/yinyang-foundations?query=priva
 assert.equal(analyticsDocumentPath('/search', false), '/search', 'The bare search landing page can be measured');
 assert.equal(analyticsDocumentPath('/search', true), null, 'Query-bearing results are outside Google tag initialization');
 assert.equal(analyticsDocumentPath('/tsubo', true), null, 'The atlas search also accepts private search text');
+assert.equal(analyticsDocumentPath('/tsubo/extra-points/yintang', false), '/tsubo/extra-points/yintang');
+assert.equal(analyticsDocumentPath('/tsubo/extra-points/taiyang', false), '/tsubo/extra-points/taiyang');
+assert.equal(analyticsDocumentPath('/tsubo/extra-points/yintang', true), null);
+assert.equal(publicAnalyticsPath('/tsubo/extra-points/private-details'), null);
 assert.equal(analyticsReferrer(windowStub.location.origin + '/search?q=private', windowStub.location.origin), windowStub.location.origin + '/search');
 assert.equal(analyticsReferrer('https://external.example/private-patient?query=private#private', windowStub.location.origin), 'https://external.example');
 assert.equal(analyticsReferrer('https://www.haritaro.jp/notes?patient=private', windowStub.location.origin), '');
@@ -116,6 +122,107 @@ trackEvent('search_result_click', { placement: 'atlas_search_results', query: 'p
 assert.equal(events.length, beforeBadRead, 'Unexpected actions and search-result routes send no telemetry');
 assert(!JSON.stringify(events).includes('private'));
 
+const diagram = { kind: 'regional' };
+windowStub.location.search = '';
+for (const pathname of ['/tsubo/st37', '/tsubo/extra-points/yintang']) {
+  windowStub.location.pathname = pathname;
+  trackAtlasDisclosure(diagram, 'private');
+  assert.equal(events.at(-1).name, 'atlas_anatomy_open');
+  assert.equal(events.at(-1).params.content_type, 'atlas_anatomy_regional');
+  assert.equal(events.at(-1).params.page_path, pathname);
+  assert.equal(events.at(-1).params.page_referrer, '');
+  assert.equal(events.at(-1).params.content_id, undefined);
+}
+const atlasCount = events.length;
+for (const pathname of ['/tsubo/st99', '/tsubo/compare', '/tsubo/extra-points/private-details', '/notes']) {
+  windowStub.location.pathname = pathname;
+  trackAtlasDisclosure(diagram);
+}
+windowStub.location.pathname = '/tsubo/st37';
+windowStub.location.search = '?private=input';
+trackAtlasDisclosure(diagram);
+assert.equal(events.length, atlasCount, 'Unknown, non-point, private, and query-bearing URLs send no atlas disclosure events');
+windowStub.location.search = '';
+
+// Run the actual disclosure effect with browser event targets and a fake tag.
+const detailsPath = path.join(root, 'src/components/common/HashTargetDetails.tsx');
+const detailsCode = ts.transpileModule(fs.readFileSync(detailsPath, 'utf8'), { compilerOptions: {
+  target: ts.ScriptTarget.ES2022,
+  module: ts.ModuleKind.CommonJS,
+  jsx: ts.JsxEmit.ReactJSX,
+} }).outputText;
+const research = { kind: 'research', studyIds: ['postoperative-nausea', 'insomnia-review'] };
+const detailsListeners = new Map();
+const hashListeners = new Map();
+const studyElements = new Map([...research.studyIds, 'unknown-private'].map(id => [id, { id, scrollIntoView() {} }]));
+const detailsNode = {
+  open: false,
+  contains: element => studyElements.get(element.id) === element,
+  addEventListener: (type, fn) => detailsListeners.set(type, fn),
+  removeEventListener: type => detailsListeners.delete(type),
+};
+const detailsWindow = {
+  location: windowStub.location,
+  addEventListener: (type, fn) => hashListeners.set(type, fn),
+  removeEventListener: type => hashListeners.delete(type),
+};
+const detailsExports = {};
+let cleanup;
+vm.runInNewContext(detailsCode, {
+  exports: detailsExports,
+  window: detailsWindow,
+  document: { getElementById: id => studyElements.get(id) ?? null },
+  require(id) {
+    if (id === '@/utils/analytics') return analytics;
+    if (id === 'react/jsx-runtime') return { jsx: () => null, jsxs: () => null };
+    if (id === 'react') return {
+      useRef: current => ({ current: current === null ? detailsNode : current }),
+      useEffect: effect => { cleanup = effect(); },
+    };
+    throw new Error('Unexpected disclosure dependency: ' + id);
+  },
+}, { filename: detailsPath });
+windowStub.location.pathname = '/tsubo/pc6';
+windowStub.location.hash = '';
+detailsExports.default({ analytics: research, summary: '研究' });
+assert.equal(events.length, atlasCount, 'A collapsed disclosure sends nothing on mount');
+const toggle = () => detailsListeners.get('toggle')({ target: detailsNode });
+detailsNode.open = true;
+toggle();
+assert.equal(events.at(-1).params.content_type, 'atlas_research_list');
+assert.equal(events.length, atlasCount + 1);
+detailsNode.open = false;
+toggle();
+assert.equal(events.length, atlasCount + 1, 'Closing the research list sends nothing');
+const goToStudy = id => {
+  windowStub.location.hash = '#' + id;
+  hashListeners.get('hashchange')();
+};
+goToStudy(research.studyIds[0]);
+assert(detailsNode.open, 'A direct research link still opens its disclosure');
+toggle();
+assert.equal(events.length, atlasCount + 2, 'Hash opening and its native toggle count once');
+assert.equal(events.at(-1).name, 'atlas_research_open');
+assert.equal(events.at(-1).params.content_type, 'atlas_research_topic');
+assert.equal(events.at(-1).params.content_id, research.studyIds[0]);
+assert.equal(events.at(-1).params.page_location, windowStub.location.origin + '/tsubo/pc6');
+goToStudy('unknown-private');
+assert.equal(events.length, atlasCount + 2, 'An arbitrary fragment cannot become a research topic');
+goToStudy(research.studyIds[1]);
+detailsListeners.get('toggle')({ target: { open: true } });
+assert.equal(events.length, atlasCount + 3, 'Opening a different published result counts once while the list is open');
+assert.equal(events.at(-1).params.content_id, research.studyIds[1]);
+cleanup();
+assert.equal(detailsListeners.size + hashListeners.size, 0);
+const firstRenderCount = events.length;
+detailsExports.default({ analytics: research, summary: '研究' });
+assert.equal(events.length, firstRenderCount + 1, 'A deep link revealed by the browser before hydration still records once');
+toggle();
+assert.equal(events.length, firstRenderCount + 1, 'A hydration-time native toggle must not double count');
+cleanup();
+assert(!JSON.stringify(events).includes('private'));
+windowStub.location.hash = '';
+
 windowStub.location.pathname='/pricing';
 trackSubscriptionStep('upgrade_click','monthly');trackSubscriptionStep('checkout_login_required','monthly');trackSubscriptionStep('begin_checkout','yearly');
 const checkoutEvent=events.at(-1);assert.equal(checkoutEvent.name,'begin_checkout');assert.equal(checkoutEvent.params.currency,'JPY');assert.equal(checkoutEvent.params.value,9800);assert.equal(checkoutEvent.params.items[0].item_id,'haritaro_premium_yearly');
@@ -164,5 +271,5 @@ for (const [gaId, expected] of [['G-GC398NZKVE', true], ['G-GE4JNB164V', true], 
   assert.equal(vm.runInNewContext(idGuard, { gaId }), expected);
 }
 assert(fs.readFileSync(path.join(root, 'src/components/WebVitalsReporter.tsx'), 'utf8').includes('next/web-vitals'));
-console.log('Passed: public-route privacy, safe event queue, daily activity, 1–7-day return boundaries, and official Web Vitals values.');
+console.log('Passed: public-route privacy, atlas disclosure and research-anchor events, safe event queue, daily activity, 1–7-day return boundaries, and official Web Vitals values.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

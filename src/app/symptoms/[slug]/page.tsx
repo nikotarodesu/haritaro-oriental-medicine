@@ -118,6 +118,15 @@ export default async function SymptomGuidePage({ params }: Props) {
           {hasResearch && <a href="#guide-studies" className="atlas-text-action"><FlaskConical size={16} aria-hidden="true" />関連する研究を読む</a>}
           <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={16} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
         </div>
+        {pointStudies.some(study => study.id === 'functional-constipation') && (
+          <p className="text-sm atlas-muted">
+            <a href="#functional-constipation" className={linkClass}>慢性便秘の試験</a>で使われた
+            <Link href="/tsubo/sp14#acupoint-location" prefetch={false} className={linkClass}>腹結の位置図</Link>
+            と
+            <Link href="/tsubo/st37#acupoint-nearby" prefetch={false} className={linkClass}>上巨虚と近くのツボの比較図</Link>
+            を図鑑で確認できます。
+          </p>
+        )}
       </section>
       <section id="recording" className={sectionClass}>
         <h2 className="atlas-section-title">受診時に伝えること</h2>

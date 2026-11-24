@@ -90,9 +90,13 @@ for (const pathname of ['/tsubo/sp11','/tsubo/bl57']) {
 }
 const { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } = load('src/data/tsubo/keyPointTypes');
 const { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } = load('src/data/tsubo/extraPoints');
-for (const pathname of ['/updates', '/tsubo', KEY_POINT_TYPES_GUIDE,
-  ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st37', 'st38', 'st41'].map(code => `/tsubo/${code}`),
-]) assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
+const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/symptoms/constipation-ibs', '/symptoms/headache-stiff-neck']);
+for (const pathname of ['/updates', KEY_POINT_TYPES_GUIDE,
+  ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st38', 'st41'].map(code => `/tsubo/${code}`),
+].filter(pathname => !searchRevised.has(pathname))) assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
+for (const pathname of searchRevised) {
+  assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its search and navigation revisions');
+}
 for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.href)]) {
   assert.equal(dateAt(pathname), EXTRA_POINTS_REVISED_AT, pathname + ' has its own sitemap entry');
 }
@@ -102,7 +106,7 @@ for (const pathname of ['/learn','/learn/essentials']) assert.equal(dateAt(pathn
 for (const pathname of ['/diagnosis', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
 for (const pathname of [
   '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei', '/library',
-  '/tsubo/cv21', '/tsubo/sp6', '/symptoms/headache-stiff-neck', '/symptoms/dizziness-tinnitus',
+  '/tsubo/cv21', '/tsubo/sp6', '/symptoms/dizziness-tinnitus',
   '/symptoms/knee-joint-pain', '/cases/case-01-headache-liver-fire',
 ]) assert.equal(dateAt(pathname), PUBLIC_VISUALS_REVISED_AT, pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');

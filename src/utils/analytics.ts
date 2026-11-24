@@ -1,6 +1,8 @@
 import { PUBLIC_CLINICAL_GUIDE_PATHS, PUBLIC_RESEARCH_PATHS, PUBLIC_SYMPTOM_PATHS } from '@/config/publicGuideRoutes';
 import { LEARNING_COURSES } from '@/data/learningCourses';
 import { SUBSCRIPTION_CONFIG } from '@/config/subscription';
+import { whoAtlasPages } from '@/data/tsubo/atlas/whoAtlasPages';
+import { EXTRA_POINTS } from '@/data/tsubo/extraPoints';
 
 const PUBLIC_COURSE_SLUGS = new Set(LEARNING_COURSES.map(course => course.slug));
 const PUBLIC_COURSE_PATHS = new Set(LEARNING_COURSES.map(course => `/learn/courses/${course.slug}`));
@@ -46,6 +48,7 @@ export type AnalyticsEventName =
   | "case_stage_complete"
   | "case_training_complete"
   | "atlas_compare_open" | "atlas_location_check_start" | "compare_case_open" | "case_study_start" | "case_study_complete"
+  | "atlas_anatomy_open" | "atlas_research_open"
   | "home_series_open" | "compare_atlas_open" | "research_source_open" | "gorou_examples_open"
   | "lecture_view" | "article_view" | "learning_activity" | "learning_return_7d"
   | `web_vital_${"lcp" | "inp" | "cls"}_${"good" | "needs_improvement" | "poor"}`;
@@ -91,6 +94,7 @@ export function sanitizeAnalyticsParams(params: AnalyticsEventParams = {}): Reco
   return safe;
 }
 
+const EXTRA_POINT_PATHS = new Set<string>(EXTRA_POINTS.map(point => point.href));
 const PUBLIC_PAGES = new Set([
   "/", "/about", "/contact", "/editorial-policy", "/clinical", "/diagnosis", "/articles",
   "/cases", "/curriculum", "/kikei", "/glossary", "/learn/review", "/pricing", "/tsubo",
@@ -99,6 +103,7 @@ const PUBLIC_PAGES = new Set([
   "/terms", "/safety", "/symptoms", "/privacy", "/updates", "/search",
   "/checkout/complete",
   ...PUBLIC_SYMPTOM_PATHS, ...PUBLIC_CLINICAL_GUIDE_PATHS, ...PUBLIC_RESEARCH_PATHS,
+  ...EXTRA_POINT_PATHS,
 ]);
 const PUBLIC_DETAIL = /^\/(?:articles|cases|curriculum|kikei|tsubo)\/[a-z0-9-]{1,80}$/i;
 
@@ -111,7 +116,7 @@ export function publicAnalyticsPath(value: string): string | null {
 /** GA's own site-search measurement can inspect page URLs. Keep result documents out. */
 export function analyticsDocumentPath(pathname: string, hasQuery: boolean): string | null {
   const path = publicAnalyticsPath(pathname);
-  return hasQuery && (path === "/search" || path === "/tsubo") ? null : path;
+  return hasQuery && (path === "/search" || path === "/tsubo" || (path && EXTRA_POINT_PATHS.has(path))) ? null : path;
 }
 
 export function setAnalyticsDisabled(disabled: boolean): void {
@@ -145,6 +150,30 @@ export function trackPublicNavigationAction(action: string | null | undefined): 
   if (entry && path && entry.allowedOn(path)) trackEvent(entry.event, { placement: entry.placement });
 }
 
+export type AtlasDisclosureAnalytics =
+  | { kind: "individual" | "regional" }
+  | { kind: "research"; studyIds: readonly string[] };
+
+/** Use only published point paths and study identifiers supplied by the atlas. */
+export function trackAtlasDisclosure(analytics: AtlasDisclosureAnalytics, targetId?: string): void {
+  if (typeof window === "undefined" || window.location.search) return;
+  const pathname = publicAnalyticsPath(window.location.pathname);
+  if (!pathname?.startsWith("/tsubo/")) return;
+  const code = pathname.slice("/tsubo/".length);
+  if (!Object.hasOwn(whoAtlasPages, code) && !EXTRA_POINT_PATHS.has(pathname)) return;
+
+  const kind = analytics.kind;
+  const studyId = kind === "research" && targetId && /^[a-z0-9-]{1,80}$/.test(targetId) && analytics.studyIds.includes(targetId)
+    ? targetId : undefined;
+  const contentType = kind === "research" ? (studyId ? "atlas_research_topic" : "atlas_research_list") : `atlas_anatomy_${kind}`;
+  emit({
+    name: kind === "research" ? "atlas_research_open" : "atlas_anatomy_open",
+    pathname,
+    params: { content_type: contentType, ...(studyId ? { content_id: studyId } : {}) },
+    excludeReferrer: true,
+  });
+}
+
 /** External referrers retain the origin only; private same-site paths are removed. */
 export function analyticsReferrer(value: string, origin: string): string {
   if (!value) return "";
@@ -158,7 +187,7 @@ export function analyticsReferrer(value: string, origin: string): string {
 }
 
 type CommerceItem = { item_id: string; item_name: string; price: number; quantity: number };
-type SafeEvent = { name: AnalyticsEventName; params: Record<string, string | number | boolean | CommerceItem[]>; pathname: string; onEmit?: () => void; onDrop?: () => void; onComplete?: () => void };
+type SafeEvent = { name: AnalyticsEventName; params: Record<string, string | number | boolean | CommerceItem[]>; pathname: string; excludeReferrer?: boolean; onEmit?: () => void; onDrop?: () => void; onComplete?: () => void };
 const pending: SafeEvent[] = [];
 const MAX_PENDING = 40;
 
@@ -175,7 +204,7 @@ function emit(event: SafeEvent): void {
       ...((measurementId && /^G-[A-Z0-9]+$/.test(measurementId) && measurementId !== 'G-XXXXXXXXXX') ? { send_to: measurementId } : {}),
       page_location: window.location.origin + event.pathname,
       page_path: event.pathname,
-      page_referrer: analyticsReferrer(document.referrer, window.location.origin),
+      page_referrer: event.excludeReferrer ? "" : analyticsReferrer(document.referrer, window.location.origin),
       ...(event.onComplete ? { event_callback: event.onComplete, event_timeout: 800 } : {}),
     });
     event.onEmit?.();

@@ -20,7 +20,7 @@ export default function RegionalPointAnatomy({
   return (
     <section id="acupoint-anatomy" data-anatomy-kind="regional" className="atlas-target" aria-labelledby="acupoint-anatomy-title">
       <h2 id="acupoint-anatomy-title" className="atlas-section-title">詳しい解剖と位置</h2>
-      <HashTargetDetails className="atlas-disclosure atlas-anatomy-details" summary="断面図を開く">
+      <HashTargetDetails key={code} analytics={{ kind: "regional" }} className="atlas-disclosure atlas-anatomy-details" summary="断面図を開く">
         <div id="acupoint-anatomy-diagram" className="atlas-target space-y-3 pb-3">
           <div className="atlas-anatomy-location">
             <figure>

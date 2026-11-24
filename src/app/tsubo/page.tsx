@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
-import { BookOpen, FlaskConical, Layers, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookOpen, FlaskConical, Layers, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
@@ -99,12 +99,17 @@ export default function TsuboPage() {
           <h2 id="nearby-comparisons-title" className="atlas-section-title">近いツボを比べる</h2>
           <p className="atlas-muted text-sm">手首のしわやひじの腱など、近いツボを見分ける目印を図で確認できます。</p>
           <ul className="grid grid-cols-2 gap-2 lg:grid-cols-3">
-            {NEARBY_COMPARISON_LINKS.map(({ id, region, names, href }) => (
-              <li key={id}>
-                <Link href={href} prefetch={false} className="block h-full min-h-11 rounded-lg border border-frame bg-panel px-3 py-2 hover:border-accent">
-                  <strong className="block text-sm text-accent">{region}</strong>
-                  <span className="block text-sm leading-relaxed">{names.join("・")}</span>
+            {NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href }) => (
+              <li key={id} className="min-w-0 rounded-lg border border-frame bg-panel p-2">
+                <Link href={href} prefetch={false} className="flex min-h-11 items-center justify-between gap-2 px-1 text-sm hover:underline" aria-label={`${region}の比較図を開く`}>
+                  <strong className="text-accent">{region}</strong>
+                  <span className="flex shrink-0 items-center gap-1 text-accent">比較図<ArrowRight size={14} aria-hidden="true" /></span>
                 </Link>
+                <ul className="flex flex-wrap gap-1">
+                  {codes.map((code, index) => (
+                    <li key={code}><Link href={`/tsubo/${code}`} prefetch={false} className="atlas-index-point">{names[index]}</Link></li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>

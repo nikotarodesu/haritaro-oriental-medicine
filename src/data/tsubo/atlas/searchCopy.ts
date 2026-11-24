@@ -4,6 +4,10 @@ export const HEGU_SEARCH_COPY = {
 };
 
 export const ACUPOINT_SEARCH_COPY: Readonly<Partial<Record<string, { landmark: string; lead: string }>>> = {
+  li10: {
+    landmark: "ひじの外側の目印",
+    lead: "手三里は、ひじの外側にある曲池と手首の陽谿を結ぶ線上で、ひじの横じわから手首側へ2寸です。前腕を手の甲側から見た図で、ひじの高さと手三里の位置を確かめられます。",
+  },
   st36: {
     landmark: "ひざ下とすねの目印",
     lead: "足三里は、ひざのお皿の下の外側にあるくぼみから3寸下です。拡大図で、足首の前の中央へ向かう線と、すねの骨の縁を確かめられます。",
@@ -37,6 +41,10 @@ export const ACUPOINT_SEARCH_COPY: Readonly<Partial<Record<string, { landmark: s
     lead: "天柱は、第2頸椎の突起の上縁と同じ高さで、背中から首に続く筋の外側のくぼみにあります。後ろから見た図で、後頭部と首の境を確かめられます。",
   },
   li4: HEGU_SEARCH_COPY,
+  st37: {
+    landmark: "ひざ下6寸の目印",
+    lead: "上巨虚は、ひざのお皿の下にある外側のくぼみと足首の前の中央を結ぶ線上で、ひざのくぼみから下へ6寸です。すねの図で、足三里・上巨虚・条口の並びを見比べられます。",
+  },
   st38: {
     landmark: "ひざ下と足首の中間",
     lead: "条口は、ひざのお皿の下にある外側のくぼみと、足首の前の中央を結んだ線の中間にあります。足三里も同じ二つの目印を使い、条口よりひざに近い位置にあります。",
