@@ -1,6 +1,6 @@
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
-export default function VolarForearmRegion({ marker, label, labelled }: AtlasCloseUpProps) {
+export function VolarForearmArtwork() {
   return (
     <>
       <path d="M91 25q32-14 66 0c-4 74-12 139-8 190l11 42 10 26H62q-3-9 15-31l16-34c2-65-7-131-2-193Z" fill="#F4E8D8" stroke="#9B8D7D" strokeWidth="2" />
@@ -11,6 +11,14 @@ export default function VolarForearmRegion({ marker, label, labelled }: AtlasClo
         <path d="M130 109q0 55-2 117l-1 18" />
         <path d="M113 109q1 60-2 109l-6 25" />
       </g>
+    </>
+  );
+}
+
+export default function VolarForearmRegion({ marker, label, labelled }: AtlasCloseUpProps) {
+  return (
+    <>
+      <VolarForearmArtwork />
       {labelled && <path d="M95 221q26 6 53 0" fill="none" stroke="#8D6654" strokeWidth="2" />}
       {!labelled && <>
         <g fill="none" strokeWidth="1.4">

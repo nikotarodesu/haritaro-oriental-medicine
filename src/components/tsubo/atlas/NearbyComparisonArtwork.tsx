@@ -1,7 +1,9 @@
 import { achillesSideOutline, footSideOutline, medialFootLandmarks } from "@/data/tsubo/atlas/footLandmarks";
 import { shinEndpoints } from "@/data/tsubo/atlas/legLandmarks";
+import { volarForearmGeometry } from "@/data/tsubo/atlas/markers";
 import { comparisonTransforms, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import { LowerLegArtwork } from "./LowerLegRegion";
+import { VolarForearmArtwork } from "./VolarForearmRegion";
 import { armViews } from "./expanded/armViews";
 import { headViews } from "./expanded/headViews";
 
@@ -106,5 +108,27 @@ export default function NearbyComparisonArtwork({ id }: { id: NearbyComparison["
   if (id === "ear") return <EarOutline />;
   if (id === "wrist") return <WristArtwork />;
   if (id === "shin") return <ShinArtwork />;
+  if (id === "forearm") return <ForearmArtwork />;
   return <AnkleArtwork />;
+}
+
+function ForearmArtwork() {
+  const { x, elbowY, wristY, units } = volarForearmGeometry;
+  const step = (wristY - elbowY) / units;
+  const marks = Array.from({ length: units - 1 }, (_, index) => `M${x - 2.5} ${elbowY + (index + 1) * step}h5`).join(" ");
+  const axisX = x + comparisonTransforms.forearm.x;
+
+  return (
+    <>
+      <g transform={transformFor("forearm")}>
+        <VolarForearmArtwork />
+        <path className="atlas-comparison-landmark" d={`M${x} ${elbowY}V${wristY} ${marks}`} />
+        <circle className="atlas-comparison-bone" cx={x} cy={elbowY} r="4.5" data-comparison-reference="elbow" />
+        <circle className="atlas-comparison-bone" cx={x} cy={wristY} r="4.5" data-comparison-reference="wrist" />
+      </g>
+      <path className="atlas-comparison-detail" d={`M${axisX + 5} ${elbowY}H208M${axisX + 5} ${wristY}H208`} />
+      <text x="216" y={elbowY + 5}>ひじのしわ</text>
+      <text x="216" y={wristY + 5}>手首のしわ</text>
+    </>
+  );
 }

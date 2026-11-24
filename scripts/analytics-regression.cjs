@@ -87,6 +87,10 @@ for (const [pathname, action, eventName, placement] of [
   assert.equal(events.at(-1).params.placement, placement);
   assert.equal(events.at(-1).params.page_location, windowStub.location.origin + pathname);
 }
+windowStub.location.pathname = '/tsubo/st36';
+trackEvent('atlas_location_check_start', { placement: 'nearby_diagram', answer: 'private' });
+assert.equal(events.at(-1).name, 'atlas_location_check_start');
+assert.deepEqual(Object.keys(events.at(-1).params).sort(), ['page_location', 'page_path', 'page_referrer', 'placement', 'send_to']);
 windowStub.location.pathname = '/cases/case-01-headache-liver-fire';
 trackEvent('case_study_start', { placement: 'case_study', answers: 'private', patient_name: 'private' });
 assert.equal(events.at(-1).name, 'case_study_start');

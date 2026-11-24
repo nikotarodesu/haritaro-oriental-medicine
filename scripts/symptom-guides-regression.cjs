@@ -45,7 +45,13 @@ async function main() {
   const { ADDITIONAL_VERIFIED_STUDIES } = load('src/data/tsubo/atlas/additionalVerifiedStudies');
   const { SYMPTOM_RESEARCH_NOTES } = load('src/data/symptomResearchNotes');
   const { ATLAS_LITERATURE_SEARCH_COUNTS } = load('src/data/tsubo/atlas/literatureSearch');
-  const { AtlasStudyCard } = load('src/components/tsubo/AcupointResearch');
+  const { default: AcupointResearch, AtlasStudyCard } = load('src/components/tsubo/AcupointResearch');
+  const { getAcupointDetail } = load('src/data/tsubo');
+  const heguResearch = renderToStaticMarkup(React.createElement(AcupointResearch, { point: getAcupointDetail('li4') }));
+  const [featuredStudies, remainingStudies] = heguResearch.split('研究をすべて見る');
+  assert.equal((featuredStudies.match(/class="atlas-study-card /g) ?? []).length, 3);
+  assert.equal((remainingStudies.match(/class="atlas-study-card /g) ?? []).length, getAcupointStudies('li4').length - 3);
+  for (const { id } of getAcupointStudies('li4')) assert(heguResearch.includes(`id="${id}"`), id + ' still has a fragment target');
   const { VERIFIED_PAPERS } = load('src/data/references/papersData');
   const ResearchReferences = load('src/components/symptoms/SymptomResearchReferences').default;
   const helpers = load('src/utils/symptomGuides');

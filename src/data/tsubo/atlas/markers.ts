@@ -6,6 +6,8 @@ import { legLandmarks, shinEndpoints, type LegCode } from "./legLandmarks";
 
 export { shinEndpoints } from "./legLandmarks";
 
+export const volarForearmGeometry = { x: 120, wristY: 224, elbowY: 32, units: 12 } as const;
+
 // Coordinates use the 340×300 viewBox of the corresponding regional template.
 export const ATLAS_POINT_MARKERS: Readonly<Partial<Record<string, AtlasMarker>>> = {
   ...Object.fromEntries(Object.entries(expandedPoints).map(([code, expanded]) => [
@@ -35,8 +37,8 @@ export const ATLAS_POINT_MARKERS: Readonly<Partial<Record<string, AtlasMarker>>>
 };
 
 function forearmMarker(boneCun: number): AtlasMarker {
-  // Wrist crease at y=224; elbow crease at y=32, 12 proportional units apart.
-  return { x: 120, y: 224 - 16 * boneCun, boneCun };
+  const { x, wristY, elbowY, units } = volarForearmGeometry;
+  return { x, y: wristY - (wristY - elbowY) * boneCun / units, boneCun };
 }
 
 function lowerLegMarker(boneCun: number): AtlasMarker {

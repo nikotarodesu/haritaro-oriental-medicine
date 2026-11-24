@@ -2,6 +2,7 @@ import { forearmWristCreaseY } from "./expanded/arms";
 import { headPoints } from "./expanded/head";
 import { footLandmarks } from "./footLandmarks";
 import { ATLAS_POINT_MARKERS } from "./markers";
+import type { AtlasLocationQuestion } from "./types";
 
 type Position = readonly [x: number, y: number];
 type Transform = { x: number; y: number; scaleX: number; scaleY: number };
@@ -15,6 +16,7 @@ export const comparisonTransforms = {
   back: { x: 391, y: -72, scaleX: -0.84, scaleY: 0.84 },
   ankle: { x: 68, y: -12, scaleX: 0.84, scaleY: 0.84 },
   shin: { x: 48, y: -12, scaleX: 1, scaleY: 1 },
+  forearm: { x: 48, y: 0, scaleX: 1, scaleY: 1 },
 } as const satisfies Record<string, Transform>;
 
 function project(point: { x: number; y: number }, transform: Transform): Position {
@@ -30,20 +32,28 @@ type ComparisonPoint = {
 };
 
 export type NearbyComparison = {
-  id: "ear" | "wrist" | "ankle" | "shin";
+  id: "ear" | "wrist" | "ankle" | "shin" | "forearm";
   region: string;
+  heading?: string;
   figureLabel: string;
   size?: { width: number; height: number };
   referenceCodes?: readonly string[];
   points: readonly ComparisonPoint[];
+  question?: AtlasLocationQuestion;
 };
 
-const { ear, palm, back, ankle, shin } = comparisonTransforms;
+const { ear, palm, back, ankle, shin, forearm } = comparisonTransforms;
 const wristProximalY = 208;
 const shinPoints = [
   { code: "st36", button: [45, 101], leader: [111, 101], difference: "犢鼻のくぼみから下へ3寸。3穴のうち、最もひざに近い場所です。" },
   { code: "st37", button: [249, 139], leader: [228, 139], difference: "犢鼻のくぼみから下へ6寸。足三里より足首側にあり、条口よりひざ側です。" },
   { code: "st38", button: [45, 174], leader: [111, 174], difference: "犢鼻のくぼみから下へ8寸。くぼみと足首の前の中央を結ぶ線のちょうど中間です。" },
+] as const;
+
+const forearmPoints = [
+  { code: "pc6", button: [249, 195], leader: [231, 195], difference: "手首のしわからひじへ2寸。3穴のうち、最も手首寄りです。" },
+  { code: "pc5", button: [45, 168], leader: [112, 168], difference: "手首のしわからひじへ3寸。手首とひじのしわの間の4分の1の高さです。" },
+  { code: "pc4", button: [249, 128], leader: [231, 128], difference: "手首のしわからひじへ5寸。3穴のうち、最もひじ寄りです。" },
 ] as const;
 
 export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
@@ -88,11 +98,32 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       ...point,
       position: project(ATLAS_POINT_MARKERS[point.code]!, shin),
     })),
+    question: {
+      prompt: "ひざ下のくぼみ（犢鼻）から足首側へ6寸のところにあるのはどれですか？",
+      answerCode: "st37",
+      explanation: "上巨虚です。足三里は3寸、上巨虚は6寸、条口は8寸です。",
+    },
+  },
+  {
+    id: "forearm",
+    region: "手のひら側の前腕",
+    heading: "内関・間使・郄門を図で比べる",
+    figureLabel: "前腕を手のひら側から見た模式図。手首のしわからひじへ向かって、内関、間使、郄門の順に並びます。白丸は手首とひじのしわです。",
+    size: { width: 344, height: 294 },
+    points: forearmPoints.map(point => ({
+      ...point,
+      position: project(ATLAS_POINT_MARKERS[point.code]!, forearm),
+    })),
+    question: {
+      prompt: "手首のしわからひじへ3寸の高さにあるのはどれですか？",
+      answerCode: "pc5",
+      explanation: "間使です。内関は2寸、間使は3寸、郄門は5寸です。",
+    },
   },
 ];
 
-export function getNearbyComparison(code: string) {
-  return NEARBY_COMPARISONS.find(group =>
+export function getNearbyComparisons(code: string) {
+  return NEARBY_COMPARISONS.filter(group =>
     group.referenceCodes?.includes(code) || group.points.some(point => point.code === code),
   );
 }

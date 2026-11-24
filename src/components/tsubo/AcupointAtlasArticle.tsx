@@ -11,7 +11,7 @@ import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams from "./atlas/PointAtlasDiagrams";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getAcupointByCode } from "@/data/tsubo";
-import { getNearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
+import { getNearbyComparisons } from "@/data/tsubo/atlas/nearbyComparisons";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
 
@@ -34,7 +34,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   individualModel: boolean;
 }) {
   const traditionalTitle = article.traditionalTitle ?? "伝統的な使われ方";
-  const nearbyComparison = getNearbyComparison(point.codeLower);
+  const nearbyComparisons = getNearbyComparisons(point.codeLower);
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
@@ -52,7 +52,14 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
           <AcupointSectionLinks />
         </PointAtlasDiagrams>
-        {nearbyComparison && <NearbyPointComparison comparison={nearbyComparison} code={point.codeLower} />}
+        {nearbyComparisons.map((comparison, index) => (
+          <NearbyPointComparison
+            key={comparison.id}
+            comparison={comparison}
+            code={point.codeLower}
+            anchorId={index === 0 ? "acupoint-nearby" : `acupoint-nearby-${comparison.id}`}
+          />
+        ))}
       </section>
 
       <section id="acupoint-cautions" className="atlas-target atlas-cautions">
@@ -88,7 +95,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
       <section>
         <h2 className={headingClass}>位置を見比べるツボ</h2>
-        {nearbyComparison && (
+        {nearbyComparisons.length > 0 && (
           <a href="#acupoint-nearby" className="atlas-text-action">同じ図で比べる</a>
         )}
         <ul className="list-disc space-y-2 pl-5">

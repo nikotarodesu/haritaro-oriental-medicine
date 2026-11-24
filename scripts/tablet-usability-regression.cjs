@@ -145,11 +145,13 @@ const TSUBOS = [
 ];
 let queryParams = new URLSearchParams(), frameId = 0;
 const comparisonFrames = new Map();
+const AtlasLocationCheck = () => null;
 const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   'next/link': { __esModule: true, default: Link },
   'next/navigation': { useSearchParams: () => queryParams },
   '@/components/design/PageIntro': { __esModule: true, default: () => null },
   '@/data/tsubo/atlas/learningPairs': load('src/data/tsubo/atlas/learningPairs'),
+  '@/components/tsubo/atlas/AtlasLocationCheck': { __esModule: true, default: AtlasLocationCheck },
   '@/utils/search': load('src/utils/search'),
 }, { window: { print() {} }, document: { getElementById: () => ({ focus() {}, scrollIntoView() {} }) },
   requestAnimationFrame(callback) { comparisonFrames.set(++frameId, callback); return frameId; }, cancelAnimationFrame(id) { comparisonFrames.delete(id); },
@@ -158,6 +160,8 @@ compare.boundaryChild({ points: TSUBOS }); compare.render();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
 const relatedCase = () => nodes(compare.tree()).find(node => node.props?.['data-analytics-action'] === 'compare_case');
 assert.equal(relatedCase().props.href, '/cases/case-01-headache-liver-fire');
+const locationCheck = () => nodes(compare.tree()).find(node => node.type === AtlasLocationCheck);
+assert.equal(locationCheck().props.question.answerCode, 'LI4');
 assert.equal(scroll().props.tabIndex, 0, 'The two-direction scrolling region is reachable by keyboard');
 assert.equal(scroll().props.role, 'region');
 assert.equal(scroll().props['aria-describedby'], nodes(compare.tree()).find(node => node.props?.id === 'tsubo-compare-scroll-hint').props.id);
@@ -200,6 +204,7 @@ compare.button('合谷を比較から外す').props.onClick(); compare.render();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 6);
 assert.equal(relatedCase(), undefined, 'A single point has no pair-specific case');
+assert.equal(locationCheck(), undefined, 'A single point has no pair-specific question');
 
 queryParams = new URLSearchParams({ a: 'LI4', b: 'LR3', c: 'ＳＴ３６' }); compare.render();
 for (const callback of comparisonFrames.values()) callback(); comparisonFrames.clear(); compare.render();

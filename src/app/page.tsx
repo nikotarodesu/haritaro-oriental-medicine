@@ -14,7 +14,7 @@ import { DICTIONARY_TAGLINE, PLATFORM_DESCRIPTION, SERIES } from "@/config/serie
 const SERIES_ENTRIES = Object.values(SERIES);
 const SERIES_ACTIONS = {
   "/tsubo": { label: "ツボを調べる", analytics: "home_atlas", art: "points", links: [SERIES.dictionary.links[1], ACUPUNCTURE_GUIDE] },
-  "/learn": { label: "講義を読む", analytics: "home_reading", art: "study", links: [SERIES.reading.links[0], { ...SERIES.reading.links[1], label: "体質チェック" }] },
+  "/learn": { label: "講義を読む", analytics: "home_reading", art: "study", links: [SERIES.reading.links[0]] },
   "/clinical": { label: "症例で練習する", analytics: "home_clinical", art: "practice", links: SERIES.practice.links },
 } satisfies Record<(typeof SERIES_ENTRIES)[number]["href"], {
   label: string; analytics: string; art: PageArtKind; links: ReadonlyArray<{ href: string; label: string }>;

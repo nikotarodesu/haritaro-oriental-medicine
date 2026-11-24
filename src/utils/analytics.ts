@@ -45,7 +45,7 @@ export type AnalyticsEventName =
   | "case_training_start"
   | "case_stage_complete"
   | "case_training_complete"
-  | "atlas_compare_open" | "compare_case_open" | "case_study_start"
+  | "atlas_compare_open" | "atlas_location_check_start" | "compare_case_open" | "case_study_start"
   | "home_series_open" | "compare_atlas_open" | "research_source_open" | "gorou_examples_open"
   | "lecture_view" | "article_view" | "learning_activity" | "learning_return_7d"
   | `web_vital_${"lcp" | "inp" | "cls"}_${"good" | "needs_improvement" | "poor"}`;
@@ -307,7 +307,7 @@ function recordLearningActivity(activity: string, pathname: string): void {
 const LEARNING_ACTIONS = new Set<AnalyticsEventName>([
   "tsubo_practice_start", "tsubo_practice_resume", "tsubo_practice_complete",
   "quiz_start", "quiz_answer", "quiz_complete", "review_start", "review_complete", "case_training_start",
-  "case_stage_complete", "case_training_complete", "case_study_start",
+  "case_stage_complete", "case_training_complete", "case_study_start", "atlas_location_check_start",
 ]);
 const COURSE_ACTIONS = new Set(["course_start", "course_resume", "course_step"]);
 

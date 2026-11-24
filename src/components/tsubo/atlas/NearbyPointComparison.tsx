@@ -3,8 +3,13 @@ import { getAcupointByCode } from "@/data/tsubo";
 import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
 import NearbyComparisonControls from "./NearbyComparisonControls";
+import AtlasLocationCheck from "./AtlasLocationCheck";
 
-export default function NearbyPointComparison({ comparison, code }: { comparison: NearbyComparison; code: string }) {
+export default function NearbyPointComparison({ comparison, code, anchorId }: {
+  comparison: NearbyComparison;
+  code: string;
+  anchorId: string;
+}) {
   const points = comparison.points.flatMap(position => {
     const point = getAcupointByCode(position.code);
     return point ? [{ ...position, name: point.name }] : [];
@@ -13,8 +18,8 @@ export default function NearbyPointComparison({ comparison, code }: { comparison
 
   return (
     <details className="atlas-disclosure atlas-nearby" data-nearby-comparison={comparison.id}>
-      <summary>近くのツボを図で比べる<span>{comparison.region}</span></summary>
-      <div id="acupoint-nearby" className="atlas-target atlas-comparison-content">
+      <summary>{comparison.heading ?? "近くのツボを図で比べる"}<span>{comparison.region}</span></summary>
+      <div id={anchorId} className="atlas-target atlas-comparison-content">
         {comparison.id === "shin" && (
           <p>
             ひざ下の外側のくぼみ<Link href="/tsubo/st35#acupoint-location" prefetch={false} className="atlas-source-link">（犢鼻・ST35）</Link>と
@@ -22,9 +27,13 @@ export default function NearbyPointComparison({ comparison, code }: { comparison
             ひざ側から何寸下にあるかで、3穴を見分けられます。
           </p>
         )}
+        {comparison.id === "forearm" && (
+          <p>手のひら側の手首とひじのしわの間を12等分します。3穴とも二本のすじ（腱）の間で、手首からひじへ何寸進むかが見分ける目印です。</p>
+        )}
         <NearbyComparisonControls key={code} {...(comparison.size ?? comparisonSize)} label={comparison.figureLabel} points={points} initialCode={code}>
           <NearbyComparisonArtwork id={comparison.id} />
         </NearbyComparisonControls>
+        {comparison.question && <AtlasLocationCheck key={code} question={comparison.question} options={points} placement="nearby_diagram" />}
       </div>
     </details>
   );

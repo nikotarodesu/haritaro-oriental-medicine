@@ -12,8 +12,8 @@ const { STANDARD_NAMES } = load('src/data/tsubo/names/standardNames');
 const { NAME_READINGS } = load('src/data/tsubo/names/nameReadings');
 const { CHARACTER_MEANINGS } = load('src/data/tsubo/names/characterMeanings');
 const { getAcupointNameCharacter, acupointNameIndexHref, NAME_INDEX_EXAMPLES } = load('src/data/tsubo/names/characterIndex');
-const { NEARBY_COMPARISONS, getNearbyComparison, comparisonSize, comparisonTransforms } = load('src/data/tsubo/atlas/nearbyComparisons');
-const { ATLAS_POINT_MARKERS, shinEndpoints } = load('src/data/tsubo/atlas/markers');
+const { NEARBY_COMPARISONS, getNearbyComparisons, comparisonSize, comparisonTransforms } = load('src/data/tsubo/atlas/nearbyComparisons');
+const { ATLAS_POINT_MARKERS, shinEndpoints, volarForearmGeometry } = load('src/data/tsubo/atlas/markers');
 const dimensions = text => Array.from(text.matchAll(/\d+(?:\.\d+)?寸/g), match => match[0]);
 
 assert.equal(points.ALL_ACUPOINTS.length, 361);
@@ -56,11 +56,12 @@ for (const character of NAME_INDEX_EXAMPLES) assert(indexedCodes(character).leng
 const compared = new Set();
 for (const group of NEARBY_COMPARISONS) {
   assert(group.points.length >= 3, group.id);
+  assert.equal(new Set(group.points.map(point => point.code)).size, group.points.length, group.id + ' has distinct choices');
+  if (group.question) assert(group.points.some(point => point.code === group.question.answerCode), group.id + ' offers its correct answer');
   const { width, height } = group.size ?? comparisonSize;
   for (const point of group.points) {
     assert(ATLAS_ARTICLES[point.code], point.code + ' has a public atlas article');
-    assert(!compared.has(point.code), point.code + ' has exactly one comparison');
-    assert.equal(getNearbyComparison(point.code).id, group.id);
+    assert(getNearbyComparisons(point.code).includes(group), point.code + ' displays this comparison');
     assert(point.difference.length > 0, point.code + ' has a short distinguishing landmark');
     for (const [x, y] of [point.position, point.button, point.leader]) {
       assert(x > 0 && x < width && y > 0 && y < height, point.code + ' is inside the figure');
@@ -68,11 +69,11 @@ for (const group of NEARBY_COMPARISONS) {
     compared.add(point.code);
   }
 }
-assert.deepEqual(Array.from(getNearbyComparison('te21').points, point => point.code), ['te21', 'si19', 'gb2']);
-assert.equal(getNearbyComparison('li4'), undefined);
-const shin = getNearbyComparison('st35');
+assert.deepEqual(Array.from(getNearbyComparisons('te21')[0].points, point => point.code), ['te21', 'si19', 'gb2']);
+assert.equal(getNearbyComparisons('li4').length, 0);
+const shin = getNearbyComparisons('st35')[0];
 assert.equal(shin.id, 'shin');
-assert.equal(getNearbyComparison('st41').id, shin.id);
+assert.equal(getNearbyComparisons('st41')[0].id, shin.id);
 assert.deepEqual(Array.from(shin.points, point => point.code), ['st36', 'st37', 'st38'], 'The two references are not selectable comparison points');
 for (const [index, point] of shin.points.entries()) {
   const amount = [3, 6, 8][index];
@@ -83,6 +84,20 @@ for (const [index, point] of shin.points.entries()) {
   assert.equal((y - shinEndpoints.knee.y) / (shinEndpoints.ankle.y - shinEndpoints.knee.y), amount / 16);
   assert(point.difference.includes(`下へ${amount}寸`), point.code + ' agrees with its verified atlas position');
 }
+assert.deepEqual(Array.from(getNearbyComparisons('pc6'), group => group.id), ['wrist', 'forearm']);
+const forearm = getNearbyComparisons('pc4')[0];
+assert.deepEqual(Array.from(forearm.points, point => point.code), ['pc6', 'pc5', 'pc4']);
+const { wristY, elbowY, units } = volarForearmGeometry;
+for (const [index, point] of forearm.points.entries()) {
+  const amount = [2, 3, 5][index];
+  const { x, y, boneCun } = ATLAS_POINT_MARKERS[point.code];
+  assert.equal(boneCun, amount, point.code);
+  assert.equal((wristY - y) / (wristY - elbowY), amount / units);
+  assert.deepEqual(Array.from(point.position), [x + comparisonTransforms.forearm.x, y + comparisonTransforms.forearm.y]);
+  assert(point.difference.includes(`ひじへ${amount}寸`), point.code);
+}
+const { ATLAS_LEARNING_PAIRS } = load('src/data/tsubo/atlas/learningPairs');
+for (const pair of ATLAS_LEARNING_PAIRS) assert(pair.codes.includes(pair.question.answerCode), pair.codes.join(', '));
 for (const point of points.ALL_ACUPOINTS) {
   for (const character of new Set(point.name + getAcupointName(point.codeLower).chinese)) {
     assert(indexedCodes(character).includes(point.codeLower), point.code + ' is indexed under ' + character);

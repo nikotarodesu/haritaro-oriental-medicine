@@ -15,6 +15,7 @@
 | `home_series_open` | トップの図鑑・講義・臨床演習のいずれかを開くリンクを押す | `placement` は `atlas` / `reading` / `clinical` |
 | `search_submit` | トップまたは検索トップでサイト内検索を送信する | `placement` は `platform_search`、入力内容は除外 |
 | `atlas_compare_open` | 合谷・足三里・百会の位置解説から、経穴比較を開くリンクを押す | 元の図鑑ページを集計。比較条件は送らない |
+| `atlas_location_check_start` | 図鑑の比較図または経穴比較で、位置の確認問題に初めて答える | 1問につき1回。場所は `nearby_diagram` / `atlas_comparison`。選択肢や正誤は送らない |
 | `compare_case_open` | 経穴比較から、関連する模擬症例を開くリンクを押す | 遷移を意図した操作の件数 |
 | `case_study_start` | 模擬症例の演習で最初に選択肢を押す | 症例を開いている間に1回。選択肢や正誤は送らない |
 | `compare_atlas_open` | 経穴比較から図鑑を開く | 比較した経穴の組み合わせや検索の入力は含めない |

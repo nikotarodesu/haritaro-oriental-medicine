@@ -7,6 +7,7 @@ import { getAcupointStudies, getClassicalCombinations, getStudyPointRole } from 
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
+import AtlasStudyDisclosure from "./AtlasStudyDisclosure";
 
 const urinaryResearch = { href: URINARY_INCONTINENCE_RESEARCH_HREF, label: "尿もれの量と回数をどう測ったかを読む" };
 const extraPointLinks = new Map(EXTRA_POINTS.map(point => [`${point.name}（${point.code}）`, point.href]));
@@ -98,8 +99,18 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
   );
 }
 
+function AtlasStudyList({ studies, code }: { studies: readonly AtlasStudy[]; code: string }) {
+  return (
+    <div className="atlas-study-list">
+      {studies.map(study => <AtlasStudyCard key={study.id} study={study} currentCode={code} />)}
+    </div>
+  );
+}
+
 export default function AcupointResearch({ point, traditionalTitle = "伝統的な使われ方" }: { point: AcupointDetail; traditionalTitle?: string }) {
   const studies = getAcupointStudies(point.codeLower);
+  const firstStudies = studies.slice(0, 3);
+  const remainingStudies = studies.slice(firstStudies.length);
   const researchLinks = [...new Set(studies.map(study => study.guide))].flatMap(guide => {
     const link = guide ? SYMPTOM_RESEARCH_LINKS[guide] : undefined;
     return link ? [link] : [];
@@ -115,9 +126,14 @@ export default function AcupointResearch({ point, traditionalTitle = "伝統的�
         <p className="atlas-evidence-empty">複数のツボを一緒に使った試験の結果は、組み合わせ全体についてのものです。</p>
       )}
       {studies.length ? (
-        <div className="atlas-study-list">{studies.map(study => <AtlasStudyCard key={study.id} study={study} currentCode={point.codeLower} />)}</div>
+        <AtlasStudyList studies={firstStudies} code={point.codeLower} />
       ) : (
         <p className="atlas-evidence-empty">人を対象とした比較試験は、このページでは紹介していません。<a href="#acupoint-traditional" className="atlas-source-link">{traditionalTitle}</a>も読めます。</p>
+      )}
+      {remainingStudies.length > 0 && (
+        <AtlasStudyDisclosure key={point.codeLower} count={remainingStudies.length}>
+          <AtlasStudyList studies={remainingStudies} code={point.codeLower} />
+        </AtlasStudyDisclosure>
       )}
       {point.codeLower === "pc6" && (
         <p className="atlas-evidence-empty">

@@ -52,6 +52,12 @@ export interface AtlasCloseUpProps {
   labelled?: boolean;
 }
 
+export type AtlasLocationQuestion = {
+  prompt: string;
+  answerCode: string;
+  explanation: string;
+};
+
 export type StudySource = { label: string; url: string };
 
 export interface AtlasStudy {
