@@ -3,9 +3,10 @@ import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
 import type { AcupointDetail } from "@/data/tsubo/types";
 import { AcupointKeyPointLinks, AcupointSectionLinks } from "./AcupointArticleLinks";
 
-export default function AcupointArticleHeader({ point, lead }: {
+export default function AcupointArticleHeader({ point, lead, hasAnatomyDiagram }: {
   point: AcupointDetail;
   lead: string;
+  hasAnatomyDiagram: boolean;
 }) {
   const indexMeridianId = point.meridianId === "governor" || point.meridianId === "conception"
     ? `${point.meridianId}-vessel`
@@ -26,7 +27,7 @@ export default function AcupointArticleHeader({ point, lead }: {
       {/* Native fragment navigation opens the index's enclosing disclosure. */}
       <p className="atlas-point-meta"><a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
       <p className="atlas-point-lead">{lead}</p>
-      <AcupointSectionLinks />
+      <AcupointSectionLinks hasAnatomyDiagram={hasAnatomyDiagram} />
     </header>
   );
 }

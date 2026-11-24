@@ -491,6 +491,18 @@
 .atlas-reading-details, .atlas-guide-scope { padding-inline: .875rem; border-block: 1px solid var(--atlas-line); }
 .atlas-reading-details > summary { font-size: 1rem; }
 .atlas-reading-details[open], .atlas-guide-scope[open] { padding-bottom: .8rem; }
+.atlas-anatomy-details {
+  min-width: 0;
+  padding-inline: .75rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .875rem;
+  background: var(--atlas-paper);
+}
+.atlas-anatomy-details > summary { min-height: 2.75rem; font-size: 1rem; color: var(--atlas-accent); }
+.anatomy-axis { color: var(--text-secondary); font-size: .8125rem; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.anatomy-axis--vertical { margin-block: .375rem; text-align: center; }
+.anatomy-axis-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+.anatomy-axis-pair > :last-child { text-align: end; }
 .atlas-guide-scope > p { max-width: 70ch; color: var(--atlas-muted); font-size: .875rem; }
 .atlas-guide-scope > p + p { margin-top: .5rem; }
 

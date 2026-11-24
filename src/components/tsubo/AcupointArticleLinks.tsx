@@ -8,6 +8,7 @@ import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/
 const sectionLinks = [
   { href: "#acupoint-location", label: "場所" },
   { href: "#acupoint-cautions", label: "注意点" },
+  { href: "#acupoint-anatomy", label: "断面図" },
   { href: "#acupoint-compare", label: "近くのツボ" },
   { href: "#acupoint-research", label: "研究・配穴" },
 ];
@@ -16,10 +17,12 @@ const diagnosisPointPaths = new Set(
   Object.values(getDiagnosisStudyLinks()).flatMap(({ points }) => points.map(point => point.href)),
 );
 
-export function AcupointSectionLinks() {
+export function AcupointSectionLinks({ hasAnatomyDiagram }: { hasAnatomyDiagram: boolean }) {
   return (
     <nav aria-label="このツボのページ内を移動" className="atlas-section-nav">
-      {sectionLinks.map(({ href, label }) => <a key={href} href={href} className={linkClass}>{label}</a>)}
+      {sectionLinks.filter(({ href }) => hasAnatomyDiagram || href !== "#acupoint-anatomy").map(({ href, label }) => (
+        <a key={href} href={href} className={linkClass}>{label}</a>
+      ))}
     </nav>
   );
 }

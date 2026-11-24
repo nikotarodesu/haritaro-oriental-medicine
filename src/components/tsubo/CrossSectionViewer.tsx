@@ -190,32 +190,13 @@ export default function CrossSectionViewer({
       <p className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-3 text-xs leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
         <strong>{individualModel ? '個別に編集した教育用模式図' : '部位別の共通模式図'}</strong>：層の関係を学ぶための図です。縮尺・深度・境界は個人の画像計測値ではなく、刺鍼の安全域や経路の決定には使用できません。
       </p>
-      <div className="relative w-full bg-[#FAF8F5] dark:bg-[#10171F] rounded-2xl sm:rounded-3xl border border-[#E8E1D1] dark:border-[#22303D] p-3 sm:p-6 overflow-hidden shadow-inner select-none">
-        
-        {/* 部位・側別インジケーター（一瞬で部位・観察面が分かるバッジ） */}
-        <div className="absolute top-2.5 left-2.5 sm:left-4 text-[11px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-3 py-1 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none flex items-center gap-1.5">
-          <span>📍</span>
-          <span>{getBodyPartSideLabel()}</span>
-        </div>
-
-        {/* 方位インジケーター（上下左右） */}
-        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2.5 py-0.5 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
-          ↑ {model.axes.vertical[0]}
-        </div>
-        <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2.5 py-0.5 rounded-full border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
-          ↓ {model.axes.vertical[1]}
-        </div>
-        <div className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2 py-1 rounded-lg border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
-          ← {model.axes.horizontal[0]}
-        </div>
-        <div className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#1E3D34] dark:text-[#74BA9E] bg-white/95 dark:bg-[#1C2833]/95 px-2 py-1 rounded-lg border border-[#D6C8AF] dark:border-[#2B3C4E] shadow-xs z-10 pointer-events-none">
-          {model.axes.horizontal[1]} →
-        </div>
+      <figure className="anatomy-figure w-full rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-3 shadow-inner sm:rounded-3xl sm:p-6 dark:border-[#22303D] dark:bg-[#10171F]">
+        <p className="anatomy-axis anatomy-axis--vertical">↑ {model.axes.vertical[0]}</p>
 
         {/* SVG断面図 */}
         <svg
           viewBox="0 0 500 270"
-          className="w-full h-auto max-h-[380px] my-2"
+          className="w-full h-auto max-h-[380px] my-2 select-none"
           preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={`${pointName}の横断面解剖図`}
@@ -286,15 +267,16 @@ export default function CrossSectionViewer({
           })}
         </svg>
 
-        {/* 図の下部ガイド */}
-        <div className="pt-2.5 border-t border-[#E8E1D1] dark:border-[#22303D] flex items-center justify-between text-[11px] text-[#737C77] dark:text-[#8899A6]">
-          <span className="flex items-center gap-1.5">
-            <HelpCircle className="w-3.5 h-3.5 text-[#B86924]" />
-            <span>図の組織をタップすると、その構造の解説と臨床上の注意点が表示されます</span>
-          </span>
-          <span className="font-mono hidden sm:inline">※教材用模式図</span>
+        <div className="anatomy-axis-pair">
+          <p className="anatomy-axis">← {model.axes.horizontal[0]}</p>
+          <p className="anatomy-axis">{model.axes.horizontal[1]} →</p>
         </div>
-      </div>
+        <p className="anatomy-axis anatomy-axis--vertical">↓ {model.axes.vertical[1]}</p>
+        <figcaption className="mt-2 flex items-start gap-2 border-t border-[#E8E1D1] pt-2.5 text-sm leading-relaxed text-[#59615D] dark:border-[#22303D] dark:text-[#A0B0BC]">
+          <HelpCircle aria-hidden="true" className="mt-1 h-3.5 w-3.5 shrink-0 text-[#B86924]" />
+          図の組織か、下の名前を選ぶと、図の該当箇所が強調され、解説が表示されます。
+        </figcaption>
+      </figure>
 
       {selectableStructures.length > 0 && <div className="anatomy-structure-picker" role="group" aria-label="断面図の構造を名前から選ぶ" onKeyDown={event => { if (event.key === 'Escape') setSelectedStructureId(null); }}>
         <p>構造名から選ぶ</p>

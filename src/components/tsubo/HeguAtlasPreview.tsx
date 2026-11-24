@@ -1,5 +1,6 @@
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
+import AcupointAnatomy from "@/components/tsubo/AcupointAnatomy";
 import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
@@ -9,8 +10,6 @@ import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
-import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
-import { getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getMeridianPoints } from "@/data/tsubo";
 import { HEGU_SEARCH_COPY } from "@/data/tsubo/atlas/searchCopy";
 import type { AcupointDetail } from "@/data/tsubo/types";
@@ -34,7 +33,7 @@ export const heguSources = [
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} />
+      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} hasAnatomyDiagram={!!point.crossSection} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
@@ -57,6 +56,8 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
       </AcupointCautions>
 
+      <AcupointAnatomy point={point} />
+
       <AcupointLocationComparison point={point} related={[
         { code: "LI3", text: "同じ経絡で、合谷より人差し指の先に近いツボです。" },
         { code: "LI5", text: "同じ経絡で、合谷より手首に近いツボです。" },
@@ -76,13 +77,6 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
 
       <AcupointResearch point={point} />
       <AcupointNameGuide code={point.codeLower} />
-
-      <details className="atlas-disclosure atlas-reading-details">
-        <summary>詳しい解剖と位置の資料</summary>
-        {point.crossSection && (
-          <CrossSectionViewer model={getPublicCrossSectionModel(point.crossSection)} pointName={point.name} pointCode={point.code} individualModel />
-        )}
-      </details>
 
       <section id="acupoint-sources" className="atlas-target">
         <h2 className={headingClass}>出典</h2>

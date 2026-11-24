@@ -1,5 +1,6 @@
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
+import AcupointAnatomy from "./AcupointAnatomy";
 import { AcupointComparisonLink, AcupointReadingLinks } from "./AcupointArticleLinks";
 import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
@@ -8,10 +9,8 @@ import AcupointLocationImage from "./AcupointLocationImage";
 import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
 import WhoPointLocation from "./WhoPointLocation";
-import CrossSectionViewer from "./CrossSectionViewer";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams from "./atlas/PointAtlasDiagrams";
-import { getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
@@ -36,10 +35,11 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 }) {
   const traditionalTitle = article.traditionalTitle ?? "伝統的な使われ方";
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
+  const hasAnatomyDiagram = individualModel && !!point.crossSection;
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={article.lead} />
+      <AcupointArticleHeader point={point} lead={article.lead} hasAnatomyDiagram={hasAnatomyDiagram} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
@@ -58,10 +58,12 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         {article.safetyWarning && <p className="font-semibold">{article.safetyWarning}</p>}
         <Paragraphs paragraphs={article.cautions} />
         {article.visualOnly && <Paragraphs paragraphs={article.selfCare} />}
-        {individualModel && point.crossSection && (
+        {hasAnatomyDiagram && (
           <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
         )}
       </AcupointCautions>
+
+      {hasAnatomyDiagram && <AcupointAnatomy point={point} paragraphs={article.expert} />}
 
       <AcupointLocationComparison point={point} related={article.relatedPoints}>
         {nearbyComparisons.map((comparison, index) => (
@@ -92,15 +94,12 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       <AcupointResearch point={point} traditionalTitle={traditionalTitle} />
       <AcupointNameGuide code={point.codeLower} />
 
-      <details className="atlas-disclosure atlas-reading-details">
-        <summary>詳しい解剖と位置の資料</summary>
-        <div className="mt-4 space-y-4">
+      {!hasAnatomyDiagram && article.expert.length > 0 && (
+        <details className="atlas-disclosure atlas-reading-details">
+          <summary>位置図の補足</summary>
           <Paragraphs paragraphs={article.expert} />
-          {individualModel && point.crossSection && (
-            <CrossSectionViewer model={getPublicCrossSectionModel(point.crossSection)} pointName={point.name} pointCode={point.code} individualModel />
-          )}
-        </div>
-      </details>
+        </details>
+      )}
 
       <section id="acupoint-sources" className="atlas-target">
         <h2 className={headingClass}>出典</h2>
