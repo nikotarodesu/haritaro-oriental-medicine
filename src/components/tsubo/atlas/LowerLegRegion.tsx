@@ -1,9 +1,11 @@
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
 
 import { legLandmarks, outerShinAnkle, shinEndpoints, tiaokouReference } from "@/data/tsubo/atlas/legLandmarks";
+import { circledLandmarkNumber, sharedAnatomyLandmarks } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
 
 const { knee: kneeLandmark, ankle: ankleLandmark } = shinEndpoints;
 const outerMuscleEdge = legLandmarks.st40;
+const { tibia, tibialisAnterior } = sharedAnatomyLandmarks.st36;
 
 export function LowerLegArtwork() {
   return (
@@ -73,8 +75,9 @@ export function LowerLegArtwork() {
   );
 }
 
-export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
+export default function LowerLegRegion({ marker, label, pointCode }: AtlasCloseUpProps) {
   const showOuterEdge = marker.legCode === "st40";
+  const showMuscleNumber = pointCode === "st36";
 
   return (
     <>
@@ -111,7 +114,7 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
       </g>
       <g fill="white" fontSize="10" fontWeight="700" textAnchor="middle">
         <text x="133" y="68.5">1</text>
-        <text x="141" y="147.5">2</text>
+        <text x="141" y="147.5">{tibia.number}</text>
       </g>
 
       <g fill="#51463B" fontSize="11">
@@ -120,7 +123,9 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
         <text x="83" y="70" textAnchor="end">ひざの外側の</text>
         <text x="83" y="84" textAnchor="end">くぼみ（ST35）</text>
         <text x="206" y="177">すねの前の稜</text>
-        <text x="206" y="201">前脛骨筋</text>
+        <text x="206" y="201" data-landmark-number={showMuscleNumber ? tibialisAnterior.number : undefined}>
+          {showMuscleNumber && `${circledLandmarkNumber(tibialisAnterior.number)} `}{tibialisAnterior.name}
+        </text>
         <text x="206" y="216">つま先を上げる筋肉</text>
         <text x="209" y="251">足首の前（ST41）</text>
         <text x="206" y="275">右脚を正面から見た図</text>
@@ -132,7 +137,7 @@ export default function LowerLegRegion({ marker, label }: AtlasCloseUpProps) {
       <g fill="#7F3520" fontSize="12" fontWeight="700">
         <text x="208" y="57">① 膝蓋骨</text>
         <text x="208" y="72" fontSize="11" fontWeight="400">ひざのお皿</text>
-        <text x="207" y="137">② 脛骨</text>
+        <text x="207" y="137" data-landmark-number={tibia.number}>{circledLandmarkNumber(tibia.number)} {tibia.name}</text>
         <text x="207" y="152" fontSize="11" fontWeight="400">すねの骨</text>
         <text x="82" y={marker.y + 25} textAnchor="end" fontSize="13">{label}</text>
       </g>

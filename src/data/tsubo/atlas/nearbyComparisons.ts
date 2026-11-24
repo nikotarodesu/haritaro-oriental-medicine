@@ -38,6 +38,7 @@ export type NearbyComparison = {
   region: string;
   heading?: string;
   figureLabel: string;
+  quizFigureLabel: string;
   introduction?: string;
   size?: { width: number; height: number };
   referenceCodes?: readonly string[];
@@ -64,6 +65,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     id: "ear",
     region: "耳の前",
     figureLabel: "耳を横から見た図。耳の前に、上から耳門、聴宮、聴会が並びます。",
+    quizFigureLabel: "耳を横から見た図。耳の前の三つの丸印は、上から1番、2番、3番です。",
     points: [
       { code: "te21", position: project(headPoints.te21, ear), button: [38, 51], leader: [134, 51], difference: "耳の入口の前にある突起より上、小さな切れ込みのすぐ前です。" },
       { code: "si19", position: project(headPoints.si19, ear), button: [38, 111], leader: [134, 111], difference: "耳の入口の前にある突起と同じ高さで、その突起のすぐ前です。" },
@@ -79,6 +81,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     id: "wrist",
     region: "手首",
     figureLabel: "ひじを上にした手首の模式図。左が手のひら側、右が手の甲側です。破線は手首のしわです。",
+    quizFigureLabel: "ひじを上にした手首の図。左は手のひら側で上に1番、下に2番。右は手の甲側で上に3番、下に4番。破線は手首のしわです。",
     points: [
       { code: "pc6", position: project({ x: 114.5, y: wristProximalY }, palm), button: [27, 83], leader: [97, 83], difference: "手のひら側の手首のしわからひじへ2寸で、二本のすじの間です。" },
       { code: "pc7", position: project({ x: 114.5, y: forearmWristCreaseY }, palm), button: [27, 158], leader: [97, 158], difference: "内関と同じ二本のすじの間で、手のひら側の手首のしわに沿った位置です。" },
@@ -95,6 +98,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     id: "ankle",
     region: "足首の内側",
     figureLabel: "足首を内側から見た図。内くるぶしの後ろに太谿、真下に照海、前に中封があります。",
+    quizFigureLabel: "足首を内側から見た図。内くるぶしの後ろに1番、下に2番、前に3番の丸印があります。",
     points: [
       { code: "ki3", position: project(footLandmarks.ki3, ankle), button: [28, 92], leader: [97, 92], difference: "内くるぶしの後ろで、骨の出っ張りとアキレス腱の間です。" },
       { code: "ki6", position: project(footLandmarks.ki6, ankle), button: [141, 183], leader: [151, 160], difference: "内くるぶしの出っ張りから、足裏のほうへ真下に進んだくぼみです。" },
@@ -110,6 +114,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     id: "shin",
     region: "すねの前",
     figureLabel: "右脚を前から見た模式図。ひざの犢鼻から足首の解谿へ向かう線上に、上から足三里、上巨虚、条口が並びます。両端の白丸が目印です。",
+    quizFigureLabel: "右脚を前から見た図。ひざと足首を結ぶ線上に、ひざに近い方から1番、2番、3番の丸印があります。ひざからそれぞれ3寸、6寸、8寸です。",
     size: { width: 344, height: 278 },
     referenceCodes: ["st35", "st41"],
     points: shinPoints.map(point => ({
@@ -127,6 +132,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     region: "手のひら側の前腕",
     heading: "内関・間使・郄門を図で比べる",
     figureLabel: "前腕を手のひら側から見た模式図。手首のしわからひじへ向かって、内関、間使、郄門の順に並びます。白丸は手首とひじのしわです。",
+    quizFigureLabel: "手のひら側の前腕の図。手首のしわからひじへ向かって2寸に1番、3寸に2番、5寸に3番の丸印があります。",
     size: { width: 344, height: 294 },
     points: forearmPoints.map(point => ({
       ...point,
@@ -143,6 +149,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     region: "肩の外側",
     heading: "肩髃と肩髎を図で比べる",
     figureLabel: "肩を横から見た模式図。左が胸側、右が背中側です。肩の外の骨の下に二つのくぼみがあり、肩髃は胸側、肩髎は背中側です。",
+    quizFigureLabel: "肩を横から見た図。肩の外の骨の下にある二つの丸印のうち、左の胸側が1番、右の背中側が2番です。",
     introduction: "肩の外にある骨（肩峰）の下にできる二つのくぼみを比べます。左が胸側、右が背中側です。",
     size: { width: 344, height: 276 },
     points: [
@@ -160,6 +167,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     region: "ひじの前",
     heading: "曲池・尺沢・曲沢を図で比べる",
     figureLabel: "ひじを前から見た模式図。横じわに沿い、親指側の左から曲池、尺沢、曲沢が並びます。尺沢と曲沢の間に力こぶから続く腱があります。",
+    quizFigureLabel: "ひじを前から見た図。親指側の左から1番、2番、3番の丸印が並び、2番と3番の間に力こぶから続く腱があります。",
     introduction: "手のひらを上にしたときの、ひじの横じわを拡大しました。骨の出っ張りと、力こぶから続くすじ（腱）が目印です。",
     points: [
       { code: "li11", position: project(armPoints.li11, elbow), button: [30, 94], leader: [94, 94], difference: "ひじの外側に出ている骨と尺沢の中間です。図では三つのツボのうち最も親指側にあります。" },

@@ -1,4 +1,7 @@
 import type { AtlasCloseUpProps } from "@/data/tsubo/atlas/types";
+import { circledLandmarkNumber, sharedAnatomyLandmarks } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
+
+const { palmarisLongus, flexorCarpiRadialis } = sharedAnatomyLandmarks.pc6;
 
 export function VolarForearmArtwork() {
   return (
@@ -33,13 +36,15 @@ export default function VolarForearmRegion({ marker, label, labelled }: AtlasClo
           <circle cx="113" cy="119" r="8" />
         </g>
         <g fill="#FFF9F0" fontSize="11" fontWeight="bold" textAnchor="middle">
-          <text x="130" y="120">1</text>
-          <text x="113" y="123">2</text>
+          <text x="130" y="120">{palmarisLongus.number}</text>
+          <text x="113" y="123">{flexorCarpiRadialis.number}</text>
         </g>
         <g fill="#7F3520" fontSize="14" fontWeight="bold">
-          <text x="186" y="102">① 長掌筋の腱</text>
-          <text x="12" y="73">② 橈側手根</text>
-          <text x="20" y="92">屈筋の腱</text>
+          <text x="186" y="102" data-landmark-number={palmarisLongus.number}>{circledLandmarkNumber(palmarisLongus.number)} {palmarisLongus.name}</text>
+          <text x="12" y="73" data-landmark-number={flexorCarpiRadialis.number}>
+            {circledLandmarkNumber(flexorCarpiRadialis.number)} {flexorCarpiRadialis.name.slice(0, 4)}
+            <tspan x="20" y="92">{flexorCarpiRadialis.name.slice(4)}</tspan>
+          </text>
           <text x="186" y="170">{label}</text>
         </g>
         <text x="187" y="228" fill="#365B4D" fontSize="13" fontWeight="bold">手首のしわ</text>

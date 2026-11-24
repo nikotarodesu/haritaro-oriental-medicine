@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { getPublicCrossSectionElements, getPublicAnatomyDescription } from "@/data/medicalSafety";
+import type { SharedAnatomyLandmark } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
 import type {
   CrossSectionModel,
   ReferenceLedgerItem
@@ -19,6 +20,7 @@ interface CrossSectionViewerProps {
   pointName: string;
   pointCode: string;
   individualModel?: boolean;
+  sharedLandmarks?: readonly SharedAnatomyLandmark[];
 }
 
 export default function CrossSectionViewer({
@@ -26,6 +28,7 @@ export default function CrossSectionViewer({
   pointName,
   pointCode,
   individualModel = false,
+  sharedLandmarks = [],
 }: CrossSectionViewerProps) {
   // 選択された組織ID（null時は全体表示）
   const [selectedStructureId, setSelectedStructureId] = useState<string | null>(null);
@@ -40,6 +43,11 @@ export default function CrossSectionViewer({
   const activeStructure = selectedLayer || selectedBoundary || selectedAdjacent;
   const publicElements = getPublicCrossSectionElements(model);
   const visibleIds = new Set(publicElements.map(element => element.layerId));
+  const numberedLandmarks = sharedLandmarks.filter(({ layerId, elementId }) =>
+    publicElements.some(element => element.layerId === layerId && element.elementId === elementId),
+  );
+  const numbersByStructure = new Map(numberedLandmarks.map(({ layerId, number }) => [layerId, number]));
+  const landmarkSummaryId = `${pointCode.toLowerCase()}-anatomy-landmark-summary`;
   const structures = [...model.layers, ...(model.boundaries || []), ...(model.adjacentStructures || [])];
   const selectableStructures = structures.filter((structure, index) => visibleIds.has(structure.id) && structures.findIndex(item => item.id === structure.id) === index);
   const selectStructure = (id: string) => setSelectedStructureId(current => current === id ? null : id);
@@ -200,6 +208,7 @@ export default function CrossSectionViewer({
           preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={`${pointName}の横断面解剖図`}
+          aria-describedby={numberedLandmarks.length ? landmarkSummaryId : undefined}
         >
           {/* 断面要素描画 */}
           {publicElements.map((el) => {
@@ -265,6 +274,13 @@ export default function CrossSectionViewer({
               </g>
             );
           })}
+          {numberedLandmarks.map(({ number, layerId, sectionBadge: [x, y], leaderTo }) => (
+            <g key={layerId} data-landmark-number={number} aria-hidden="true" className="pointer-events-none">
+              {leaderTo && <path d={`M${x} ${y}L${leaderTo.join(" ")}`} fill="none" stroke="#7F3520" strokeWidth="2" />}
+              <circle cx={x} cy={y} r="13" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
+              <text x={x} y={y} fill="#FFF9F0" fontSize="16" fontWeight="700" textAnchor="middle" dominantBaseline="central">{number}</text>
+            </g>
+          ))}
         </svg>
 
         <div className="anatomy-axis-pair">
@@ -274,13 +290,29 @@ export default function CrossSectionViewer({
         <p className="anatomy-axis anatomy-axis--vertical">↓ {model.axes.vertical[1]}</p>
         <figcaption className="mt-2 flex items-start gap-2 border-t border-[#E8E1D1] pt-2.5 text-sm leading-relaxed text-[#59615D] dark:border-[#22303D] dark:text-[#A0B0BC]">
           <HelpCircle aria-hidden="true" className="mt-1 h-3.5 w-3.5 shrink-0 text-[#B86924]" />
-          図の組織か、下の名前を選ぶと、図の該当箇所が強調され、解説が表示されます。
+          <div className="min-w-0 space-y-1">
+            {numberedLandmarks.length > 0 && <p id={landmarkSummaryId}>
+              位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。{" "}
+              <a href="#acupoint-location" className="atlas-source-link inline-flex min-h-11 items-center">体表の位置図に戻る</a>
+            </p>}
+            <p>図の組織か、下の名前を選ぶと、図の該当箇所が強調され、解説が表示されます。</p>
+          </div>
         </figcaption>
       </figure>
 
       {selectableStructures.length > 0 && <div className="anatomy-structure-picker" role="group" aria-label="断面図の構造を名前から選ぶ" onKeyDown={event => { if (event.key === 'Escape') setSelectedStructureId(null); }}>
         <p>構造名から選ぶ</p>
-        <div>{selectableStructures.map(structure => <button type="button" key={structure.id} aria-pressed={selectedStructureId === structure.id} onClick={() => selectStructure(structure.id)}>{structure.name}</button>)}</div>
+        <div>{selectableStructures.map(structure => {
+          const number = numbersByStructure.get(structure.id);
+          return (
+            <button type="button" key={structure.id} aria-pressed={selectedStructureId === structure.id} onClick={() => selectStructure(structure.id)}
+              data-landmark-control={number}
+              className={number ? "inline-flex min-h-11 items-center gap-2" : undefined}>
+              {number && <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-[#7F3520] text-xs font-bold text-[#FFF9F0]">{number}</span>}
+              {structure.name}
+            </button>
+          );
+        })}</div>
       </div>}
 
       {/* 3. タップされた組織のインスペクターカード（選択時に図の直下にスマートに表示） */}

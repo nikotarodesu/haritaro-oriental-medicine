@@ -6,7 +6,7 @@ import { flankLandmarks, groinLandmarks } from "./expanded/trunk";
 import { whoLocations } from "./whoLocations";
 
 export type LandmarkPosition = readonly [x: number, y: number];
-export type LandmarkLabel = { name: string; position: LandmarkPosition };
+export type LandmarkLabel = { name: string; position: LandmarkPosition; number?: number };
 type Anchor = readonly [x: number, y: number, name?: string];
 
 const { earApex, mastoidTip, masseterAttachment, templeEdge, posteriorEarRootX } = profileLandmarks;

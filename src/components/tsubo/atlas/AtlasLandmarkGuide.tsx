@@ -3,9 +3,9 @@ import styles from "./AtlasLandmarkGuide.module.css";
 
 const choices = [
   { value: "all", label: "全体" },
-  { value: "origin", label: "① 目印" },
-  { value: "direction", label: "② 向き" },
-  { value: "point", label: "③ 位置" },
+  { value: "origin", label: "目印" },
+  { value: "direction", label: "向き" },
+  { value: "point", label: "位置" },
 ] as const;
 
 const guidance = {

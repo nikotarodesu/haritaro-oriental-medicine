@@ -79,7 +79,7 @@ export default function LandmarkCloseUp({ marker, pointLabel, landmarks, descrip
   numbered?: boolean;
 }) {
   const callouts: Callout[] = [
-    ...landmarks.map(({ name, position: [x, y] }, index): Callout => ({ name, position: [x - left, y], number: index + 1 })),
+    ...landmarks.map(({ name, position: [x, y], number }, index): Callout => ({ name, position: [x - left, y], number: number ?? index + 1 })),
     { name: pointLabel, position: [marker.x - left, marker.y] },
   ];
   const elbow = Math.max(148, ...callouts.map(({ position: [x] }) => x + 6));
@@ -87,7 +87,7 @@ export default function LandmarkCloseUp({ marker, pointLabel, landmarks, descrip
 
   return (
     <svg viewBox="0 0 340 300" role="img"
-      aria-label={`${description} 図の目印は${landmarks.map(({ name }) => name).join("、")}です。`}
+      aria-label={`${description} 図の目印は${callouts.slice(0, -1).map(({ name, number }) => numbered ? `${number}番の${name}` : name).join("、")}です。`}
       className="mx-auto block w-full max-w-[340px]">
       <svg width={artworkWidth} height="300" viewBox={`${left} 0 ${artworkWidth} 300`} overflow="hidden" aria-hidden="true">
         {children}
@@ -101,7 +101,7 @@ export default function LandmarkCloseUp({ marker, pointLabel, landmarks, descrip
               <path d={leader} className="atlas-landmark-leader" data-landmark-leader={number ? "" : undefined} />
               {number && <circle cx={x} cy={y} r="2.8" className="atlas-landmark-anchor" />}
               <circle cx="213" cy={labelY} r={number ? (numbered ? 7.5 : 2.6) : 4.5} className="atlas-landmark-badge" />
-              {number && numbered && <text x="213" y={labelY} className="atlas-landmark-number">{number}</text>}
+              {number && numbered && <text x="213" y={labelY} className="atlas-landmark-number" data-landmark-number={number}>{number}</text>}
               <text x="224" y={labelY} className="atlas-landmark-name" data-landmark-name="">
                 {lines.map((line, i) => <tspan key={i} x="224" y={labelY + (i - (lines.length - 1) / 2) * rowLineHeight}>{line}</tspan>)}
               </text>

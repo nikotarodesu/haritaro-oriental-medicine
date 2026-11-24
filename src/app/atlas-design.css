@@ -130,9 +130,7 @@
 .atlas-directory-header .atlas-breadcrumb { margin-bottom: .5rem; }
 .atlas-source-link, .atlas-source-links a { color: var(--atlas-accent); font-weight: 600; text-decoration: underline; text-underline-offset: .23em; }
 .atlas-source-link:hover, .atlas-source-links a:hover, .atlas-text-action:hover { text-decoration-thickness: 2px; }
-.atlas-location-image { display: flex; align-items: center; gap: .875rem; }
-.atlas-location-image img { width: clamp(4.5rem, 20vw, 6rem); height: auto; flex: none; border-radius: .5rem; }
-.atlas-location-image a { min-height: 2.75rem; font-size: .9375rem; line-height: 1.5; }
+.atlas-location-image { width: clamp(4.5rem, 20vw, 6rem); height: auto; border-radius: .5rem; }
 .atlas-code { border-radius: .375rem; padding: .125rem .5rem; color: var(--atlas-accent); background: var(--atlas-soft); font: 600 .85rem/1.55 ui-monospace, monospace; white-space: nowrap; }
 
 .atlas-search-layout { display: grid; min-width: 0; gap: 1.25rem; }
@@ -386,6 +384,35 @@
 }
 .atlas-comparison-choice:is(:hover, [aria-pressed="true"]) { background: var(--atlas-soft); }
 .atlas-comparison-choice[aria-pressed="true"] span { color: var(--atlas-paper); background: var(--atlas-accent); }
+.atlas-comparison-actions { display: flex; }
+.atlas-comparison-actions button {
+  min-height: 2.75rem;
+  padding-inline: .75rem;
+  border: 1px solid var(--atlas-accent);
+  border-radius: .5rem;
+  color: var(--atlas-accent);
+  font-size: .9375rem;
+  font-weight: 700;
+}
+.atlas-comparison-actions button:hover { background: var(--atlas-soft); }
+.atlas-comparison-question, .atlas-comparison-feedback {
+  padding: .625rem .75rem;
+  border-inline-start: 2px solid var(--atlas-accent);
+  background: var(--atlas-soft);
+  border-radius: .375rem;
+  font-size: .9375rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.atlas-comparison-question p + p { margin-block-start: .25rem; color: var(--atlas-muted); }
+.atlas-comparison-choice[data-quiz-choice] {
+  justify-content: center;
+  width: 2.75rem;
+  padding-inline: 0;
+  transform: translate(-50%, -50%);
+}
+.atlas-comparison-choice[data-quiz-choice][aria-disabled="true"] { cursor: default; }
+.atlas-comparison-marker circle[data-quiz-dot] { cursor: pointer; }
 .atlas-comparison-reading {
   display: grid;
   gap: .375rem;
@@ -666,6 +693,44 @@
 }
 .atlas-compare-shortcut:hover { text-decoration-thickness: 2px; }
 .atlas-compare-shortcut svg { flex-shrink: 0; }
+.atlas-directory-anatomy {
+  display: grid;
+  gap: .65rem 1rem;
+  padding: clamp(.65rem, 2vw, 1.1rem);
+  border: 1px solid var(--atlas-line);
+  border-radius: .875rem;
+  background: var(--atlas-soft);
+}
+.atlas-directory-anatomy h2 {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  color: var(--atlas-ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+.atlas-directory-anatomy h2 svg { flex: none; color: var(--atlas-accent); }
+.atlas-directory-anatomy ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.3rem, 1vw, .75rem); }
+.atlas-directory-anatomy a {
+  display: grid;
+  align-content: start;
+  height: 100%;
+  min-height: 2.75rem;
+  padding: .5rem clamp(.35rem, 1.4vw, .8rem);
+  border: 1px solid var(--atlas-line);
+  border-radius: .55rem;
+  background: var(--atlas-paper);
+  color: var(--atlas-muted);
+  font-size: .8125rem;
+  line-height: 1.45;
+}
+.atlas-directory-anatomy a:hover { border-color: var(--atlas-accent); }
+.atlas-anatomy-card-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .45rem; color: var(--atlas-accent); }
+.atlas-anatomy-card-title strong { font-size: 1rem; }
+.atlas-anatomy-card-title small { color: var(--atlas-muted); font: 500 .77rem/1.4 ui-monospace, monospace; }
+@media (max-width: 380px) {
+  .atlas-anatomy-card-title { display: grid; justify-items: start; gap: 0; }
+}
 .atlas-directory-featured { display: grid; align-items: center; gap: .375rem .9rem; }
 .atlas-directory-featured h2 { font-size: .875rem; font-weight: 700; }
 .atlas-directory-featured ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .375rem; }
@@ -797,6 +862,7 @@
   .atlas-diagrams { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); }
   .atlas-figure--overview > svg { max-height: 15rem; }
   .atlas-directory-featured { grid-template-columns: auto minmax(0, 34rem); }
+  .atlas-directory-anatomy { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
   .atlas-directory-featured ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { MERIDIANS, ALL_ACUPOINTS } from "@/data/tsubo";
-import { BookOpen, FlaskConical, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
+import { MERIDIANS, ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
+import { BookOpen, FlaskConical, Layers, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
@@ -19,12 +19,21 @@ const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(reg
 }));
 const flagshipCodes = ["li4", "st36", "lr3", "pc6", "sp6", "gv20", "lu7", "ki1", "bl23", "cv12", "gb20", "ht7"];
 const flagshipPoints = flagshipCodes.map(code => ALL_ACUPOINTS.find(point => point.codeLower === code)).filter(point => !!point);
+const anatomyCards = [
+  { code: "li4", structure: "中手骨と筋" },
+  { code: "pc6", structure: "前腕の腱" },
+  { code: "st36", structure: "すねの骨と筋" },
+].flatMap(({ code, structure }) => {
+  const point = flagshipPoints.find(point => point.codeLower === code);
+  return point && DETAILED_ACUPOINTS[code]?.crossSection ? [{ point, structure }] : [];
+});
+const otherFlagshipPoints = flagshipPoints.filter(point => !anatomyCards.some(card => card.point.code === point.code));
 const studyGroups = [
   { label: "ツボ一つを調べた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
 ];
 
-const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。図で場所を確かめ、名前の由来や中国語での漢字の意味も読めます。";
+const DESCRIPTION = "361のツボを名前・部位・経絡から探せます。体表の位置図や名前の由来に加え、合谷・内関・足三里では周りの骨や筋、腱を断面図で学べます。";
 
 export default function TsuboPage() {
   const guideLinks = (
@@ -51,10 +60,24 @@ export default function TsuboPage() {
       </header>
 
       <TsuboInteractiveClient relatedGuides={guideLinks} featuredPoints={<>
+        <section id="atlas-anatomy-index" className="atlas-directory-anatomy atlas-target" aria-labelledby="atlas-anatomy-index-title">
+          <h2 id="atlas-anatomy-index-title"><Layers size={20} aria-hidden="true" />断面図から見る</h2>
+          <ul>
+            {anatomyCards.map(({ point, structure }) => (
+              <li key={point.code}>
+                {/* Use browser fragment navigation to reveal the nested disclosure on arrival. */}
+                <a href={`/tsubo/${point.codeLower}#acupoint-anatomy-diagram`}>
+                  <span className="atlas-anatomy-card-title"><strong>{point.name}</strong><small>{point.code}</small></span>
+                  <span>{structure}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
         <nav aria-label="代表的なツボ" className="atlas-directory-featured">
           <h2>代表的なツボ</h2>
           <ul>
-            {flagshipPoints.slice(0, 4).map(({ name, code, codeLower }) => (
+            {otherFlagshipPoints.slice(0, 4).map(({ name, code, codeLower }) => (
               <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false}>{name}<span>{code}</span></Link></li>
             ))}
           </ul>
@@ -83,7 +106,7 @@ export default function TsuboPage() {
       <details className="atlas-disclosure atlas-region-index">
         <summary>ほかの代表的なツボ</summary>
         <ul className="flex flex-wrap gap-2 pb-3">
-          {flagshipPoints.slice(4).map(({ name, code, codeLower }) => (
+          {otherFlagshipPoints.slice(4).map(({ name, code, codeLower }) => (
             <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>
           ))}
         </ul>

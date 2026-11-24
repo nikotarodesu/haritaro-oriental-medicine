@@ -1,6 +1,7 @@
 import { dorsalFootLandmarks, footLandmarks, medialFootLandmarks, type FootCode } from "./footLandmarks";
 import type { LandmarkLabel } from "./landmarkLabels";
 import { poplitealY, posteriorKnee, soleEndpoints } from "./legLandmarks";
+import { sharedAnatomyLandmarks } from "./sharedAnatomyLandmarks";
 import type { AtlasMarker } from "./types";
 
 const { malleolus, navicular } = medialFootLandmarks;
@@ -68,7 +69,11 @@ const regionalLabels: Readonly<Partial<Record<string, readonly LandmarkLabel[]>>
     label("かかとの中央", soleEndpoints.heel.x, soleEndpoints.heel.y)],
 };
 
-export const heguLandmarkLabels = [label("人差し指の中手骨", 108, 201), label("親指の中手骨", 73, 194)];
+const { indexBone, thumbBone } = sharedAnatomyLandmarks.li4;
+export const heguLandmarkLabels = [
+  { ...label(indexBone.name, 108, 201), number: indexBone.number },
+  { ...label(thumbBone.name, 73, 194), number: thumbBone.number },
+];
 
 export function regionalLandmarkLabels(code: string, marker: AtlasMarker): readonly LandmarkLabel[] {
   const labels = marker.footCode ? footLabels[marker.footCode] : regionalLabels[code];

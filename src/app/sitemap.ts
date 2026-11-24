@@ -69,7 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/tsubo`,
-      lastModified: new Date("2026-09-25"),
+      lastModified: new Date(PAGE_REVISIONS["/tsubo"]),
     },
     {
       url: `${baseUrl}/tsubo/compare`,

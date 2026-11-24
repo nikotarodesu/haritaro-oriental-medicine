@@ -47,6 +47,7 @@ export interface AtlasMarker {
 export interface AtlasCloseUpProps {
   marker: AtlasMarker;
   label: string;
+  pointCode?: string;
   measured?: boolean;
   landmarkIds?: readonly string[];
   labelled?: boolean;
