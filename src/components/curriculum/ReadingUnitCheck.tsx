@@ -1,15 +1,15 @@
 "use client";
 
 import { useCurriculumProgress } from "@/contexts/CurriculumProgressContext";
-import type { LearningQuestion } from "@/data/learningQuestionBank";
+import type { ReadingUnitQuestion } from "@/data/publicLectures/readingUnitQuestions";
 
 export default function ReadingUnitCheck({ unitId, questions }: {
   unitId: string;
-  questions: readonly LearningQuestion[];
+  questions: readonly ReadingUnitQuestion[];
 }) {
   const { isMounted, quizResults, saveQuizResult } = useCurriculumProgress();
 
-  function answerQuestion(question: LearningQuestion, choice: number) {
+  function answerQuestion(question: ReadingUnitQuestion, choice: number) {
     saveQuizResult({
       questionId: question.id,
       lectureId: question.lectureId,
@@ -32,7 +32,7 @@ export default function ReadingUnitCheck({ unitId, questions }: {
   return (
     <div className="lecture-check-questions" data-reading-unit-check={unitId}>
       {questions.map((question, index) => {
-        const { id, options, correctIndex, explanation } = question;
+        const { id, options, correctIndex, explanation, reviewHref, reviewLabel } = question;
         const selected = quizResults[id]?.userAnswerIndex;
         return (
           <fieldset key={id} className="lecture-check-question">
@@ -59,10 +59,18 @@ export default function ReadingUnitCheck({ unitId, questions }: {
                 </p>
               )}
             </div>
+            {selected !== undefined && selected !== correctIndex && (
+              <a href={reviewHref} className="ui-text-link inline-flex min-h-11 items-center">
+                {reviewLabel}
+              </a>
+            )}
             <noscript>
               <details className="lecture-check-fallback">
                 <summary>答えと解説を見る</summary>
                 <p>{options[correctIndex]}。{explanation}</p>
+                <a href={reviewHref} className="ui-text-link inline-flex min-h-11 items-center">
+                  {reviewLabel}
+                </a>
               </details>
             </noscript>
           </fieldset>

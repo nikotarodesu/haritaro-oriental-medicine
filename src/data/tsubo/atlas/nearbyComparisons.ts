@@ -34,7 +34,7 @@ type ComparisonPoint = {
 };
 
 export type NearbyComparison = {
-  id: "ear" | "wrist" | "ankle" | "shin" | "forearm" | "shoulder" | "elbow";
+  id: "ear" | "wrist" | "ankle" | "shin" | "forearm" | "shoulder" | "elbow" | "medial-knee";
   region: string;
   heading?: string;
   figureLabel: string;
@@ -178,6 +178,25 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
       prompt: "手のひらを上にしたひじの図で、力こぶから続くすじのすぐ親指側にあるのはどれですか？",
       answerCode: "lu5",
       explanation: "尺沢です。そのすじのすぐ小指側が曲沢で、曲池は尺沢より親指側にあります。",
+    },
+  },
+  {
+    id: "medial-knee",
+    region: "ひざの内側",
+    heading: "陰陵泉・血海・曲泉を図で比べる",
+    figureLabel: "ひざを内側から見た模式図。血海は前寄りでお皿より上、曲泉はひざ裏のしわの内側端、陰陵泉はひざの下で、すねの骨が広がる部分のすぐ下です。",
+    quizFigureLabel: "ひざを内側から見た図。1番は前寄りでお皿より上、2番はひざ裏のしわの内側端、3番はひざの下で、すねの骨が広がる部分のすぐ下にあります。",
+    introduction: "ひざの内側を横から見た模式図です。お皿の上、ひざ裏のしわ、すねの骨の角を目印にします。",
+    size: { width: 344, height: 264 },
+    points: [
+      { code: "sp10", position: [146, 84], button: [36, 76], leader: [111, 76], difference: "お皿の上縁の内端から上へ2寸。太ももの前内側の筋肉が盛り上がるところです。" },
+      { code: "lr8", position: [207, 139], button: [260, 150], leader: [249, 150], difference: "ひざ裏の横じわの内側端で、太ももの裏から続くすじ（腱）より内側のくぼみです。" },
+      { code: "sp9", position: [174, 168], button: [36, 184], leader: [116, 184], difference: "ひざのすぐ下で、すねの骨が内ひざへ広がる部分の下にあるくぼみです。" },
+    ],
+    question: {
+      prompt: "すねの骨が内ひざへ広がる部分のすぐ下にあるのは、図の何番ですか？",
+      answerCode: "sp9",
+      explanation: "陰陵泉です。血海はお皿より上の筋肉、曲泉はひざ裏のしわの端が目印です。",
     },
   },
 ];

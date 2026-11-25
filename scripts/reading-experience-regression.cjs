@@ -45,6 +45,7 @@ const { proxy } = load('src/proxy');
 const { originalLectureHref, restoreLegacyExerciseHref } = load('src/utils/curriculumLegacyPaths');
 const { readingLectureMerges } = load('src/data/publicLectures/readingLectureMerges');
 const { readingUnitRevisions } = load('src/data/publicLectures/revisions/index');
+const { getReadingUnitQuestions } = load('src/data/publicLectures/readingUnitQuestions');
 const { reviseLectureSections } = load('src/data/publicLectures/revisions/types');
 const articleIds = new Set(ARTICLES.map(article => article.id));
 const figureIds = new Set();
@@ -111,9 +112,19 @@ for (const unit of readingUnits) {
   for (const featured of unit.featuredDiagrams ?? []) {
     assert(unit.parts.some(part => part.lectureId === featured) && getPublicLectureDiagram(featured), featured);
   }
-  for (const item of revision.questions) {
+  const questions = getReadingUnitQuestions(unit.slug);
+  for (const [index, item] of revision.questions.entries()) {
     assert.equal(new Set(item.choices).size, 3, unit.slug + ' has three distinct choices');
     assert(item.question.trim() && item.choices[item.answer]?.trim() && item.explanation.trim(), unit.slug);
+    const [lectureId, section] = item.reviewAt;
+    const part = unit.parts.find(part => part.lectureId === lectureId);
+    assert(part, unit.slug + ' links to a section of this lecture');
+    if (section === 'diagram') {
+      assert(getPublicLectureDiagram(lectureId) && (!unit.featuredDiagrams || unit.featuredDiagrams.includes(lectureId)), lectureId + ' links to a visible figure');
+    } else {
+      assert(getPublicLectureArticle(lectureId).sections[section - 1], lectureId + ' links to an existing section');
+    }
+    assert.equal(questions[index].reviewHref, '#' + part.anchor + (section === 'diagram' ? '-diagram' : '-section-' + section));
   }
 }
 console.log(`Passed: ${readingUnits.length} consolidated lectures preserve section anchors, source links, a three-point recap, and all optional questions.`);

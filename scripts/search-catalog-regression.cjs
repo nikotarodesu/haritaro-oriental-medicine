@@ -23,7 +23,8 @@ assert.equal(generated, generateSearchCatalog(), 'Content edits must regenerate 
 assert.equal(new Set(SEARCH_CATALOG.map(item => item.id)).size, SEARCH_CATALOG.length, 'Search IDs are unique');
 const byId = new Map(SEARCH_CATALOG.map(item => [item.id, item]));
 assert.equal(byId.get('tool-tsubo-pairs')?.url, '/tsubo/pairs', 'The pair directory is searchable');
-assert.equal(NEARBY_COMPARISON_LINKS.length, 7);
+assert.equal(NEARBY_COMPARISON_LINKS.length, 8);
+assert.equal(byId.get('atlas-comparison-medial-knee')?.url, '/tsubo/sp10#acupoint-nearby');
 for (const comparison of NEARBY_COMPARISON_LINKS) {
   const result = byId.get('atlas-comparison-' + comparison.id);
   assert.equal(result?.url, comparison.href);

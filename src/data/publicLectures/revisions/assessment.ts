@@ -20,12 +20,14 @@ export const assessmentRevisions = {
     questions: [
       {
         question: "「休めば軽くなる」と考えていたところ、休んでも同じだったと聞きました。次に何をしますか？",
+        reviewAt: ["lecture-pathomechanism-11", 2],
         choices: ["休めば軽くなると記録する", "そう考えた理由を見直し、ほかの答えも確かめる", "その返答を記録しない"],
         answer: 1,
         explanation: "思っていた経過と違ったことが、見立てを考え直す材料になります。",
       },
       {
         question: "「帰宅してからも、休日の食後に張りますか？」と聞くのは、主に何を確かめるためですか？",
+        reviewAt: ["lecture-pathomechanism-12", 1],
         choices: ["最初に始まった日", "後から加わった症状", "今も張りが続く条件"],
         answer: 2,
         explanation: "帰宅後にどんな日も続くのかを聞くので、発生・波及・維持のうち「維持」の質問です。",
@@ -61,12 +63,14 @@ export const assessmentRevisions = {
     questions: [
       {
         question: "話や診察で分かったことをもとに、どの証が考えられるかを検討することを何といいますか？",
+        reviewAt: ["lecture-diagnosis-1", 1],
         choices: ["望診", "主訴", "弁証"],
         answer: 2,
         explanation: "弁証は証を考える過程です。新しく分かったことがあれば、見立ても考え直せます。",
       },
       {
         question: "本人が何に困っているかまで伝わる話し方はどれですか？",
+        reviewAt: ["lecture-diagnosis-3", 1],
         choices: ["夕方に頭が痛くなり、画面を見続けられません", "頭痛は仕事だけが原因だと思います", "休憩の時間は18時でした"],
         answer: 0,
         explanation: "痛む時間帯と、できなくなったことの両方が伝わります。",
@@ -99,12 +103,14 @@ export const assessmentRevisions = {
     questions: [
       {
         question: "だるさの時間帯を、答えを決めずに聞ける質問はどれですか？",
+        reviewAt: ["lecture-diagnosis-4", 2],
         choices: ["夕方がいちばんだるいですよね？", "朝は普段どおりですよね？", "だるい時間と楽な時間はありますか？"],
         answer: 2,
         explanation: "時間帯を先に言わずに聞くと、その人の経験を話してもらえます。",
       },
       {
         question: "「顔が赤く見えた」は、どんな情報ですか？",
+        reviewAt: ["lecture-diagnosis-5", 1],
         choices: ["目で見たこと", "本人が話したこと", "東洋医学の用語を使った見立て"],
         answer: 0,
         explanation: "目で確かめたことは望診です。本人の話や、そこから考えた説明も別に残します。",
@@ -140,12 +146,14 @@ export const assessmentRevisions = {
     questions: [
       {
         question: "八綱で、働きが足りないことや、何かが過剰なことを見る組はどれですか？",
+        reviewAt: ["lecture-diagnosis-7", 1],
         choices: ["寒熱", "虚実", "表裏"],
         answer: 1,
         explanation: "不足は「虚」、過剰や不調に関わるものの強さは「実」で考えます。",
       },
       {
         question: "頭痛の場所を考えるとき、こめかみと体の道筋を描いた図を見比べています。この場合、何を手がかりにしていますか？",
+        reviewAt: ["lecture-diagnosis-9", 2],
         choices: ["経絡", "臓腑の働き", "虚実"],
         answer: 0,
         explanation: "体の場所と、伝統医学での道筋の関係を考えるので、経絡の見方です。",
@@ -183,12 +191,14 @@ export const assessmentRevisions = {
     questions: [
       {
         question: "東洋医学の本で、見立てから考える大きな方針を何と呼びますか？",
+        reviewAt: ["lecture-treatment-2", 1],
         choices: ["配穴", "治法", "治則"],
         answer: 2,
         explanation: "治則が大きな方針です。治法はその方針をどう進めるかを表します。",
       },
       {
         question: "「洗濯物を途中で休まずに干し終えたい」という人に、次は何を聞くとよいですか？",
+        reviewAt: ["lecture-treatment-1", 2],
         choices: ["同じくらいの量を干したとき、途中で何回休んだか", "休日の朝食は何時だったか", "使った用語を覚えているか"],
         answer: 0,
         explanation: "本人が変えたい場面で、どう過ごせたかを聞くと振り返れます。",
@@ -226,12 +236,14 @@ export const assessmentRevisions = {
     questions: [
       {
         question: "気をどう巡らせるかに目を向ける治法名はどれですか？",
+        reviewAt: ["lecture-treatment-5", 1],
         choices: ["補気", "理気", "養血"],
         answer: 1,
         explanation: "理気は巡り、補気は足りないと考えた気の働きを支える方針です。",
       },
       {
         question: "「培土生金」で、土から金へ向かう関係に当たる臓腑はどの組ですか？",
+        reviewAt: ["lecture-treatment-7", 2],
         choices: ["肝と腎", "肺と心", "脾と肺"],
         answer: 2,
         explanation: "脾を土、肺を金に置き、土から金へ向かう相生の矢印を読みます。",

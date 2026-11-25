@@ -31,12 +31,14 @@ export const relationshipRevisions = {
     questions: [
       {
         question: "木から土へ向き、勢いを抑える矢印はどれですか？",
+        reviewAt: ["lecture-wuxing-3", "diagram"],
         choices: ["相生", "相剋", "相侮"],
         answer: 1,
         explanation: "木から土へは相剋です。相生の矢印なら、木から火へ向かいます。",
       },
       {
         question: "相生で水と木を組にすると、母になるのはどちらですか？",
+        reviewAt: ["lecture-wuxing-8", 1],
         choices: ["水", "木", "その日の季節で変わる"],
         answer: 0,
         explanation: "水から木へと支える矢印が向かいます。この組では水が母、木が子です。",
@@ -73,12 +75,14 @@ export const relationshipRevisions = {
     questions: [
       {
         question: "五行と体の関係をまとめた表で、「土」の行には「唇」が載っています。「唇」はどの項目の列にありますか？",
+        reviewAt: ["lecture-wuxing-5", "diagram"],
         choices: ["五体", "五華", "五志"],
         answer: 1,
         explanation: "唇は外から見える特徴なので五華です。同じ土の行でも、口は開竅・五官の列にあります。",
       },
       {
         question: "本人から聞いたことが、そのまま伝わるメモはどれですか？",
+        reviewAt: ["lecture-wuxing-5", 2],
         choices: ["木の行には目がある", "春は木とされる", "夕方になると目が乾く、と本人が言った"],
         answer: 2,
         explanation: "最後の文には、本人が感じたことと、その時刻が残っています。",
@@ -106,12 +110,14 @@ export const relationshipRevisions = {
     questions: [
       {
         question: "経絡図で「合谷」のように一つずつ名前が付いている点を何と呼びますか？",
+        reviewAt: ["lecture-meridians-1", 1],
         choices: ["経脈", "経穴", "絡脈"],
         answer: 1,
         explanation: "経穴が一つの点です。主な道筋は経脈、枝分かれした道筋は絡脈と呼びます。",
       },
       {
         question: "ツボ図鑑で合谷の場所を確かめるとき、どこを見ますか？",
+        reviewAt: ["lecture-meridians-1", 2],
         choices: ["五行の季節の表", "臓腑の組み合わせ", "LI4の番号と、近くにある骨などの目印"],
         answer: 2,
         explanation: "番号で点を選び、図と目印の説明で場所を確かめます。",
@@ -148,12 +154,14 @@ export const relationshipRevisions = {
     questions: [
       {
         question: "不調がどういう過程で起きたかを表す言葉はどれですか？",
+        reviewAt: ["lecture-pathomechanism-1", 1],
         choices: ["病因", "主訴", "病機"],
         answer: 2,
         explanation: "病機は過程、病因は原因として考えることを指します。",
       },
       {
         question: "残業が増えてから夕食後に張る人に、条件を変えて聞ける質問はどれですか？",
+        reviewAt: ["lecture-pathomechanism-1", 2],
         choices: ["休みの日も、夕食のあとに張りますか？", "残業が原因で間違いありませんよね？", "いちばん難しい用語はどれですか？"],
         answer: 0,
         explanation: "休みの日にも起きるかを聞くと、職場や食事との時間関係をもう少し詳しく考えられます。",
@@ -187,12 +195,14 @@ export const relationshipRevisions = {
     questions: [
       {
         question: "気がいつもの向きと逆に進む、という説明はどの言葉ですか？",
+        reviewAt: ["lecture-pathomechanism-3", 1],
         choices: ["気陥", "気逆", "気滞"],
         answer: 1,
         explanation: "気逆の「逆」は向きが逆になることです。気陥は支える働きの不足、気滞は巡りの滞りです。",
       },
       {
         question: "「虚実」で見るのは、次のどの違いですか？",
+        reviewAt: ["lecture-pathomechanism-6", 1],
         choices: ["冷えと熱", "表面と奥", "働きが足りないことと、過剰や滞りがあること"],
         answer: 2,
         explanation: "「虚」は不足、「実」は過剰などに目を向けます。冷えと熱は「寒熱」です。",
@@ -226,12 +236,14 @@ export const relationshipRevisions = {
     questions: [
       {
         question: "相生の図で、子から母へと戻る向きの影響を何と呼びますか？",
+        reviewAt: ["lecture-pathomechanism-9", 1],
         choices: ["子病犯母", "母病及子", "本虚標実"],
         answer: 0,
         explanation: "子病犯母は、子の側から母の側へ影響すると説明する語です。",
       },
       {
         question: "食欲と眠りの変化を比べたいとき、どの質問が役立ちますか？",
+        reviewAt: ["lecture-pathomechanism-10", 1],
         choices: ["食欲も眠りも同じ日に戻ったに違いありませんね？", "食欲が戻った日の夜は、眠れましたか？", "五行の表を覚えていますか？"],
         answer: 1,
         explanation: "一方が戻った時点でもう一方はどうだったかが分かると、二つの経過を別々に追えます。",

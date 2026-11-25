@@ -20,12 +20,14 @@ export const bodyFunctionRevisions = {
     questions: [
       {
         question: "気と血の関係を表す図で、「血為気之母（けつはきのぼ）」は気と血のどちらからどちらへ向かう矢印ですか？",
+        reviewAt: ["lecture-qiblood-4", "diagram"],
         choices: ["気から血へ", "血から気へ", "津液から飲食へ"],
         answer: 1,
         explanation: "この文では血が主語です。血が気を養い支えるという意味です。",
       },
       {
         question: "東洋医学でいう「津血同源（しんけつどうげん）」は、血と体を潤す水分（津液）の何が共通するという説明ですか？",
+        reviewAt: ["lecture-qiblood-4", 2],
         choices: ["体を巡る速さ", "体を潤す場所", "もとになる飲食"],
         answer: 2,
         explanation: "「同源」は、同じものから生まれるという意味です。",
@@ -55,12 +57,14 @@ export const bodyFunctionRevisions = {
     questions: [
       {
         question: "肺の「粛降」を矢印にすると、どちらへ向かいますか？",
+        reviewAt: ["lecture-zangfu-2", 1],
         choices: ["下や内へ", "上や外へ", "どの方向にも同じように"],
         answer: 0,
         explanation: "粛降は下や内へ向かう働きです。上や外へ広がる働きは宣発と呼びます。",
       },
       {
         question: "食べたものから得られたものを変え、体に配る「運化」は、どの臓の説明ですか？",
+        reviewAt: ["lecture-zangfu-3", 1],
         choices: ["心", "肺", "脾"],
         answer: 2,
         explanation: "運化は脾の働きです。飲食を受け入れる胃と組にして説明されます。",
@@ -86,12 +90,14 @@ export const bodyFunctionRevisions = {
     questions: [
       {
         question: "腎が、成長などに関わる「精」を蓄えるという説明はどれですか？",
+        reviewAt: ["lecture-zangfu-4", 2],
         choices: ["疏泄", "蔵精", "蔵血"],
         answer: 1,
         explanation: "精を蓄えるのが蔵精です。肝が血を蓄える働きは蔵血といいます。",
       },
       {
         question: "東洋医学で「表裏」は臓と腑などを対にして見る関係です。心包（しんぽう）と対になる腑はどれですか？",
+        reviewAt: ["lecture-zangfu-5", "diagram"],
         choices: ["三焦", "胆", "小腸"],
         answer: 0,
         explanation: "六つの組の図では、心包と三焦を結びます。",
@@ -125,12 +131,14 @@ export const bodyFunctionRevisions = {
     questions: [
       {
         question: "伝統医学では、宗気は何と何が合わさってできると考えますか？",
+        reviewAt: ["lecture-lifedynamics-3", 1],
         choices: ["営気と衛気", "夏の陽と冬の陰", "飲食から得るものと呼吸で取り込むもの"],
         answer: 2,
         explanation: "飲食と呼吸の両方があって、胸に集まると説明されます。",
       },
       {
         question: "脈の内側を巡って、体を養うとされるのはどれですか？",
+        reviewAt: ["lecture-lifedynamics-4", 1],
         choices: ["衛気", "営気", "自然の清気"],
         answer: 1,
         explanation: "営気は内を養い、衛気は表を守り温めるというのが古典の説明です。",
@@ -168,12 +176,14 @@ export const bodyFunctionRevisions = {
     questions: [
       {
         question: "飲食を受けて変える働きは、三焦のどこに当たりますか？",
+        reviewAt: ["lecture-lifedynamics-5", 1],
         choices: ["中焦", "下焦", "上焦"],
         answer: 0,
         explanation: "飲食の話は中焦です。上焦には呼吸など、下焦には排泄などの話が出てきます。",
       },
       {
         question: "受け入れたものを胃が下へ送る、という説明の向きはどれですか？",
+        reviewAt: ["lecture-lifedynamics-7", 1],
         choices: ["入", "降", "昇"],
         answer: 1,
         explanation: "「降」は下へ向かうことです。",
@@ -203,12 +213,14 @@ export const bodyFunctionRevisions = {
     questions: [
       {
         question: "「冬は疲れやすい」とメモしました。日による環境の差が伝わる追記はどれですか？",
+        reviewAt: ["lecture-lifedynamics-9", 2],
         choices: ["冬という季節名をもう一度書く", "季節の表に出る食べものの味を書く", "外にいた時間や部屋の温度を書く"],
         answer: 2,
         explanation: "同じ冬でも、その日にどこでどう過ごしたかが分かると比べられます。",
       },
       {
         question: "伝統医学で「虚」というときは、何に注目していますか？",
+        reviewAt: ["lecture-lifedynamics-10", 2],
         choices: ["働きなどが足りないこと", "昼と夜の明るさ", "不調に関わるものが強いこと"],
         answer: 0,
         explanation: "「虚」は不足を表します。「実」は過剰や、不調に関わるものの強さに目を向けます。",

@@ -21,12 +21,14 @@ export const basicRevisions = {
     questions: [
       {
         question: "医師が貧血の可能性を考えたとき、血液検査で確かめる値の一つはどれですか？",
+        reviewAt: ["lecture-intro-1", 2],
         choices: ["睡眠時間", "ヘモグロビンの量", "立っていた時間"],
         answer: 1,
         explanation: "ヘモグロビンは酸素を運ぶたんぱく質です。医師は症状やほかの検査結果も合わせて考えます。",
       },
       {
         question: "「30分の会議に最後まで座っていたい」。次の相談では何を聞くとよいですか？",
+        reviewAt: ["lecture-intro-2", 2],
         choices: ["似た長さの会議で、どこまで座っていられたか", "会議の出席者が何人だったか", "会議の日に何時に家を出たか"],
         answer: 0,
         explanation: "本人が望んだ活動について、近い条件でどんな変化があったかを聞きます。",
@@ -59,12 +61,14 @@ export const basicRevisions = {
     questions: [
       {
         question: "膝の痛みを調べたScharfらの試験では、鍼と保存療法（手術を行わない治療）に差がありました。鍼と、鍼に似せた比較用の施術（模擬鍼）を比べると、何が分かりますか？",
+        reviewAt: ["lecture-intro-3", 3],
         choices: ["模擬鍼は保存療法と同じ結果だった", "三つの群を合わせて一つの改善率にすればよい", "鍼と模擬鍼の間に明確な差は見られなかった"],
         answer: 2,
         explanation: "鍼53.1％、模擬鍼51.0％、保存療法29.1％でした。この数字は26週後に質問票の点数が基準を満たした割合です。何と比べたかを書き添えます。",
       },
       {
         question: "体調メモの食欲の欄が空白です。食欲について、今の段階でどう記録しますか？",
+        reviewAt: ["lecture-intro-4", 2],
         choices: ["食欲についてはまだ聞いていない", "食欲はいつもどおりだった", "眠れなかったので食欲も落ちただろう"],
         answer: 0,
         explanation: "空欄は、次に尋ねる項目として残しておけます。",
@@ -94,12 +98,14 @@ export const basicRevisions = {
     questions: [
       {
         question: "40℃のお湯が陽にも陰にもなるのは、どうしてですか？",
+        reviewAt: ["lecture-yinyang-2", "diagram"],
         choices: ["お湯の量が変わったから", "温度が同じでも、比べる相手が変わったから", "時間がたってお湯が冷めたから"],
         answer: 1,
         explanation: "氷水よりは温度が高く、沸きたてのお湯よりは低くなります。手元のお湯はどちらも40℃です。",
       },
       {
         question: "動く時間と休む時間のように、互いの成り立ちを支える関係は何ですか？",
+        reviewAt: ["lecture-yinyang-3", 2],
         choices: ["対立", "制約", "互根"],
         answer: 2,
         explanation: "互根は、対になる二つが互いの支えになる関係です。",
@@ -129,12 +135,14 @@ export const basicRevisions = {
     questions: [
       {
         question: "夜明け前から空が少しずつ明るくなる様子は、どの言葉で表せますか？",
+        reviewAt: ["lecture-yinyang-4", 1],
         choices: ["消長", "転化", "互根"],
         answer: 0,
         explanation: "同じ空を見ながら、明るさが増えていく様子を追っています。",
       },
       {
         question: "伝統医学で「虚熱」と呼ぶときは、何が足りないと考えますか？",
+        reviewAt: ["lecture-yinyang-6", 1],
         choices: ["陽", "陰", "表面の体温"],
         answer: 1,
         explanation: "虚熱は、陰の側の不足に着目した熱の説明です。",
@@ -160,12 +168,14 @@ export const basicRevisions = {
     questions: [
       {
         question: "本人が「足が冷える」と話しました。これは四診のどの情報ですか？",
+        reviewAt: ["lecture-yinyang-7", 1],
         choices: ["切診", "望診", "問診"],
         answer: 2,
         explanation: "感じていることや経過を本人から聞くのが問診です。",
       },
       {
         question: "「夜8時ごろに顔がほてった。足も冷えた」と聞きました。次に何を尋ねますか？",
+        reviewAt: ["lecture-yinyang-8", 1],
         choices: ["足が冷えた時刻と、顔がほてっている間にも冷えたか", "顔と足に共通する原因の名前", "その人の生活と関係のない昔の気温"],
         answer: 0,
         explanation: "足も夜8時ごろに冷えたなら、顔のほてりと重なります。朝だけなら、起きた時間は別です。",
@@ -198,12 +208,14 @@ export const basicRevisions = {
     questions: [
       {
         question: "「汗などが出すぎないように内に保つ」という働きは、どの名前ですか？",
+        reviewAt: ["lecture-qiblood-1", 1],
         choices: ["防御", "気化", "固摂"],
         answer: 2,
         explanation: "固摂は内に保つ働きです。外からの影響を防ぐ働きは防御と呼びます。",
       },
       {
         question: "体の表面などを潤す、比較的さらさらした水分を何と呼びますか？",
+        reviewAt: ["lecture-qiblood-3", 1],
         choices: ["津", "液", "血"],
         answer: 0,
         explanation: "伝統医学では津と液を、水分の性質や、どこを潤すかで読み分けます。",

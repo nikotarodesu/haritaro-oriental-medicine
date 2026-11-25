@@ -7,6 +7,8 @@ import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { CASE_STUDY_DESCRIPTORS } from "@/data/cases/caseStudyCatalog";
 import { collectionPageJsonLd } from "@/config/seo";
 import { SERIES } from "@/config/series";
+import CaseCatalog from "@/components/cases/CaseCatalog";
+import CaseCourseComparison from "@/components/cases/CaseCourseComparison";
 import CaseStudyResume from "@/components/cases/CaseStudyResume";
 
 const title = "症例演習";
@@ -25,24 +27,26 @@ export default function CasesIndexPage() {
       <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title={title} description={description} art="practice">
         <div className="page-actions">
           {firstCase && <Link href={`/cases/${firstCase.id}`} className="page-primary-action">最初の症例から始める<ArrowRight size={18} aria-hidden="true" /></Link>}
-          <a href="#case-catalog" className="page-secondary-action">症例一覧を見る</a>
+          <a href="#case-catalog" className="page-secondary-action">症状から症例を探す</a>
         </div>
       </PageIntro>
 
       <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} />
 
-      {/* 症例一覧グリッド */}
-      <div id="case-catalog" className="scroll-mt-28 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-muted px-1">
-          <h2 className="font-bold text-lg text-ink">
+      <section id="case-catalog" tabIndex={-1} className="scroll-mt-28 space-y-4" aria-labelledby="case-catalog-title">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          <h2 id="case-catalog-title" className="font-bold text-lg text-ink">
             全{totalCaseCount}症例一覧
           </h2>
+          <a href="#case-comparison" className="ui-text-link inline-flex min-h-11 items-center gap-1 text-sm">
+            同じ症状の2例を比べる<ArrowRight size={15} aria-hidden="true" />
+          </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {CLINICAL_CASES.map((c) => (
+        <CaseCatalog entries={CLINICAL_CASES.map((c) => ({
+          caseNumber: c.caseNumber,
+          card: (
             <Link
-              key={c.id}
               className="page-link-card page-link-card--stack group justify-between"
               href={`/cases/${c.id}`}
             >
@@ -93,8 +97,8 @@ export default function CasesIndexPage() {
                 </span>
               </div>
             </Link>
-          ))}
-        </div>
+          ),
+        }))} />
 
         {/* 症例演習に関する留意事項・免責 */}
         <div className="p-4 sm:p-5 rounded-2xl bg-panel border border-frame flex items-start gap-3 text-xs text-muted">
@@ -108,7 +112,9 @@ export default function CasesIndexPage() {
             </p>
           </div>
         </div>
-      </div>
+      </section>
+
+      <CaseCourseComparison />
 
       <div id="revision-training" className="clinical-case-revision-link">
         <p>追加情報で判断を見直す練習もできます。</p>

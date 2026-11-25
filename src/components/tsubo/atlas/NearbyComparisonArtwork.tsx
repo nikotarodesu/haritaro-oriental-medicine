@@ -144,6 +144,25 @@ function ElbowArtwork() {
   );
 }
 
+function MedialKneeArtwork() {
+  return (
+    <>
+      <text x="20" y="25">ひざの前側</text>
+      <text x="324" y="25" textAnchor="end">ひざ裏側</text>
+      <path className="atlas-comparison-outline" d="M118 39H219C227 64 221 86 224 108Q226 127 239 141Q220 151 218 162Q233 197 226 244H119Q124 214 117 186Q112 162 104 148Q97 135 108 121Q121 101 118 39Z" />
+      <path className="atlas-comparison-detail" d="M130 50Q149 56 153 76Q159 97 134 119M173 47Q183 79 167 102" />
+      <path className="atlas-comparison-bone" d="M114 122Q121 119 130 125Q134 136 120 149Q109 145 109 133Z" />
+      <path className="atlas-comparison-bone" d="M144 151Q161 139 178 144Q189 149 181 158L167 166Q159 194 157 244H138Q140 209 134 176Q134 161 144 151Z" />
+      <path className="atlas-comparison-landmark" d="M206 58Q205 100 220 136M215 58Q214 98 228 138" />
+      <path className="atlas-comparison-crease" d="M207 139Q221 145 239 141" />
+      <path className="atlas-comparison-detail" d="M79 132H105M216 104L244 94H257M82 229H133" />
+      <text x="15" y="137">お皿</text>
+      <text x="329" y="98" textAnchor="end">太もも裏の腱</text>
+      <text x="15" y="234">すねの骨</text>
+    </>
+  );
+}
+
 export default function NearbyComparisonArtwork({ id }: { id: NearbyComparison["id"] }) {
   if (id === "ear") return <EarOutline />;
   if (id === "wrist") return <WristArtwork />;
@@ -151,6 +170,7 @@ export default function NearbyComparisonArtwork({ id }: { id: NearbyComparison["
   if (id === "forearm") return <ForearmArtwork />;
   if (id === "shoulder") return <ShoulderArtwork />;
   if (id === "elbow") return <ElbowArtwork />;
+  if (id === "medial-knee") return <MedialKneeArtwork />;
   return <AnkleArtwork />;
 }
 

@@ -5,6 +5,7 @@ export interface ReadingCheckQuestion {
   choices: readonly [string, string, string];
   answer: 0 | 1 | 2;
   explanation: string;
+  reviewAt: readonly [lectureId: string, section: number | "diagram"];
 }
 
 type SectionCopy = string | readonly string[] | null;

@@ -40,6 +40,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   const { traditionalTitle } = article;
   const contextTitle = traditionalTitle && traditionalTitle !== "伝統的な使われ方" ? traditionalTitle : "使われ方の補足";
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
+  const firstComparison = nearbyComparisons[0];
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
   const positionPage = whoAtlasPages[point.codeLower];
@@ -53,6 +54,11 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
+        {firstComparison && (
+          <a className="atlas-source-link inline-flex min-h-11 items-center" href={`#${nearbyComparisonAnchor(point.codeLower, firstComparison.id)}`}>
+            近いツボを同じ図で比べる
+          </a>
+        )}
         <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           {!hasIndividualAnatomy && article.expert.length > 0 && (

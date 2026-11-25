@@ -19,6 +19,7 @@ const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
 const { NEARBY_COMPARISONS } = load('src/data/tsubo/atlas/nearbyComparisons');
 
 let learningValues = {};
+let caseCatalogSearch = '';
 
 function component(file, exportName = 'default') {
   const source = fs.readFileSync(file, 'utf8');
@@ -51,7 +52,9 @@ function component(file, exportName = 'default') {
     require(id) {
       if (id === '@/components/design/PageBreadcrumb') return { __esModule: true, default: component('src/components/design/PageBreadcrumb.tsx') };
       if (id === '@/components/design/PageArtwork') return { PageSymbol: mockComponents[id] };
-      if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams() };
+      if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams(caseCatalogSearch) };
+      if (id === '@/components/cases/CaseCatalog') return { __esModule: true, default: component('src/components/cases/CaseCatalog.tsx') };
+      if (id === '@/components/cases/CaseCourseComparison') return { __esModule: true, default: component('src/components/cases/CaseCourseComparison.tsx') };
       if (id === '@/utils/analytics') return { trackEvent() {} };
       if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: learningValues, status: 'local', setEntry() {} }) };
       if (id === './CaseStudyReview') return { __esModule: true, default: component('src/components/cases/CaseStudyReview.tsx') };
@@ -66,11 +69,19 @@ function component(file, exportName = 'default') {
 
 const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
 assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
+assert.match(casesIndex, /href="#case-comparison"/);
+assert.match(casesIndex, /id="case-comparison"[^>]*>.*<table/);
+caseCatalogSearch = 'symptom=fatigue';
+const fatigueIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
+assert(fatigueIndex.includes('aria-pressed="true"') && fatigueIndex.includes('2件の症例'));
+assert(fatigueIndex.includes('href="/cases/case-02-fatigue-spleen-deficiency"'));
+assert(!fatigueIndex.includes('href="/cases/case-20-bells-palsy"'));
+caseCatalogSearch = '';
 const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
 assert.equal(CLINICAL_CASES.length, 20);
 assert.equal(CASE_STUDY_DESCRIPTORS.length, CLINICAL_CASES.length);
 assert.equal(CLINICAL_CASES.filter(({ patient }) => typeof patient.historyOfPresentIllness !== 'string').length, 13);
-assert.equal(NEARBY_COMPARISONS.length, 7);
+assert.equal(NEARBY_COMPARISONS.length, 8);
 for (const group of NEARBY_COMPARISONS) {
   assert(group.points.some(point => point.code === group.question.answerCode), group.id);
 }
