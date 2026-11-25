@@ -2,13 +2,26 @@ import { ArrowRight, GitCompare } from "lucide-react";
 import Link from "next/link";
 import { getAcupointByCode } from "@/data/tsubo";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
-import { FEATURED_ACUPOINT_PAIRS_ANCHOR, getFeaturedPairs, type FeaturedPair } from "@/data/tsubo/atlas/featuredPairs";
+import { ACUPOINT_PAIRS_PATH, FEATURED_ACUPOINT_PAIRS_ANCHOR, featuredPairAnchor, featuredPairPreview, getFeaturedPairs, type FeaturedPair } from "@/data/tsubo/atlas/featuredPairs";
 import { atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import HeguHandDiagram from "./atlas/HeguHandDiagram";
 import { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
 import styles from "./FeaturedAcupointPairs.module.css";
+
+const evidenceGroups = [
+  { id: "clinical-studies", label: "臨床試験で使われた組み合わせ", kind: "research" },
+  { id: "practice-records", label: "診療録で確認できた組み合わせ", kind: "observational" },
+  { id: "classical-texts", label: "古典に出てくる組み合わせ", kind: "classic" },
+  { id: "similar-names", label: "名前が似ているツボ", kind: "name" },
+] as const;
+const evidenceLabel = {
+  name: "名前と使われ方",
+  classic: "古典での使われ方",
+  research: "試験で調べたこと",
+  observational: "診療での使われ方",
+};
 
 function PairPointLink({ point }: { point: AcupointMaster }) {
   const marker = ATLAS_POINT_MARKERS[point.codeLower];
@@ -37,13 +50,22 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
   if (!first || !second) return null;
 
   return (
-    <article className={`${styles.card} atlas-target`} id={`featured-acupoint-pair-${pair.id}`}>
+    <article className={`${styles.card} atlas-target`} id={featuredPairAnchor(pair.id)}>
       <h3>{pair.name}</h3>
       <div className={styles.points}>
         <PairPointLink point={first} />
         <PairPointLink point={second} />
       </div>
-      <p className={styles.summary}>{pair.summary}</p>
+      <dl className={styles.takeaways}>
+        <div>
+          <dt>{evidenceLabel[pair.kind]}</dt>
+          <dd>{pair.summary}</dd>
+        </div>
+        <div>
+          <dt>効果はどこまで分かる？</dt>
+          <dd>{pair.evidenceSummary}</dd>
+        </div>
+      </dl>
       <a
         className={styles.compare}
         href={atlasLearningPairHref(pair.pointIds)}
@@ -81,33 +103,47 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
   );
 }
 
-export default function FeaturedAcupointPairs({ pointCode }: { pointCode?: string }) {
-  const pairs = getFeaturedPairs(pointCode);
+export default function FeaturedAcupointPairs({ pointCode, directory = false }: {
+  pointCode?: string;
+  directory?: boolean;
+}) {
+  const pairs = directory || pointCode ? getFeaturedPairs(pointCode) : featuredPairPreview;
   if (!pairs.length) return null;
 
-  const combinations = pairs.filter(pair => pair.kind !== "name");
-  const names = pairs.filter(pair => pair.kind === "name");
-  const combinationsHeading = `${FEATURED_ACUPOINT_PAIRS_ANCHOR}-combinations`;
-  const namesHeading = `${FEATURED_ACUPOINT_PAIRS_ANCHOR}-names`;
+  const sections = directory
+    ? evidenceGroups.map(({ id, label, kind }) => ({ id, label, pairs: pairs.filter(pair => pair.kind === kind) }))
+    : [
+      { id: `${FEATURED_ACUPOINT_PAIRS_ANCHOR}-combinations`, label: "ツボの組み合わせ", pairs: pairs.filter(pair => pair.kind !== "name") },
+      { id: `${FEATURED_ACUPOINT_PAIRS_ANCHOR}-names`, label: "名前が似ているツボ", pairs: pairs.filter(pair => pair.kind === "name") },
+    ];
+  const populatedSections = sections.filter(section => section.pairs.length > 0);
 
   return (
     <div id={FEATURED_ACUPOINT_PAIRS_ANCHOR} className={`${styles.groups} atlas-target`}>
-      {combinations.length > 0 && (
-        <section aria-labelledby={combinationsHeading}>
-          <h2 id={combinationsHeading} className="atlas-section-title">ツボの組み合わせ</h2>
+      {directory ? (
+        <nav className={styles.directory} aria-label="組み合わせの索引">
+          {populatedSections.map(({ id, label, pairs }) => (
+            <div key={id}>
+              <a href={`#${id}`} className={styles.groupLink}>{label}<ArrowRight size={16} aria-hidden="true" /></a>
+              <ul role="list">
+                {pairs.map(pair => <li key={pair.id}><a href={`#${featuredPairAnchor(pair.id)}`}>{pair.name}</a></li>)}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      ) : (
+        <a href={ACUPOINT_PAIRS_PATH} className={`atlas-text-action ${styles.directoryLink}`}>
+          すべての組み合わせを見る<ArrowRight size={16} aria-hidden="true" />
+        </a>
+      )}
+      {populatedSections.map(({ id, label, pairs }) => (
+        <section key={id} aria-labelledby={id}>
+          <h2 id={id} className="atlas-section-title atlas-target">{label}</h2>
           <div className={styles.cards}>
-            {combinations.map(pair => <PairCard key={pair.id} pair={pair} />)}
+            {pairs.map(pair => <PairCard key={pair.id} pair={pair} />)}
           </div>
         </section>
-      )}
-      {names.length > 0 && (
-        <section aria-labelledby={namesHeading}>
-          <h2 id={namesHeading} className="atlas-section-title">名前が似ているツボ</h2>
-          <div className={styles.cards}>
-            {names.map(pair => <PairCard key={pair.id} pair={pair} />)}
-          </div>
-        </section>
-      )}
+      ))}
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { SYMPTOM_GUIDES_REVISED_AT, symptomGuidePath } from "@/utils/symptomGuid
 import { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 import { ACUPOINT_LOCATION_IMAGES } from "@/data/tsubo/atlas/locationImages";
+import { ACUPOINT_PAIRS_PATH } from "@/data/tsubo/atlas/featuredPairs";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_ORIGIN;
@@ -74,6 +75,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/tsubo/compare`,
       lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
+    },
+    {
+      url: `${baseUrl}${ACUPOINT_PAIRS_PATH}`,
+      lastModified: new Date(PAGE_REVISIONS[ACUPOINT_PAIRS_PATH]),
     },
     {
       url: `${baseUrl}/tsubo/names`,

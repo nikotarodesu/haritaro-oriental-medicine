@@ -1,6 +1,10 @@
 import type { StudySource } from "./types";
+import { featuredClassicPairs } from "./featuredClassicPairs";
+import { featuredResearchPairs } from "./featuredResearchPairs";
+import { featuredAdditionalPairs } from "./featuredAdditionalPairs";
 
 export const FEATURED_ACUPOINT_PAIRS_ANCHOR = "featured-acupoint-pairs";
+export const ACUPOINT_PAIRS_PATH = "/tsubo/pairs";
 
 type FeaturedPairDetail = {
   label: string;
@@ -12,18 +16,20 @@ export type FeaturedPair = {
   id: string;
   pointIds: readonly [string, string];
   name: string;
-  kind: "name" | "research" | "classic";
+  kind: "name" | "research" | "classic" | "observational";
   summary: string;
+  evidenceSummary: string;
   details: readonly FeaturedPairDetail[];
 };
 
-export const featuredPairs: readonly FeaturedPair[] = [
+export const featuredPairPreview: readonly FeaturedPair[] = [
   {
     id: "sanri",
     pointIds: ["li10", "st36"],
     name: "手三里と足三里",
     kind: "name",
-    summary: "同じ「三里」の名がつく二穴です。手三里はひじの外側より少し手首寄り、足三里はひざ下で、すねの骨の外側にあります。",
+    summary: "手三里はひじの外側より少し手首寄り、足三里はひざ下のすねの外側にあります。古典では、食事に関わるお腹の不調に一緒に使う記述があります。",
+    evidenceSummary: "建里なども加えた試験があり、手三里と足三里だけでどの程度変わるかは分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -46,7 +52,8 @@ export const featuredPairs: readonly FeaturedPair[] = [
     pointIds: ["li10", "li11"],
     name: "手三里と曲池",
     kind: "research",
-    summary: "長引くひじの外側の痛みを調べた試験で、鍼の群は偽レーザーの群より、腕や手を使うときの困りごとが減りました。",
+    summary: "長引くひじの外側の痛みがある人を対象に、この組み合わせへの鍼を調べています。",
+    evidenceSummary: "96人の試験で、偽レーザーの群より腕や手の使いにくさが改善しました。各ツボを単独で使った場合との差は調べていません。",
     details: [
       {
         label: "研究で分かったこと",
@@ -62,7 +69,8 @@ export const featuredPairs: readonly FeaturedPair[] = [
     pointIds: ["li4", "lr3"],
     name: "合谷と太衝（四関穴）",
     kind: "research",
-    summary: "左右の合谷と太衝を「四関穴」と呼びます。片頭痛があり、伝統医学で「肝陽上亢」と分類された110人の試験で、電気鍼の群は内服薬の群より発作日数が少なかったと報告されました。",
+    summary: "左右の合谷と太衝を合わせて「四関穴」と呼びます。韓国の痛みの外来診療録423例では、94例で一緒に使われました。",
+    evidenceSummary: "伝統医学で「肝陽上亢」とされた片頭痛の試験では、電気鍼の群で内服薬の群より発作日数が少なくなりました。各ツボを単独で使う群はありませんでした。",
     details: [
       {
         label: "診療での使われ方",
@@ -85,7 +93,8 @@ export const featuredPairs: readonly FeaturedPair[] = [
     pointIds: ["pc6", "sp4"],
     name: "内関と公孫",
     kind: "classic",
-    summary: "前腕の内関と足の公孫をあわせる配穴です。古典では、胸や胃の不調と結びつけられています。",
+    summary: "古典では、前腕の内関と足の公孫を胸や胃の領域に結びつけています。",
+    evidenceSummary: "2穴を含む鍼治療を調べた試験では、偽鍼より食後の胃もたれなどが改善しました。2穴だけの効果は分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -105,6 +114,17 @@ export const featuredPairs: readonly FeaturedPair[] = [
     ],
   },
 ];
+
+export const featuredPairs = [
+  ...featuredPairPreview,
+  ...featuredResearchPairs,
+  ...featuredAdditionalPairs,
+  ...featuredClassicPairs,
+];
+
+export function featuredPairAnchor(id: string) {
+  return `featured-acupoint-pair-${id}`;
+}
 
 export function getFeaturedPairs(pointCode?: string) {
   if (!pointCode) return featuredPairs;

@@ -91,7 +91,19 @@ for (const pathname of ['/tsubo/sp11','/tsubo/bl57']) {
 const { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } = load('src/data/tsubo/keyPointTypes');
 const { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } = load('src/data/tsubo/extraPoints');
 const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/tsubo/lu7', KEY_POINT_TYPES_GUIDE, '/symptoms/constipation-ibs', '/symptoms/headache-stiff-neck']);
-const pairRevised = new Set(['li4', 'li10', 'li11', 'st36', 'lr3', 'pc6', 'sp4'].map(code => `/tsubo/${code}`));
+const { ACUPOINT_PAIRS_PATH, featuredPairs, featuredPairPreview } = load('src/data/tsubo/atlas/featuredPairs');
+const { ATLAS_POINT_MARKERS } = load('src/data/tsubo/atlas/markers');
+const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
+const pairRevised = new Set([ACUPOINT_PAIRS_PATH, ...featuredPairs.flatMap(pair => pair.pointIds.map(code => `/tsubo/${code}`))]);
+assert.equal(featuredPairPreview.length, 4);
+assert(featuredPairs.length > featuredPairPreview.length, 'The directory includes more examples than the atlas preview');
+assert.equal(new Set(featuredPairs.map(pair => pair.id)).size, featuredPairs.length, 'Pair anchors are unique');
+assert.equal(new Set(featuredPairs.map(pair => [...pair.pointIds].sort().join('+'))).size, featuredPairs.length, 'A pair is listed once');
+for (const pair of featuredPairs) {
+  assert(pair.summary && pair.evidenceSummary, pair.id + ' describes use and evidence');
+  assert(pair.pointIds.every(code => code === 'li4' || (ATLAS_POINT_MARKERS[code] && ATLAS_ARTICLES[code])), pair.id + ' has both location figures');
+  assert(pair.details.length && pair.details.every(detail => detail.sources.length && detail.sources.every(source => new URL(source.url).protocol === 'https:')), pair.id + ' has public sources');
+}
 for (const pathname of ['/updates', KEY_POINT_TYPES_GUIDE,
   ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st38', 'st41'].map(code => `/tsubo/${code}`),
 ].filter(pathname => !searchRevised.has(pathname) && !pairRevised.has(pathname))) assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
@@ -110,7 +122,7 @@ for (const pathname of ['/learn','/learn/essentials']) assert.equal(dateAt(pathn
 for (const pathname of ['/diagnosis', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
 for (const pathname of [
   '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei', '/library',
-  '/tsubo/cv21', '/tsubo/sp6', '/symptoms/dizziness-tinnitus',
+  '/tsubo/cv21', '/symptoms/dizziness-tinnitus',
   '/symptoms/knee-joint-pain', '/cases/case-01-headache-liver-fire',
 ]) assert.equal(dateAt(pathname), PUBLIC_VISUALS_REVISED_AT, pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');

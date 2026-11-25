@@ -4,6 +4,63 @@
   min-width: 0;
 }
 
+.directoryLink {
+  justify-self: start;
+  margin-block-end: -.5rem;
+}
+
+.directory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: .75rem;
+}
+
+.directory > div {
+  min-width: 0;
+  padding: .5rem .9rem .75rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .75rem;
+  background: var(--atlas-paper);
+}
+
+.groupLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  min-height: 2.75rem;
+  color: var(--atlas-accent);
+  font-weight: 700;
+}
+
+.groupLink svg {
+  flex-shrink: 0;
+}
+
+.directory ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem .45rem;
+  margin-block-start: .25rem;
+}
+
+.directory ul a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  padding: .25rem .55rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
+.directory a:hover {
+  color: var(--atlas-accent);
+  text-decoration: underline;
+  text-underline-offset: .18em;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 27rem), 1fr));
@@ -85,10 +142,32 @@
   font-weight: 600;
 }
 
-.summary, .evidence {
+.takeaways, .evidence {
   font-size: 1rem;
   line-height: 1.75;
   overflow-wrap: anywhere;
+}
+
+.takeaways {
+  display: grid;
+  gap: .45rem;
+}
+
+.takeaways > div {
+  padding: .55rem .75rem;
+  border-inline-start: 2px solid var(--atlas-line);
+}
+
+.takeaways > div + div {
+  border-inline-start-color: var(--atlas-accent);
+  border-radius: 0 .45rem .45rem 0;
+  background: var(--atlas-soft);
+}
+
+.takeaways dt {
+  color: var(--atlas-accent);
+  font-size: .875rem;
+  font-weight: 700;
 }
 
 .compare {

@@ -1,0 +1,39 @@
+import type { Metadata } from "next";
+import PageBreadcrumb from "@/components/design/PageBreadcrumb";
+import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
+import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
+import { ACUPOINT_PAIRS_PATH, featuredPairAnchor, featuredPairs } from "@/data/tsubo/atlas/featuredPairs";
+
+const title = "ツボの組み合わせ（配穴）";
+const pageTitle = seriesPageTitle("ツボの組み合わせ（配穴）｜古典と臨床研究", "dictionary");
+const description = "四関穴や八脈交会穴など、古典・診療録・臨床試験に登場するツボの組み合わせを図で比較。何に使われ、効果はどこまで分かっているかを原典と論文から読めます。";
+
+export const metadata: Metadata = {
+  title: { absolute: pageTitle },
+  description,
+  ...pageSocialMetadata(pageTitle, description, ACUPOINT_PAIRS_PATH),
+  alternates: { canonical: ACUPOINT_PAIRS_PATH },
+};
+
+export default function AcupointPairsPage() {
+  const pairLinks = featuredPairs.map(({ id, name }) => ({
+    href: `${ACUPOINT_PAIRS_PATH}#${featuredPairAnchor(id)}`,
+    name,
+  }));
+
+  return (
+    <div className="page-layout atlas-page atlas-directory">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(
+        ACUPOINT_PAIRS_PATH, title, description, title, pairLinks,
+      ) }} />
+      <header className="atlas-directory-header atlas-directory-intro">
+        <div>
+          <PageBreadcrumb items={[{ href: "/tsubo", name: "はり太郎のツボ図鑑" }, { href: ACUPOINT_PAIRS_PATH, name: title }]} />
+          <h1>{title}</h1>
+          <p>一緒に使われたツボを図で見比べ、古典の記述や試験結果を読み解くための索引です。試験では、掲載したツボに別のツボを加えていることもあります。</p>
+        </div>
+      </header>
+      <FeaturedAcupointPairs directory />
+    </div>
+  );
+}

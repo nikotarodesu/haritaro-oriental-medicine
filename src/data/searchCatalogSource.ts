@@ -22,6 +22,7 @@ import { EXTRA_POINTS, EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 import { NEARBY_COMPARISON_LINKS } from "@/data/tsubo/atlas/nearbyComparisonLinks";
 import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
+import { ACUPOINT_PAIRS_PATH } from "@/data/tsubo/atlas/featuredPairs";
 
 const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
 const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
@@ -97,6 +98,16 @@ const STATIC_TOOLS: SearchResultItem[] = [
     badge: "学習ツール",
     url: "/tsubo/compare",
     tags: ["比較", "鑑別", "経穴", "ツボ比較"],
+  },
+  {
+    id: "tool-tsubo-pairs",
+    type: "tool",
+    title: "ツボの組み合わせ（配穴）",
+    subtitle: "古典や臨床試験に出てくるツボを図で見比べ、使われ方と研究結果を読む",
+    badge: "ツボ図鑑",
+    url: ACUPOINT_PAIRS_PATH,
+    exactTerms: ["ツボの組み合わせ", "配穴の一覧", "ツボの併用"],
+    tags: ["配穴", "組み合わせ", "経穴", "四関穴", "八脈交会穴", "古典", "臨床試験"],
   },
   {
     id: "tool-basics-cun",
