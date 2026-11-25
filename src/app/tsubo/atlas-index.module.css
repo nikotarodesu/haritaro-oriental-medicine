@@ -68,6 +68,72 @@
   white-space: nowrap;
 }
 
+.comparisonSection {
+  display: grid;
+  gap: .5rem;
+  min-width: 0;
+}
+
+.comparisonSection h2 {
+  display: flex;
+  align-items: center;
+  gap: .425rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.comparisonGuides {
+  display: grid;
+  gap: .375rem;
+}
+
+.comparisonGuide {
+  display: grid;
+  grid-template-columns: 4.25rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .625rem;
+  height: 100%;
+  min-width: 0;
+  padding: .375rem .625rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .65rem;
+  background: var(--atlas-paper);
+  color: var(--atlas-accent);
+}
+
+.comparisonGuide:hover strong {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.comparisonGuide small,
+.comparisonGuide strong {
+  display: block;
+}
+
+.comparisonGuide small {
+  color: var(--atlas-muted);
+  font-size: .75rem;
+}
+
+.comparisonGuide strong {
+  font-size: .875rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.comparisonPreview {
+  display: block;
+  width: 100%;
+  height: 3rem;
+  border-radius: .4rem;
+  background: var(--atlas-soft);
+}
+
+.comparisonPreview text {
+  display: none;
+}
+
 .nearbyList {
   display: grid;
   gap: .5rem;
@@ -129,6 +195,14 @@
 }
 
 @media (min-width: 640px) {
+  .comparisonGuides {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .comparisonGuide {
+    grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  }
+
   .nearbyList {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

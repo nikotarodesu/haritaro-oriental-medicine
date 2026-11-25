@@ -7,6 +7,7 @@ import NearbyComparisonArtwork from "@/components/tsubo/atlas/NearbyComparisonAr
 import { SERIES } from "@/config/series";
 import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
 import { getAcupointByCode } from "@/data/tsubo";
+import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { comparisonSize, NEARBY_COMPARISONS } from "@/data/tsubo/atlas/nearbyComparisons";
 import { ATLAS_COMPARISON_GUIDES, ATLAS_COMPARISON_GUIDES_REVISED_AT } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
@@ -42,12 +43,20 @@ export default async function ComparisonGuidePage({ params }: Props) {
 
   const points = comparison.points.flatMap(position => {
     const point = getAcupointByCode(position.code);
-    return point ? [{ ...position, name: point.name, codeLabel: point.code }] : [];
+    const distance = guide.id === "shin" ? ATLAS_POINT_MARKERS[position.code]?.boneCun : undefined;
+    return point ? [{ ...position, name: point.name, codeLabel: point.code, distance }] : [];
   });
   const { width, height } = comparison.size ?? comparisonSize;
-  const sources = [...new Set(points.map(({ code }) => whoAtlasPages[code]))].map(page => ({
+  const sourcePoints = [
+    ...points,
+    ...(comparison.referenceCodes ?? []).flatMap(code => {
+      const point = getAcupointByCode(code);
+      return point ? [{ code, name: point.name }] : [];
+    }),
+  ];
+  const sources = [...new Set(sourcePoints.map(({ code }) => whoAtlasPages[code]))].map(page => ({
     url: `${WHO_ATLAS_PDF}#page=${page}`,
-    name: `WHO標準経穴部位 p.${page - 9}（${points.filter(({ code }) => whoAtlasPages[code] === page).map(({ name }) => name).join("・")}、PDF）`,
+    name: `WHO標準経穴部位 p.${page - 9}（${sourcePoints.filter(({ code }) => whoAtlasPages[code] === page).map(({ name }) => name).join("・")}、PDF）`,
   }));
   const url = SITE_ORIGIN + guide.href;
   const schema = {
@@ -92,12 +101,13 @@ export default async function ComparisonGuidePage({ params }: Props) {
         <div className="atlas-comparison-figure">
           <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={comparison.figureLabel} data-atlas-comparison-figure={comparison.id}>
             <NearbyComparisonArtwork id={comparison.id} />
-            {points.map(({ code, position: [x, y], leader: [endX, endY], button: [labelX, labelY], name }) => (
+            {points.map(({ code, position: [x, y], leader: [endX, endY], button: [labelX, labelY], name, distance }) => (
               <g key={code} className="atlas-comparison-marker" data-selected="true">
                 <path d={`M${x} ${y}L${endX} ${endY}`} />
                 <circle cx={x} cy={y} r="4.5" />
-                <rect className={styles.labelBox} x={labelX} y={labelY - 13} width="60" height="26" rx="6" />
-                <text className={styles.label} x={labelX + 30} y={labelY + 5} textAnchor="middle">{name}</text>
+                <rect className={styles.labelBox} x={labelX} y={labelY - (distance ? 22 : 13)} width="60" height={distance ? 44 : 26} rx="6" />
+                <text className={styles.label} x={labelX + 30} y={labelY + (distance ? -3 : 5)} textAnchor="middle">{name}</text>
+                {distance != null && <text x={labelX + 30} y={labelY + 15} textAnchor="middle">{distance}寸</text>}
               </g>
             ))}
           </svg>
@@ -123,7 +133,7 @@ export default async function ComparisonGuidePage({ params }: Props) {
         <h2 id="comparison-landmarks" className="atlas-section-title">{guide.landmarkHeading}</h2>
         <p>{guide.landmark}</p>
         <p>{guide.note}</p>
-        {guide.id === "forearm" && <Link href="/tsubo/basics/bone-cun#bone-cun-table" className="atlas-text-action">寸の測り方を見る</Link>}
+        {(guide.id === "forearm" || guide.id === "shin") && <Link href="/tsubo/basics/bone-cun#bone-cun-table" className="atlas-text-action">寸の測り方を見る</Link>}
       </section>
 
       <section className={styles.sources} aria-labelledby="comparison-sources">

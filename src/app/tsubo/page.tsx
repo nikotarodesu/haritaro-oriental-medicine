@@ -5,6 +5,7 @@ import ClinicalPairsSection from "@/components/ClinicalPairsSection";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
+import NearbyComparisonArtwork from "@/components/tsubo/atlas/NearbyComparisonArtwork";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import TsuboReviewEntry from "@/components/tsubo/TsuboReviewEntry";
@@ -16,7 +17,9 @@ import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/
 import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
 import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
+import { ATLAS_COMPARISON_GUIDES } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { NEARBY_COMPARISON_LINKS } from "@/data/tsubo/atlas/nearbyComparisonLinks";
+import { comparisonSize, NEARBY_COMPARISONS } from "@/data/tsubo/atlas/nearbyComparisons";
 import styles from "./atlas-index.module.css";
 
 const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(region => ({
@@ -79,24 +82,50 @@ export default function TsuboPage() {
           </ul>
         </nav>
       } nearbyComparisons={
-        <HashTargetDetails id="nearby-comparisons" className="atlas-disclosure atlas-target dictionary-index-disclosure" summary={<h2 id="nearby-comparisons-title"><GitMerge size={17} aria-hidden="true" />近いツボを比べる</h2>}>
-          <ul className={styles.nearbyList}>
-            {NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href, guideHref }) => (
-              <li key={id}>
-                <Link href={guideHref ?? href} prefetch={false} className={styles.nearbyRegion} aria-label={`${region}の比較図を開く`}>
-                  <strong>{region}</strong>
-                  <span>比較図</span>
-                  <ArrowRight size={16} aria-hidden="true" />
-                </Link>
-                <ul className={styles.nearbyPoints}>
-                  {codes.map((code, index) => (
-                    <li key={code}><Link href={`/tsubo/${code}#acupoint-location`} prefetch={false} className="atlas-index-point">{names[index]}</Link></li>
-                  ))}
-                </ul>
-              </li>
-            ))}
+        <section id="nearby-comparisons" tabIndex={-1} aria-labelledby="nearby-comparisons-title" className={`atlas-target ${styles.comparisonSection}`}>
+          <h2 id="nearby-comparisons-title"><GitMerge size={17} aria-hidden="true" />近いツボを比べる</h2>
+          <ul className={styles.comparisonGuides}>
+            {ATLAS_COMPARISON_GUIDES.map(({ id, title, href }) => {
+              const comparison = NEARBY_COMPARISONS.find(entry => entry.id === id);
+              if (!comparison) return null;
+              const { region, points, size = comparisonSize } = comparison;
+
+              return (
+                <li key={id}>
+                  <Link href={href} prefetch={false} className={styles.comparisonGuide}>
+                    <svg className={styles.comparisonPreview} viewBox={`0 0 ${size.width} ${size.height}`} aria-hidden="true" focusable="false">
+                      <NearbyComparisonArtwork id={comparison.id} />
+                      <g className="atlas-comparison-marker" data-selected="true">
+                        {points.map(({ code, position: [x, y] }) => <circle key={code} cx={x} cy={y} r="8" />)}
+                      </g>
+                    </svg>
+                    <span><small>{region}</small><strong>{title}</strong></span>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-        </HashTargetDetails>
+          <details className="atlas-disclosure dictionary-index-disclosure">
+            <summary>ほかの部位の比較</summary>
+            <ul className={styles.nearbyList}>
+              {NEARBY_COMPARISON_LINKS.filter(({ guideHref }) => !guideHref).map(({ id, region, codes, names, href }) => (
+                <li key={id}>
+                  <Link href={href} prefetch={false} className={styles.nearbyRegion} aria-label={`${region}の比較図を開く`}>
+                    <strong>{region}</strong>
+                    <span>比較図</span>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </Link>
+                  <ul className={styles.nearbyPoints}>
+                    {codes.map((code, index) => (
+                      <li key={code}><Link href={`/tsubo/${code}#acupoint-location`} prefetch={false} className="atlas-index-point">{names[index]}</Link></li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </section>
       } />
 
       <HashTargetDetails

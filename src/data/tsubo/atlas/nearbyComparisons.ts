@@ -113,7 +113,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
   {
     id: "shin",
     region: "すねの前",
-    figureLabel: "右脚を前から見た模式図。ひざの犢鼻から足首の解谿へ向かう線上に、上から足三里、上巨虚、条口が並びます。両端の白丸が目印です。",
+    figureLabel: "右脚を前から見た模式図。ひざの犢鼻から足首の解谿へ向かう線上に、上から足三里、上巨虚、条口が並びます。線の両端の丸印が目印です。",
     quizFigureLabel: "右脚を前から見た図。ひざと足首を結ぶ線上に、ひざに近い方から1番、2番、3番の丸印があります。ひざからそれぞれ3寸、6寸、8寸です。",
     size: { width: 344, height: 278 },
     referenceCodes: ["st35", "st41"],

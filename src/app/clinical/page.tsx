@@ -53,6 +53,15 @@ const casePreview = [
   { label: '四診の所見', text: '目に充血があり、脈は張りがあって速い。', icon: Stethoscope },
 ] as const;
 
+const headacheCourseStages = [
+  { href: '/curriculum/lecture-practice-2', label: '相談と安全確認' },
+  { href: '/curriculum/lecture-practice-4', label: '問診と弁証' },
+  { href: '/curriculum/lecture-practice-6', label: '目標と施術計画' },
+  { href: '/curriculum/lecture-practice-8', label: '説明・同意と記録' },
+  { href: '/curriculum/lecture-practice-9', label: '施術直後の反応' },
+  { href: '/curriculum/lecture-practice-10', label: '7日後の再評価' },
+];
+
 const researchExercises = [
   { href: PATTERN_AGREEMENT_HREF, label: '同じ症例で弁証が分かれる理由を考える', icon: GitCompareArrows },
   { href: KNEE_RESEARCH_HREF, label: '膝の痛みを比べた試験を読む', icon: BookOpen },
@@ -90,8 +99,8 @@ export default function ClinicalLandingPage() {
           <p>架空の症例を読み、どの所見をもとに見立てやツボを選ぶか考えます。</p>
           <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" fallback={firstCaseHref && (
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 print:hidden">
-              <Link href={firstCaseHref} className="page-primary-action">
-                最初の模擬症例を開く<ArrowRight size={16} aria-hidden="true" />
+              <Link href={firstCaseHref} className="page-secondary-action">
+                短い症例演習を開く<ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link href={`${firstCaseHref}#${CASE_REASONING_ANCHOR}`} scroll={false} className="ui-text-link inline-flex min-h-11 items-center">
                 設問から始める
@@ -100,7 +109,7 @@ export default function ClinicalLandingPage() {
           )} />
         </div>
         <figure className={styles.casePreview}>
-          <figcaption>模擬症例で集める情報</figcaption>
+          <figcaption>短い症例演習の例</figcaption>
           <dl>
             {casePreview.map(({ label, text, icon: Icon }) => (
               <div key={label}>
@@ -111,6 +120,29 @@ export default function ClinicalLandingPage() {
           </dl>
         </figure>
       </header>
+
+      <section id="headache-course" className={styles.caseCourse} aria-labelledby="headache-course-heading">
+        <div className={styles.caseCourseIntro}>
+          <div>
+            <h2 id="headache-course-heading" className={styles.sectionTitle}>頭痛の症例を相談から7日後まで追う</h2>
+            <p>夕方の頭痛で仕事や家事に支障が出ている43歳の女性の架空症例です。記録を順に読み、痛みと普段の生活がどう変わったかを考えます。</p>
+          </div>
+          <Link href="/curriculum/lecture-practice-1" className="page-primary-action">
+            演習の進め方を読む<ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </div>
+        <ol className={styles.caseCourseStages} role="list">
+          {headacheCourseStages.map(({ href, label }, index) => (
+            <li key={href}>
+              <Link href={href} prefetch={false} className={styles.caseCourseStage}>
+                <span className={styles.caseCourseNumber} aria-hidden="true">{index + 1}</span>
+                <span>{label}</span>
+                <ArrowRight aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       <section id="tools" tabIndex={-1} className={styles.section} aria-labelledby="clinical-practice-heading">
         <h2 id="clinical-practice-heading" className={styles.sectionTitle}>症例・配穴の演習</h2>

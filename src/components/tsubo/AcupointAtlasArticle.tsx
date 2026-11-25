@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "./AcupointAnatomy";
 import RegionalPointAnatomy from "./RegionalPointAnatomy";
@@ -13,6 +14,7 @@ import FeaturedAcupointPairs from "./FeaturedAcupointPairs";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
+import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
 import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
 import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
@@ -40,6 +42,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   const { traditionalTitle } = article;
   const contextTitle = traditionalTitle && traditionalTitle !== "伝統的な使われ方" ? traditionalTitle : "使われ方の補足";
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
+  const comparisonGuide = nearbyComparisons.map(({ id }) => getAtlasComparisonGuide(id)).find(Boolean);
   const firstComparison = nearbyComparisons[0];
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
@@ -64,7 +67,11 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           )}
         </PointAtlasDiagrams>
         <div className="atlas-location-links">
-          {firstComparison && (
+          {comparisonGuide ? (
+            <Link className="atlas-source-link inline-flex min-h-11 items-center" href={comparisonGuide.href} prefetch={false}>
+              {comparisonGuide.title}を見る
+            </Link>
+          ) : firstComparison && (
             <a className="atlas-source-link inline-flex min-h-11 items-center" href={`#${nearbyComparisonAnchor(point.codeLower, firstComparison.id)}`}>
               近いツボを同じ図で比べる
             </a>
