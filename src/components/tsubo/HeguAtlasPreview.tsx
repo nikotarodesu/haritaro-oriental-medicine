@@ -7,7 +7,7 @@ import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
-import AcupointUses from "@/components/tsubo/AcupointUses";
+import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
@@ -35,6 +35,8 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} hasAnatomyDiagram={!!point.crossSection} />
+
+      <AcupointTraditionalUses code={point.codeLower} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>

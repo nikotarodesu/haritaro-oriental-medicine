@@ -75,13 +75,17 @@
   visibility: visible;
 }
 
-.guide [data-atlas-guide-origin-overlay] {
+.guide :is([data-atlas-guide-origin-overlay], [data-atlas-guide-direction-overlay]) {
   visibility: hidden;
   pointer-events: none;
 }
 
 @media screen {
   .guide:has(input[value="origin"]:checked) [data-atlas-guide-origin-overlay] {
+    visibility: visible;
+  }
+
+  .guide:has(input[value="direction"]:checked) [data-atlas-guide-direction-overlay] {
     visibility: visible;
   }
 
@@ -96,7 +100,7 @@
 
   .guide:has(input[value="direction"]:checked) :is([data-atlas-guide-route], :global(.atlas-dimension-stroke)) {
     stroke: var(--landmark-spotlight);
-    stroke-width: 3.5;
+    stroke-width: 4;
   }
 
   .guide:has(input[value="direction"]:checked) :global(.atlas-dimension-halo) {

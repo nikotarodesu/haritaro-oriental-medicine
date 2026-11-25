@@ -8,7 +8,7 @@ import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
 import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
-import AcupointUses from "./AcupointUses";
+import AcupointUses, { AcupointTraditionalUses } from "./AcupointUses";
 import FeaturedAcupointPairs from "./FeaturedAcupointPairs";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
@@ -48,6 +48,8 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} lead={article.lead} hasAnatomyDiagram={hasIndividualAnatomy || !!regionalSection} />
+
+      <AcupointTraditionalUses code={point.codeLower} />
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>

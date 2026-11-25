@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
-import AcupointUses from "@/components/tsubo/AcupointUses";
+import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import RegionalPointAnatomy from "@/components/tsubo/RegionalPointAnatomy";
 import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
 import { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } from "@/data/tsubo/extraPoints";
@@ -78,10 +78,14 @@ export default async function ExtraPointPage({ params }: Props) {
           {point.classification && <>{" "}<a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
         </p>
         <nav className="atlas-section-nav" aria-label="このツボのページ内を移動">
+          <a href="#acupoint-traditional">使われ方</a>
+          <a href="#extra-point-location">場所</a>
           {anatomySection && <a href="#acupoint-anatomy">断面図</a>}
-          <a href="#acupoint-traditional">使われ方・研究</a>
+          <a href="#acupoint-study-overview">研究</a>
         </nav>
       </header>
+
+      <AcupointTraditionalUses code={point.code.toLowerCase()} />
 
       <section id="extra-point-location" className="atlas-target" aria-labelledby="extra-point-location-heading">
         <h2 id="extra-point-location-heading" className={styles.sectionTitle}>{point.name}の位置</h2>

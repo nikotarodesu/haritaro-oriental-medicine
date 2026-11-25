@@ -18,6 +18,7 @@ const indexMidpoint = {
 
 const marker = { x: indexMidpoint.x - 14, y: indexMidpoint.y + 1 };
 const indexBone = `M${handDorsum.indexBase.x} ${handDorsum.indexBase.y}L${handDorsum.indexKnuckle.x} ${handDorsum.indexKnuckle.y}`;
+const directionArrow = `M${indexMidpoint.x + 8} ${indexMidpoint.y - 18}H${marker.x - 14}m9-7-9 7 9 7`;
 
 export default function HeguHandDiagram({ thumbnail = false }: { thumbnail?: boolean }) {
   const hand = (
@@ -40,6 +41,10 @@ export default function HeguHandDiagram({ thumbnail = false }: { thumbnail?: boo
       {!thumbnail && <>
         <circle cx={indexMidpoint.x} cy={indexMidpoint.y} r="3" fill="#F9F5ED" />
         <path d={`M${indexMidpoint.x} ${indexMidpoint.y}L${marker.x} ${marker.y}`} fill="none" stroke="#7F3520" strokeWidth="1.5" strokeLinecap="round" data-atlas-guide-route="" />
+        <g data-atlas-guide-direction-overlay="" aria-hidden="true" fill="none" strokeLinecap="round" strokeLinejoin="round">
+          <path d={directionArrow} stroke="#FFF9F0" strokeWidth="8" />
+          <path d={directionArrow} stroke="#086457" strokeWidth="4" />
+        </g>
         <g data-atlas-guide-origin-overlay="" aria-hidden="true">
           <path d={indexBone} data-atlas-guide-origin="" fill="none" strokeLinecap="round" />
           <circle cx={indexMidpoint.x} cy={indexMidpoint.y} r="6" data-atlas-guide-origin="" fill="#FFF9F0" />

@@ -9,57 +9,55 @@ const extraStudyIds: Readonly<Partial<Record<string, readonly string[]>>> = {
 };
 const studyPreviewCount = 2;
 
+export function AcupointTraditionalUses({ code }: { code: string }) {
+  const traditional = TRADITIONAL_POINT_USES[code];
+  if (!traditional) return null;
+
+  return (
+    <section id="acupoint-traditional" className="atlas-target atlas-use-card atlas-traditional-use" data-use-kind="traditional" aria-labelledby="atlas-traditional-title">
+      <h2 id="atlas-traditional-title" className="atlas-section-title"><BookOpen size={19} aria-hidden="true" />伝統的な使われ方</h2>
+      <ul className="atlas-use-topics">
+        {traditional.labels.map(label => <li key={label}>{label}</li>)}
+      </ul>
+      <a className="atlas-text-action atlas-use-source" href={traditional.source.url}>{traditional.source.label}</a>
+    </section>
+  );
+}
+
 export default function AcupointUses({ code, context, links }: {
   code: string;
   context?: { title: string; paragraphs: readonly string[] };
   links?: ReactNode;
 }) {
-  const traditional = TRADITIONAL_POINT_USES[code];
   const extraIds = extraStudyIds[code];
   const studies = extraIds
     ? ATLAS_STUDIES.filter(study => extraIds.includes(study.id))
     : getAcupointStudies(code);
 
   return (
-    <section id="acupoint-traditional" className="atlas-target atlas-point-uses" aria-labelledby="atlas-point-uses-title">
-      <h2 id="atlas-point-uses-title" className="atlas-section-title">使われ方と研究</h2>
-      <div className="atlas-uses-grid">
-        <section className="atlas-use-card" data-use-kind="traditional" aria-labelledby="atlas-traditional-title">
-          <h3 id="atlas-traditional-title"><BookOpen size={19} aria-hidden="true" />伝統的な使われ方</h3>
-          {traditional ? (
-            <>
-              <ul className="atlas-use-topics">
-                {traditional.labels.map(label => <li key={label}>{label}</li>)}
-              </ul>
-              <a className="atlas-text-action atlas-use-source" href={traditional.source.url}>{traditional.source.label}</a>
-            </>
-          ) : (
-            <p className="atlas-use-status">このツボの伝統的な用途は掲載していません。</p>
-          )}
-        </section>
-        <section className="atlas-use-card" data-use-kind="research" aria-labelledby="atlas-use-research-title">
-          <h3 id="atlas-use-research-title"><FlaskConical size={19} aria-hidden="true" />研究で調べたこと</h3>
-          {studies.length > 0 ? (
-            <ul className="atlas-use-studies">
-              {studies.slice(0, studyPreviewCount).map(study => (
-                <li key={study.id}>
-                  <a href={extraIds ? `/tsubo/${study.points[0]}#${study.id}` : `#${study.id}`}>
-                    <span><small>{getStudyScopeLabel(study, code)}</small><strong>{study.topic}</strong></span>
-                    <ChevronRight size={16} aria-hidden="true" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="atlas-use-status">人を対象とした研究は掲載していません。</p>
-          )}
-          {!extraIds && studies.length > 0 && (
-            <a className="atlas-text-action atlas-use-source" href="#acupoint-research">掲載研究をすべて見る（{studies.length}件）</a>
-          )}
-          {studies.some(study => study.kind === "combination") && (
-            <p className="atlas-use-status">複数のツボを使った試験の結果は、比較された組み合わせと施術条件の範囲で読みます。</p>
-          )}
-        </section>
+    <section id={TRADITIONAL_POINT_USES[code] ? "acupoint-study-overview" : "acupoint-traditional"} className="atlas-target atlas-point-uses" aria-labelledby="atlas-use-research-title">
+      <div className="atlas-use-card" data-use-kind="research">
+        <h2 id="atlas-use-research-title" className="atlas-section-title"><FlaskConical size={19} aria-hidden="true" />研究で調べたこと</h2>
+        {studies.length > 0 ? (
+          <ul className="atlas-use-studies">
+            {studies.slice(0, studyPreviewCount).map(study => (
+              <li key={study.id}>
+                <a href={extraIds ? `/tsubo/${study.points[0]}#${study.id}` : `#${study.id}`}>
+                  <span><small>{getStudyScopeLabel(study, code)}</small><strong>{study.topic}</strong></span>
+                  <ChevronRight size={16} aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="atlas-use-status">人を対象とした研究は掲載していません。</p>
+        )}
+        {!extraIds && studies.length > 0 && (
+          <a className="atlas-text-action atlas-use-source" href="#acupoint-research">掲載研究をすべて見る（{studies.length}件）</a>
+        )}
+        {studies.some(study => study.kind === "combination") && (
+          <p className="atlas-use-status">複数のツボを使った試験の結果は、比較された組み合わせと施術条件の範囲で読みます。</p>
+        )}
       </div>
       {context && (
         <details className="atlas-disclosure atlas-use-context">

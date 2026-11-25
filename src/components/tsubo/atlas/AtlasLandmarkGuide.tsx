@@ -4,14 +4,14 @@ import styles from "./AtlasLandmarkGuide.module.css";
 const choices = [
   { value: "all", label: "全体" },
   { value: "origin", label: "目印" },
-  { value: "direction", label: "向き" },
+  { value: "direction", label: "進む方向" },
   { value: "point", label: "位置" },
 ] as const;
 
 const guidance = {
   li4: {
     origin: "人差し指につながる骨をたどり、長さの真ん中を見ます。",
-    direction: "骨の真ん中から、短い線に沿って親指側へ少し寄ります。",
+    direction: "矢印が指す親指側へ、骨の真ん中から少し寄ります。",
     point: "人差し指につながる骨の真ん中より、少し親指側にある丸印が合谷です。",
   },
   pc4: {
@@ -41,7 +41,7 @@ export default function AtlasLandmarkGuide({ code, children }: {
   children: ReactNode;
 }) {
   const id = useId();
-  const descriptions = { all: "「目印」から順に選ぶと、図の該当箇所が強調されます。", ...guidance[code] };
+  const descriptions = { all: "「目印」「進む方向」「位置」を選ぶと、図の該当箇所が強調されます。", ...guidance[code] };
 
   return (
     <div className={styles.guide} data-atlas-landmark-guide="">
