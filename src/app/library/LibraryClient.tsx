@@ -301,9 +301,11 @@ export default function LibraryClient() {
                 </span>
               </div>
 
-              <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に電子本文からの引用と確認範囲を表示しています。引用には、確認に使った電子本文を示しています。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
+              <p className="text-base leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">古典の考え方を学ぶ資料です。{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件に、引用と照合に使った資料を掲載しています。伝統的な配穴意図と、現代の疾患に対する治療効果は分けて読みます。</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {filteredClassics.map(classic => {
+                  const quotation = classic.verifiedQuotation;
+                  const imageChecked = quotation?.verificationScope === 'facsimile';
                   return (
                     <div
                       key={classic.id}
@@ -323,12 +325,14 @@ export default function LibraryClient() {
                         {classic.id === 'classic-reisu-01' && <Link href={NINE_NEEDLES_GUIDE.href} className="ui-text-link">古代の九鍼を図で見る <ArrowRight size={16} aria-hidden="true" /></Link>}
 
                         <div className="space-y-4">
-                          <div>
-                            <span className="text-sm font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">掲載条文（原典との一致は未確認）：</span>
-                            <p className="font-serif text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed break-words">
-                              {classic.originalPublicationStatus === 'withheld_pending_verification' ? '原文を読みたいときは、下の参照先から確認できます。' : classic.original}
-                            </p>
-                          </div>
+                          {!imageChecked && (
+                            <div>
+                              <span className="text-sm font-bold text-[#737C77] dark:text-[#8899A6] block mb-0.5">掲載条文（原典との一致は未確認）：</span>
+                              <p className="font-serif text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed break-words">
+                                {classic.originalPublicationStatus === 'withheld_pending_verification' ? '原文を読みたいときは、下の参照先から確認できます。' : classic.original}
+                              </p>
+                            </div>
+                          )}
                           {classic.reading && (
                             <details className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">
                               <summary className="min-h-11 py-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] cursor-pointer">訓読・書き下し：</summary>
@@ -337,21 +341,23 @@ export default function LibraryClient() {
                               </p>
                             </details>
                           )}
-                          {classic.verifiedQuotation && (
-                            <section className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-3 space-y-2" aria-label="電子本文の引用と確認範囲">
-                              <h4 className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">電子本文からの引用（底本画像は未確認）</h4>
-                              <blockquote className="font-serif text-base leading-relaxed break-words">{classic.verifiedQuotation.text}</blockquote>
+                          {quotation && (
+                            <section className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-3 space-y-2" aria-label="引用と確認範囲">
+                              <h4 className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">{imageChecked ? '刊本画像で照合した引用' : '電子本文からの引用（底本画像は未確認）'}</h4>
+                              <blockquote className="font-serif text-base leading-relaxed break-words">{quotation.text}</blockquote>
                               <details className="text-sm leading-relaxed">
                                 <summary className="min-h-11 py-2 font-bold cursor-pointer">資料・版・頁の詳細</summary>
-                              <dl className="space-y-2">
-                                <div><dt className="inline font-bold">資料・該当箇所：</dt><dd className="inline">{classic.verifiedQuotation.sourceTitle} — {classic.verifiedQuotation.section}</dd></div>
-                                <div><dt className="inline font-bold">版情報：</dt><dd className="inline">{classic.verifiedQuotation.edition || '未確認'}</dd></div>
-                                <div><dt className="inline font-bold">頁標識：</dt><dd className="inline">{classic.verifiedQuotation.page || '未確認'}</dd></div>
-                                <div><dt className="inline font-bold">電子本文の確認日：</dt><dd className="inline">{classic.verifiedQuotation.checkedAt}</dd></div>
-                              </dl>
+                                <dl className="space-y-2">
+                                  <div><dt className="inline font-bold">資料・該当箇所：</dt><dd className="inline">{quotation.sourceTitle} — {quotation.section}</dd></div>
+                                  <div><dt className="inline font-bold">版情報：</dt><dd className="inline">{quotation.edition || '未確認'}</dd></div>
+                                  <div><dt className="inline font-bold">頁標識：</dt><dd className="inline">{quotation.page || '未確認'}</dd></div>
+                                  <div><dt className="inline font-bold">{imageChecked ? '刊本画像の確認日：' : '電子本文の確認日：'}</dt><dd className="inline">{quotation.checkedAt}</dd></div>
+                                </dl>
                               </details>
-                              <p className="text-base leading-relaxed">{classic.verifiedQuotation.limitation}</p>
-                              <a href={classic.verifiedQuotation.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1 text-sm font-bold underline">引用元の電子本文を見る<ExternalLink className="h-3 w-3" aria-hidden="true" /></a>
+                              <p className="text-base leading-relaxed">{quotation.limitation}</p>
+                              <a href={quotation.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1 text-sm font-bold underline">
+                                {imageChecked ? '引用元の刊本画像を見る' : '引用元の電子本文を見る'}<ExternalLink className="h-3 w-3" aria-hidden="true" />
+                              </a>
                             </section>
                           )}
                           <div className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-2">

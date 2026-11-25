@@ -97,8 +97,17 @@ for (const id of quotationIds) {
   const quote = published?.verifiedQuotation;
   assert(quote?.text && quote.sourceTitle && quote.section, `${id}: quotation needs its actual source and passage`);
   assert.match(quote.sourceUrl, /^https:\/\//);
-  assert.equal(quote.verificationScope, 'electronic_text', `${id}: do not claim image or all-edition verification`);
-  assert.match(quote.limitation, /電子本文/, `${id}: the visible note identifies the electronic source`);
+  if (id === 'classic-taisei-shisou') {
+    assert.equal(quote.verificationScope, 'facsimile');
+    assert.match(quote.edition, /1601年.*趙文炳/);
+    assert.match(quote.sourceUrl, /NCL-06063_.+\.pdf#page=156$/);
+    assert.match(quote.page, /156ページ目・見開き右側/);
+    assert.match(quote.limitation, /この版の画像/);
+    assert.match(quote.text, /面口合谷收/);
+  } else {
+    assert.equal(quote.verificationScope, 'electronic_text', `${id}: do not claim image or all-edition verification`);
+    assert.match(quote.limitation, /電子本文/, `${id}: the visible note identifies the electronic source`);
+  }
   assert.match(quote.limitation, /該当箇所|この箇所|引用した箇所|一文/, `${id}: the visible note scopes verification to the quoted passage`);
   assert.match(quote.checkedAt, /^\d{4}-\d{2}-\d{2}$/);
   assert.equal(published.originalPublicationStatus, 'withheld_pending_verification');

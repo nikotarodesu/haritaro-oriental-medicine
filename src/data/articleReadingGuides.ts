@@ -1,8 +1,17 @@
 import type { ArticleReadingGuide } from "@/types/reading";
+import { FOUR_COMMAND_REVIEW_ID } from "@/data/tsubo/keyPointTypes";
 
 // 本文の要点を図にする。新しい医学的事実・治療効果を追加しない。
 // afterParagraph は、指定H2節内の paragraph ブロックだけを1から数える。
 export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
+  [FOUR_COMMAND_REVIEW_ID]: {
+    inserts: [],
+    nextArticles: [
+      { articleId: "science-of-acupoints-mechanotransduction", reason: "経穴の位置を共有するために使う、骨や腱などの目印を学べます。" },
+      { articleId: "science-of-meridians-network", reason: "経穴が属する十二正経と、奇経や絡脈との関係を整理できます。" },
+      { articleId: "science-of-acupuncture-neuroscience", reason: "刺激に対する反応と、症状の変化を調べた研究を見比べられます。" },
+    ],
+  },
   "science-of-oriental-medicine-history": {
     inserts: [
       {

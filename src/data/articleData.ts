@@ -13,6 +13,7 @@ import { ACUPUNCTURE_ARTICLE } from "./articles/acupunctureArticle";
 import { KAMPO_ARTICLE } from "./articles/kampoArticle";
 import { UNIFIED_THEORY_ARTICLE } from "./articles/unifiedTheoryArticle";
 import { GERD_ARTICLE } from "./articles/gerdArticle";
+import { FOUR_COMMAND_REVIEW_ARTICLE } from "./articles/fourCommandReviewArticle";
 
 // 公開記事配列（東洋医学自然科学講義録・学術論文・経穴経絡学・四診科学・東西統合臨床・人体統一理論アーカイブ）
 const SOURCE_ARTICLES: Article[] = [
@@ -28,6 +29,7 @@ const SOURCE_ARTICLES: Article[] = [
   KAMPO_ARTICLE,
   UNIFIED_THEORY_ARTICLE,
   GERD_ARTICLE,
+  FOUR_COMMAND_REVIEW_ARTICLE,
 ];
 
 export const ARTICLES: Article[] = SOURCE_ARTICLES.map(article => ({

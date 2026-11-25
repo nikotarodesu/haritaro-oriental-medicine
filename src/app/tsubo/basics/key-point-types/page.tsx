@@ -7,6 +7,7 @@ import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
 import {
   FIVE_TRANSPORT_STAGES,
+  FOUR_COMMAND_REVIEW_HREF,
   KEY_POINT_TYPES,
   KEY_POINT_TYPES_GUIDE,
   keyPointFilterHref,
@@ -84,11 +85,16 @@ export default function KeyPointTypesPage() {
               <h2 id={`${id}-heading`} className="atlas-section-title">{label}<span className="ml-2 text-sm font-normal ui-muted">（{reading}）</span></h2>
               <p>{description}</p>
               {id === "four-command" && (
-                <ul className="flex flex-wrap gap-x-4" aria-label="四総穴の図鑑リンク">
-                  {codes.map(getAcupointByCode).map(point => point && (
-                    <li key={point.code}><Link href={`/tsubo/${point.codeLower}`} className="atlas-text-action">{point.name}（{point.code}）</Link></li>
-                  ))}
-                </ul>
+                <>
+                  <ul className="flex flex-wrap gap-x-4" aria-label="四総穴の図鑑リンク">
+                    {codes.map(getAcupointByCode).map(point => point && (
+                      <li key={point.code}><Link href={`/tsubo/${point.codeLower}`} className="atlas-text-action">{point.name}（{point.code}）</Link></li>
+                    ))}
+                  </ul>
+                  <Link href={FOUR_COMMAND_REVIEW_HREF} className="atlas-text-action">
+                    四総穴を3分で復習 <ArrowRight aria-hidden="true" size={15} />
+                  </Link>
+                </>
               )}
               {example && (
                 <p className="text-sm ui-muted">

@@ -223,4 +223,4 @@ assert.equal(resolveConceptArtPlacement(separateSections, 'A', figureInB), 1, 'A
 assert.equal(resolveConceptArtPlacement(separateSections, 'B', figureInB), -1, 'A same-section figure replaces redundant artwork');
 assert.equal(resolveConceptArtPlacement(separateSections, 'Missing', new Map()), -1, 'Missing headings do not move artwork to an unrelated section');
 assert.equal(checkedFigures, 26, 'The duplicate qi/blood relationship card is replaced by the existing triangle diagram');
-console.log(`Passed: ${ARTICLES.length} articles, ${Object.keys(CURRICULUM_READING_INSERTS).length} lectures, ${checkedFigures} figure placements/renderings, stable heading anchors, 36 related destinations, and metadata-only article previews.`);
+console.log(`Passed: ${ARTICLES.length} articles, ${Object.keys(CURRICULUM_READING_INSERTS).length} lectures, ${checkedFigures} figure placements/renderings, stable heading anchors, ${ARTICLES.length * 3} related destinations, and metadata-only article previews.`);

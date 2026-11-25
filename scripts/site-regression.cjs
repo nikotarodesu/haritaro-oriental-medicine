@@ -38,15 +38,22 @@ const { PROGRESSIVE_CASES } = load('src/data/progressiveCases');
 const lectureIds=new Set(CURRICULUM_DATA.flatMap(chapter=>chapter.lectures).map(lecture=>lecture.id));
 const additionalResearchArticles = new Set(['science-of-pulse-diagnosis', 'science-of-abdominal-diagnosis', 'science-of-tongue-diagnosis', 'science-of-kampo-network-pharmacology', 'east-west-integrative-gerd-gastric']);
 const updatedArticleComparisons = new Set(['science-of-yinyang-gogyo', 'science-of-pulse-diagnosis']);
+const fourCommandReview = 'four-command-points-review';
+const articleRevisions = new Map([
+  ...Array.from(additionalResearchArticles, id => [id, '2026-11-23']),
+  ...Array.from(updatedArticleComparisons, id => [id, '2026-11-24']),
+  [fourCommandReview, '2026-11-25'],
+]);
 for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
  assert(lectureIds.has(guide.lectureId),article.id+' lecture'); assert(CURRICULUM_QUIZZES[guide.lectureId],article.id+' quiz');
  assert(PROGRESSIVE_CASES.some(c=>c.id===guide.caseId),article.id+' case');
  assert.equal(article.summary,guide.summary);
- assert.equal(article.updatedAt, updatedArticleComparisons.has(article.id) ? '2026-11-24' : additionalResearchArticles.has(article.id) ? '2026-11-23' : '2026-11-20', article.id);
+ assert.equal(article.updatedAt, articleRevisions.get(article.id) ?? '2026-11-20', article.id);
 }
 const { GLOSSARY_TERMS } = load('src/data/glossaryData');
 const terms=Object.values(GLOSSARY_TERMS); assert.equal(new Set(terms.map(term=>term.term)).size,terms.length);
+assert.equal(GLOSSARY_TERMS['四総穴'].readingLink?.href, `/articles/${fourCommandReview}`);
 for(const term of terms) if(term.relatedLectureId) assert(lectureIds.has(term.relatedLectureId),term.term);
 const detailed = load('src/data/tsubo/detailedPoints').DETAILED_ACUPOINTS;
 assert.equal(detailed.li4.researchEvidence.sources[0].pmid,'10643726');
@@ -115,11 +122,12 @@ for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.hr
   assert.equal(dateAt(pathname), EXTRA_POINTS_REVISED_AT, pathname + ' has its own sitemap entry');
 }
 assert.equal(dateAt('/curriculum'),'2026-11-18');
-for(const pathname of ['/','/about','/articles','/cases','/glossary','/learn/review','/symptoms']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+for(const pathname of ['/','/about','/cases','/learn/review','/symptoms']) assert.equal(dateAt(pathname),'2026-11-20',pathname);
+for (const pathname of ['/articles', `/articles/${fourCommandReview}`, '/glossary', '/library']) assert.equal(dateAt(pathname), '2026-11-25', pathname);
 for (const pathname of ['/learn','/learn/essentials']) assert.equal(dateAt(pathname), '2026-11-24', pathname);
 for (const pathname of ['/diagnosis', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research']) assert.equal(dateAt(pathname), '2026-11-23', pathname);
 for (const pathname of [
-  '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei', '/library',
+  '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei',
   '/tsubo/cv21', '/symptoms/dizziness-tinnitus',
   '/symptoms/knee-joint-pain', '/cases/case-01-headache-liver-fire',
 ]) assert.equal(dateAt(pathname), PUBLIC_VISUALS_REVISED_AT, pathname);
@@ -160,4 +168,4 @@ const { sanitizeAnalyticsParams } = load('src/utils/analytics');
 assert.deepEqual(Object.keys(sanitizeAnalyticsParams({placement:'case_training',total:6,query:'private',patient_name:'private',case_id:'private',answers:'private'})).sort(),['placement','total']);
 assert(!fs.readFileSync(path.join(root, 'src/app/layout.tsx'), 'utf8').includes('clarity.ms/tag'), 'Free-text learning and clinical pages must not load global session replay');
 assert(!fs.readFileSync(path.join(root, 'src/instrumentation-client.ts'), 'utf8').includes('sdk.identify('), 'Replay must not identify users');
-console.log('Passed: 361-point search, normalization, multiword matches, 12 article learning paths, glossary links, sitemap revisions and learning analytics privacy.');
+console.log(`Passed: 361-point search, normalization, multiword matches, ${ARTICLES.length} article learning paths, glossary links, sitemap revisions and learning analytics privacy.`);

@@ -1,3 +1,5 @@
+import { FOUR_COMMAND_REVIEW_ARTICLE } from "./articles/fourCommandReviewArticle";
+
 export interface ArticleLearningGuide {
   lectureId: string;
   caseId: string;
@@ -6,6 +8,12 @@ export interface ArticleLearningGuide {
   summary: string;
 }
 export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
+  [FOUR_COMMAND_REVIEW_ARTICLE.id]: {
+    lectureId: 'lecture-treatment-8', caseId: 'back-pain-referral',
+    focus: '四総穴歌が挙げる部位と、四つの経穴の位置を図鑑で見比べます。',
+    limitation: '歌は伝統的な対応を覚える資料です。治療効果は対象疾患や施術条件ごとの研究で確かめます。',
+    summary: FOUR_COMMAND_REVIEW_ARTICLE.summary,
+  },
   'science-of-oriental-medicine-history': {
     lectureId: 'lecture-yinyang-1', caseId: 'fatigue-reasoning',
     focus: '古典に書かれた脈や顔色の観察と、現代の比較試験で測る痛み・生活機能を比べる。',

@@ -5,7 +5,7 @@ import { SYMPTOM_RESEARCH_NOTES, SYMPTOM_RESEARCH_REVISED_AT } from '@/data/symp
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, MIGRAINE_RESEARCH_HREF, acupunctureResearchHref } from '@/config/acupunctureLearning';
 import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
 import { ACUPOINT_PAIRS_PATH, featuredPairs } from '@/data/tsubo/atlas/featuredPairs';
-import { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } from '@/data/tsubo/keyPointTypes';
+import { CLASSIFIED_ACUPOINT_CODES, FOUR_COMMAND_REVIEW_HREF, KEY_POINT_TYPES_GUIDE } from '@/data/tsubo/keyPointTypes';
 import { SYMPTOM_GUIDES_REVISED_AT } from '@/utils/symptomGuidePaths';
 
 export const EXPANDED_ATLAS_REVISED_AT = '2026-11-19';
@@ -305,6 +305,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   [acupunctureResearchHref('postoperative-nausea')]: '2026-11-25',
   '/symptoms/constipation-ibs': '2026-11-25',
   '/symptoms/headache-stiff-neck': '2026-11-25',
+  ...Object.fromEntries(['/articles', FOUR_COMMAND_REVIEW_HREF, '/library', '/glossary'].map(route => [route, '2026-11-25'])),
 };
 export const SITE_UPDATES = [
   { date: '2026-11-24', label: '比較図の確認問題と、講義・症例の振り返り', href: '/learn/review', text: '比較図7組すべてに位置の確認問題を付けました。16講の確認問題は講義の復習で解き直せます。症例を解いたあとは、迷った設問の解説や登場したツボの比較を開けます。' },

@@ -4,16 +4,33 @@
  */
 
 export interface VerifiedClassicalQuotation {
-  text: string; // 照合した電子本文からの限定引用。元の original を上書きしない
+  text: string; // 照合した資料からの限定引用。元の original を上書きしない
   sourceTitle: string;
   section: string;
   sourceUrl: string;
-  edition?: string; // 資料が示す版情報。原本画像を確認したことは意味しない
+  edition?: string; // 照合に使った資料の版情報
   page?: string; // 確認できた頁標識。実際の原本頁を推測で補わない
   checkedAt: string;
-  verificationScope: 'electronic_text'; // この引用部分の電子本文一致のみ
+  verificationScope: 'electronic_text' | 'facsimile';
   limitation: string; // 底本画像・版・校訂等について未確認の範囲
 }
+
+const TAISEI_FACSIMILE = "https://upload.wikimedia.org/wikipedia/commons/c/c8/NCL-06063_%E9%8D%BC%E7%81%B8%E5%A4%A7%E6%88%90.pdf";
+
+export const TAISEI_FOUR_COMMAND_QUOTATION: VerifiedClassicalQuotation = {
+  text: "肚腹三里留，腰背委中求，頭項尋列缺，面口合谷收。",
+  sourceTitle: "臺灣・國家圖書館蔵『鍼灸大成』（請求記号 304.1 06063）",
+  section: "巻三「四總穴歌」",
+  sourceUrl: `${TAISEI_FACSIMILE}#page=156`,
+  edition: "明・万暦29年（1601年）趙文炳刊本",
+  page: "所蔵画像PDF 156ページ目・見開き右側",
+  checkedAt: "2026-11-25",
+  verificationScope: 'facsimile',
+  limitation: "この版の画像で該当箇所を照合しました。句読点は読みやすさのために整えています。",
+};
+
+export const TAISEI_FOUR_GATES_URL = `${TAISEI_FACSIMILE}#page=85`;
+export const NISHIZAWA_FOUR_COMMAND_URL = "https://www.jstage.jst.go.jp/article/kampomed1950/6/3/6_3_31/_pdf#page=4";
 
 export interface ClassicalText {
   id: string;
@@ -321,21 +338,12 @@ const STORED_CLASSICAL_TEXTS: ClassicalText[] = [
     theme: "四総穴・身体の部位と経穴を対応づける歌訣",
     original: "肚腹三里に留め、腰背委中に求む。頭項列缺に尋ね、面目合谷に収む。",
     reading: "肚腹は三里に留め、腰背は委中に求む。頭項は列缺に尋ね、面目は合谷に収む。",
-    translation: "照合した電子本文は、腹部と足三里、腰背部と委中、頭や項と列缺、「面口」（顔面と口）と合谷を対応づけて覚える歌訣である。部位別の伝統的な主治を簡潔に示しており、その部位のあらゆる病気が治るという意味にはしない。",
+    translation: "1601年刊本の歌は、腹部と足三里、腰背部と委中、頭と首の後ろと列缺、顔と口（面口）と合谷の対応を覚えるためのものである。",
     clinicalApplication: "四総穴の組み合わせを覚え、部位別の伝統的な取穴思想を学ぶ資料。現代の疾患に対する第一選択の治療を決定する根拠ではなく、各症状の原因、適応、注意事項を別に検討する。",
-    verificationNote: "旧掲載文は日本語の訓読調で、末句の「面目」も比較した電子本文の「面口」と一致しません。漢文原典の逐語引用として旧原文・訓読の公開を保留し、別欄に照合した電子本文を示します。底本画像と原本頁は未確認です。",
-    comparisonSourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
+    verificationNote: "1601年刊本の巻三には「面口」とあります。西沢道允の論文は『鍼灸聚英』を挙げ、日本語で「面目」と記しています。",
+    comparisonSourceUrl: NISHIZAWA_FOUR_COMMAND_URL,
     originalPublicationStatus: 'withheld_pending_verification',
-    verifiedQuotation: {
-      text: "肚腹三里留，腰背委中求，頭項尋列缺，面口合谷收。",
-      sourceTitle: "中医笈成『針灸大成』（楊継洲）電子本文",
-      section: "巻三・四總穴歌",
-      sourceUrl: "https://jicheng.tw/tcm/book/%E9%87%9D%E7%81%B8%E5%A4%A7%E6%88%90_1/index.html",
-      edition: "資料は底本を北京大学図書館掃描本と表示。刊行版・版年は未確認。",
-      checkedAt: "2026-10-03",
-      verificationScope: 'electronic_text',
-      limitation: "この歌を電子本文の該当箇所から引用しました。句読点もリンク先に合わせています。",
-    },
+    verifiedQuotation: TAISEI_FOUR_COMMAND_QUOTATION,
     relatedPoints: ["ST36", "BL40", "LU7", "LI4"],
     tags: ["鍼灸大成", "四総穴", "主治歌訣", "伝統的配穴", "配穴方解"]
   },

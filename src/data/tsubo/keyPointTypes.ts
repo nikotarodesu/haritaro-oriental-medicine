@@ -1,4 +1,6 @@
 export const KEY_POINT_TYPES_GUIDE = "/tsubo/basics/key-point-types";
+export const FOUR_COMMAND_REVIEW_ID = "four-command-points-review";
+export const FOUR_COMMAND_REVIEW_HREF = `/articles/${FOUR_COMMAND_REVIEW_ID}`;
 
 const fiveTransportMeridians = [
   { yin: true, codes: ["lu11", "lu10", "lu9", "lu8", "lu5"] },

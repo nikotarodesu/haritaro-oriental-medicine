@@ -24,6 +24,8 @@ import { articleReadingRevision } from "@/utils/articleReadingPosition";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import { NINE_NEEDLES_GUIDE } from "@/config/acupunctureLearning";
 import AncientNineNeedles from "@/components/learning/AncientNineNeedles";
+import FourCommandReviewQuiz from "@/components/articles/FourCommandReviewQuiz";
+import { FOUR_COMMAND_REVIEW_ID } from "@/data/tsubo/keyPointTypes";
 import { 
   BookOpen,
   Network,
@@ -112,6 +114,11 @@ export default async function ArticleDetailPage({ params }: Props) {
     block.type === "h2" ? [{ label: block.content.replaceAll("**", ""), id: "article-heading-" + index }] : []);
   const nineNeedlesAfter = article.id === NINE_NEEDLES_GUIDE.articleId ? blocks.findIndex(block =>
     block.type === "list" && block.items.some(item => item.startsWith("**『霊枢（れいすう）』**"))) : -1;
+  const reviewAfter = article.id === FOUR_COMMAND_REVIEW_ID ? blocks.findIndex(block =>
+    block.type === "h2" && block.content === "確認問題") : -1;
+  const articleInsert = reviewAfter >= 0
+    ? { afterBlock: reviewAfter, node: <FourCommandReviewQuiz /> }
+    : nineNeedlesAfter >= 0 ? { afterBlock: nineNeedlesAfter, node: <AncientNineNeedles /> } : undefined;
   const learningGuide = ARTICLE_LEARNING_GUIDES[article.id];
   const learningLectureTitle = learningGuide ? getCurriculumIndexCatalog().lectures.find(lecture => lecture.id === learningGuide.lectureId)?.title : undefined;
   const learningCaseTitle = learningGuide ? PROGRESSIVE_CASES.find(item => item.id === learningGuide.caseId)?.title : undefined;
@@ -232,6 +239,7 @@ export default async function ArticleDetailPage({ params }: Props) {
               </a>
             )}
             {nineNeedlesAfter >= 0 && <a href={`#${NINE_NEEDLES_GUIDE.anchor}`} className="page-secondary-action">古代の九鍼</a>}
+            {reviewAfter >= 0 && <a href={`#article-heading-${reviewAfter}`} className="page-secondary-action">確認問題</a>}
             {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
           <ReadingContents label="記事の目次" headings={headings} />
@@ -257,7 +265,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             resolvedReferences={resolvedReferences}
             readingInserts={readingGuide?.inserts}
             relatedReading={relatedReading}
-            conceptArt={nineNeedlesAfter >= 0 ? { afterBlock: nineNeedlesAfter, node: <AncientNineNeedles /> } : undefined}
+            conceptArt={articleInsert}
           />
           </div>
 

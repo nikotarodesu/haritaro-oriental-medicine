@@ -1,5 +1,6 @@
 import { REFLECTION_LECTURES } from '@/data/learningReflectionCatalog';
 import { ACUPUNCTURE_GUIDE, NINE_NEEDLES_GUIDE } from '@/config/acupunctureLearning';
+import { FOUR_COMMAND_REVIEW_HREF } from '@/data/tsubo/keyPointTypes';
 
 export interface GlossaryTerm {
   term: string;
@@ -227,6 +228,7 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     category: "経絡・経穴",
     oneLiner: "腹部・腰背部・頭と後頸部・顔と口に対応づけて覚える、足三里・委中・列欠・合谷の4穴。",
     analogy: "身体の4つの範囲と代表穴を結ぶ、伝統的な学習用の地図。",
+    readingLink: { href: FOUR_COMMAND_REVIEW_HREF, label: "四総穴を3分で復習" },
     summary: "『針灸大成』の四総穴歌は「肚腹は三里に留め、腰背は委中に求む、頭項は列欠に尋ね、面口は合谷に収む」。腹部は足三里（ST36）、腰背部は委中（BL40）、頭・後頸部は列欠（LU7）、顔・口は合谷（LI4）と関連づける歌訣で、胸部はこの4部位に含まれない。この対応だけで各部位の病気への適応や治療効果が決まるわけではない。",
     relatedLectureId: "lecture-treatment-8",
     relatedToolUrl: "/tsubo",
