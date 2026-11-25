@@ -72,6 +72,7 @@ const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/c
 assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
 assert.match(casesIndex, /href="#case-comparison"/);
 assert.match(casesIndex, /id="case-comparison"[^>]*>.*<table/);
+assert.match(casesIndex, /id="case-comparison"[^>]*>.*?<fieldset[^>]*disabled/, 'Comparison choices wait for their client handler and saved answer');
 assert(casesIndex.includes('href="' + CASE_COURSE_READING_HREF + '"'));
 const comparisonReading = new URL(CASE_COURSE_READING_HREF, 'https://www.haritaro.jp');
 assert(isReadingFromCaseCourse(comparisonReading.searchParams));

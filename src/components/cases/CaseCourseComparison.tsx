@@ -16,18 +16,17 @@ const correctAnswer = "翌日の痛み";
 const explanation = "施術前と直後の痛みは同じでした。翌日も痛みが3だったAさんには、仕事で振り向くときも楽だったかを聞きます。6に戻ったBさんには、痛みが戻ったのはいつで、何をしていたときかを聞きます。";
 
 export default function CaseCourseComparison() {
-  const [answer, setAnswer] = useState<Answer>();
+  const [answer, setAnswer] = useState<Answer | null>();
 
   useEffect(() => {
-    let saved: string | null;
+    let restored: Answer | null = null;
     try {
-      saved = window.sessionStorage.getItem(storageKey);
+      const saved = window.sessionStorage.getItem(storageKey);
+      restored = choices.find(choice => choice === saved) ?? null;
     } catch {
-      return;
+      // Enable the choices even when browser storage is unavailable.
     }
-    const restored = choices.find(choice => choice === saved);
-    if (!restored) return;
-    const frame = requestAnimationFrame(() => setAnswer(current => current ?? restored));
+    const frame = requestAnimationFrame(() => setAnswer(restored));
     return () => cancelAnimationFrame(frame);
   }, []);
 
@@ -65,7 +64,7 @@ export default function CaseCourseComparison() {
         </tbody>
       </table>
 
-      <fieldset className="space-y-2">
+      <fieldset className="space-y-2" disabled={answer === undefined}>
         <legend className="mb-2 font-semibold">次に聞くことを変える手がかりは、どの時点の記録ですか？</legend>
         {choices.map(choice => (
           <label key={choice} className="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border border-field px-3 py-2 has-checked:border-accent has-checked:bg-panel-selected has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2">
