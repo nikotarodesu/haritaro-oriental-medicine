@@ -4,7 +4,7 @@ import { getCaseStudyUsingAcupoint } from "@/data/cases/caseStudyCatalog";
 import { getDiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
 import { getAcupointGuideLinks } from "@/utils/symptomGuides";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
-import { getAcupointKeyPointTypes, KEY_POINT_TYPES_GUIDE, type AcupointKeyPointType } from "@/data/tsubo/keyPointTypes";
+import { getAcupointKeyPointTypes, KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
 import { readingPartHref } from "@/data/publicLectures/readingUnitCatalog";
 import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
@@ -66,23 +66,22 @@ export function AcupointComparisonLink({ code }: { code: string }) {
   );
 }
 
-export function AcupointKeyPointLinks({ types }: { types: readonly AcupointKeyPointType[] }) {
+export function AcupointKeyPointLinks({ code }: { code: string }) {
+  const types = getAcupointKeyPointTypes(code);
   if (!types.length) return null;
 
   return (
-    <div id="acupoint-classifications" className="atlas-target">
-      <dt className="mb-1 text-sm ui-muted">要穴分類</dt>
-      <dd>
-        <ul className="flex flex-wrap gap-x-2 gap-y-1" role="list">
-          {types.map(({ id, label }) => (
-            <li key={id}>
-              <Link href={`${KEY_POINT_TYPES_GUIDE}#${id}`} prefetch={false} className="atlas-source-link inline-flex min-h-11 items-center rounded-lg border border-frame px-2.5 text-sm">
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </dd>
+    <div id="acupoint-classifications" className="atlas-target flex min-w-0 max-w-full flex-wrap items-center gap-x-2">
+      <span id="acupoint-classifications-label" className="text-xs ui-muted">要穴分類</span>
+      <ul className="flex min-w-0 flex-wrap gap-x-1.5" role="list" aria-labelledby="acupoint-classifications-label">
+        {types.map(({ id, label }) => (
+          <li key={id}>
+            <Link href={`${KEY_POINT_TYPES_GUIDE}#${id}`} prefetch={false} className="atlas-source-link inline-flex min-h-11 min-w-11 items-center justify-center text-sm whitespace-nowrap">
+              <span className="rounded-md bg-panel-selected px-1.5 py-1">{label}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

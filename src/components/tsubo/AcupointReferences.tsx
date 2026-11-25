@@ -1,10 +1,9 @@
 import type { ReactNode } from "react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
-import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
 import type { AcupointDetail } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
-import { AcupointKeyPointLinks, AcupointReadingLinks, AcupointStudyLinks } from "./AcupointArticleLinks";
+import { AcupointReadingLinks, AcupointStudyLinks } from "./AcupointArticleLinks";
 import AcupointNameGuide from "./AcupointNameGuide";
 
 export function AcupointPointBasics({ point, meridianReading }: {
@@ -18,7 +17,6 @@ export function AcupointPointBasics({ point, meridianReading }: {
           <div><dt>経絡（ツボをつなぐ道筋）</dt><dd>{point.meridian}（{meridianReading}）</dd></div>
           <div><dt>検索で使えるコード表記</dt><dd>{point.code}・{point.code.replace(/^(\D+)(\d+)$/, "$1-$2")}</dd></div>
           {point.aliases?.length ? <div><dt>別名・表記</dt><dd>{point.aliases.join("、")}</dd></div> : null}
-          <AcupointKeyPointLinks types={getAcupointKeyPointTypes(point.codeLower)} />
         </dl>
         <AcupointNameGuide code={point.codeLower} />
       </div>

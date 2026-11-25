@@ -36,7 +36,6 @@ import { FEATURED_ACUPOINT_PAIRS_ANCHOR, getFeaturedPairs } from "@/data/tsubo/a
 import { getAcupointName } from "@/data/tsubo/names";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
-import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import { 
@@ -298,7 +297,6 @@ export default async function AcupointDetailPage({ params }: Props) {
     );
   }
 
-  const pointTypes = getAcupointKeyPointTypes(point.codeLower);
   const caution = point.caution || generateCaution(point);
   const nearby = point.nearbyPoints?.length
     ? point.nearbyPoints.map(({ code, relation }) => ({ code, text: relation }))
@@ -382,6 +380,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <span className="text-sm sm:text-lg text-[#59615D] dark:text-[#A0B0BC] font-medium">
                   {point.kana}
                 </span>
+                <AcupointKeyPointLinks code={point.codeLower} />
               </div>
 
               {point.aliases && point.aliases.length > 0 && (
@@ -427,11 +426,6 @@ export default async function AcupointDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {pointTypes.length > 0 && (
-            <dl className="border-t border-frame pt-2">
-              <AcupointKeyPointLinks types={pointTypes} />
-            </dl>
-          )}
         </div>
 
         <nav aria-label="この経穴のページ内目次" className="acupoint-section-nav">

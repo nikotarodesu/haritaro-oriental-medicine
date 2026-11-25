@@ -1,5 +1,6 @@
 import type { AcupointDetail } from "@/data/tsubo/types";
 import AtlasDictionaryReturnLink from "./AtlasDictionaryReturnLink";
+import { AcupointKeyPointLinks } from "./AcupointArticleLinks";
 
 export default function AcupointArticleHeader({ point, lead }: {
   point: AcupointDetail;
@@ -20,6 +21,7 @@ export default function AcupointArticleHeader({ point, lead }: {
         <h1>{point.name}</h1>
         <span className="atlas-point-kana">{point.kana}</span>
         <span className="atlas-code">{point.code}</span>
+        <AcupointKeyPointLinks code={point.codeLower} />
       </div>
       {/* Native fragment navigation opens the index's enclosing disclosure. */}
       <p className="atlas-point-meta"><a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
