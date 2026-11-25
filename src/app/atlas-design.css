@@ -899,7 +899,23 @@
   border: 0;
   background: transparent;
 }
+.atlas-entry .atlas-traditional-use .atlas-section-title { margin-bottom: 0; }
+.atlas-entry .atlas-traditional-use .atlas-use-topics { margin-top: .375rem; }
 .atlas-entry .atlas-traditional-use .atlas-use-source { color: var(--atlas-muted); }
+.atlas-location-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem .8rem;
+  margin-top: .375rem;
+}
+@media (max-width: 639px) {
+  .atlas-entry[data-atlas-point] { padding-block-start: .75rem; }
+  .atlas-entry[data-atlas-point] .atlas-point-header { gap: .25rem; }
+  .atlas-entry[data-atlas-point] .atlas-point-identity h1 { line-height: 1.25; }
+  .atlas-entry[data-atlas-point] .atlas-point-lead { line-height: 1.6; }
+  .atlas-entry[data-atlas-point] > :is(.atlas-traditional-use, #acupoint-location) { margin-block-start: -.5rem; }
+}
 .atlas-entry .atlas-location-figure > .atlas-figure {
   max-width: 34rem;
   margin-inline: auto;

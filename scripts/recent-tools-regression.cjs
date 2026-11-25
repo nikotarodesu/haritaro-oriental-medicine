@@ -19,7 +19,7 @@ function load(relative) {
 }
 const { RECENT_TOOL_CATALOG, RECENT_TOOLS_STORAGE_KEY, recentToolHref, readRecentToolPaths, updateRecentToolPaths } = load('src/utils/recentTools');
 const { readAtlasReturnPosition } = load('src/utils/atlasReturnPosition');
-for (const href of ['/tsubo?q=%E5%86%85%E9%96%A2&meridian=PC', '/tsubo/pc6#acupoint-location', '/tsubo/compare?a=li4&b=lr3', '/tsubo/extra-points/yintang']) {
+for (const href of ['/tsubo?q=%E5%86%85%E9%96%A2&meridian=PC', '/tsubo/pc6#acupoint-location', '/tsubo/compare?a=li4&b=lr3', '/tsubo/compare/pc6-pc5-pc4', '/tsubo/extra-points/yintang']) {
   const position = readAtlasReturnPosition(JSON.stringify({ href, scrollY: 234 }));
   assert.equal(position?.href, href);
   assert.equal(position?.scrollY, 234);
@@ -119,6 +119,8 @@ for (const [route, item] of [
 assert.equal(getCurrentBottomNavItem(['curriculum', 'review'], '/learn/review'), 'review');
 assert.equal(getCurrentBottomNavItem(['clinical', 'cases'], '/cases/case-01-headache-liver-fire'), 'cases');
 assert.equal(getCurrentBottomNavItem(['clinical', 'tsubo', 'tsubo_compare'], '/tsubo/compare'), 'tsubo_compare');
+assert.equal(getNavigationSection('/tsubo/compare/pc6-pc5-pc4'), 'dictionary');
+assert.equal(getCurrentBottomNavItem(['clinical', 'tsubo', 'tsubo_compare'], '/tsubo/compare/li11-lu5-pc3'), 'tsubo');
 assert.equal(getCurrentBottomNavItem(['tsubo', 'symptoms'], '/symptoms/headache-stiff-neck'), 'symptoms');
 for (const [tab, expectedId] of [['', 'diagnosis'], ['unknown', 'diagnosis'], ['clinical', 'diagnosis'], ['gorou', 'gorou']]) {
   const params = new URLSearchParams(tab ? 'tab=' + tab : '');

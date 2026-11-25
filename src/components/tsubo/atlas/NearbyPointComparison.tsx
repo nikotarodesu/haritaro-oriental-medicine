@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DETAILED_ACUPOINTS, getAcupointByCode } from "@/data/tsubo";
 import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
+import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { nearbyPracticeReview } from "@/data/tsubo/atlas/practiceReviews";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import { AcupointStudyLinks } from "../AcupointArticleLinks";
@@ -22,6 +23,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
   });
   if (points.length < 2) return null;
   const { id, region, heading, figureLabel, quizFigureLabel, question } = comparison;
+  const guide = getAtlasComparisonGuide(id);
 
   return (
     <NearbyComparisonControls
@@ -45,6 +47,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
         {id === "forearm" && (
           <p>手のひら側の手首とひじのしわの間を12等分します。二本の腱を目印に、手首からひじへ何寸進むかで3穴を見分けます。</p>
         )}
+        {guide && <Link href={guide.href} prefetch={false} className="atlas-source-link inline-flex min-h-11 items-center">{guide.title}を図で見る</Link>}
       </>}
       relatedReading={
         id === "medial-knee" ? <AcupointStudyLinks code={code} /> : id === "shoulder" && (

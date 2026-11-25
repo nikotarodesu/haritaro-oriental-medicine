@@ -27,7 +27,7 @@ assert.equal(NEARBY_COMPARISON_LINKS.length, 8);
 assert.equal(byId.get('atlas-comparison-medial-knee')?.url, '/tsubo/sp10#acupoint-nearby');
 for (const comparison of NEARBY_COMPARISON_LINKS) {
   const result = byId.get('atlas-comparison-' + comparison.id);
-  assert.equal(result?.url, comparison.href);
+  assert.equal(result?.url, comparison.guideHref ?? comparison.href);
   assert.deepEqual(Array.from(result.comparisonCodes), Array.from(comparison.codes));
   for (const code of result.comparisonCodes) assert(byId.has('tsubo-' + code));
 }

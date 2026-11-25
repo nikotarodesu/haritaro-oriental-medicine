@@ -47,20 +47,14 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={article.lead} />
+      <AcupointArticleHeader point={point} />
       <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
 
       <AcupointTraditionalUses code={point.codeLower} />
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
-        {firstComparison && (
-          <a className="atlas-source-link inline-flex min-h-11 items-center" href={`#${nearbyComparisonAnchor(point.codeLower, firstComparison.id)}`}>
-            近いツボを同じ図で比べる
-          </a>
-        )}
-        <AcupointStudyLinks code={point.code} />
-        <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
+        <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={[article.lead, ...article.location]}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           {!hasIndividualAnatomy && article.expert.length > 0 && (
             <div className="atlas-location-expert">
@@ -69,6 +63,14 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
             </div>
           )}
         </PointAtlasDiagrams>
+        <div className="atlas-location-links">
+          {firstComparison && (
+            <a className="atlas-source-link inline-flex min-h-11 items-center" href={`#${nearbyComparisonAnchor(point.codeLower, firstComparison.id)}`}>
+              近いツボを同じ図で比べる
+            </a>
+          )}
+          <AcupointStudyLinks code={point.code} />
+        </div>
       </section>
 
       {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}

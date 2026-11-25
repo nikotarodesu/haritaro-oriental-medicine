@@ -131,7 +131,7 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     id: "forearm",
     region: "手のひら側の前腕",
     heading: "内関・間使・郄門を図で比べる",
-    figureLabel: "前腕を手のひら側から見た模式図。手首のしわからひじへ向かって、内関、間使、郄門の順に並びます。白丸は手首とひじのしわです。",
+    figureLabel: "前腕を手のひら側から見た模式図。手首のしわからひじへ向かって、内関、間使、郄門の順に並びます。目盛りの両端は手首とひじのしわです。",
     quizFigureLabel: "手のひら側の前腕の図。手首のしわからひじへ向かって2寸に1番、3寸に2番、5寸に3番の丸印があります。",
     size: { width: 344, height: 294 },
     points: forearmPoints.map(point => ({

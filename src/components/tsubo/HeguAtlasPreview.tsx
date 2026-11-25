@@ -12,7 +12,6 @@ import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
-import { HEGU_SEARCH_COPY } from "@/data/tsubo/atlas/searchCopy";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
 export const heguAtlasReading = {
@@ -32,17 +31,19 @@ export const heguSources = [
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} />
+      <AcupointArticleHeader point={point} />
       <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
 
       <AcupointTraditionalUses code={point.codeLower} />
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
-        <AcupointStudyLinks code={point.code} />
         <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
         </AcupointAtlasDiagrams>
+        <div className="atlas-location-links">
+          <AcupointStudyLinks code={point.code} />
+        </div>
       </section>
 
       <AcupointAnatomy point={point} />

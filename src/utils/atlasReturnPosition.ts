@@ -1,3 +1,5 @@
+import { ATLAS_COMPARISON_GUIDES } from "@/data/tsubo/atlas/nearbyComparisonGuides";
+
 export const ATLAS_RETURN_STORAGE_KEY = "haritaro_atlas_return_v1";
 
 export type AtlasReturnPosition = { href: string; scrollY: number };
@@ -6,6 +8,7 @@ const atlasOrigin = "https://www.haritaro.jp";
 
 export function isAtlasReturnPath(pathname: string) {
   return pathname === "/tsubo" || pathname === "/tsubo/compare" ||
+    ATLAS_COMPARISON_GUIDES.some(guide => guide.href === pathname) ||
     /^\/tsubo\/(?:[a-z]{2}\d{1,2}|extra-points\/[a-z-]+)$/.test(pathname);
 }
 

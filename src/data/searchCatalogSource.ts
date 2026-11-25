@@ -174,10 +174,10 @@ export function buildSearchCatalog(): SearchResultItem[] {
 
     // 1. ツール群
     list.push(...STATIC_TOOLS);
-    list.push(...NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href }): SearchResultItem => ({
+    list.push(...NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href, guideHref }): SearchResultItem => ({
       id: `atlas-comparison-${id}`, type: "tool", badge: "ツボの比較図",
       title: `${names.join("・")}を図で比べる`, subtitle: `${region}の位置と目印`,
-      url: href, comparisonCodes: codes, tags: [region, "経穴比較", "違い", "見分け方"],
+      url: guideHref ?? href, comparisonCodes: codes, tags: [region, "経穴比較", "違い", "見分け方"],
     })));
     list.push(...ATLAS_LEARNING_PAIRS.map(({ codes, comparisonPrompt }): SearchResultItem => ({
       id: `atlas-pair-${codes.join("-").toLowerCase()}`, type: "tool", badge: "経穴比較",

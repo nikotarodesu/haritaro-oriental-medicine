@@ -121,14 +121,14 @@ for (const [query, href] of [
   ['合谷 場所', '/tsubo/li4'],
   ['ごうこくの位置はどこですか？', '/tsubo/li4'],
   ['ＬＩ ４ の目印', '/tsubo/li4'],
-  ['内関と間使の違い', '/tsubo/pc6#acupoint-nearby-forearm'],
-  ['ないかん と かんしのちがい', '/tsubo/pc6#acupoint-nearby-forearm'],
-  ['ＰＣ ５ ＰＣ ４ 比較', '/tsubo/pc6#acupoint-nearby-forearm'],
+  ['内関と間使の違い', '/tsubo/compare/pc6-pc5-pc4'],
+  ['ないかん と かんしのちがい', '/tsubo/compare/pc6-pc5-pc4'],
+  ['ＰＣ ５ ＰＣ ４ 比較', '/tsubo/compare/pc6-pc5-pc4'],
   ['足三里 上巨虚 条口', '/tsubo/st36#acupoint-nearby'],
   ['条口・足三里の位置の違い', '/tsubo/st36#acupoint-nearby'],
   ['合谷と太衝の違い', '/tsubo/compare?a=li4&b=lr3'],
   ['肩髃と肩髎の違い', '/tsubo/li15#acupoint-nearby'],
-  ['曲池 尺沢 曲沢 比較', '/tsubo/li11#acupoint-nearby'],
+  ['曲池 尺沢 曲沢 比較', '/tsubo/compare/li11-lu5-pc3'],
 ]) {
   const ranked = rankPurposeSearchResults(publicIndex, preparePurposeSearchQuery(query));
   assert.equal(ranked[0]?.item.url, href, query);

@@ -81,9 +81,9 @@ export default function TsuboPage() {
       } nearbyComparisons={
         <HashTargetDetails id="nearby-comparisons" className="atlas-disclosure atlas-target dictionary-index-disclosure" summary={<h2 id="nearby-comparisons-title"><GitMerge size={17} aria-hidden="true" />近いツボを比べる</h2>}>
           <ul className={styles.nearbyList}>
-            {NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href }) => (
+            {NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href, guideHref }) => (
               <li key={id}>
-                <Link href={href} prefetch={false} className={styles.nearbyRegion} aria-label={`${region}の比較図を開く`}>
+                <Link href={guideHref ?? href} prefetch={false} className={styles.nearbyRegion} aria-label={`${region}の比較図を開く`}>
                   <strong>{region}</strong>
                   <span>比較図</span>
                   <ArrowRight size={16} aria-hidden="true" />

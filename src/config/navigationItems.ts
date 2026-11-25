@@ -192,7 +192,7 @@ export const CLINICAL_NAV_GROUPS = [
 
 export function getNavigationSection(pathname: string): "learn" | "clinical" | "dictionary" | null {
   const within = (path: string) => pathname === path || pathname.startsWith(path + "/");
-  if (["/clinical", "/simulator", "/practice", "/cases", "/kikei"].some(within) || within("/tsubo/compare")) return "clinical";
+  if (["/clinical", "/simulator", "/practice", "/cases", "/kikei"].some(within) || pathname === "/tsubo/compare") return "clinical";
   if (within("/tsubo") || within("/symptoms")) return "dictionary";
   if (["/learn", "/curriculum", "/library", "/articles", "/diagnosis"].some(within)) return "learn";
   return null;
@@ -209,8 +209,8 @@ export function isNavigationItemActive(id: NavItemId, pathname: string, searchPa
   if (id === "gorou") return pathname === "/diagnosis" && searchParams?.get("tab") === "gorou";
   if (id === "simulator") return pathname === "/simulator";
   if (id === "simulator_compare") return pathname.startsWith("/simulator/compare");
-  if (id === "tsubo_compare") return pathname.startsWith("/tsubo/compare");
-  if (id === "tsubo") return (pathname === "/tsubo" || pathname.startsWith("/tsubo/")) && !pathname.startsWith("/tsubo/compare");
+  if (id === "tsubo_compare") return pathname === "/tsubo/compare";
+  if (id === "tsubo") return (pathname === "/tsubo" || pathname.startsWith("/tsubo/")) && pathname !== "/tsubo/compare";
   return pathname.startsWith(ALL_NAV_ITEMS[id].href.split(/[?#]/)[0]);
 }
 
