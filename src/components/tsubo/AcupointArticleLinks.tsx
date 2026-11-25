@@ -8,35 +8,12 @@ import { getAcupointKeyPointTypes, KEY_POINT_TYPES_GUIDE, type AcupointKeyPointT
 import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
 import { readingPartHref } from "@/data/publicLectures/readingUnitCatalog";
 import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
-import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
 import { caseQuestionAnchor } from "@/utils/caseStudyNavigation";
 
-const sectionLinks = [
-  { href: "#acupoint-location", label: "場所" },
-  { href: "#acupoint-cautions", label: "注意点" },
-  { href: "#acupoint-self-care", label: "セルフケア" },
-  { href: "#acupoint-anatomy", label: "断面図" },
-];
 const linkClass = "inline-flex min-h-11 items-center font-semibold underline underline-offset-4";
 const diagnosisPointPaths = new Set(
   Object.values(getDiagnosisStudyLinks()).flatMap(({ points }) => points.map(point => point.href)),
 );
-
-export function AcupointSectionLinks({ hasAnatomyDiagram, pointCode }: {
-  hasAnatomyDiagram: boolean;
-  pointCode?: string;
-}) {
-  const hasSelfCare = Boolean(pointCode && ATLAS_SELF_CARE[pointCode]?.length);
-  return (
-    <nav aria-label="このツボのページ内を移動" className="atlas-section-nav">
-      {sectionLinks.filter(({ href }) =>
-        (hasAnatomyDiagram || href !== "#acupoint-anatomy") && (hasSelfCare || href !== "#acupoint-self-care")
-      ).map(({ href, label }) => (
-        <a key={href} href={href}>{label}</a>
-      ))}
-    </nav>
-  );
-}
 
 export function AcupointStudyLinks({ code }: { code: string }) {
   const standardCode = code.toUpperCase();

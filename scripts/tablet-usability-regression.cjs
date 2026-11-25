@@ -375,9 +375,10 @@ assert(declares('.tsubo-compare-page :is(button, input), .anatomy-viewer :is(but
 
 async function checkComparisonHeader() {
   const emptyComponent = { __esModule: true, default: () => null };
+  const DictionaryReturnLink = () => null;
   const page = client('src/app/tsubo/compare/page.tsx', {
-    'next/link': { __esModule: true, default: Link },
     '@/config/seo': { pageSocialMetadata: () => ({}), seriesPageTitle: title => title },
+    '@/components/tsubo/AtlasDictionaryReturnLink': { __esModule: true, default: DictionaryReturnLink },
     '@/components/tsubo/HeguAtlasPreview': { heguAtlasReading: { traditional: '', caution: '' } },
     '@/components/tsubo/atlas/HeguHandDiagram': emptyComponent,
     '@/components/tsubo/atlas/PointAtlasDiagrams': { PointAtlasThumbnail: () => null },
@@ -395,6 +396,7 @@ async function checkComparisonHeader() {
   for (const params of [{}, { a: 'lr3', b: 'li4' }, { a: 'lr3' }, { a: 'li4', b: 'lr3', c: 'st36' }]) {
     const tree = await page.render({ searchParams: Promise.resolve(params) });
     const header = nodes(tree).find(node => node.type === 'header');
+    assert.equal(nodes(header).filter(node => node.type === DictionaryReturnLink).length, 1, 'Comparison header offers a single return to the dictionary');
     const links = nodes(header).filter(node => node.props?.['data-analytics-action'] === 'compare_case');
     assert.equal(links.length, 0, 'Case links follow the diagrams rather than appearing in the heading');
   }

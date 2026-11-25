@@ -31,7 +31,7 @@ export const heguSources = [
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} hasAnatomyDiagram={!!point.crossSection} />
+      <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} />
       <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
 
       <AcupointTraditionalUses code={point.codeLower} />
@@ -42,6 +42,8 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
         </AcupointAtlasDiagrams>
       </section>
+
+      <AcupointAnatomy point={point} />
 
       <div className="atlas-care-section">
         <AcupointCautions priority={<>
@@ -55,8 +57,6 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         </AcupointCautions>
         <AcupointSelfCare code={point.codeLower} />
       </div>
-
-      <AcupointAnatomy point={point} />
 
       <AcupointLocationComparison point={point} related={[
         { code: "LI3", text: "同じ経絡で、合谷より人差し指の先に近いツボです。" },

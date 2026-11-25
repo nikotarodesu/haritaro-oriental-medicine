@@ -1,5 +1,4 @@
 import HashTargetDetails from "@/components/common/HashTargetDetails";
-import { ArrowDown, GitCompare } from "lucide-react";
 import type { ReactNode } from "react";
 
 export default function AtlasLocationFigures({ pointName, primary, notes, finding = [], children }: {
@@ -15,11 +14,6 @@ export default function AtlasLocationFigures({ pointName, primary, notes, findin
         {primary}
         <p className="atlas-location-key">丸印が{pointName}</p>
       </div>
-      <a href="#acupoint-compare" className="atlas-location-compare">
-        <GitCompare size={17} aria-hidden="true" />
-        近くのツボと比べる
-        <ArrowDown size={15} aria-hidden="true" />
-      </a>
       <div className="atlas-location-notes">
         {finding.length > 0 && (
           <details className="atlas-disclosure atlas-location-finding">

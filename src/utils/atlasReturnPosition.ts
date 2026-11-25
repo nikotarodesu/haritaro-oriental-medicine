@@ -12,9 +12,16 @@ export function isAtlasReturnPath(pathname: string) {
 export function readAtlasReturnPosition(raw: string | null): AtlasReturnPosition | null {
   if (!raw) return null;
   try {
-    const saved: Partial<AtlasReturnPosition> | null = JSON.parse(raw);
-    if (!saved || typeof saved.href !== "string" || !saved.href.startsWith("/") ||
-        typeof saved.scrollY !== "number" || !Number.isFinite(saved.scrollY) || saved.scrollY < 0) return null;
+    return normalizeAtlasReturnPosition(JSON.parse(raw));
+  } catch {
+    return null;
+  }
+}
+
+export function normalizeAtlasReturnPosition(saved: Partial<AtlasReturnPosition> | null): AtlasReturnPosition | null {
+  if (!saved || typeof saved.href !== "string" || !saved.href.startsWith("/") ||
+      typeof saved.scrollY !== "number" || !Number.isFinite(saved.scrollY) || saved.scrollY < 0) return null;
+  try {
     const url = new URL(saved.href, atlasOrigin);
     return url.origin === atlasOrigin && isAtlasReturnPath(url.pathname)
       ? { href: url.pathname + url.search + url.hash, scrollY: saved.scrollY }

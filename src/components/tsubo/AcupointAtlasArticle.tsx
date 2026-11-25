@@ -46,7 +46,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} lead={article.lead} hasAnatomyDiagram={hasIndividualAnatomy || !!regionalSection} />
+      <AcupointArticleHeader point={point} lead={article.lead} />
       <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
 
       <AcupointTraditionalUses code={point.codeLower} />
@@ -64,17 +64,6 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </PointAtlasDiagrams>
       </section>
 
-      <div className="atlas-care-section">
-        <AcupointCautions priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
-          <Paragraphs paragraphs={article.cautions} />
-          {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
-          {hasIndividualAnatomy && (
-            <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
-          )}
-        </AcupointCautions>
-        <AcupointSelfCare code={point.codeLower} />
-      </div>
-
       {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
       {regionalSection && (
         <RegionalPointAnatomy
@@ -86,6 +75,17 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           surface={<PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />}
         />
       )}
+
+      <div className="atlas-care-section">
+        <AcupointCautions priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
+          <Paragraphs paragraphs={article.cautions} />
+          {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
+          {hasIndividualAnatomy && (
+            <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
+          )}
+        </AcupointCautions>
+        <AcupointSelfCare code={point.codeLower} />
+      </div>
 
       <AcupointLocationComparison point={point} related={article.relatedPoints}>
         {nearbyComparisons.map((comparison, index) => (

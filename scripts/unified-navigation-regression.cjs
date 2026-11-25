@@ -94,6 +94,7 @@ function component(relative, name = 'default') {
       if (id === '@/config/series') return load('src/config/series');
       if (id === '@/utils/siteMenu') return menu;
       if (id === '@/utils/atlasReturnPosition') return load('src/utils/atlasReturnPosition');
+      if (id === '@/utils/atlasDictionaryPosition') return load('src/utils/atlasDictionaryPosition');
       if (id === '@/utils/analytics') return { setAnalyticsDisabled() {} };
       if (id === '@/hooks/useAtlasReturn') return { useAtlasReturn: component('src/hooks/useAtlasReturn.ts', 'useAtlasReturn') };
       if (id === '@/hooks/useViewportLayout') return { useViewportLayout() {} };
@@ -285,6 +286,25 @@ flushFrames();
 flushFrames();
 assert.equal(window.scrollY, 510, 'The atlas shortcut restores the previous scroll position');
 assert.equal(tapAtlasShortcut(), false, 'Tapping the active atlas shortcut still opens the main atlas');
+
+const { rememberAtlasDictionaryPosition, takeAtlasDictionaryRestore } = load('src/utils/atlasDictionaryPosition');
+window.history = { state: { routerMarker: true }, replaceState(state) { this.state = state; } };
+const dictionaryPosition = {
+  href: '/tsubo?q=LI4&bodyPart=%E6%89%8B%E3%83%BB%E8%85%95',
+  scrollY: 840,
+  bodyMapOpen: false,
+  filtersOpen: false,
+  resultsOpen: true,
+};
+rememberAtlasDictionaryPosition(window, dictionaryPosition);
+assert.equal(window.history.state.routerMarker, true, 'Recording the index position preserves router metadata');
+assert.equal(tapAtlasShortcut(), true, 'The shortcut on a comparison page returns to the saved index');
+assert.deepEqual(navigations.at(-1), [dictionaryPosition.href, false]);
+pathname = '/tsubo';
+window.location.search = dictionaryPosition.href.slice('/tsubo'.length);
+assert.deepEqual({ ...takeAtlasDictionaryRestore(window, false) }, dictionaryPosition);
+assert.equal(takeAtlasDictionaryRestore(window, false), null, 'The requested viewport is restored only once');
+assert.deepEqual({ ...takeAtlasDictionaryRestore(window, true) }, dictionaryPosition, 'Back can use its own history entry');
 
 for (const owner of owners) for (const slot of owner.state) slot?.cleanup?.();
 assert.equal(documentEvents.get('transitionend')?.size || 0, 0, 'Unmount removes the font-transition listener');

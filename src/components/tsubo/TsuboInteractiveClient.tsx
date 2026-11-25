@@ -29,6 +29,7 @@ import { getPointSearchTopic, normalizeSearchText } from "@/utils/search";
 import { prepareAcupointSearch, getAcupointMatchReason, matchesPrimaryJoint } from "@/utils/acupointSearch";
 import { getKeyPointFilterLabel, isAcupointInKeyPointType, KEY_POINT_FILTER_LABELS } from "@/data/tsubo/keyPointTypes";
 import { setAnalyticsDisabled } from "@/utils/analytics";
+import { atlasDictionaryHref, rememberAtlasDictionaryPosition, takeAtlasDictionaryRestore, type AtlasDictionaryPosition } from "@/utils/atlasDictionaryPosition";
 import { EXTRA_POINTS } from "@/data/tsubo/extraPoints";
 
 type SortOption = "meridian" | "kana" | "detailed";
@@ -74,12 +75,16 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
   const [selectedTsubo, setSelectedTsubo] = useState<AcupointMaster | null>(null);
   const [showBodyMap, setShowBodyMap] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [returnPosition, setReturnPosition] = useState<AtlasDictionaryPosition | null>(null);
   const lastQuery = useRef("");
+  const firstUrlSync = useRef(true);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const resultsRef = useRef<HTMLElement | null>(null);
 
   const restoreUrl = useCallback((query: string) => {
-    if (query === lastQuery.current) return;
+    const position = takeAtlasDictionaryRestore(window, firstUrlSync.current);
+    firstUrlSync.current = false;
+    if (!position && query === lastQuery.current) return;
     lastQuery.current = query;
     const params = new URLSearchParams(query);
     const sort = params.get("sort");
@@ -94,22 +99,58 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
       currentPage: Math.max(1, Number.parseInt(params.get("page") || "1", 10) || 1),
     };
     setFilters(restored);
-    setShowBodyMap(restored.selectedBodyPart !== DEFAULT_SELECTION.selectedBodyPart && !restored.searchQuery);
-    setShowFilters(restored.selectedMeridian !== DEFAULT_SELECTION.selectedMeridian ||
-      restored.selectedCategory !== DEFAULT_SELECTION.selectedCategory || restored.onlyPublished);
+    setShowBodyMap(position?.bodyMapOpen ?? (restored.selectedBodyPart !== DEFAULT_SELECTION.selectedBodyPart && !restored.searchQuery));
+    setShowFilters(position?.filtersOpen ?? (restored.selectedMeridian !== DEFAULT_SELECTION.selectedMeridian ||
+      restored.selectedCategory !== DEFAULT_SELECTION.selectedCategory || restored.onlyPublished));
+    setReturnPosition(position);
 
     const id = (params.get("id") || params.get("highlight") || "").replace(/^tsubo-/i, "").toLowerCase();
     const point = id ? allPoints.find(item =>
       item.codeLower === id || item.id.toLowerCase() === id || item.legacyId.toLowerCase() === id,
     ) : undefined;
     setSelectedTsubo(point ?? null);
-    if (point) {
+    if (point && !position) {
       const timeout = window.setTimeout(() => {
         document.getElementById(`tsubo-card-${point.codeLower}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 350);
       return () => window.clearTimeout(timeout);
     }
   }, [allPoints]);
+
+  useEffect(() => {
+    if (!returnPosition || returnPosition.href !== atlasDictionaryHref(window.location)) return;
+    const results = resultsRef.current?.closest("details");
+    if (results) results.open = returnPosition.resultsOpen;
+    const frame = window.requestAnimationFrame(() => {
+      if (returnPosition.href === atlasDictionaryHref(window.location)) {
+        window.scrollTo({ top: returnPosition.scrollY, behavior: "instant" });
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [returnPosition]);
+
+  useEffect(() => {
+    function rememberPosition() {
+      if (window.location.pathname !== "/tsubo") return;
+      const results = resultsRef.current?.closest("details");
+      rememberAtlasDictionaryPosition(window, {
+        href: atlasDictionaryHref(window.location),
+        scrollY: Math.max(0, window.scrollY),
+        bodyMapOpen: document.getElementById("tsubo-body-filter")?.hidden === false,
+        filtersOpen: document.getElementById("tsubo-detail-filters")?.hidden === false,
+        resultsOpen: results?.open ?? false,
+      });
+    }
+    function onLinkClick(event: MouseEvent) {
+      if (event.target instanceof Element && event.target.closest("a[href]")) rememberPosition();
+    }
+    document.addEventListener("click", onLinkClick, true);
+    window.addEventListener("pagehide", rememberPosition);
+    return () => {
+      document.removeEventListener("click", onLinkClick, true);
+      window.removeEventListener("pagehide", rememberPosition);
+    };
+  }, []);
 
   function updateFilters(change: Partial<Filters>) {
     const next = { ...filters, ...change };

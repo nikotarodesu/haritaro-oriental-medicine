@@ -4,6 +4,24 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { setAnalyticsDisabled } from "@/utils/analytics";
 import { ATLAS_RETURN_STORAGE_KEY, isAtlasReturnPath, readAtlasReturnPosition, type AtlasReturnPosition } from "@/utils/atlasReturnPosition";
+import { getAtlasDictionaryReturn, requestAtlasDictionaryRestore } from "@/utils/atlasDictionaryPosition";
+
+type LinkNavigation = { preventDefault(): void };
+
+function navigateToDictionary(router: ReturnType<typeof useRouter>, event: LinkNavigation) {
+  const position = getAtlasDictionaryReturn(window);
+  if (!position) return;
+
+  event.preventDefault();
+  requestAtlasDictionaryRestore(position);
+  if (position.href.startsWith("/tsubo?")) setAnalyticsDisabled(true);
+  router.push(position.href, { scroll: false });
+}
+
+export function useAtlasDictionaryReturn() {
+  const router = useRouter();
+  return (event: LinkNavigation) => navigateToDictionary(router, event);
+}
 
 export function useAtlasReturn(pathname: string, query: string) {
   const router = useRouter();
@@ -65,8 +83,11 @@ export function useAtlasReturn(pathname: string, query: string) {
     };
   }, [pathname, query]);
 
-  return (event: { preventDefault(): void }) => {
-    if (isAtlasReturnPath(pathname)) return;
+  return (event: LinkNavigation) => {
+    if (isAtlasReturnPath(pathname)) {
+      if (pathname !== "/tsubo") navigateToDictionary(router, event);
+      return;
+    }
     let position = lastPosition.current;
     if (!position) {
       try {

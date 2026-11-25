@@ -1,5 +1,5 @@
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
-import Link from "next/link";
+import AtlasDictionaryReturnLink from "@/components/tsubo/AtlasDictionaryReturnLink";
 import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { PointAtlasThumbnail } from "@/components/tsubo/atlas/PointAtlasDiagrams";
@@ -62,10 +62,8 @@ export default async function TsuboComparePage({ searchParams }: { searchParams:
     <div className="tsubo-compare-page atlas-page min-h-screen">
       <div className="page-layout page-layout--intro">
         <header className="tsubo-compare-header">
-          <nav aria-label="パンくず" className="atlas-breadcrumb">
-            <Link href="/tsubo">はり太郎のツボ図鑑</Link>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">比較</span>
+          <nav aria-label="図鑑への移動" className="atlas-breadcrumb print:hidden">
+            <AtlasDictionaryReturnLink className="tsubo-compare-return" />
           </nav>
           <h1>ツボを比べる</h1>
         </header>
