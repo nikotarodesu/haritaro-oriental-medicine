@@ -25,8 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = seriesPageTitle(`${vessel.name}（${vessel.reading}）の流注・八脈交会穴・主治`, "reading");
-  const description = `${vessel.name}の流注経路、八脈交会穴（${vessel.masterPoint.name}×${vessel.couplePoint.name}）、主治病証、古典（難経・素問）の条文解説。`;
+  const title = seriesPageTitle(`${vessel.name}（${vessel.reading}）の流注図・交会穴・古典の記述`, "reading");
+  const description = `${vessel.name}が通るとされる経路を図で確認します。八脈交会穴（${vessel.masterPoint.name}と${vessel.couplePoint.name}）と『${vessel.classicQuote.book}』の記述も読めます。`;
 
   return {
     title,

@@ -457,7 +457,7 @@ export const SOURCE_PAPERS: PaperReference[] = [
   {
     id: "acupuncture-alcohol-dependence-arcuate-nucleus-chang-2019",
     title: "Acupuncture attenuates alcohol dependence through activation of endorphinergic input to the nucleus accumbens from the arcuate nucleus",
-    japaneseTitle: "鍼治療は弓状核から側坐核へのエンドルフィン作動性入力の活性化を介してアルコール依存を弱める",
+    japaneseTitle: "アルコール依存と鍼刺激の研究｜ラットで調べた神経の働き",
     authors: ["Sun-Mi Chang","Seong Shoon Yoon","et al."],
     journal: "Science Advances",
     year: 2019,
@@ -1115,7 +1115,7 @@ export const SOURCE_PAPERS: PaperReference[] = [
   {
     id: "shiatsu-vs-acupressure-distinction-cabo-2018",
     title: "Shiatsu and Acupressure: Two Different and Distinct Techniques",
-    japaneseTitle: "指圧（Shiatsu）と経穴圧迫（Acupressure）：二つの異なる別個の手技療法の比較分析と定義の提言",
+    japaneseTitle: "指圧と経穴圧迫の違い｜手技と定義の比較",
     authors: ["Fernando Cabo","Amanda Baskwill","Isaac Aguaristi","Slava Christophe-Tchakaloff","Jean-Philippe Guichard"],
     journal: "International Journal of Therapeutic Massage & Bodywork",
     year: 2018,

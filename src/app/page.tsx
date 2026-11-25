@@ -9,18 +9,17 @@ import VolarForearmRegion from "@/components/tsubo/atlas/VolarForearmRegion";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd, HOME_HEADING } from "@/config/seo";
-import { DICTIONARY_TAGLINE, PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
+import { PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
 const SERIES_ACTIONS = {
   "/tsubo": { label: "ツボを調べる", analytics: "home_atlas", art: "points", links: [SERIES.dictionary.links[1], ACUPUNCTURE_GUIDE] },
-  "/learn": { label: "講義を読む", analytics: "home_reading", art: "study", links: [SERIES.reading.links[0]] },
-  "/clinical": { label: "症例で練習する", analytics: "home_clinical", art: "practice", links: SERIES.practice.links },
+  "/learn": { label: "講義一覧を見る", analytics: "home_reading", art: "study", links: [SERIES.reading.links[0]] },
+  "/clinical": { label: "臨床演習を選ぶ", analytics: "home_clinical", art: "practice", links: SERIES.practice.links },
 } satisfies Record<(typeof SERIES_ENTRIES)[number]["href"], {
   label: string; analytics: string; art: PageArtKind; links: ReadonlyArray<{ href: string; label: string }>;
 }>;
 const POINTS = [
-  { code: "li4", label: "合谷", location: "手の甲", art: <HeguHandDiagram thumbnail /> },
   { code: "st36", label: "足三里", location: "ひざの下", art: pointThumbnail("st36", "足三里", LowerLegRegion) },
   { code: "pc6", label: "内関", location: "手首の近く", art: pointThumbnail("pc6", "内関", VolarForearmRegion) },
   { code: "lr3", label: "太衝", location: "足の甲", art: pointThumbnail("lr3", "太衝", FootDorsumRegion) },
@@ -49,13 +48,6 @@ export default function HomePage() {
               <p className="platform-intro-text">{PLATFORM_DESCRIPTION}</p>
             </div>
             <PlatformSearchForm placeholder="合谷、肩こり、陰陽" />
-            <Link href={SERIES.dictionary.href} className="platform-dictionary-intro">
-              <span>
-                <span>{SERIES.dictionary.name}</span>
-                <strong>{DICTIONARY_TAGLINE}</strong>
-              </span>
-              <ArrowRight aria-hidden="true" />
-            </Link>
           </div>
           <Link href="/tsubo/li4" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">
             <span className="platform-feature-art"><HeguHandDiagram thumbnail /></span>

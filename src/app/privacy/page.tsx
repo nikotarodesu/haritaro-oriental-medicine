@@ -139,13 +139,13 @@ export default function PrivacyPage() {
           <section id="policy-section-6" className="scroll-mt-28 space-y-3">
             <h2 className="text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-2 flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
-              <span>6. 免責事項（医師法・非医療行為の明記）</span>
+              <span>6. 教材の利用と免責事項</span>
             </h2>
             <p>
-              ツボ図鑑、気血水 体質チェック、弁証の練習、症例演習や記事は、東洋医学・鍼灸を学ぶための資料です。診断・治療・処方などの医療行為に代わるものではありません。
+              ツボ図鑑、気血水 体質チェック、弁証演習、症例演習や記事は、東洋医学・鍼灸を学ぶための資料です。医療情報の範囲は<Link href="/terms#policy-section-8" className="underline">利用規約</Link>をご確認ください。
             </p>
             <p>
-              激しい痛み、急激な体調変化、妊娠中の重篤な症状などがある場合は、自己判断によるツボ刺激等を行わず、速やかに専門の医療機関を受診してください。
+              激しい痛み、急な体調の変化、妊娠中の重い症状があるときは、ツボ押しを試す前に速やかに医療機関を受診してください。具体的な案内は<Link href="/safety" className="underline">受診の目安と鍼灸の安全性</Link>に掲載しています。
             </p>
             <p>
               当サイトは掲載情報の正確性と最新性に努めます。情報の完全性、個別の状況での安全性、効果は保証しません。掲載情報を利用して損害が生じた場合の運営者の責任は、適用される法令に従います。

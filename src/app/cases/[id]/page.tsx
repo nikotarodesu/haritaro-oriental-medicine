@@ -125,7 +125,7 @@ export default async function CaseDetailPage({ params }: Props) {
         </section>
       )}
       {relatedGuide && <nav aria-label="症例に関連するガイド" className="reader-navigation">
-        <Link href={symptomGuidePath(relatedGuide)} className="page-secondary-action">{relatedGuide.title}の症状ガイドを読む</Link>
+        <Link href={symptomGuidePath(relatedGuide)} className="page-secondary-action">{relatedGuide.title}で受診の目安と相談時に伝えることを読む</Link>
       </nav>}
     </div>
   );

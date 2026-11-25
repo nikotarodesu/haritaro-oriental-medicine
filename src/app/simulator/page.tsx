@@ -6,7 +6,7 @@ import SimulatorHub from "@/components/SimulatorHub";
 import { getArticlePreviews } from "@/data/articleData";
 
 const description = "学生向けの東洋医学学習ツール。3つの架空症例を6段階で検討し、追加問診、安全確認、弁証候補、配穴の根拠、再評価を練習。所見の矛盾や情報不足も確認できます。";
-const title = seriesPageTitle("弁証の練習｜症例・条件選択・見立て修正", "practice");
+const title = seriesPageTitle("弁証演習｜症例・条件選択・見立ての見直し", "practice");
 
 export const metadata: Metadata = {
   title,
@@ -25,7 +25,7 @@ export default function SimulatorPage() {
         "@type": "WebApplication",
         "@id": "https://www.haritaro.jp/simulator#app",
         url: "https://www.haritaro.jp/simulator",
-        name: "東洋医学 弁証の練習",
+        name: "東洋医学の弁証演習",
         applicationCategory: "EducationalApplication",
         operatingSystem: "All",
         description: "架空症例の段階式演習と、四診所見に基づく伝統医学上の候補・矛盾・情報不足を整理する教育用ツール。実際の患者の診断や個別の治療指示には使用しません。",
@@ -47,7 +47,7 @@ export default function SimulatorPage() {
           {
             "@type": "ListItem",
             position: 2,
-            name: "弁証の練習",
+            name: "弁証演習",
             item: "https://www.haritaro.jp/simulator",
           },
         ],
@@ -68,7 +68,7 @@ export default function SimulatorPage() {
         </Link>
         <span>/</span>
         <span className="text-[#232826] dark:text-[#FAF8F5] font-semibold">
-          弁証の練習
+          弁証演習
         </span>
       </nav>
 

@@ -2,7 +2,7 @@ import type { AcupunctureResearchArticle } from "./types";
 
 export const PATTERN_AGREEMENT_RESEARCH: AcupunctureResearchArticle = {
   slug: "pattern-diagnosis-agreement",
-  title: "同じ症例でも弁証が分かれるのはなぜ？ 所見の読み比べ",
+  title: "鍼灸師の見立てはどこまで一致する？ 弁証の研究と架空例",
   description: "慢性腰痛のある6人を、6人の鍼灸師が同じ日に評価した研究を読みます。架空の症例で、見立てを支える所見と次に聞きたいことを比べます。",
   sections: [
     {

@@ -181,7 +181,7 @@ assert.equal(scroll().props.tabIndex, 0, 'The two-direction scrolling region is 
 assert.equal(scroll().props.role, 'region');
 assert.equal(scroll().props['aria-describedby'], nodes(compare.tree()).find(node => node.props?.id === 'tsubo-compare-scroll-hint').props.id);
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 3);
-assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 5);
+assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 4);
 assert(nodes(scroll()).some(node => node.type === 'caption'));
 for (const code of ['li4', 'lr3']) {
   assert(nodes(positionGrid()).some(node => node.type === Link && node.props.href === '/tsubo/' + code + '#acupoint-location' && !node.props.target), 'Default comparison links directly to every diagram in the same tab');
@@ -201,7 +201,7 @@ assert(compareNodes.indexOf(compareInput()) < compareNodes.indexOf(pointSelectio
 assert(!examples.props.open);
 const mobilePointNames = row => nodes(row).filter(node => node.props?.className === 'tsubo-compare-row-point').map(text).join(',');
 const itemRows = () => nodes(scroll()).filter(node => node.type === 'tr' && node.props?.children?.[0]?.props?.scope === 'row');
-assert.equal(itemRows().length, 5);
+assert.equal(itemRows().length, 4);
 assert.equal(text(itemRows()[0].props.children[0]), '注意事項', 'Safety is first in the supplementary table');
 assert(compareNodes.indexOf(positionGrid()) < compareNodes.indexOf(scroll()), 'The location cards precede the table');
 assert(!compareNodes.find(node => node.type === 'details' && node.props?.className.includes('tsubo-compare-facts')).props.open);
@@ -229,7 +229,7 @@ compare.button('合谷を比較から外す').props.onClick();
 assert.equal(comparisonHref, '/tsubo/compare?a=lr3');
 renderComparison();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');
-assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 5);
+assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 4);
 assert(comparePicker().props.open, 'A single selected point makes the picker available straight away');
 assert.equal(locationCheck(), undefined, 'A single point has no pair-specific question');
 assert.equal(caseLinks().length, 0);
@@ -274,17 +274,18 @@ for (const label of ['久視（きゅうし）', '久坐（きゅうざ）', '�
   choice.props.onClick();
   gorou.render();
 }
-const selectedPassages = nodes(gorou.tree()).find(node => node.props?.['aria-labelledby'] === 'gorou-result-heading');
-assert(selectedPassages, 'Selected actions have a qualitative account');
+const selectedPassages = nodes(gorou.tree()).find(node => node.props?.['aria-labelledby'] === 'gorou-rest-heading');
+assert(selectedPassages, 'Selected actions show the classical account beside the rest examples');
 assert(nodes(gorou.tree()).some(node => node.type === 'a' && node.props.href === '#gorou-rest-heading' && text(node).includes('休憩・動作の例を見る')));
 assert(nodes(gorou.tree()).some(node => node.props?.id === 'gorou-rest-heading' && node.props.tabIndex === -1), 'The examples shortcut has a focusable target');
 for (const passage of ['久視傷血', '久坐傷肉', '久立傷骨', '久行傷筋', '久臥傷気']) assert(text(selectedPassages).includes(passage), passage);
 assert.doesNotMatch(text(gorou.tree()), /学習用.{0,5}点数|\/100/);
 for (const code of ['ST36', 'KI1', 'BL57', 'CV17']) {
   const point = publicAtlas.ACUPOINT_LOOKUP.find(entry => entry.code === code);
-  assert(text(gorou.tree()).includes(point.locationSimple), code + ' uses the same location as the atlas');
+  const pointDisclosure = nodes(selectedPassages).find(node => node.type === 'details' && text(node).includes(point.locationSimple));
+  assert(pointDisclosure && !pointDisclosure.props.open, code + ' keeps the verified atlas description in a separate, optional learning section');
   for (const anchor of ['acupoint-location', 'acupoint-cautions']) {
-    assert(nodes(gorou.tree()).some(node => node.type === Link && node.props.href === '/tsubo/' + code.toLowerCase() + '#' + anchor), code + ' links to ' + anchor);
+    assert(nodes(pointDisclosure).some(node => node.type === Link && node.props.href === '/tsubo/' + code.toLowerCase() + '#' + anchor), code + ' links to ' + anchor);
   }
 }
 assert.match(text(gorou.tree()), /太陽（たいよう）.*奇穴/);
@@ -388,6 +389,8 @@ async function checkComparisonHeader() {
     },
     '@/data/tsubo/atlas/articles': { ATLAS_ARTICLES: Object.fromEntries(TSUBOS.map(point => [point.id, { traditional: [''], cautions: [''] }])) },
     '@/data/tsubo/atlas/evidence': { getAcupointStudies: () => [] },
+    '@/data/tsubo/friendlyLocations': atlasLocations,
+    '@/data/tsubo/atlas/traditionalUses': { TRADITIONAL_POINT_USES: {} },
     '@/data/tsubo/atlas/markers': { ATLAS_POINT_MARKERS: {} },
     './CompareClient': emptyComponent,
     './compare-flow.css': {},

@@ -273,7 +273,7 @@ function PracticePageContent() {
     } else if (courseId === "golden_pairs") {
       const targetPoints = allPoints.filter((p) => p.goldenPairs && p.goldenPairs.length > 0);
       const questions = generateQuestionsForPoints(targetPoints, "golden_pairs", 10, `gp_${Date.now()}`);
-      startNewSession("golden_pairs", "伝統的名配穴・ゴールデンペア特訓", questions, "batch");
+      startNewSession("golden_pairs", "伝統的なツボの組み合わせ", questions, "batch");
     }
   };
 

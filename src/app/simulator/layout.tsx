@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "弁証の練習｜はり太郎の臨床演習",
+  title: "弁証演習｜はり太郎の臨床演習",
   description:
     "症状や所見を整理し、八綱・気血水・臓腑の視点から弁証を検討する補助ツール。学習と臨床推論の振り返りに活用できます。",
   alternates: {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
       images: SHARED_OG_IMAGES,
       siteName: SITE_NAME,
-    title: "弁証の練習｜はり太郎の臨床演習",
+    title: "弁証演習｜はり太郎の臨床演習",
     description:
       "症状や所見を整理し、八綱・気血水・臓腑の視点から弁証を検討する補助ツール。学習と臨床推論の振り返りに活用できます。",
     url: "https://www.haritaro.jp/simulator",

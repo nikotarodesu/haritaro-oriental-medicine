@@ -46,13 +46,6 @@ const visitSteps = [
   { title: "経過を振り返る", icon: ChartLine, text: "痛みの強さだけでなく、眠りや歩行など、最初に困っていたことの変化と有害な反応を確かめます。" },
 ];
 
-const evidenceQuestions = [
-  ["どんな人を調べた？", "腰痛なら、長く続いている痛みか、最近始まった痛みか。"],
-  ["どんな施術を受けた？", "鍼、お灸、ツボ押しのどれか。ツボは一つか、組み合わせか。薬も使ったか。"],
-  ["何と比べた？", "普段の治療を受けた人か、鍼をまねた方法を受けた人か。"],
-  ["いつ、何が変わった？", "直後か、数週間後か。痛みや動きやすさのほか、施術後の不調も調べたか。"],
-] as const;
-
 type SourceId = (typeof ACUPUNCTURE_GUIDE_SOURCES)[number]["id"];
 
 function SourceLink({ id, children }: { id: SourceId; children: string }) {
@@ -268,7 +261,7 @@ export default function AcupunctureGuidePage() {
 
         <section id="evidence" className="acupuncture-guide-section" aria-labelledby="acupuncture-evidence-title">
           <h3 id="acupuncture-evidence-title">効果について調べるときの見方</h3>
-          <p>「鍼で腰痛が楽になった」と聞いたら、まず「何と比べて、どれくらい楽になった？」と考えます。痛みは時間とともに変わることもあるので、研究では別の方法を受けた人の変化も同じ時期に調べます。</p>
+          <p>下の腰痛研究では、鍼を受けた人が何を受けた人と比べられたか、歩く・服を着るといった動作の困りごとがどう変わったかを見ます。</p>
           <article id={backPainStudy.id} className="acupuncture-study-feature" aria-labelledby={`${backPainStudy.id}-title`}>
             <h4 id={`${backPainStudy.id}-title`}>{backPainStudy.title}</h4>
             <p>{backPainStudy.context}</p>
@@ -303,12 +296,9 @@ export default function AcupunctureGuidePage() {
             </div>
           </article>
 
-          <section className="acupuncture-evidence-block" aria-labelledby="acupuncture-evidence-questions-title">
-            <h4 id="acupuncture-evidence-questions-title">研究を読むときの4つの質問</h4>
-            <dl className="acupuncture-evidence-questions">
-              {evidenceQuestions.map(([question, answer]) => <div key={question}><dt>{question}</dt><dd>{answer}</dd></div>)}
-            </dl>
-          </section>
+          <p className="acupuncture-evidence-block">
+            <Link href="/learn/lectures/reading-evidence" className="ui-text-link">講義で、測った結果と研究者の考えを読み分ける <ArrowRight size={16} aria-hidden="true" /></Link>
+          </p>
 
           <section className="acupuncture-evidence-block" aria-labelledby="acupuncture-more-studies-title">
             <h4 id="acupuncture-more-studies-title">ほかの研究では、何を比べた？</h4>
@@ -338,7 +328,6 @@ export default function AcupunctureGuidePage() {
           <div className="acupuncture-inline-links gap-y-2">
             <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title} <ArrowRight size={16} aria-hidden="true" /></Link>
             <Link href={AROMATASE_JOINT_PAIN_RESEARCH_HREF} className="ui-text-link">乳がん治療中の関節痛を52週まで調べた試験 <ArrowRight size={16} aria-hidden="true" /></Link>
-            <Link href="/learn/lectures/reading-evidence" className="ui-text-link">講義で研究の読み方を学ぶ <ArrowRight size={16} aria-hidden="true" /></Link>
           </div>
         </section>
 

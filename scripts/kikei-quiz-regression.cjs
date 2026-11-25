@@ -57,7 +57,7 @@ for (const vessel of KIKEI_VESSELS) {
   const correctTexts = [
     `${vessel.masterPoint.name}（${vessel.masterPoint.meridian}）`,
     `${vessel.couplePoint.name}（${vessel.couplePoint.meridian}）`,
-    vessel.indications[0] || '特有の主治病証',
+    vessel.studyAnswer,
   ];
   for (let attempt = 0; attempt < 2; attempt++) {
     if (attempt) {

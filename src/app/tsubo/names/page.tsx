@@ -7,7 +7,7 @@ import {
   acupointNameIndexHref,
   getAcupointNameCharacter,
 } from "@/data/tsubo/names/characterIndex";
-import { NAME_READINGS } from "@/data/tsubo/names/nameReadings";
+import { getAtlasLocationSimple } from "@/data/tsubo/friendlyLocations";
 
 const title = seriesPageTitle("ツボ名の漢字索引", "dictionary");
 const description = "「谷」「泉」「髎」など、ツボの名前に使う漢字一字から経穴を探せます。日本語と中国語の表記を収録し、名前の由来を読み比べられます。";
@@ -77,7 +77,7 @@ export default async function AcupointNameIndexPage({ searchParams }: {
                       {point.name}<span>{point.kana}・{point.code}</span>
                     </Link>
                   </h3>
-                  <p>{NAME_READINGS[point.codeLower]}</p>
+                  <p>{getAtlasLocationSimple(point.codeLower)?.match(/^[^。]+。?/)?.[0]}</p>
                 </li>
               ))}
             </ul>

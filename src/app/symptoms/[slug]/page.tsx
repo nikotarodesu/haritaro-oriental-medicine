@@ -62,8 +62,6 @@ export default async function SymptomGuidePage({ params }: Props) {
   const researchNote = SYMPTOM_RESEARCH_NOTES[guide.id];
   const researchLink = SYMPTOM_RESEARCH_LINKS[guide.id];
   const hasResearch = pointStudies.length > 0 || !!researchNote || !!researchLink;
-  const firstSentenceEnd = content.summary.indexOf('。') + 1 || content.summary.length;
-  const summaryOpening = content.summary.slice(0, firstSentenceEnd);
   const recordingExample = SYMPTOM_RECORDING_EXAMPLES[guide.id];
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
   const sections = [
@@ -81,9 +79,9 @@ export default async function SymptomGuidePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomGuideJsonLd(guide)).replace(/</g, '\\u003c') }} />
       <header className="atlas-guide-heading">
         <div>
-          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">一般向け症状ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.category}</span></nav>
+          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.title}</span></nav>
           <h1>{guide.title}</h1>
-          <p>{summaryOpening}</p>
+          <p>{content.summary}</p>
         </div>
         <span className="atlas-guide-icon atlas-guide-icon--heading"><SymptomIcon id={guide.id} className="h-10 w-10" /></span>
       </header>
@@ -101,6 +99,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <section id="acupoints" className="atlas-guide-points atlas-target" aria-labelledby="guide-points-heading">
         <div className="atlas-guide-points-heading">
           <h2 id="guide-points-heading" className="atlas-section-title">関連するツボ</h2>
+          <p>東洋医学の教材で扱うツボの例です。図鑑で位置と注意点を確認できます。</p>
         </div>
         <ul className="atlas-related-points">{acupoints.map(point => (
           <li key={point.codeLower}>

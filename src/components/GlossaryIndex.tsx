@@ -12,7 +12,7 @@ const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
 export default function GlossaryIndex({ terms }: { terms: Array<GlossaryTerm & { relatedLectureHref?: string }> }) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
-  const filtered = terms.filter(term => (category === 'all' || term.category === category) && matchesSearchText(query, [term.term, term.reading, term.oneLiner, term.summary]));
+  const filtered = terms.filter(term => (category === 'all' || term.category === category) && matchesSearchText(query, [term.term, term.displayTerm ?? '', term.reading, term.oneLiner, term.summary]));
 
   useEffect(() => {
     let frame = 0;
@@ -41,7 +41,7 @@ export default function GlossaryIndex({ terms }: { terms: Array<GlossaryTerm & {
       return groupTerms.length > 0 && <section key={group} aria-label={group} className="space-y-3">
         <h2 className="font-serif text-xl font-bold">{group}</h2>
         <div className="grid items-start gap-3 md:grid-cols-2">{groupTerms.map(term => <section key={term.term} id={`term-${term.term}`} className="glossary-entry scroll-mt-28 space-y-2 rounded-2xl border border-[#D9E3DD] bg-[#FCFAF6] p-5 dark:border-[#2A3B4A] dark:bg-[#17212A] target:bg-[#EBF3EF] target:ring-2 target:ring-[#74BA9E] dark:target:bg-[#182823]">
-          <h3 className="text-lg font-bold">{term.term}<span className="ml-2 text-sm font-normal">（{term.reading}）</span></h3>
+          <h3 className="text-lg font-bold">{term.displayTerm ?? term.term}<span className="ml-2 text-sm font-normal">（{term.reading}）</span></h3>
           <p className="text-base leading-[1.75]">{term.oneLiner}</p>
           {term.readingLink && <Link href={term.readingLink.href} className="ui-text-link">{term.readingLink.label} <ArrowRight size={16} aria-hidden="true" /></Link>}
           <details>

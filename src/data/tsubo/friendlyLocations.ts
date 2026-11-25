@@ -250,3 +250,6 @@ export function getFriendlyLocationSimple(point: {
   // 3. 専門用語コンバーターで日常語に変換
   return simplifyLocationText(point.locationDetail);
 }
+export function atlasLocationWithoutUnitNote(location: string) {
+  return location.replace("寸は体の区間を等分した位置の目安です。", "");
+}

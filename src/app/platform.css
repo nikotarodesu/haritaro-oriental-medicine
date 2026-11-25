@@ -53,21 +53,6 @@
 
 .platform-hero-copy .platform-search { width: 100%; }
 
-.platform-dictionary-intro {
-  display: inline-flex;
-  align-items: center;
-  gap: .75rem;
-  min-height: 2.75rem;
-  color: var(--home-green-text);
-  line-height: 1.55;
-}
-
-.platform-dictionary-intro span span { display: block; color: var(--text-secondary); font-size: .8125rem; }
-.platform-dictionary-intro strong { font-family: var(--font-serif); font-size: clamp(.98rem, 2.8vw, 1.18rem); }
-.platform-dictionary-intro svg { width: 1.125rem; flex: none; }
-.platform-dictionary-intro:hover strong { text-decoration: underline; text-underline-offset: .25em; }
-
-
 .platform-search {
   display: grid;
   gap: .45rem;
@@ -339,7 +324,7 @@
   .platform-series-card { grid-template-columns: minmax(0, 1fr); padding: .55rem .8rem; }
   .platform-series-action { gap: .75rem; padding-inline: .15rem; }
   .platform-topic-links { justify-content: flex-start; border-top: 1px solid var(--border-subtle); margin-top: .2rem; }
-  .platform-index ul { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .platform-index ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 .platform-results { display: grid; gap: 1.5rem; max-width: 55rem; }

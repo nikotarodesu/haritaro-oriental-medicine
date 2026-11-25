@@ -1,5 +1,5 @@
 import { BookOpen, ChevronRight, FlaskConical } from "lucide-react";
-import { ATLAS_STUDIES, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
+import { ATLAS_STUDIES, getAtlasStudyPoint, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 
 const extraStudyIds: Readonly<Partial<Record<string, readonly string[]>>> = {
@@ -34,7 +34,7 @@ export default function AcupointUses({ code }: { code: string }) {
           <ul className="atlas-use-studies">
             {studies.map(study => (
               <li key={study.id}>
-                <a href={`/tsubo/${study.points[0]}#${study.id}`}>
+                <a href={`/tsubo/${getAtlasStudyPoint(study)}#${study.id}`}>
                   <span><small>{getStudyScopeLabel(study, code)}</small><strong>{study.topic}</strong></span>
                   <ChevronRight size={16} aria-hidden="true" />
                 </a>

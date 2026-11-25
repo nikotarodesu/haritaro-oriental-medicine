@@ -8,6 +8,7 @@ import CourseMiniCase from "@/components/learning/CourseMiniCase";
 import LearningSyncStatus from "@/components/learning/LearningSyncStatus";
 import type { ArticlePreview } from "@/data/articleData";
 import type { CurriculumIndexCatalog } from "@/types/curriculumIndexCatalog";
+import { LEARNING_COURSES_HREF } from "@/utils/courseJourney";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -213,7 +214,7 @@ export default function CurriculumIndexClient({ catalog, relatedArticles }: {
         </div>
       </section>
 
-      <nav aria-label="学ぶ場所を選ぶ" className="curriculum-entry-links"><a href="#curriculum-chapters"><GraduationCap aria-hidden="true" className="h-5 w-5" />章から選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><Link href="/learn#learn-courses-heading">3〜5講の基礎コース<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link></nav>
+      <nav aria-label="学ぶ場所を選ぶ" className="curriculum-entry-links"><a href="#curriculum-chapters"><GraduationCap aria-hidden="true" className="h-5 w-5" />章から選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><Link href={LEARNING_COURSES_HREF}>学習コース一覧<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link></nav>
 
       {/* 章構成から導く学習マップ */}
       {showLearningMap && (

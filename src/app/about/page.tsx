@@ -33,7 +33,7 @@ export default function AboutPage() {
       <section aria-labelledby="about-review-scope" className="space-y-3 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6">
         <h2 id="about-review-scope" className="text-lg font-bold text-[#1E3D34] dark:text-[#74BA9E]">鍼灸師がつくる学習サイト</h2>
         <p className="text-base leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-          鍼灸師のはり太郎が、ツボや東洋医学を身近な例と図で学べる教材を作っています。古典の考え方や現代の研究を紹介するときは、記事ごとに資料と参照した箇所を示します。
+          ツボの位置を図で確かめ、東洋医学の用語を身近な例から学べます。
         </p>
         <Link href="/editorial-policy" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#1E3D34] dark:text-[#83BEA8] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">
           出典の確認範囲と編集方針を見る<ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -76,7 +76,7 @@ export default function AboutPage() {
                   2017年にはり師・きゅう師免許を取得し、{AUTHOR_OPENED_AT}に開業しました。身体ケアと臨床の現場で通算10年以上の経験があります。
                 </p>
                 <p className="text-sm sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
-                  鍼灸専門学校を卒業し、鍼灸接骨院、リラクゼーション、デイサービスで働いた後、鍼灸院を開きました。現在は一人で鍼灸院を運営しながら、このサイトの講義や図鑑を書いています。
+                  鍼灸専門学校を卒業後、鍼灸接骨院、リラクゼーション、デイサービスで働きました。現在は鍼灸院を運営しながら、一人でこのサイトの資料調査、執筆、開発を行っています。
                 </p>
               </div>
             </div>
@@ -108,45 +108,27 @@ export default function AboutPage() {
             {/* 執筆・運営体制と編集方針 */}
             <div className="space-y-4 pt-4 border-t border-[#E8E1D1] dark:border-[#263542]">
               <h4 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                執筆・運営体制と編集方針
+                参照資料と訂正の窓口
               </h4>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm sm:text-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
                   <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                    一人運営・直接執筆の開示
-                  </span>
-                  <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                    現役鍼灸師の「はり太郎」が、一人で資料の調査、記事の執筆、サイトの開発を行っています。編集部や監修委員会による制作ではなく、運営者本人が掲載内容と出典を確認しています。
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
-                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                    出典・エビデンス選定基準
+                    主に参照する資料
                   </span>
                   <ul className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed space-y-1 list-disc list-inside">
                     <li><strong>経穴・経絡・基礎理論：</strong>WHO標準経穴部位、はり師きゅう師養成標準教科書、主要古典（『黄帝内経』『難経』『甲乙経』等）</li>
-                    <li><strong>現代医学・自然科学：</strong>PubMed収載の査読付き論文、公的機関の診療ガイドラインを基本参照</li>
+                    <li><strong>現代医学・自然科学：</strong>PubMed収載の査読論文、公的機関の診療ガイドライン</li>
                   </ul>
-                </div>
-
-                <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2">
-                  <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                    誤りの訂正方針と更新ポリシー
-                  </span>
-                  <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                    医学・東洋医学の情報は継続的に確認します。読者・専門家からのご指摘について該当する出典と記述を確認し、訂正内容と確認範囲を記録します。本文では、どの資料のどの箇所を参照したかを示します。
-                  </p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] space-y-2 flex flex-col justify-between">
                   <div className="space-y-1">
                     <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block">
-                      ご意見・誤りのご指摘窓口
+                      誤りの訂正
                     </span>
                     <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                      掲載内容に関するご質問、学術的なご指摘、誤字脱字の報告などは、お問い合わせフォームよりお寄せください。
+                      内容の誤りや誤字は、該当ページと記述を添えてお知らせください。出典を確認し、訂正した内容を記録します。
                     </p>
                   </div>
                   <div className="pt-2">
@@ -172,9 +154,6 @@ export default function AboutPage() {
             東洋医学には、陰陽・五行・気・血・津液（気血水）など、日常では使わない言葉が多く登場します。初めて学ぶ方が、言葉の意味と使い方を一つずつ確認できるように、このサイトを作りました。
           </p>
           <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
-            古典に書かれた説明、筆者の臨床経験、研究で確認された結果は、同じ根拠としては扱えません。記事や講義では、どの資料を参照し、何を確認できたかを示します。
-          </p>
-          <p className="text-sm sm:text-base text-[#333835] dark:text-[#C5D2DB] leading-relaxed">
             用語を調べたら、講義の確認問題で使い方を振り返れます。臨床演習では架空の相談を読み、どの所見を根拠に答えたかを解答例と比べられます。
           </p>
         </div>
@@ -194,7 +173,7 @@ export default function AboutPage() {
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
               <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E] block text-sm sm:text-base">出典の確認範囲を書く</span>
               <p className="text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-                古典の分類、研究で報告された結果、学習用の比喩を区別します。資料名や著者などの書誌情報に加え、掲載する説明がその資料に書かれているかも確認します。専門家による監修は完了していません。
+                各教材に資料名と参照箇所を載せています。確認の手順と第三者監修の状況は<Link href="/editorial-policy" className="ui-text-link">編集方針</Link>で確認できます。
               </p>
             </div>
             <div className="bg-[#FAF8F5] dark:bg-[#121920] p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5 sm:space-y-2">
@@ -224,7 +203,7 @@ export default function AboutPage() {
         <section aria-labelledby="about-start-guide" className="space-y-4 border-t border-[#F2ECE0] pt-5 dark:border-[#22303D]">
           <h2 id="about-start-guide" className="font-serif text-xl font-bold text-[#232826] sm:text-2xl dark:text-[#FAF8F5]">目的に合う始め方</h2>
           <p className="text-sm leading-relaxed text-muted">
-            <strong>ツボを調べたい方</strong>は、<Link href="/tsubo" className="ui-text-link">ツボ図鑑</Link>で場所や目印を調べられます。頭痛や肩こりなどが気になるときは、<Link href="/symptoms" className="ui-text-link">症状ガイド</Link>で受診の目安と日常の工夫を読めます。
+            <strong>ツボを調べたい方</strong>は、<Link href="/tsubo" className="ui-text-link">ツボ図鑑</Link>で場所や目印を調べられます。頭痛や肩こりなどが気になるときは、<Link href="/symptoms" className="ui-text-link">症状別ガイド</Link>で受診の目安と日常の工夫を読めます。
           </p>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="flex flex-col justify-between gap-4 rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-4 sm:p-5 dark:border-[#22303D] dark:bg-[#121920]">

@@ -16,8 +16,6 @@ import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
 import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
-import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
-import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
@@ -46,18 +44,18 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   const firstComparison = nearbyComparisons[0];
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
-  const positionPage = whoAtlasPages[point.codeLower];
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} />
+      {article.safetyWarning && <aside className="atlas-caution-priority"><p>{article.safetyWarning}</p></aside>}
       <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
 
       <AcupointTraditionalUses code={point.codeLower} />
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
-        <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={[article.lead, ...article.location]}>
+        <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           {!hasIndividualAnatomy && article.expert.length > 0 && (
             <div className="atlas-location-expert">
@@ -86,14 +84,13 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           code={point.code}
           name={point.name}
           section={regionalSection}
-          position={whoLocations[point.codeLower]}
-          locationSource={positionPage ? { title: `WHO原本 p.${positionPage - 9}（PDF）`, url: `${WHO_ATLAS_PDF}#page=${positionPage}` } : undefined}
+          locationHref="#acupoint-location"
           surface={<PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />}
         />
       )}
 
       <div className="atlas-care-section">
-        <AcupointCautions priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
+        <AcupointCautions>
           <Paragraphs paragraphs={article.cautions} />
           {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
           {hasIndividualAnatomy && (

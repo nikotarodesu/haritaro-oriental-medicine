@@ -5,7 +5,7 @@ import React from "react";
 const compareDescription = "冷えやほてりが重なる例などを横に並べ、どの所見が候補に合うか、まだ何を確かめる必要があるかを比べます。";
 
 export const metadata: Metadata = {
-  title: "鑑別例を見比べる｜弁証の練習",
+  title: "似た証の違いを比べる｜弁証演習",
   description: compareDescription,
   alternates: {
     canonical: "/simulator",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
       images: SHARED_OG_IMAGES,
       siteName: SITE_NAME,
-    title: "鑑別例を見比べる｜弁証の練習",
+    title: "似た証の違いを比べる｜弁証演習",
     description: compareDescription,
     url: "https://www.haritaro.jp/simulator",
   },

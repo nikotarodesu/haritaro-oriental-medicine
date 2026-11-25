@@ -106,10 +106,10 @@ export default function CasesIndexPage() {
           <AlertCircle className="w-4 h-4 text-warm shrink-0 mt-0.5" />
           <div className="space-y-1">
             <p className="font-bold text-ink">
-              【症例演習に関する留意事項・免責】
+              症例演習で扱う範囲
             </p>
             <p className="leading-relaxed">
-              掲載されている症例データおよび解説は、東洋医学・鍼灸理論の臨床推論トレーニングを目的として構成された教育用の模擬症例（フィクション）です。特定の患者の個人情報や実際のカルテ記録等とは一切関係ありません。また、実際の患者に対する治療・施術方針の決定にあたっては、担当する医療従事者や医師の診断・指導に従ってください。
+              全20例は東洋医学の考え方を学ぶための架空症例です。実際の診断や施術については、担当する医療従事者の指導に従ってください。
             </p>
           </div>
         </div>
@@ -122,8 +122,9 @@ export default function CasesIndexPage() {
         <Link href="/simulator#revision-training" className="inline-flex min-h-11 items-center gap-2 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">見立て修正の演習へ<ArrowRight size={16} aria-hidden="true" /></Link>
       </div>
       <nav aria-label="関連する演習" className="flex flex-wrap gap-x-6 gap-y-1">
-        <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">弁証の練習へ</Link>
-        <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴の練習へ</Link>
+        <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">弁証演習へ</Link>
+        <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴演習へ</Link>
+        <Link href="/diagnosis" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">気血水 体質チェックへ</Link>
       </nav>
     </div>
   );

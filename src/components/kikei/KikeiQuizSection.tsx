@@ -34,7 +34,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
           { text: "合谷（手陽明大腸経）", isCorrect: false },
           { text: "太衝（足厥陰肝経）", isCorrect: false },
         ], `${vessel.slug}:${quizSeed}:q1`),
-        explanation: `${vessel.name}の八脈交会穴（主穴）は「${vessel.masterPoint.name}（${vessel.masterPoint.code}）」です。この経穴と、対になる配穴を組み合わせて覚えましょう。`,
+        explanation: `${vessel.name}に対応する八脈交会穴は「${vessel.masterPoint.name}（${vessel.masterPoint.code}）」です。`,
       },
       {
         id: "q2",
@@ -45,17 +45,17 @@ export default function KikeiQuizSection({ vessel }: Props) {
           { text: "三陰交（足太陰脾経）", isCorrect: false },
           { text: "風池（足少陽胆経）", isCorrect: false },
         ], `${vessel.slug}:${quizSeed}:q2`),
-        explanation: `${vessel.name}の通穴「${vessel.masterPoint.name}」と対になるのは「${vessel.couplePoint.name}」です。この組み合わせを「${vessel.pairName}」と呼びます。伝統的には、${vessel.pairTargetArea}に関する病証と関連づけて説明されます。`,
+        explanation: `「${vessel.masterPoint.name}」と組み合わせるのは「${vessel.couplePoint.name}」です。古典では${vessel.pairTargetArea}と関連づけています。`,
       },
       {
         id: "q3",
-        question: `伝統医学の資料では、${vessel.name}をどのような症状や体の状態と結びつけて説明しますか？`,
+        question: `『${vessel.classicQuote.book}』では、${vessel.name}をどう説明していますか？`,
         options: shuffleArray([
-          { text: vessel.indications[0] || "特有の主治病証", isCorrect: true },
-          { text: "外感風寒による初期の一過性表寒証のみ", isCorrect: false },
-          { text: "特記すべき適応病証はなく、診断用のみ", isCorrect: false },
+          { text: vessel.studyAnswer, isCorrect: true },
+          { text: "手の指先だけを巡る", isCorrect: false },
+          { text: "左右の手首を直接結ぶ", isCorrect: false },
         ], `${vessel.slug}:${quizSeed}:q3`),
-        explanation: `${vessel.name}は、伝統的に「${vessel.indications.slice(0, 2).join("・")}」などの病証と関連づけて説明されます。ここでは主治の分類を確認しています。個人への施術適応を判断するものではありません。`,
+        explanation: vessel.classicQuote.translation,
       },
     ];
   }, [vessel, quizSeed]);
@@ -293,7 +293,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
             </div>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2] max-w-md mx-auto pt-1">
               {score === questions.length
-                ? `${vessel.name}の通穴、対になる経穴、主治病証を確認できました。時間をおいてもう一度解き、覚えているか確かめましょう。`
+                ? `${vessel.name}に対応するツボ、組み合わせ、古典の記述を確認できました。時間をおいてもう一度解き、覚えているか確かめましょう。`
                 : `${vessel.name}の要点をもう一度復習して、全問正解を目指しましょう。`}
             </p>
           </div>

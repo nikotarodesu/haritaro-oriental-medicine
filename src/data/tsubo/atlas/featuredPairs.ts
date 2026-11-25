@@ -57,7 +57,7 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
     details: [
       {
         label: "研究で分かったこと",
-        text: "96人を対象に、手三里と曲池への鍼と、同じ場所でレーザー照射を模した方法を比較しました。主な評価は、治療終了3週間後の腕・肩・手の使いにくさです。手三里だけ、曲池だけを使った場合との差は調べていません。",
+        text: "96人を、手三里と曲池に鍼を受ける群と、同じ二穴でレーザー照射を模した施術を受ける群に分けました。主な評価は、治療終了3週間後の腕・肩・手の使いにくさです。各ツボを単独で使った場合との差は調べていません。",
         sources: [
           { label: "Gadau ほか · European Journal of Pain（2020）", url: "https://onlinelibrary.wiley.com/doi/abs/10.1002/ejp.1574" },
         ],

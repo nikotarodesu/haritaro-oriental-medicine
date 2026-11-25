@@ -73,7 +73,7 @@ export default async function ExtraPointPage({ params }: Props) {
         </div>
         <p>奇穴（きけつ）の図鑑 <span aria-hidden="true">·</span> {point.bodyPart} <span aria-hidden="true">·</span> 中国語の発音（ピンイン） <span lang="zh-Latn">{point.pinyin}</span></p>
         <p>
-          {point.classification ?? `WHOの名称案では奇穴${point.code}として収録されています。`}{" "}
+          {point.classification ?? `WHOの名称案では奇穴「${point.code}」と表記されています。`}{" "}
           <a href={namingSource.href} className="atlas-source-link">WHOの名称資料（PDF）</a>
           {point.classification && <>{" "}<a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
         </p>
@@ -112,8 +112,7 @@ export default async function ExtraPointPage({ params }: Props) {
           code={point.code}
           name={point.name}
           section={anatomySection}
-          position={point.position}
-          locationSource={{ title: positionSource.title, url: positionSource.href }}
+          locationHref="#extra-point-location"
           surface={<ExtraPointDiagram point={point} />}
         />
       )}

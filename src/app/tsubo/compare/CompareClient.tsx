@@ -21,9 +21,9 @@ import { PRESET_TSUBO_COMPARISONS } from "./presets";
 import { comparisonSelectionHref } from "./selection";
 
 export type ComparisonChoice = Pick<Tsubo, "id" | "code" | "name" | "kana" | "romaji" | "meridian" | "meridianShort">;
-export type ComparisonPoint = ComparisonChoice & Pick<Tsubo, "bodyPart" | "locationSimple" | "clinicalNote"> & {
+export type ComparisonPoint = ComparisonChoice & Pick<Tsubo, "bodyPart" | "locationSimple"> & {
   category: readonly string[];
-  traditional: string;
+  traditional?: string;
   caution: string;
   hasResearch: boolean;
   locationFigure: React.ReactNode;
@@ -63,17 +63,14 @@ const COMPARISON_FIELDS = [
     ) : "特記なし",
   },
   {
-    label: "伝統的な背景",
-    content: (point: ComparisonPoint) => <p>{point.traditional}</p>,
-  },
-  {
-    label: "学習上の補足",
+    label: "伝統的な使われ方と研究",
     content: (point: ComparisonPoint) => (
       <>
-        <p>{point.clinicalNote}</p>
+        {point.traditional && <p>古典に記された例　{point.traditional}</p>}
         {point.hasResearch && (
           <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-research`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">研究の範囲と出典</Link>
         )}
+        {!point.traditional && !point.hasResearch && "図鑑に掲載資料なし"}
       </>
     ),
   },
@@ -247,6 +244,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
               <h2 id="tsubo-compare-result-title" className="atlas-target" tabIndex={-1}>場所と目印</h2>
             </div>
             <p className="tsubo-compare-position-key">図の丸印がツボの位置です。</p>
+            {learningPair && <p className="tsubo-compare-position-key">{learningPair.comparisonPrompt}</p>}
             <ul className="tsubo-compare-position-grid" data-points={selectedTsubos.length} role="list" aria-label="ツボの位置を見比べる">
               {selectedTsubos.map(point => (
                 <li className="tsubo-compare-position" key={point.id}>
@@ -270,10 +268,10 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
             </ul>
             <details className="tsubo-compare-facts atlas-disclosure">
               <summary id="tsubo-compare-facts-title">注意点・経絡などを比べる</summary>
-              <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">注意点・経絡・要穴の分類・伝統的な背景をツボごとに確認できます。</p>
+              <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">注意点・経絡・要穴の分類・伝統的な使われ方を確認できます。</p>
               <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-facts-title" aria-describedby="tsubo-compare-scroll-hint">
                 <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
-                  <caption className="sr-only">注意事項・所属経絡・要穴・伝統的な背景・学習上の補足の比較</caption>
+                  <caption className="sr-only">注意事項・所属経絡・要穴・伝統的な使われ方と研究の比較</caption>
                   <thead role="rowgroup">
                     <tr role="row">
                       <th scope="col" role="columnheader">比較項目</th>

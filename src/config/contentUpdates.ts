@@ -16,6 +16,7 @@ export const SITE_REVISED_AT = '2026-10-02';
 export const ACUPOINT_PAGE_REVISED_AT = '2026-11-23';
 const ATLAS_LEARNING_REVISED_AT = '2026-11-24';
 export const PUBLIC_VISUALS_REVISED_AT = '2026-11-24';
+export const PUBLIC_COPY_REVISED_AT = '2026-11-25';
 const ACUPOINT_MEASUREMENT_REVISED_AT = '2026-11-20';
 // Includes question-only changes, but not unchanged lessons in the same chapter.
 export const CURRICULUM_EDITORIAL_REVISIONS = [
@@ -308,18 +309,39 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/symptoms/constipation-ibs': '2026-11-25',
   '/symptoms/headache-stiff-neck': '2026-11-25',
   ...Object.fromEntries(['/articles', FOUR_COMMAND_REVIEW_HREF, '/library', '/glossary'].map(route => [route, '2026-11-25'])),
+  ...Object.fromEntries([
+    '/', '/about', '/contact', '/updates', '/privacy', '/tokushoho', '/editorial-policy', '/safety', '/symptoms',
+    '/learn', '/curriculum', ACUPUNCTURE_GUIDE.href, ACUPUNCTURE_RESEARCH.href, acupunctureResearchHref('pattern-diagnosis-agreement'),
+    '/clinical', '/cases', '/diagnosis', '/diagnosis?tab=gorou', '/simulator', '/practice/haiketsu',
+    '/tsubo/compare', '/tsubo/names', '/tsubo/practice', '/tsubo/basics/bone-cun', '/tsubo/extra-points',
+    '/tsubo/extra-points/yintang', '/tsubo/extra-points/taiyang', '/kikei',
+    ...['pc6-pc5-pc4', 'li11-lu5-pc3', 'st36-st37-st38'].map(slug => '/tsubo/compare/' + slug),
+    ...['reading-evidence', 'yin-yang-basics', 'zangfu-basics', 'five-elements', 'qi-blood-and-patterns', 'assessment-frameworks'].map(slug => '/learn/lectures/' + slug),
+    ...['lecture-intro-3', 'lecture-intro-4', 'lecture-diagnosis-11', 'lecture-practice-8'].map(id => '/curriculum/' + id),
+    ...['science-of-pulse-diagnosis', 'science-of-abdominal-diagnosis', 'science-of-acupoints-mechanotransduction', 'science-of-meridians-network', 'east-west-integrative-unified-theory'].map(id => '/articles/' + id),
+    ...['shoulder', 'back', 'headache', 'sleep', 'digestion', 'fatigue'].map(slug => '/clinical/symptoms/' + slug),
+    ...LEARNING_COURSES.map(course => '/learn/courses/' + course.slug),
+    ...SYMPTOMS.map(guide => '/symptoms/' + guide.id),
+  ].map(route => [route, PUBLIC_COPY_REVISED_AT])),
 };
-export const SITE_UPDATES = [
-  { date: '2026-11-24', label: '比較図の確認問題と、講義・症例の振り返り', href: '/learn/review', text: '比較図7組すべてに位置の確認問題を付けました。16講の確認問題は講義の復習で解き直せます。症例を解いたあとは、迷った設問の解説や登場したツボの比較を開けます。' },
+export const SITE_UPDATES: readonly {
+  date: string;
+  label: string;
+  text: string;
+  href?: string;
+  links?: readonly { href: string; label: string }[];
+}[] = [
+  { date: '2026-11-25', label: '位置説明・症例・講義の文章を整理', text: 'ツボの位置と図の読み方、症例で情報を得た方法、講義の例と見出しを見直しました。文献の著者情報と、症状ガイドの受診時に伝える内容も確認しやすくしました。', links: [{ href: '/tsubo/li4', label: 'ツボ図鑑' }, { href: '/cases', label: '模擬症例' }, { href: '/learn', label: '講義' }, { href: '/library', label: '文献ライブラリ' }, { href: '/symptoms', label: '症状別ガイド' }] },
+  { date: '2026-11-24', label: '比較図の確認問題と、講義・症例の振り返り', links: [{ href: '/tsubo#nearby-comparisons', label: 'ツボの比較図' }, { href: '/learn/review', label: '講義の復習' }, { href: '/cases', label: '症例演習' }], text: '比較図7組すべてに位置の確認問題を付けました。16講の確認問題は講義の復習で解き直せます。症例を解いたあとは、迷った設問の解説や登場したツボの比較を開けます。' },
   { date: PUBLIC_VISUALS_REVISED_AT, label: 'ツボの目印・症例の経過・試験の組み立てを図に', href: '/tsubo#nearby-comparisons', text: '合谷・内関・足三里は、同じ図で目印から位置まで順にたどれます。肩・ひじの比較図を加え、症例は症状の経過を時系列で、論文は参加者・比較相手・評価項目を図で確認できるようにしました。' },
   { date: PUBLIC_VISUALS_REVISED_AT, label: 'ツボ図鑑の読む順番と臨床演習の図を見直し', href: '/tsubo/li4', text: '場所と見つけ方の次に注意事項をまとめ、近いツボとの比較を置きました。研究と古典の配穴はその下で開けます。臨床演習には四診や配穴の比較を、症状ガイドには記録例の図を加えました。' },
   { date: '2026-11-24', label: '東洋医学の講義16本の図と文章を見直し', href: '/learn', text: '顔のほてりと足の冷えが出る時間帯、気と血の働き、五行の矢印などを、同じ基準で見比べられる図にしました。図と本文で同じ例を使い、長い説明は読みやすく分けています。' },
   { date: ATLAS_LEARNING_REVISED_AT, label: 'すねの比較図・要穴の分類・奇穴を追加', href: '/tsubo', text: '足三里・上巨虚・条口を一枚の図で見比べられます。要穴の分類から解説と一覧へ進めるようにし、奇穴の索引に太陽と印堂を掲載しました。' },
   { date: ACUPOINT_PAGE_REVISED_AT, label: '361のツボに名前の由来を追加', href: '/tsubo/li4#acupoint-name', text: 'ツボの場所の図に続いて、名前の由来、中国語での漢字の意味、声調付きのピンインを読めるようにしました。合谷の「谷」のように、ツボの場所と名前がどうつながるかを紹介します。' },
-  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の安全性・口の乾燥・尿もれの研究を追加', href: ACUPUNCTURE_RESEARCH.href, text: '抗凝固薬を使う人の出血、放射線治療に伴う口の乾燥、尿もれの測り方を扱った研究を紹介します。膝の研究に英国とシンガポールの診療指針を加え、胸やけのガイドラインの出典も見直しました。' },
-  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: 'お灸・乳がん治療中の関節痛の研究解説を追加', href: ACUPUNCTURE_RESEARCH.href, text: '膝へのお灸で痛みとやけどを調べた試験や、乳がん治療中の関節痛を52週追った試験を紹介します。舌・脈・腹の観察や漢方の解説にも、原著で確認した研究を加えました。' },
-  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '弁証・膝痛・片頭痛の研究教材を追加', href: ACUPUNCTURE_RESEARCH.href, text: '同じ腰痛の所見を二人の見立てで比べる演習を追加しました。膝痛・片頭痛の試験と症例演習をつなぎ、症状ガイド、ツボ図鑑、鍼灸の安全性、文献ライブラリも更新しました。' },
-  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の研究解説を公開', href: ACUPUNCTURE_RESEARCH.href, text: '腰痛と坐骨神経痛、術後の吐き気と内関、鍼灸の有害事象を調べた研究を、対象・比較相手・結果の数え方から読み比べられます。ツボ図鑑にも、使われた経穴を原著で確認した試験を追加しました。' },
+  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の安全性・口の乾燥・尿もれの研究を追加', links: [{ href: acupunctureResearchHref('anticoagulants-and-bleeding'), label: '抗凝固薬と出血' }, { href: acupunctureResearchHref('radiation-dry-mouth'), label: '口の乾燥' }, { href: acupunctureResearchHref('urinary-incontinence'), label: '尿もれ' }], text: '抗凝固薬を使う人の出血、放射線治療に伴う口の乾燥、尿もれの測り方を扱った研究を紹介します。膝の研究に英国とシンガポールの診療指針を加え、胸やけのガイドラインの出典も見直しました。' },
+  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: 'お灸・乳がん治療中の関節痛の研究解説を追加', links: [{ href: acupunctureResearchHref('moxibustion-knee-pain'), label: '膝へのお灸' }, { href: acupunctureResearchHref('aromatase-inhibitor-joint-pain'), label: '乳がん治療中の関節痛' }], text: '膝へのお灸で痛みとやけどを調べた試験や、乳がん治療中の関節痛を52週追った試験を紹介します。舌・脈・腹の観察や漢方の解説にも、原著で確認した研究を加えました。' },
+  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '弁証・膝痛・片頭痛の研究教材を追加', links: [{ href: acupunctureResearchHref('pattern-diagnosis-agreement'), label: '弁証の一致を調べた研究' }, { href: acupunctureResearchHref('knee-osteoarthritis'), label: '膝の痛み' }, { href: MIGRAINE_RESEARCH_HREF, label: '片頭痛' }], text: '同じ腰痛の所見を二人の見立てで比べる演習を追加しました。膝痛・片頭痛の試験と症例演習をつなぎ、症状ガイド、ツボ図鑑、鍼灸の安全性、文献ライブラリも更新しました。' },
+  { date: ACUPUNCTURE_RESEARCH.revisedAt, label: '鍼灸の研究解説を公開', links: [{ href: acupunctureResearchHref('low-back-pain-sciatica'), label: '腰痛と坐骨神経痛' }, { href: acupunctureResearchHref('postoperative-nausea'), label: '術後の吐き気' }, { href: acupunctureResearchHref('adverse-events'), label: '鍼灸の有害事象' }], text: '腰痛と坐骨神経痛、術後の吐き気と内関、鍼灸の有害事象を調べた研究を、対象・比較相手・結果の数え方から読み比べられます。ツボ図鑑にも、使われた経穴を原著で確認した試験を追加しました。' },
   { date: SYMPTOM_RESEARCH_REVISED_AT, label: '首の痛み・耳鳴り・膝痛の研究解説を追加', href: '/symptoms', text: '比較試験に参加した人、何と比べたか、痛みや生活への支障をどう測ったかを整理しました。膝の電気鍼の試験には、掲載誌の訂正通知も添えました。' },
   { date: '2026-11-21', label: 'ツボ図鑑の表示と索引を改善', href: '/tsubo', text: '検索欄と一覧が最初に表示されるようにしました。361のツボを部位と経絡の両方から探せます。症状を文章で検索したときも、関連するページが見つかりやすくなりました。' },
   { date: '2026-11-20', label: '20症例の設問と解説を改稿', href: '/cases', text: '本人が話した症状、四診で観察したこと、それらをもとに見立てを考えた理由を分けて書きました。図鑑では、研究で使ったツボと、何と比べたかを読みやすくしました。' },
@@ -333,7 +355,7 @@ export const SITE_UPDATES = [
   { date: '2026-11-19', label: '足裏・ひざ・すね・ふくらはぎの30穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしやひざ裏を起点にした距離と骨の前後を見分けられるように、30のツボに場所の説明と3種類の図を追加しました。' },
   { date: '2026-11-19', label: '足の甲・足首・足の縁の26穴を図解', href: '/tsubo#illustrated-points', text: 'くるぶしの前・下・後ろや、足の指の付け根と指のまたを見分けられるように、26のツボに場所の説明と3種類の図を追加しました。' },
   { date: '2026-11-18', label: 'ツボ図鑑・東洋医学・臨床演習を公開', href: '/', text: 'ツボや症状を名前で探せるようになりました。読み物、体質チェック、症例演習も会員登録なしで利用できます。' },
-  { date: '2026-11-10', label: '料金・問い合わせ・学習の入口を改善', href: '/pricing', text: '当時の料金プランやお問い合わせをメニューから開けるようにしました。資料一覧には論文や古典の件数を表示しました。運営者の開業年月は2023年7月にそろえました。' },
+  { date: '2026-11-10', label: '当時の料金案内・問い合わせ・学習の入口を整理', text: '当時の料金プランやお問い合わせをメニューから開けるようにしました。資料一覧には論文や古典の件数を表示しました。運営者の開業年月は2023年7月にそろえました。' },
   { date: '2026-10-18', label: 'PC・iPadの操作と記録・学習の流れを改善', href: '/learn', text: 'iPadのメニューや比較表、図を操作しやすくし、ツボの別の表記でも検索できるようにしました。講義は本文を読み、確認問題を解いて次へ進める流れに整えました。' },
   { date: '2026-10-18', label: '臨床メニューと演習の入口を再整理', href: '/clinical', text: '主訴別ガイドやツボの比較を開きやすくしました。演習の名前をそろえ、臨床演習の一覧と余白を整えました。' },
   { date: '2026-10-18', label: '保存一覧・スマホメニュー・経穴辞典を整理', href: '/tsubo', text: '当時の保存一覧には最近の5件を表示しました。スマホのメニューをそろえ、ツボのページでは同じ操作のボタンを整理しました。' },

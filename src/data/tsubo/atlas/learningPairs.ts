@@ -14,7 +14,7 @@ export const ATLAS_LEARNING_PAIRS: readonly AtlasLearningPair[] = [
   {
     codes: ["LI4", "LR3"],
     comparisonLabel: "太衝と比べる",
-    comparisonPrompt: "手の甲と足の甲で、目印になる骨を見比べます。",
+    comparisonPrompt: "合谷は手の甲、太衝は足の甲にあります。どちらも二本の骨が目印です。",
     question: {
       prompt: "手の甲で、人差し指につながる骨が目印になるのはどちらですか？",
       answerCode: "LI4",

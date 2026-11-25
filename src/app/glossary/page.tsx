@@ -7,7 +7,9 @@ import { readingPartHref } from '@/data/publicLectures/readingUnitCatalog';
 
 const title = seriesPageTitle("東洋医学の用語集｜読み方・要点・関連講義", "reading");
 
-export const metadata: Metadata = { title, description: '陰陽・五行・気血水・四診などの専門用語を、読み方と要点、詳しい説明、関連講義から学べる用語集。', ...pageSocialMetadata(title, '陰陽・五行・気血水・四診などの専門用語を、読み方と要点、詳しい説明、関連講義から学べる用語集。', '/glossary'), alternates: { canonical: '/glossary' } };
+const description = '陰陽・五行・気虚・四診など、東洋医学の用語を漢字や読み方から調べられます。用語の意味と関連講義を掲載しています。';
+
+export const metadata: Metadata = { title, description, ...pageSocialMetadata(title, description, '/glossary'), alternates: { canonical: '/glossary' } };
 export default function GlossaryPage() {
   const terms = Object.values(GLOSSARY_TERMS)
     .sort((a, b) => a.reading.localeCompare(b.reading, 'ja'))
@@ -16,7 +18,7 @@ export default function GlossaryPage() {
       relatedLectureHref: term.relatedLectureId ? readingPartHref(term.relatedLectureId) : undefined,
     }));
   return <div className="glossary-page page-layout space-y-6 text-[#232826] dark:text-[#FAF8F5]">
-    <PageIntro title="東洋医学の用語集" description={`陰陽・五行・四診など${terms.length}語を掲載しています。「気虚」や「ききょ」のように、漢字や読み方で探せます。`} art="reading" compact />
+    <PageIntro title="東洋医学の用語集" description={`陰陽・気虚・四診など${terms.length}語を掲載しています。「気虚」や「ききょ」のように、漢字や読み方で探せます。`} art="reading" compact />
     <GlossaryIndex terms={terms} />
   </div>;
 }

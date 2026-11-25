@@ -31,22 +31,6 @@ export const MERIDIAN_ARTICLE: Article = {
       note: "WHOの紹介ページを参照しました。医療や教育の場で、伝統医学の用語や定義をそろえるための資料です。",
     },
     "langevin-connective-tissue-2002",
-    {
-      id: "liu-vagal-adrenal-2021",
-      type: "paper",
-      title: "A neuroanatomical basis for electroacupuncture to drive the vagal–adrenal axis",
-      authors: "Shenbin Liu et al.",
-      source: "Nature",
-      year: 2021,
-      doi: "10.1038/s41586-021-04001-4",
-      pmid: "34646018",
-      url: "https://www.nature.com/articles/s41586-021-04001-4",
-      studyDesign: "マウスを用いた神経機構研究",
-      bibliographyStatus: "matched",
-      claimsStatus: "source-checked",
-      sourceCheckedAt: "2026-10-02",
-      note: "原著の抄録・Results/Fig. 2・動物を用いたMethodsで、刺激部位・強度と神経経路の条件依存性を確認。人の経絡理論や治療効果全般の検証としては扱いません。",
-    },
   ],
   contentMarkdown: `## 1. 経絡の記述を学ぶ
 
@@ -77,9 +61,9 @@ WHOの用語集は、専門家や学習者が同じ意味で用語を使うた�
 
 ## 3. 結合組織の研究が示す範囲
 
-Langevinらの2002年の原著は、一部の経穴と結合組織面の位置関係を調べ、経穴・経絡との関係について仮説を提示しています。[^langevin-connective-tissue-2002]
+LangevinとYandowは、ヒトの上肢の断面で、ツボの位置と筋肉の間や内部にある結合組織の境目を比べました。著者は、観察した位置の重なりをもとに、結合組織と経絡との関連を仮説として提案しています。[^langevin-connective-tissue-2002]
 
-この研究は、**具体的な部位で経穴と結合組織の位置関係を調べたもの**です。その結果から、全身の十四経脈が筋膜経線と一致すると結論づけたり、臓腑の機能や選穴の治療効果まで証明されたと考えたりすることはできません。
+この研究で直接比べた範囲は上肢です。全身の経絡との対応や、選んだツボが患者の症状にどう影響するかを調べるには、別の研究が必要です。[文献カードで結果と確認範囲を読む](/library#paper-langevin-connective-tissue-2002)
 
 この研究のノートには「対象部位」「比較した構造」「一致の定義」を書き出してみましょう。伝統的な走行図全体の話と、限定した部位の位置関係の話を分けやすくなります。
 
@@ -89,11 +73,7 @@ Langevinらの2002年の原著は、一部の経穴と結合組織面の位置�
 
 手足を刺激すると離れた部位にも反応が起こるか、どの神経経路が関わるかは、実験で調べられます。ただし、ある反応が見つかっただけで、伝統的な循行図全体が正しいことや、特定の病気に有効なことが確定するわけではありません。
 
-Liuらの2021年の原著では、**マウスの特定部位における低強度の電気鍼と、迷走神経―副腎系に関わる神経経路**が研究されています。刺激部位・強度によって反応が異なります。[^liu-vagal-adrenal-2021]
-
-これは条件を限定した作用機序の研究です。人の胃の症状が必ず改善する、足の経穴なら同じ作用が得られる、鍼で感染症や炎症性疾患の標準治療を置き換えられる、といった主張は支持しません。
-
-動物で用いた刺激強度や時間を、そのまま人に適用する手順として扱うこともできません。
+この違いは、[マウスの神経経路を調べた研究](/articles/science-of-acupuncture-neuroscience#reading-figure-acupuncture-animal-patient)で確認できます。論文では、刺激した場所、測った反応、研究の対象を見ます。
 
 ---
 

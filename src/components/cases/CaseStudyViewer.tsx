@@ -157,7 +157,6 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       <header className="reader-header">
         <p className="text-sm font-semibold text-accent">模擬症例 {String(clinicalCase.caseNumber).padStart(2, "0")} · {clinicalCase.category} · {clinicalCase.difficulty}</p>
         <h1 className="reader-title">{clinicalCase.title}</h1>
-        <p className="text-sm ui-muted">架空の相談を読み、本人が困っていることと、東洋医学でどう考えるかを確かめます。</p>
         <p className="reader-lead">{clinicalCase.subTitle}</p>
       </header>
       <nav aria-label="症例の進め方">
@@ -172,7 +171,9 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <summary>この演習で扱う範囲</summary>
         <p>{CLINICAL_CASE_SCOPE}</p>
       </details>
-      {CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id] && <MedicalSafetyNotice title="この症例の受診・安全上の注意" {...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id]} />}
+      <div id="case-safety" className="scroll-mt-28">
+        <MedicalSafetyNotice title="この症例の受診・安全上の注意" {...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id]} />
+      </div>
 
       {/* ステップ 1: 患者基本情報 ＆ 主訴・現病歴 */}
       <section id="case-patient" tabIndex={-1} aria-labelledby="case-patient-title" className="case-section">
@@ -359,11 +360,6 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                   </h3>
                 </div>
 
-                {activeAnchor === anchor && step.stepNumber > 1 && (
-                  <p className="text-sm leading-relaxed text-muted">
-                    <strong className="font-semibold text-ink">この症例の訴え</strong>　「{clinicalCase.patient.chiefComplaint}」
-                  </p>
-                )}
                 <CaseQuestionReferences patient={clinicalCase.patient} examinations={clinicalCase.examinations} />
                 {step.studyLink && (
                   <Link href={step.studyLink.href} className="ui-text-link inline-flex min-h-11 items-center text-sm">
@@ -412,6 +408,9 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                     );
                   })}
                 </div>
+                {step.stepNumber === 1 && selected && (
+                  <a href="#case-safety" className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を読む</a>
+                )}
                 {retry && <Link href={PRACTICE_REVIEW_HREF} className="ui-text-link inline-flex min-h-11 items-center">復習一覧に戻る</Link>}
               </div>
             );
@@ -571,11 +570,12 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
             <div className="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 space-y-2">
               <h4 className="font-bold text-sm text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
                 <AlertTriangle className="w-4 h-4 text-amber-600" />
-                <span>先に確認する症状と受診の目安</span>
+                <span>次に聞くときの安全確認</span>
               </h4>
               <p className="text-sm sm:text-base text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
-                {clinicalCase.clinicalExplanation.clinicalPitfall}
+                前回の記録と比べ、症状の続き方や新しく出た変化を確かめます。読んだ注意を、次に聞くことに結びつけてください。
               </p>
+              <a href="#case-safety" className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を見返す</a>
             </div>
 
             {clinicalCase.clinicalExplanation.classicCitation && (
@@ -650,50 +650,13 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         </section>
       )}
 
-      {/* トピッククラスター連携（関連症状ガイド・関連経穴辞典・体質診断への回遊） */}
-      <div className="case-section">
+      {showExplanation && <div className="case-section">
         <div className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-wider">
           <Layers className="w-4 h-4" />
-          <span>この症例と一緒に読める教材</span>
+          <span>この症例に出てくるツボの位置と注意点</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* 症状別ガイド */}
-          <div className="p-4 rounded-2xl bg-panel border border-divider space-y-2">
-            <span className="text-xs font-bold text-warm block">症状別ガイド</span>
-            <p className="text-xs text-muted">
-              頭痛や腰痛など、症状が出た時刻や困った動作をどう伝えるか、いつ受診を考えるかを読めます。
-            </p>
-            <Link
-              href="/symptoms"
-              className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline pt-1"
-            >
-              <span>症状別ガイドを開く</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          {/* 気血水体質セルフ診断 */}
-          <div className="p-4 rounded-2xl bg-panel border border-divider space-y-2">
-            <span className="text-xs font-bold text-accent block">気血水 体質チェック</span>
-            <p className="text-xs text-muted">
-              12問から当てはまる項目を選ぶと、たとえば食後の疲れが質問票のどの分類に入るかを確認できます。
-            </p>
-            <Link
-              href="/diagnosis"
-              className="inline-flex items-center gap-1 text-xs font-bold text-accent hover:underline pt-1"
-            >
-              <span>気血水 体質チェックを開く</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
-
-        {/* 症例の処方配穴（ツボ辞典リンク） */}
-        {showExplanation && <div className="space-y-2.5 pt-2 border-t border-divider">
-          <span className="text-xs font-bold text-ink block">
-            この症例に出てくるツボの位置と注意点
-          </span>
+        <div className="space-y-2.5 pt-2 border-t border-divider">
           <div className="flex flex-wrap gap-2">
             {clinicalCase.correctDiagnosis.primaryPoints.map((pt) => {
               const codeMatch = pt.match(/\(([A-Za-z0-9]+)\)/);
@@ -711,8 +674,8 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
               );
             })}
           </div>
-        </div>}
-      </div>
+        </div>
+      </div>}
 
       {/* フッターナビゲーション */}
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-divider pt-4">

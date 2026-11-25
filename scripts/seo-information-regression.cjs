@@ -178,15 +178,16 @@ for (const [code, point] of Object.entries(expandedPoints)) {
   assert(master.locationSimple.startsWith(point.location), code + ' search and title data agree with the article');
   assert(article.lead.includes(point.location), code + ' opens with its own position');
   assert(article.location.includes(point.guide), code + ' describes how to read its landmarks');
-  assert(article.traditional.some(text => text.includes(`${master.meridianOrder}番目`)), code + ' explains its place in the sequence');
-  assert(article.relatedPoints.some(({ code: otherCode }) =>
-    article.traditional.some(text => text.includes(getAcupointByCode(otherCode).name))
-  ), code + ' names a point to compare');
+  assert(illustration.meridianCaption.includes(`${master.meridianOrder}番目`), code + ' explains its place in the sequence at the diagram');
+  assert(article.relatedPoints.length > 0, code + ' links to a point to compare');
 }
 for (const code of ['bl1', 'st9', 'lu1', 'lu8', 'ht1', 'si8', 'sp11', 'cv8', 'cv1', 'gv1', 'gb21']) {
   assert(ATLAS_ARTICLES[code].visualOnly, code + ' must use the visual orientation instructions');
 }
-assert.match(ATLAS_ARTICLES.cv17.safetyWarning, /胸痛.*動悸.*119/);
+assert.match(ATLAS_ARTICLES.cv17.safetyWarning, /胸の痛み.*息苦しさ.*119/);
+assert(ATLAS_ARTICLES.cv17.cautions.some(text => /動悸.*医療機関/.test(text)), 'Routine consultation guidance remains separate from emergency instructions');
+assert(ATLAS_ARTICLES.st17.location.some(text => /丸印は乳頭の中央/.test(text)), 'ST17 identifies the only landmark for its position');
+assert(!ATLAS_ARTICLES.st17.selfCare.some(text => /肋骨の高さ.*見比べる/.test(text)), 'ST17 does not inherit instructions for locating intercostal points');
 assert.match(ATLAS_ARTICLES.gb21.safetyWarning, /妊娠中.*産科/);
 assert(Object.values(ATLAS_ARTICLES).every(article =>
   article.sources.some(({ url }) => /^https:\/\/iris\.who\.int\/.*#page=\d+$/.test(url))

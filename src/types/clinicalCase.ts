@@ -88,7 +88,6 @@ export interface ClinicalCase {
     observations?: readonly { target: CaseObservationTarget; label: string }[];
     differentialDiagnosis: string; // 鑑別診断（間違えやすい他証との対比）
     pointRationale: string; // なぜこの経穴なのか（作用機序）
-    clinicalPitfall: string; // 臨床の落とし穴・注意点・禁忌
     classicCitation?: string; // 根拠となる古典条文（素問、霊枢、難経等）
   };
 }

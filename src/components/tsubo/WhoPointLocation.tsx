@@ -21,7 +21,7 @@ export default function WhoPointLocation({ code, pointName }: { code: string; po
   return (
     <section id="acupoint-who-location" className="atlas-who-location cun-guide-target">
       <h3>WHO標準の位置 <span>日本語要約</span></h3>
-      {usedUnits.has("寸") && <p className="text-sm">ここでの「寸」は、骨の端やしわの間を等分して数える単位です。</p>}
+      {usedUnits.has("寸") && <p className="text-sm">ここでの「寸」は、決められた二つの目印の間を等分した単位です。</p>}
       <p>{location}</p>
       <WhoMeasurementFigures measures={measures} pointName={pointName} />
       {note && <p className="atlas-who-note">{note}</p>}
@@ -37,7 +37,7 @@ export default function WhoPointLocation({ code, pointName }: { code: string; po
       </div>
       <p className="text-sm">
         位置の出典は WHO西太平洋地域事務局『WHO標準経穴部位』（2008年、2009年改訂再版）です。{" "}
-        <a className="atlas-source-link" href={`${WHO_ATLAS_PDF}#page=${page}`}>WHO原本 p.{page - 9}（PDF）</a>{" "}
+        <a className="atlas-source-link" href={`${WHO_ATLAS_PDF}#page=${page}`}>WHO原本 p.{page - 9}（PDFの{page}ページ目）</a>{" "}
         <a className="atlas-source-link" href={WHO_ATLAS_CATALOG}>WHOの書誌情報</a>
         {recentSourceChecks.has(code) && <>（該当ページ照合 <time dateTime={sourceCheckedAt}>{sourceCheckedAt}</time>）</>}
       </p>

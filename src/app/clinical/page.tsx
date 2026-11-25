@@ -42,8 +42,8 @@ const checks = [
 ] as const;
 
 const exercises = [
-  { ...ALL_NAV_ITEMS.cases, label: '症例演習', description: '症状から症例を探し、本人の訴えや経過をもとに考える' },
-  { ...ALL_NAV_ITEMS.simulator, label: '見立ての練習', description: '症状や診察の記録を読み、東洋医学で考えられる体の状態を比べる' },
+  { ...ALL_NAV_ITEMS.cases, label: '20の模擬症例', description: '症状から症例を探し、本人の訴えや経過をもとに考える' },
+  { ...ALL_NAV_ITEMS.simulator, label: '弁証演習', description: '3例を6段階で検討する、条件を変える、見立てを見直す' },
   { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボを組み合わせ、選んだ理由を書く' },
 ];
 
@@ -100,10 +100,10 @@ export default function ClinicalLandingPage() {
           <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" fallback={firstCaseHref && (
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 print:hidden">
               <Link href={firstCaseHref} className="page-secondary-action">
-                短い症例演習を開く<ArrowRight size={16} aria-hidden="true" />
+                最初の模擬症例を読む<ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link href={`${firstCaseHref}#${CASE_REASONING_ANCHOR}`} scroll={false} className="ui-text-link inline-flex min-h-11 items-center">
-                設問から始める
+                最初の症例の問題に進む
               </Link>
             </div>
           )} />

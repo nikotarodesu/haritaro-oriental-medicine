@@ -46,7 +46,7 @@ assert.equal(entry(lectures, {}, 'lecture-diagnosis-1').href, `/curriculum/lectu
 assert.equal(entry([...lectures, { id: 'lecture-yinyang-5', title: '各論' }], {}, 'lecture-yinyang-5').href, '/curriculum/lecture-yinyang-5');
 assert(!entry(lectures, {}, 'https://invalid.example').href.includes('invalid'));
 const complete = Object.fromEntries(lectures.map(lecture => [lecture.id, true]));
-assert.equal(entry(lectures, complete, 'lecture-yinyang-4').href, '/learn#learn-courses-heading');
+assert.equal(entry(lectures, complete, 'lecture-yinyang-4').href, '/learn#learning-course-list');
 
 
 const home = renderToStaticMarkup(React.createElement(load('src/app/page').default));
@@ -55,7 +55,7 @@ assert.match(home, /action="\/search"/);
 assert.match(home, /<input(?=[^>]*type="search")(?=[^>]*name="q")[^>]*>/);
 const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','はり太郎の東洋医学'], ['/clinical','はり太郎の臨床演習']];
 const homeActions = home.match(/<ul class="platform-series-grid">([\s\S]*?)<\/ul>/)[1];
-for (const [[href, name], action] of destinationPairs.map((pair, index) => [pair, ['ツボを調べる', '講義を読む', '症例で練習する'][index]])) {
+for (const [[href, name], action] of destinationPairs.map((pair, index) => [pair, ['ツボを調べる', '講義一覧を見る', '臨床演習を選ぶ'][index]])) {
   const card = homeActions.split('</li>').find(item => item.includes(`href="${href}"`));
   assert(card?.includes(action) && card.includes('<svg'), `${name} is reachable through its illustrated homepage action`);
 }

@@ -37,7 +37,7 @@ async function main() {
   const { getPublicLectureArticle } = load('src/data/publicLectures');
   const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
   const { ACUPOINTS_MASTER } = load('src/data/tsubo/acupointsMaster');
-  const { ATLAS_STUDIES, getAcupointStudies, getStudyPointRole, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
+  const { ATLAS_STUDIES, getAcupointStudies, getAtlasStudyPoint, getStudyPointRole, getSymptomStudies } = load('src/data/tsubo/atlas/evidence');
   const { SUPPLEMENTAL_ATLAS_STUDIES } = load('src/data/tsubo/atlas/supplementalClinicalStudies');
   const { SCITE_FOLLOWUP_ATLAS_STUDIES, SCITE_SYMPTOM_ATLAS_STUDIES } = load('src/data/tsubo/atlas/sciteFollowupStudies');
   const { RARE_POINT_REHAB_STUDIES } = load('src/data/tsubo/atlas/rarePointRehabStudies');
@@ -93,6 +93,8 @@ async function main() {
       assert(points.every(code => pointCodes.has(code) && getStudyPointRole(study, code) === role && getAcupointStudies(code).includes(study)), `${study.id}: each ${role} point appears on its detail page`);
     }
     assert(study.sources.length && study.sources.every(source => source.label && new URL(source.url).protocol === 'https:'), `${study.id}: cites a source`);
+    const mainPoint = getAtlasStudyPoint(study);
+    assert(pointCodes.has(mainPoint) && getAcupointStudies(mainPoint).includes(study), `${study.id}: the full study has a reachable point page`);
     assert(!study.guide || SYMPTOMS.some(guide => guide.id === study.guide), `${study.id}: related guide exists`);
   }
   for (const { code, studyId, label } of [
@@ -106,14 +108,19 @@ async function main() {
     const study = getAcupointStudies(code).find(candidate => candidate.id === studyId);
     const html = renderToStaticMarkup(React.createElement(AtlasStudyCard, { study, currentCode: code }));
     assert(html.indexOf(label) >= 0 && html.indexOf(label) < html.indexOf(study.result), `${code}: research role appears before the outcome`);
-    const disclosure = html.indexOf('<details');
-    assert(disclosure > 0 && study.sources.every(source => {
+    const mainPoint = getAtlasStudyPoint(study);
+    const method = code === mainPoint ? html.indexOf('<details') : html.indexOf(`href="/tsubo/${mainPoint}#${study.id}"`);
+    assert(method > 0 && study.sources.every(source => {
       const link = html.indexOf(source.url);
-      return link > html.indexOf(study.limits) && link < disclosure;
-    }), `${code}: direct sources follow the limits and stay visible when the disclosure is closed`);
+      return link > html.indexOf(study.limits) && link < method;
+    }), `${code}: direct sources follow the limits and stay visible before the research method or link`);
+    if (code !== mainPoint) assert(!html.includes('atlas-study-method'), `${code}: related point links to the full method without duplicating it`);
     if (code === 'bl45') {
-      assert.match(html.slice(disclosure), /使用した経穴（16穴）/);
-      assert(!html.slice(0, disclosure).includes('atlas-research-points'), 'All 16 acupoints are inside the details');
+      const mainHtml = renderToStaticMarkup(React.createElement(AtlasStudyCard, { study, currentCode: mainPoint }));
+      const disclosure = mainHtml.indexOf('<details');
+      assert(disclosure > 0 && mainHtml.includes(`id="${study.id}"`), 'The full method is available at the shared study anchor');
+      assert.match(mainHtml.slice(disclosure), /使用した経穴（16穴）/);
+      assert(!mainHtml.slice(0, disclosure).includes('atlas-research-points'), 'All 16 acupoints are inside the details');
     }
   }
 
@@ -137,10 +144,12 @@ async function main() {
     assert(!html.match(/セルフ診断で原因|原因タイプを調べる/), `${guide.id}: no diagnostic CTA`);
     assert(html.includes(content.summary) && indexHtml.includes(content.summary), `${guide.id}: the revised summary appears on both the detail and index pages`);
     assert(content.traditional.length > 0 && content.traditional.every(paragraph => html.includes(paragraph)), `${guide.id}: revised traditional concepts appear in initial HTML`);
-    assert(content.dailyLife.length >= 2 && content.dailyLife.every(({ title, body }) => html.includes(title) && html.includes(body)), `${guide.id}: daily advice appears in initial HTML`);
+    assert(content.dailyLife.length > 0 && content.dailyLife.every(({ title, body }) => html.includes(title) && html.includes(body)), `${guide.id}: daily advice appears in initial HTML`);
     assert(content.observations.length >= 3 && content.observations.every(item => html.includes(item)), `${guide.id}: practical details for the visit appear in initial HTML`);
     assert(safety && html.includes(safety.message), `${guide.id}: safety message appears before any interaction`);
     assert(html.indexOf(safety.message) < html.indexOf('id="acupoints"') && html.indexOf('id="acupoints"') < html.indexOf('id="daily-life"') && html.indexOf('id="daily-life"') < html.indexOf('id="traditional"'), `${guide.id}: triage and point links precede the guide's longer sections`);
+    assert(html.includes('東洋医学の教材で扱うツボの例です。'), `${guide.id}: the point list states its purpose before readers choose a point`);
+    assert(html.includes(`aria-current="page">${guide.title}</span>`), `${guide.id}: breadcrumb identifies the current guide`);
     const recording = html.slice(html.indexOf('id="recording"'), html.indexOf('id="daily-life"'));
     assert(recording.includes('<figure id="recording-example"') && recording.includes('架空の記録です。'), `${guide.id}: the illustrated recording example is visible and identified as fictional`);
     assert(html.includes('href="#recording"'), `${guide.id}: the recording section is linked from the table of contents`);

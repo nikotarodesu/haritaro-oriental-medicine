@@ -33,7 +33,7 @@ export const EXTRA_POINTS = [
         checkedAt: "2026-11-25",
       },
     ],
-    classification: "WHOの名称案では奇穴EX-HN3、中国の2021年版の経穴規格では督脈のGV24+として収録されています。どちらも眉間の印堂を指します。",
+    classification: "WHOの名称案では奇穴「EX-HN3」、中国の2021年版規格では督脈の「GV24+」と表記されています。どちらも眉間の印堂を指します。",
   },
   {
     slug: "taiyang",

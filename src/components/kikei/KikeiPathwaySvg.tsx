@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { KikeiVessel } from "@/data/kikeiData";
-import { Compass, Info } from "lucide-react";
+import { Info } from "lucide-react";
 
 interface Props {
   vessel: KikeiVessel;
@@ -147,7 +147,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             { x: 62, y: 365, name: "金門 (BL63)", code: "BL63", desc: "外果前下方。諸陽経が交会し陽維脈が起こる点。", isStart: true },
             { x: 65, y: 315, name: "陽交 (GB35)", code: "GB35", desc: "外果上方7寸。陽維脈の郄穴。" },
             { x: 75, y: 220, name: "側腹部・脇肋", desc: "日月・期門を交会し、少陽胆経と結合。" },
-            { x: 78, y: 128, name: "天髎・肩井 (GB21)", code: "GB21", desc: "肩上部の中央。体表の衛気を総括。" },
+            { x: 78, y: 128, name: "肩井", code: "GB21", desc: "首の付け根と肩先の中間にあるツボです。" },
             {
               x: 84, y: 55,
               name: "頭維・本神・陽白",
@@ -190,26 +190,24 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
       <div className="flex flex-wrap items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3 gap-2">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#B86924] dark:text-[#E6C387]">
-              Pathway Vector Schema
-            </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]">
               {config.viewLabel}
             </span>
           </div>
-          <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-            {vessel.name} 流注循行ダイアグラム
-          </h3>
+          <h2 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+            {vessel.name}の流注図
+          </h2>
+          <p className="text-xs text-muted">伝統医学で体のどこを通るとされるかを表した図です。</p>
         </div>
 
         <div className="flex items-center gap-2 text-xs">
           <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
             <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: primaryColor }} />
-            <span>流注ルート</span>
+            <span>経路</span>
           </span>
           <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
             <span className="w-2.5 h-2.5 rounded-full border-2" style={{ borderColor: primaryColor, backgroundColor: "white" }} />
-            <span>通過穴</span>
+            <span>経路の目印</span>
           </span>
         </div>
       </div>
@@ -419,10 +417,6 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             })}
           </svg>
 
-          {/* 右上視点バッジ */}
-          <div className="absolute top-2 right-2 px-2 py-1 rounded-lg bg-white/80 dark:bg-[#121920]/80 backdrop-blur-xs border border-[#E5DEC9] dark:border-[#2A3B4A] text-[9px] font-bold text-[#737C77] dark:text-[#8899A6]">
-            ピンをタップして解説
-          </div>
         </div>
 
         {/* 右側：流注ポイント解説 & インタラクティブカード */}
@@ -447,14 +441,14 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
                 {activeNode.desc}
               </p>
               <div className="text-[11px] text-[#B86924] dark:text-[#E6C387] font-semibold flex items-center gap-1 pt-1">
-                <span>{activeNode.isMaster ? "八脈交会穴（この奇経に通じる経穴）" : "通過部位・重要解剖ランドマーク"}</span>
+                <span>{activeNode.isMaster ? "この脈に対応する八脈交会穴" : "経路の目印"}</span>
               </div>
             </div>
           ) : (
             <div className="p-3.5 rounded-2xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] flex items-center gap-2.5 text-xs text-[#737C77] dark:text-[#8899A6]">
               <Info className="w-4 h-4 text-[#B86924] shrink-0" />
               <span>
-                ダイアグラム上の各経穴ピンをタップすると、その位置と臨床的役割を確認できます。
+                図の印を選ぶと、部位やツボの名前と、伝統医学での位置づけが分かります。
               </span>
             </div>
           )}
@@ -462,7 +456,7 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
           {/* 流注ステップ詳細リスト */}
           <div className="space-y-2">
             <span className="font-bold text-[#232826] dark:text-[#FAF8F5] text-xs block">
-              流注の順序（起点から終点まで）
+              経路をたどる
             </span>
             <div className="space-y-2">
               {vessel.pathway.map((step, idx) => (
@@ -486,16 +480,6 @@ export default function KikeiPathwaySvg({ vessel }: Props) {
             </div>
           </div>
 
-          {/* 八脈交会穴の連携ボックス */}
-          <div className="p-3.5 rounded-xl bg-gradient-to-br from-[#FAF8F5] to-[#FCF4EB] dark:from-[#151D25] dark:to-[#221810] border border-[#E5DEC9] dark:border-[#382618] text-xs space-y-1.5">
-            <div className="flex items-center gap-1.5 text-[#B86924] dark:text-[#E6C387] font-bold">
-              <Compass className="w-3.5 h-3.5" />
-              <span>八脈交会穴を組み合わせる考え方</span>
-            </div>
-            <p className="text-[#59615D] dark:text-[#A8988B] leading-relaxed text-[11px]">
-              八脈交会穴を用いる配穴では、「{vessel.masterPoint.name}」（{vessel.masterPoint.meridian}）と「{vessel.couplePoint.name}」（{vessel.couplePoint.meridian}）を対として扱います。ここでは伝統的な組み合わせを学びます。個人への施術適応や治療効果を示すものではありません。
-            </p>
-          </div>
         </div>
       </div>
     </div>

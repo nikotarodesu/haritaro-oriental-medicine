@@ -60,7 +60,7 @@ import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointInformationScope from '@/components/tsubo/AcupointInformationScope';
 import MeridianRelationsDiagram from '@/components/tsubo/MeridianRelationsDiagram';
 import { VERIFIED_POINT_LOCATIONS } from '@/data/sourceVerification';
-import { PAGE_REVISIONS, PUBLIC_VISUALS_REVISED_AT } from "@/config/contentUpdates";
+import { PAGE_REVISIONS, PUBLIC_COPY_REVISED_AT } from "@/config/contentUpdates";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -163,7 +163,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   const pageUrl = `${SITE_ORIGIN}/tsubo/${point.codeLower}`;
   const locationImage = ACUPOINT_LOCATION_IMAGES[point.codeLower];
   const pointRevisedAt = PAGE_REVISIONS[`/tsubo/${point.codeLower}`];
-  const dateModified = pointRevisedAt && pointRevisedAt > PUBLIC_VISUALS_REVISED_AT ? pointRevisedAt : PUBLIC_VISUALS_REVISED_AT;
+  const dateModified = pointRevisedAt && pointRevisedAt > PUBLIC_COPY_REVISED_AT ? pointRevisedAt : PUBLIC_COPY_REVISED_AT;
   const nameGuide = getAcupointName(point.codeLower);
   const isHeguAtlas = point.codeLower === "li4";
   const atlasArticle = ATLAS_ARTICLES[point.codeLower];
@@ -292,7 +292,7 @@ export default async function AcupointDetailPage({ params }: Props) {
     return (
       <>
         {structuredData}
-        <AcupointAtlasArticle point={point} article={copy ? { ...atlasArticle, lead: copy.lead } : atlasArticle} marker={atlasMarker} meridianPoints={meridianPoints} individualModel={individualModel} />
+        <AcupointAtlasArticle point={point} article={atlasArticle} marker={atlasMarker} meridianPoints={meridianPoints} individualModel={individualModel} />
       </>
     );
   }

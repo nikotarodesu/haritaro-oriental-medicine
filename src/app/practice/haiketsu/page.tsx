@@ -5,7 +5,6 @@ import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import { useSearchParams } from "next/navigation";
 import { 
-  AlertTriangle, 
   CheckCircle2, 
   ChevronDown,
   X, 
@@ -19,7 +18,6 @@ import {
   OVERDOSE_PRESETS,
 } from "@/data/haiketsuData";
 import PrescriptionScoringGuide from "@/components/learning/PrescriptionScoringGuide";
-import { getPrescriptionCountLabel } from "@/utils/prescriptionScorePresentation";
 
 const allPoints = Object.values(ACUPOINT_ROLES);
 
@@ -74,7 +72,7 @@ export default function HaiketsuPracticePage() {
     <div className="clinical-exercises clinical-haiketsu min-h-screen">
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
       <div className="page-layout page-layout--intro">
-        <PageIntro compact eyebrow="基本32穴の配穴演習" title="配穴の練習" art="points" description="ツボを組み合わせ、教材上の役割を見比べます。組み合わせた理由も自分の言葉で書けます。">
+        <PageIntro compact eyebrow="基本の32穴から選ぶ" title="配穴演習" art="points" description="ツボを組み合わせ、教材上の役割を見比べます。組み合わせた理由も自分の言葉で書けます。">
           <nav className="reader-navigation mt-4" aria-label="配穴演習の進め方">
             <a href="#haiketsu-palette" className="page-primary-action">経穴を選ぶ</a>
             <a href="#haiketsu-review" className="page-secondary-action">配穴を確認する</a>
@@ -166,42 +164,24 @@ export default function HaiketsuPracticePage() {
               </figure>
 
               <div className="space-y-2">
-                <h3 className="font-semibold text-ink">配穴の構成バランス</h3>
-                <span className={`inline-block text-sm sm:text-base font-bold px-3 py-1 rounded-full ${
-                  analysis.status === "optimal"
-                    ? "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300"
-                    : analysis.status === "acceptable"
-                    ? "bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300"
-                    : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
-                }`}>
-                  {analysis.statusText}
-                </span>
-                <p className="text-sm text-muted">{getPrescriptionCountLabel(selectedPointIds.length)}</p>
+                <h3 className="font-semibold text-ink">選んだツボで見直せる項目</h3>
+                {analysis.totalCount > 0 && analysis.alerts.length === 0 && (
+                  <p className="text-sm text-muted">各穴を選んだ理由を、主訴や治法と結びつけて書いてみましょう。</p>
+                )}
+                {analysis.alerts.length > 0 && <ul className="space-y-2 pt-2">
+                  {analysis.alerts.map(alert => (
+                    <li
+                      key={alert.id}
+                      className="space-y-1 rounded-xl border border-frame bg-page p-3.5 text-sm"
+                    >
+                      <p className="font-bold">{alert.title}</p>
+                      <p className="leading-relaxed text-muted">{alert.description}</p>
+                    </li>
+                  ))}
+                </ul>}
               </div>
 
               <PrescriptionScoringGuide />
-
-              {/* 警告・相殺アラート */}
-              {analysis.alerts.length > 0 && (
-                <div className="space-y-2 pt-2">
-                  {analysis.alerts.map(alert => (
-                    <div 
-                      key={alert.id}
-                      className={`p-3.5 rounded-xl border text-sm space-y-1 ${
-                        alert.severity === "high"
-                          ? "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900 text-red-900 dark:text-red-200"
-                          : "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200"
-                      }`}
-                    >
-                      <div className="flex items-center gap-1.5 font-bold">
-                        <AlertTriangle className="w-4 h-4 shrink-0" />
-                        <span>{alert.title}</span>
-                      </div>
-                      <p className="leading-relaxed opacity-90">{alert.description}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
 
             {/* 選択されたツボのカードリスト */}

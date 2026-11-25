@@ -127,21 +127,21 @@
 - [尿もれに対する鍼の研究｜量と回数をどう測ったか](https://www.haritaro.jp/learn/acupuncture/research/urinary-incontinence): 咳や運動で漏れる腹圧性尿失禁、急な尿意に伴う尿もれ、前立腺がんの手術後の試験を比較します。パッドの重さ、日誌に書いた回数、使ったパッドの枚数で、何が分かるかを確かめます。
 - [鍼灸の有害事象を数字で読む](https://www.haritaro.jp/learn/acupuncture/research/adverse-events): 鍼灸の研究に出る割合は、受けた人の数と、施術の回数のどちらで割るかで意味が変わります。国内外の調査から、出血や痛みをどう数え、重い事象と施術との関連をどう調べたかを読みます。
 - [抗凝固薬を使う人の鍼施術｜出血の研究を読む](https://www.haritaro.jp/learn/acupuncture/research/anticoagulants-and-bleeding): 抗凝固薬を使う人が鍼を受けたあと、どんな出血が記録されたのでしょうか。台湾の保険記録と韓国の病院での調査を読み、出血の種類や観察期間によって数字の意味がどう変わるかを確かめます。
-- [同じ症例でも弁証が分かれるのはなぜ？ 所見の読み比べ](https://www.haritaro.jp/learn/acupuncture/research/pattern-diagnosis-agreement): 慢性腰痛のある6人を、6人の鍼灸師が同じ日に評価した研究を読みます。架空の症例で、見立てを支える所見と次に聞きたいことを比べます。
+- [鍼灸師の見立てはどこまで一致する？ 弁証の研究と架空例](https://www.haritaro.jp/learn/acupuncture/research/pattern-diagnosis-agreement): 慢性腰痛のある6人を、6人の鍼灸師が同じ日に評価した研究を読みます。架空の症例で、見立てを支える所見と次に聞きたいことを比べます。
 
 ### 症状別の学習ガイド
-- [慢性的な頭痛・首肩こり](https://www.haritaro.jp/symptoms/headache-stiff-neck): 頭痛と首・肩のこわばりが重なるときは、それぞれが始まった時刻を記録しておくと、診察で経過を伝えやすくなります。
-- [ストレス・不安・寝付きの悪さ](https://www.haritaro.jp/symptoms/stress-insomnia): 寝付きにくい日や夜中に何度も目が覚める日は、翌日の眠気も記録しておくと、困っていることを伝えやすくなります。布団に入った時刻、寝付くまでにかかった時間、目が覚めた回数と、翌日の仕事や家事への影響を書きます。
-- [胃もたれ・食欲不振・軟便](https://www.haritaro.jp/symptoms/stomach-fatigue): 胃もたれや軟便が気になるときは、どんな食事のあと、どのくらいで症状が出るかを振り返ると経過を伝えやすくなります。便が柔らかいときは、形と回数も書いておきます。
-- [生理痛・冷え・下肢のむくみ](https://www.haritaro.jp/symptoms/menstrual-pain-chill): 月経痛や冷え・むくみが気になるときの受診の目安を紹介します。月経が始まった日と痛みが出た日を分け、仕事や授業への影響、むくみが出た時刻や左右差も残しておくと相談しやすくなります。
-- [慢性疲労・だるさ・朝起きられない](https://www.haritaro.jp/symptoms/chronic-fatigue-lethargy): 疲れが長引くときは、どの時間帯に何がしづらいかを振り返ると、困りごとが伝わります。朝の身支度や買い物で感じた疲れに加え、前の晩の睡眠と休んだあとの変化も記録します。
-- [腰痛・ぎっくり腰・坐骨神経痛](https://www.haritaro.jp/symptoms/lower-back-pain-sciatica): 腰痛で受診するときは、腰だけが痛むのか、お尻から脚にも痛みやしびれが広がるのかを伝えます。立ち上がるときなど、痛む動きと範囲を記録しましょう。脚の力や尿の出方に急な変化があるときは、すぐに医療機関を受診してください。
-- [眼精疲労・ドライアイ・目のかすみ](https://www.haritaro.jp/symptoms/eye-strain-fatigue): 目の疲れ・乾き・かすみがあるときに、急いで受診したい変化と日常で振り返ることを紹介します。画面を見始めて症状が出るまでの時間、片目か両目か、休むとどう変わるかを残します。
-- [便秘・腹部膨満・便通の変化](https://www.haritaro.jp/symptoms/constipation-ibs): 便秘やおなかの張りが続くときは、便の状態と痛みの経過を一緒に見ると、診察で話しやすくなります。便の回数と硬さに加え、排便の前と後で痛みや張りが変わったかを書きます。
-- [めまい・耳鳴り・ふらつき](https://www.haritaro.jp/symptoms/dizziness-tinnitus): めまいは、景色が回る、立ったときに気が遠くなる、足元がふらつくなど、感じ方がさまざまです。耳鳴りや聞こえの変化を伴うときは、左右と始まった時刻も伝えます。
-- [更年期のほてり・冷えのぼせ](https://www.haritaro.jp/symptoms/climacteric-hot-flash): 更年期にほてりや寝汗が気になるときは、症状の長さだけでなく、夜の眠りや翌日の生活への影響も振り返ります。ほてり始めた時刻や、汗で目が覚めた時間を残しておくと、相談の手がかりになります。
-- [アレルギー性鼻炎・花粉症・鼻閉](https://www.haritaro.jp/symptoms/allergic-rhinitis-hayfever): 花粉の季節に鼻水や目のかゆみが出るときは、外出中と室内で症状がどう違うかを振り返ります。鼻づまりで夜に目が覚めた日も書くと、生活への影響を伝えやすくなります。
-- [膝の痛み・階段昇降時の違和感](https://www.haritaro.jp/symptoms/knee-joint-pain): ひざの痛みは、階段の上り下りや歩き始めなど、どんなときに出るかで経過を説明しやすくなります。ひざの前・横・裏のどこがつらいかと、腫れや熱っぽさが出た時期も記録します。
+- [慢性的な頭痛・首肩こり](https://www.haritaro.jp/symptoms/headache-stiff-neck): 頭痛と首・肩のこわばりが重なるときの受診の目安を紹介します。
+- [寝つけない・夜中に目が覚める](https://www.haritaro.jp/symptoms/stress-insomnia): 寝つけない日や夜中に目が覚める日が続くときに、受診の目安と日常の工夫を紹介します。
+- [胃もたれ・食欲不振・軟便](https://www.haritaro.jp/symptoms/stomach-fatigue): 胃もたれや軟便が気になるときに、食事と便通の変化を受診時に伝える方法を紹介します。
+- [月経痛・冷え・脚のむくみ](https://www.haritaro.jp/symptoms/menstrual-pain-chill): 月経痛、手足の冷え、脚のむくみが気になるときに、受診の目安と症状の記録例を紹介します。
+- [慢性疲労・だるさ・朝起きられない](https://www.haritaro.jp/symptoms/chronic-fatigue-lethargy): 疲れが長引くときに、休んだあとの変化や、家事・外出で困っていることを受診時に伝える方法を紹介します。
+- [腰痛・ぎっくり腰・坐骨神経痛](https://www.haritaro.jp/symptoms/lower-back-pain-sciatica): 腰の痛みや脚へ広がるしびれの受診の目安と、痛む範囲を図で伝える方法を紹介します。
+- [眼精疲労・ドライアイ・目のかすみ](https://www.haritaro.jp/symptoms/eye-strain-fatigue): 目が疲れる、乾く、かすむときに、受診を急ぐ変化と受診時に伝えることを紹介します。
+- [便秘・おなかの張り・便通の変化](https://www.haritaro.jp/symptoms/constipation-ibs): 便秘やおなかの張りが続くときに、受診の目安と便通の変化の伝え方を紹介します。
+- [めまい・耳鳴り・ふらつき](https://www.haritaro.jp/symptoms/dizziness-tinnitus): めまいや耳鳴りがあるときに、感じ方や症状が出た順番を受診時に伝える方法を紹介します。
+- [更年期のほてり・冷えのぼせ](https://www.haritaro.jp/symptoms/climacteric-hot-flash): 更年期にほてりや寝汗が出るときに、受診の目安と眠りへの影響の伝え方を紹介します。
+- [アレルギー性鼻炎・花粉症・鼻づまり](https://www.haritaro.jp/symptoms/allergic-rhinitis-hayfever): 花粉の季節に鼻や目の症状が出るときに、受診の目安と外出時や帰宅後の工夫を紹介します。
+- [ひざの痛み・階段の上り下りで感じる違和感](https://www.haritaro.jp/symptoms/knee-joint-pain): ひざが痛むときに、受診の目安と、痛みが出る動作を受診時に伝える方法を紹介します。
 
 ### 経脈別の経穴索引
 

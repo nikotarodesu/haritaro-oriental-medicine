@@ -5,7 +5,7 @@ import { AlertTriangle } from "lucide-react";
 
 const PRESET_COMPARISONS = [
   {
-    title: "【肝病変の鑑別】肝気鬱結証 vs 肝火上炎証",
+    title: "肝気鬱結と肝火上炎を比べる",
     desc: "ストレス性の気滞が熱化して頭部・目へ上衝したかどうかの鑑別と配穴の転換",
     planA: {
       id: "a1",

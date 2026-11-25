@@ -10,7 +10,7 @@ import { legacyLectureViewParams, resolveLegacyLectureId } from "@/utils/curricu
 const origin = "https://www.haritaro.jp";
 const items = getLectureIndexGroups().flatMap(group => group.entries);
 const title = seriesPageTitle(`東洋医学・経絡・鍼灸演習の全${items.length}本の目次`, "reading");
-const description = "陰陽・気血水・経絡、症状の経過や所見の整理、架空症例の演習をテーマから選べます。";
+const description = "陰陽、気・血・津液（気血水）、経絡の読み物や、架空症例で所見を整理する演習をテーマから選べます。";
 
 export const metadata: Metadata = {
   title,

@@ -242,11 +242,15 @@ export function getStudyScopeLabel(study: AtlasStudy, code?: string) {
   const role = code ? getStudyPointRole(study, code) : undefined;
   if (role === "comparison") return "比較群で使われたツボ";
   if (role === "additional") return "条件に応じて追加されたツボ";
-  return study.kind === "point" ? "ツボ一つを調べた研究" : "複数のツボを使った研究";
+  return study.kind === "point" ? "一つのツボへの刺激を比較した研究" : "複数のツボを使った研究";
 }
 
 export function getAcupointStudies(code: string) {
   return ATLAS_STUDIES.filter(study => getStudyPointRole(study, code));
+}
+
+export function getAtlasStudyPoint(study: AtlasStudy) {
+  return study.points[0] ?? study.comparisonPoints?.[0] ?? study.additionalPointGroups?.find(group => group.points.length)?.points[0];
 }
 
 export function getSymptomStudies(slug: string) {

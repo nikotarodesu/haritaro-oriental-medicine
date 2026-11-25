@@ -4,7 +4,6 @@ type Care = "touch" | "eyesAndFace" | "head" | "neck" | "chest" | "abdomen" | "b
 
 interface ViewCopy {
   label: string;
-  read: string;
   care: Care;
   symptom?: readonly [slug: string, label: string];
 }
@@ -16,149 +15,121 @@ const lowerBackSymptoms = ["lower-back-pain-sciatica", "腰痛・脚のしびれ
 export const viewCopy: Record<ExpandedView, ViewCopy> = {
   face: {
     label: "顔の正面",
-    read: "正面図で眉・目・鼻・口の高さを比べます。鏡で左右が逆に見える場合も、顔の中央へ近づく向きは同じです。丸印の高さと中央線からの距離を順に見ます。",
     care: "eyesAndFace", symptom: headSymptoms,
   },
   profile: {
     label: "頭と顔の横",
-    read: "横顔の図で鼻が向く側が前です。耳の入口の前、耳の付け根、耳の後ろの骨のどれに近いかを確かめると、正面からでは重なって見える点を区別できます。",
     care: "eyesAndFace", symptom: headSymptoms,
   },
   scalp: {
     label: "頭の上",
-    read: "頭を上から見た図です。額と後頭部のどちらに近いかを先に見ます。分け目の位置は人によって違うため、図の中央線は鼻と後頭部の中央を結ぶ向きとして読みます。",
     care: "head", symptom: headSymptoms,
   },
   nape: {
     label: "後頭部とうなじ",
-    read: "頭を後ろから見た図で、頭の丸い骨と首の境を確かめます。縦に走る筋肉の中央と、その筋肉の脇にできるくぼみを分けて見ると位置の違いが分かります。",
     care: "neck", symptom: headSymptoms,
   },
   neck: {
     label: "首",
-    read: "鎖骨からあごまでの間で、高さを先に見ます。のどの中央、耳の下から鎖骨へ向かう筋肉のふち、首の後ろは、図で位置を比べてください。",
     care: "neck", symptom: headSymptoms,
   },
   neckSide: {
     label: "首の横",
-    read: "横から見た図で、左はのど側、右はうなじ側です。耳の下から鎖骨に向かう斜めの筋肉を目印に、丸印が筋肉の前・中央・後ろのどこにあるかを確認します。",
     care: "neck", symptom: headSymptoms,
   },
   mouth: {
     label: "上唇の内側",
-    read: "拡大図では、上唇の裏と歯ぐきをつなぐ中央のひだを描いています。鼻と唇の間にある人中と、唇の裏の歯ぐきに近い位置を見分けます。",
     care: "eyesAndFace",
   },
   upperArm: {
     label: "二の腕の前",
-    read: "二の腕は肩からひじまでです。図でわきのしわとひじのしわを先に確認します。その間で、力こぶになる筋肉のどのふちに位置するかを見ます。",
     care: "touch",
   },
   armBack: {
     label: "二の腕の後ろ",
-    read: "ひじを曲げたときに出る骨が、腕の後ろの目印です。図でその骨を肩先に結ぶ線を読み、丸印が肩寄りかひじ寄りかを見ます。",
     care: "touch",
   },
   elbowSide: {
     label: "ひじの外側",
-    read: "ひじを曲げた図では、ひじ先の骨と関節の横に出る骨が別の目印になります。角度によってくぼみの見え方が変わるので、丸印がどの骨のそばかを先に見ます。",
     care: "touch",
   },
   elbowInside: {
     label: "ひじの内側と後ろの境",
-    read: "ひじの内側を向いた図で、腕を曲げたときに尖る骨と、体に近い側の骨の出っ張りを見ます。その間の溝は、ひじを強く曲げなくても図で確認できます。",
     care: "touch",
   },
   forearmPalm: {
     label: "前腕の手のひら側",
-    read: "手のひらを上にした図で、親指側と小指側を確かめます。次にしわに重なる点と、しわからひじへ離れる点を見分けます。",
     care: "touch",
   },
   forearmBack: {
     label: "前腕の手の甲側",
-    read: "手の甲が上を向く図です。肘に近い方と手首に近い方を確認し、親指側・中央・小指側のどの列かを確かめます。前腕には、親指側の橈骨（とうこつ）と小指側の尺骨（しゃっこつ）が並びます。",
     care: "touch",
   },
   shoulderSide: {
     label: "肩の外側",
-    read: "肩を横から見ると、腕の上のふくらみと肩先の骨が見分けやすくなります。肩の外側の角を起点に、胸側と背中側、腕側と首側を図で見ます。",
     care: "touch", symptom: headSymptoms,
   },
   shoulderBack: {
     label: "肩と肩甲骨の後ろ",
-    read: "背中側から見て、肩甲骨の上を横切る骨の隆起を目印にします。丸印がその上か下かを確かめ、肩先と背骨のどちらに近いかを見ます。",
     care: "back", symptom: headSymptoms,
   },
   palm: {
     label: "手のひら",
-    read: "掌を開いた図で指先から骨をたどります。色が付いた骨の番号を図と凡例で照合し、目印にする指を決めてから、付け根と手首の間を見ます。",
     care: "touch",
   },
   handBack: {
     label: "手の甲と手首",
-    read: "手を開いた図で、指先まで色が続く骨を見つけます。指のまたと、同じ指を曲げたときに山になる関節は別の目印です。どちらから手首側・指先側へ進むかを図で確かめます。",
     care: "touch",
   },
   chest: {
     label: "胸の前",
-    read: "胸骨は胸の中央の縦長の骨で、鎖骨は肩へ続く骨です。弧を描く肋骨を目印に、丸印の高さと胸の中央からの距離を見ます。",
     care: "chest",
   },
   abdomen: {
     label: "おなか",
-    read: "おへそを通る中央線を図で見つけ、先に付近の高さを合わせます。同じ高さの点も、中央線から離れる距離が違えば別のツボです。",
     care: "abdomen", symptom: bellySymptoms,
   },
   flank: {
     label: "わき腹",
-    read: "横向きの図で体の前から背中へ向かう方向を確かめます。肋骨の下や骨盤の上など、上下の目印を先に合わせてから、横腹の丸印を読みます。",
     care: "abdomen",
   },
   hip: {
     label: "股関節の外側",
-    read: "横から見た図で、骨盤の前に出る骨と、太ももの外側で張り出す骨を見分けます。一つは腰の骨、もう一つは脚の骨なので、丸印がどちらに近いかを確認できます。",
     care: "pelvis", symptom: lowerBackSymptoms,
   },
   groin: {
     label: "脚の付け根",
-    read: "下腹部から太ももに移る正面図です。付け根の斜めのしわと下腹部を区切る骨の高さを比べ、体の中央寄りか脚の外側寄りかを確認します。",
     care: "pelvis",
   },
   pelvis: {
     label: "骨盤の底",
-    read: "上が体の前、下が後ろです。図の中央に並ぶ目印を順に見ると、肛門より前の点と、後ろで尾骨に近い点を区別できます。前後の関係を示す線に絞った図です。",
     care: "pelvis",
   },
   back: {
     label: "背中",
-    read: "背中の中央に描いた縦線に沿って、首から腰へ椎骨が並びます。何番目の骨かを先に数え、その段で中央の線から横に離れるかを読みます。",
     care: "back",
   },
   sacrum: {
     label: "腰とお尻",
-    read: "腰椎は腰の背骨、仙骨はその下に続く三角形の骨です。図で二つの境を見つけ、腰の椎骨を起点にする点か、仙骨や尾骨が目印になる点かを見ます。",
     care: "back", symptom: lowerBackSymptoms,
   },
   thighFront: {
     label: "太ももの前と内側",
-    read: "骨盤の前とひざのお皿を確認すると上下の向きが分かります。丸印が太ももの中央と内側のどちらにあり、骨や筋の位置からどれだけ離れるかを見ます。",
     care: "touch",
   },
   thighSide: {
     label: "太ももの外側",
-    read: "太ももの外を縦に通る帯状のすじと、ひざの外にある骨を目印にします。同じ外側の点も、すじのすぐ前や後ろ、ひざからの距離で見分けます。",
     care: "touch",
   },
   thighBack: {
     label: "太ももの裏",
-    read: "お尻と太ももの境の横じわと、ひざ裏の横じわの両方を見ます。上のしわから下がる位置か、ひざ裏から上がる位置かを決めて図を読んでください。",
     care: "touch", symptom: lowerBackSymptoms,
   },
 };
 
 interface CareCopy {
   steps: string;
-  caution: string;
+  caution?: string;
   emergency?: string;
 }
 
@@ -183,9 +154,7 @@ export const careCopy: Record<Care, CareCopy> = {
     emergency: "急な息苦しさ、ろれつが回らない、顔や手足が急に動かしにくいといった症状があるときは、すぐに119番へ連絡してください。",
   },
   chest: {
-    steps: "胸骨からの距離と肋骨の高さを拡大図で見比べます。骨の間に指を押し込まず、器具を当てて刺激する方法は控えてください。",
-    caution: "胸に違和感が出たときは早めに医療機関に相談してください。",
-    emergency: "胸の中央が締め付けられるような痛みが続くときは、すぐに119番へ連絡してください。",
+    steps: "胸のツボの位置は図で確認してください。肋骨の間に指を押し込んだり、器具を当てたりする刺激は控えてください。",
   },
   abdomen: {
     steps: "おなかの力を抜き、へそや骨の縁を図で合わせます。位置を確かめるときも、指を差し込むように押したり、痛むところを何度も確かめたりせず、図の縦横の位置を見比べます。",
@@ -204,6 +173,7 @@ export const careCopy: Record<Care, CareCopy> = {
 };
 
 export const cautionSites: Readonly<Record<string, string>> = {
+  st17: "この部位への指や器具による刺激は控えてください。",
   ht1: "血管が通るわきの中央です。腕を無理に上げたり指を深く当てたりせず、しわと丸印の位置関係を図で確かめます。",
   lu8: "脈が触れるところのそばなので、前腕の骨と手首のしわを図で読みます。動脈の位置を指で押して調べる必要はありません。",
   lu9: "手首の動脈が近くを通ります。手のひらを上にした図で、親指側の小さな骨としわに挟まれる位置を見ます。",

@@ -91,7 +91,7 @@ export default function GorouWorkstyleChecker() {
     <div className="space-y-8">
       <section aria-labelledby="gorou-check-heading" className="space-y-4 rounded-2xl border border-frame bg-panel p-4 sm:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <h2 id="gorou-check-heading" className="font-serif text-xl font-bold">長く続くことが多い動作を選ぶ</h2>
+          <h2 id="gorou-check-heading" className="font-serif text-xl font-bold">長く続けがちな動作を選ぶ</h2>
           <p role="status" className="text-sm font-medium text-muted">選択中：{selected.length}項目</p>
         </div>
         <p className="text-base text-muted">仕事や家で、休憩を取らずに続けることが多い動作を選んでください。複数選べます。</p>
@@ -138,21 +138,8 @@ export default function GorouWorkstyleChecker() {
         </p>
       ) : (
         <>
-          <section aria-labelledby="gorou-result-heading" className="space-y-3 rounded-2xl border border-frame bg-panel p-4 sm:p-6">
-            <h2 id="gorou-result-heading" className="font-serif text-xl font-bold sm:text-2xl">選んだ動作と五労の対応</h2>
-            <p className="text-base leading-relaxed text-muted">『素問』宣明五気篇では、長く続く動作を次のように関連づけています。</p>
-            <ul className="grid gap-2 sm:grid-cols-2">
-              {selected.map(id => (
-                <li key={id} className="rounded-lg bg-panel-selected px-4 py-3 text-base leading-relaxed">
-                  <strong className="block text-lg">{GOROU_DEFS[id].passage}</strong>
-                  {GOROU_DEFS[id].meaning}
-                </li>
-              ))}
-            </ul>
-          </section>
-
           <section aria-labelledby="gorou-rest-heading" className="space-y-4">
-            <h2 id="gorou-rest-heading" tabIndex={-1} className="text-balance font-serif text-xl font-bold leading-relaxed sm:text-2xl">選んだ生活習慣に合わせた休憩や動作の例</h2>
+            <h2 id="gorou-rest-heading" tabIndex={-1} className="text-balance font-serif text-xl font-bold leading-relaxed sm:text-2xl">選んだ動作の五労と休憩の例</h2>
             <div className="grid gap-4 lg:grid-cols-2">
               {selected.map(id => {
                 const item = GOROU_DEFS[id];
@@ -161,22 +148,23 @@ export default function GorouWorkstyleChecker() {
                 return (
                   <article key={id} className="space-y-3 rounded-2xl border border-frame bg-panel p-4 sm:p-6">
                     <p className="text-base font-semibold text-accent">{item.name}</p>
+                    <p className="text-sm leading-relaxed text-muted"><strong>古典の記述「{item.passage}」</strong> {item.meaning}</p>
                     <h3 className="text-lg font-bold leading-relaxed">{item.restTitle}</h3>
                     <p className="text-base leading-[1.8] text-muted">{item.restDescription}</p>
-                    {atlasPoint ? (
-                      <div className="space-y-1 border-t border-divider pt-3 text-base leading-[1.8]">
-                        <p className="font-semibold">{atlasPoint.name}（{atlasPoint.code}）</p>
-                        <p className="text-muted">{atlasPoint.locationSimple}</p>
-                        <div className="flex flex-wrap gap-x-4">
-                          <Link href={'/tsubo/' + atlasPoint.code.toLowerCase() + '#acupoint-location'} className={textLinkClass}>図で場所を確認</Link>
-                          <Link href={'/tsubo/' + atlasPoint.code.toLowerCase() + '#acupoint-cautions'} className={textLinkClass}>注意点</Link>
+                    <details className="space-y-2 border-t border-divider pt-3 text-sm leading-relaxed">
+                      <summary className="cursor-pointer font-semibold">教材に出てくるツボの位置を調べる</summary>
+                      {atlasPoint ? (
+                        <div>
+                          <p className="text-muted">{atlasPoint.locationSimple}</p>
+                          <div className="flex flex-wrap gap-x-4">
+                            <Link href={`/tsubo/${atlasPoint.code.toLowerCase()}#acupoint-location`} className={textLinkClass}>{atlasPoint.name}（{atlasPoint.code}）を図で見る</Link>
+                            <Link href={`/tsubo/${atlasPoint.code.toLowerCase()}#acupoint-cautions`} className={textLinkClass}>注意点</Link>
+                          </div>
                         </div>
-                      </div>
-                    ) : "extraPoint" in point && (
-                      <p className="border-t border-divider pt-3 text-base leading-[1.8] text-muted">
-                        {point.extraPoint}は、経絡の361穴とは別に扱われる奇穴です。
-                      </p>
-                    )}
+                      ) : "extraPoint" in point && (
+                        <p>{point.extraPoint}は、経絡の361穴とは別に扱われる奇穴です。</p>
+                      )}
+                    </details>
                   </article>
                 );
               })}
@@ -194,16 +182,18 @@ export default function GorouWorkstyleChecker() {
         <p className="text-base leading-[1.8] text-muted">
           現代の作業環境では、休憩を取る、姿勢を変える、机や椅子を調整するといった工夫があります。米国労働安全衛生局は、画面から目を離す、立つ、歩くなどの短い休憩を紹介しています。
         </p>
-        <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <details>
+          <summary className="cursor-pointer font-semibold">古典に載っている五労の全5項目</summary>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {gorouIds.map(id => (
             <li key={id} className="rounded-lg border border-frame bg-page px-3 py-2 text-base leading-relaxed">
               <strong className="block">{GOROU_DEFS[id].name}</strong>
               <span className="block font-semibold text-accent">{GOROU_DEFS[id].passage}</span>
               <span className="block text-muted">{GOROU_DEFS[id].meaning}</span>
-              <span className="mt-1 block">{GOROU_DEFS[id].restTitle}</span>
             </li>
           ))}
-        </ul>
+          </ul>
+        </details>
         <div className="space-y-1 border-t border-divider pt-4">
           <h3 className="text-lg font-bold">休憩や動作の参考資料</h3>
           <ul className="space-y-1">

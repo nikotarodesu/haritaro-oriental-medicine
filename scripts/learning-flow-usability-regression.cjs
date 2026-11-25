@@ -76,6 +76,11 @@ function readerHost() {
   const courseIndex = hub.find(node => node.props?.id === 'learn-courses-heading');
   assert(courseIndex && courseIndex.type === 'section');
   assert(flatten(courseIndex).some(node => node.type === PublicIndex && node.props.series === 'reading'));
+  const courseList = hub.find(node => node.props?.id === LEARNING_COURSES_HREF.split('#')[1]);
+  assert(courseList && courseList !== courseIndex, 'Courses and full lectures have distinct destinations');
+  for (const course of LEARNING_COURSES) {
+    assert(flatten(courseList).some(node => node.type === Link && node.props.href === '/learn/courses/' + course.slug), course.slug + ': listed on the course index');
+  }
   assert(hub.some(node => node.type === ReadingStart && node.props.firstHref === readingUnits[0].href));
   assert(hub.some(node => node.type === Link && node.props.href === '/diagnosis'));
   const Redirect = component('src/app/learn/courses/page.tsx', id => id === 'next/navigation' ? { permanentRedirect(destination) { throw Object.assign(new Error('redirect'), { destination }); } } : undefined).default;

@@ -46,7 +46,12 @@ export const ABDOMEN_ARTICLE: Article = {
     {
       id: "nhs-stomach-ache", type: "guideline", title: "Stomach ache",
       source: "NHS", url: "https://www.nhs.uk/symptoms/stomach-ache/",
-      note: "緊急・早期の医学的評価が必要な腹部症状を参照。日本の緊急通報番号は119です。"
+      note: "腹痛と一緒に起きた症状、緊急・早期の受診が必要な状況を参照しました。"
+    },
+    {
+      id: "mhlw-abdominal-emergency-119", type: "guideline", title: "こんな時は迷わず119へ",
+      source: "厚生労働省", url: "https://kakarikata.mhlw.go.jp/kakaritsuke/urgency.html",
+      note: "成人で救急車を呼ぶ症状のうち、腹部、胸や背中、意識の項目を参照しました。"
     }
   ],
   contentMarkdown: `## 1. 腹診で得られる情報
@@ -94,7 +99,9 @@ export const ABDOMEN_ARTICLE: Article = {
 
 ## 6. 腹痛を伝統的な見立てより先に評価する
 
-**突然の強い腹痛、吐血、黒く粘り気のある便や血便、胸痛、呼吸困難、失神・虚脱**がある場合は救急の医学的評価を優先します。便やガスが出ず腹痛・嘔吐がある場合や、尿が出ない場合も、放置せず緊急に医療機関へ相談してください。急な症状が強いときや、悪化しているときは、すぐに119番へ連絡してください。[^nhs-stomach-ache]
+**突然の激しい腹痛、続く激しい腹痛、吐血、血便や真っ黒い便**があるときは、すぐに119番へ連絡してください。急に息が苦しくなったとき、胸の中央が締めつけられる痛みが続くとき、意識を失ったときも同様です。[^mhlw-abdominal-emergency-119]
+
+腹痛があり、便やガスがまったく出ない、または尿がまったく出ないときは、すぐに救急外来で診てもらってください。[^nhs-stomach-ache]
 
 妊娠中の腹痛、意図しない体重減少、繰り返す・悪化する腹痛、持続する腹部膨満なども受診につなぎます。腹証が典型的かどうかにかかわらず、こうした症状の原因を評価することを先に行います。
 

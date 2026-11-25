@@ -58,8 +58,12 @@ export default function SafetyPage() {
         <li className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-xl border border-[var(--border-washi)] bg-[var(--bg-card)] p-4">
           <HeartPulse size={22} className="mt-1 text-[var(--accent-readable)]" aria-hidden="true" />
           <div className="space-y-1">
-            <h3 className="text-base font-bold">施術後の胸の痛みや息苦しさは、すぐ受診</h3>
-            <p>胸や背中への施術後、強い息苦しさがあるときは、すぐに119番へ連絡してください。胸の痛みや息苦しさが出たら、すぐに医療機関を受診してください。症状が悪くなったら、「好転反応」だと自己判断せず、医療機関に相談してください。</p>
+            <h3 className="text-base font-bold">胸や背中への施術後に胸が痛む・息苦しい</h3>
+            <ul className="list-disc space-y-1 pl-5">
+              <li>胸が強く痛む、または息苦しさが強いときは、すぐに119番へ連絡してください。</li>
+              <li>痛みや息苦しさが軽くても、新たに出たときはすぐに医療機関を受診してください。</li>
+            </ul>
+            <p>症状が悪化したときは、いわゆる「好転反応」と自己判断して様子を見ず、医療機関に相談してください。</p>
           </div>
         </li>
       </ol>

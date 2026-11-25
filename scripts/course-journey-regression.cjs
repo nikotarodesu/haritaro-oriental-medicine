@@ -82,7 +82,7 @@ for (const course of LEARNING_COURSES) {
   progress = { ...progress, completedLectures: allComplete, quizResults: { outside: { questionId: 'outside', lectureId: outsideLecture, isCorrect: false } } };
   primary = primaryCourseHref(course);
   assert.equal(primary.href, `#course-mini-case-${course.seriesId}`, 'Completed lectures lead back to the same short example before the next theme');
-  assert(primary.section.includes('この短いコースの講義を受講しました'));
+  assert(primary.section.includes('このコースの全ステップが完了しました'));
   assert(primary.section.includes('短い例で振り返る'));
   const weakQuestion = CURRICULUM_QUIZZES[first].questions[0];
   progress.quizResults = { [weakQuestion.id]: { questionId: weakQuestion.id, lectureId: first, isCorrect: false } };

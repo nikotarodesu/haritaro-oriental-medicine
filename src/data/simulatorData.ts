@@ -162,19 +162,19 @@ export const TEMP_OPTIONS: { value: TemperatureType; label: string; sub: string;
 ];
 
 export const STATE_OPTIONS: { value: StateType; label: string; sub: string; description: string }[] = [
-  { value: "deficiency", label: "虚（きょ）", sub: "生命力不足・機能衰弱", description: "伝統医学では正気の不足を整理する分類です。免疫検査や栄養状態と同一視しません。" },
+  { value: "deficiency", label: "虚（きょ）", sub: "伝統医学で働きの不足を考える分類", description: "伝統医学では正気の不足を整理する分類です。免疫検査や栄養状態と同一視しません。" },
   { value: "excess", label: "実（じつ）", sub: "病邪の鬱滞・過剰・張り", description: "病邪が強く勢いがある、または気血水の滞り・緊張が過剰な状態。" }
 ];
 
 export const QIXUESHUI_OPTIONS: { value: QixueshuiType; label: string; sub: string; dynamicNature: string }[] = [
-  { value: "qizhi", label: "気滞（きたい）", sub: "気の鬱滞・巡り不全", dynamicNature: "伝統医学でいう気の運行の滞りとして、張り・症状の変動・気分との関連などを比較する" },
+  { value: "qizhi", label: "気滞（きたい）", sub: "張りが出る場面や時間の変化に注目", dynamicNature: "伝統医学でいう気の運行の滞りとして、張り・症状の変動・気分との関連などを比較する" },
   { value: "qixu", label: "気虚（ききょ）", sub: "伝統医学でいう気の不足", dynamicNature: "推進力と温煦力が衰え、無力感・息切れが生じる" },
   { value: "qini", label: "気逆（きぎゃく）", sub: "気の異常上昇・突き上げ", dynamicNature: "下降すべき気が逆流し、のぼせ・咳・吐き気が生じる" },
   { value: "xuexu", label: "血虚（けっきょ）", sub: "伝統的な滋養機能の不足", dynamicNature: "伝統医学でいう滋養の不足として、淡白な顔色・舌、めまい・乾燥などを比較する。ヘモグロビンや脳血流の測定値ではない" },
   { value: "yuxue", label: "瘀血（おけつ）", sub: "伝統医学でいう血の滞り", dynamicNature: "伝統医学では血の運行の滞りとして整理し、固定痛・暗紫色などを検討する" },
   { value: "yinxu", label: "陰虚（いんきょ）", sub: "伝統的な滋潤機能の不足", dynamicNature: "伝統医学では滋潤の不足と虚熱を整理し、乾燥やほてりなどを検討する" },
   { value: "yangxu", label: "陽虚（ようきょ）", sub: "伝統医学でいう温煦機能の不足", dynamicNature: "伝統医学でいう温煦の不足として、冷え・温めると軽減する訴え・弱い脈などを比較する" },
-  { value: "shuitai", label: "水滞・痰湿（すいたい）", sub: "伝統医学でいう水の偏り・滞り", dynamicNature: "水分の排泄運化が阻害され、重だるさ・むくみ・眩暈が生じる" }
+  { value: "shuitai", label: "水滞（すいたい）・痰湿（たんしつ）", sub: "伝統医学でいう水の偏り・滞り", dynamicNature: "水分の排泄運化が阻害され、重だるさ・むくみ・眩暈が生じる" }
 ];
 
 export const ZANGFU_OPTIONS: { value: ZangfuType; label: string; sub: string; organRole: string }[] = [

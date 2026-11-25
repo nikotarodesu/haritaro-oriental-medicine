@@ -31,7 +31,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "stomach-fatigue": {
-    "message": "血を吐いたときや、大量の出血、突然の激しい腹痛、続く激痛、意識の異常があるときは、すぐに119番へ連絡してください。黒いタール状の便、強い腹痛、失神があったときは、すぐに医療機関を受診してください。食欲の低下や軟便が続くときも医療機関に相談してください。",
+    "message": "血を吐いた、大量に出血した、突然の激しい腹痛がある、激痛が続く、意識の異常があるときは、すぐに119番へ連絡してください。黒いタール状の便が出た、強い腹痛がある、失神のあと意識が戻っている場合は、すぐに医療機関を受診してください。食欲の低下や軟便が続くときも医療機関に相談してください。",
     "sources": [
       {
         "title": "消防庁：救急車利用マニュアル",
@@ -46,7 +46,7 @@ export const SYMPTOM_SAFETY_GUIDANCE: Record<string, SafetyGuidance> = {
     ]
   },
   "menstrual-pain-chill": {
-    "message": "激痛や多量の出血、失神があるときは、すぐに119番へ連絡してください。月経痛で生活に支障があるときや、出血が増えたときは婦人科に相談してください。妊娠中や妊娠の可能性があるときの腹痛や出血は、月経だけが原因だと自分で決めず、医療機関に相談してください。原因が分からず片脚だけが腫れたときも、早めに受診してください。",
+    "message": "激痛や多量の出血、失神があるときは、すぐに119番へ連絡してください。妊娠中や妊娠の可能性があるときに腹痛や出血があれば、産婦人科などの医療機関に相談してください。月経痛で生活に支障があるときや、出血が増えたときも婦人科へ相談してください。原因が分からず片脚だけが腫れたときは、早めに医療機関を受診してください。",
     "sources": [
       {
         "title": "NHS：妊娠中の出血",
@@ -178,7 +178,7 @@ export const SYMPTOMS: SymptomGuide[] = [
   },
   {
     "id": "stress-insomnia",
-    "title": "ストレス・不安・寝付きの悪さ",
+    "title": "寝つけない・夜中に目が覚める",
     "category": "メンタル・睡眠",
     "summary": "寝付きにくさ、中途覚醒、日中の疲れや不安。症状だけで自律神経の病気や不眠症を確定することはできません。",
     "orientalMechanism": "伝統医学では「心腎不交」「肝気鬱結」などを、睡眠や気分に関する所見を整理する候補として学びます。心・肝・腎は伝統理論上の機能分類で、心臓・肝臓・腎臓の病気を意味しません。",
@@ -197,7 +197,7 @@ export const SYMPTOMS: SymptomGuide[] = [
   {
     "id": "stomach-fatigue",
     "title": "胃もたれ・食欲不振・軟便",
-    "category": "消化器・お腹",
+    "category": "消化器・おなか",
     "summary": "食後の重さ、食欲の低下、軟便など。症状から消化器の病気の有無を判定することはできません。",
     "orientalMechanism": "伝統医学の「脾胃虚弱」「水湿停滞」は、食欲・便通・疲労などを整理する分類です。消化酵素の不足や臓器の病気と同一ではありません。",
     "recommendedTsuboIds": [
@@ -213,8 +213,8 @@ export const SYMPTOMS: SymptomGuide[] = [
   },
   {
     "id": "menstrual-pain-chill",
-    "title": "生理痛・冷え・下肢のむくみ",
-    "category": "女性特有",
+    "title": "月経痛・冷え・脚のむくみ",
+    "category": "月経・更年期",
     "summary": "月経時の痛みや手足の冷え、脚のむくみ。これらが同じ原因で生じているとは限りません。",
     "orientalMechanism": "伝統医学では「寒凝血瘀」「水湿内停」などの候補を比較します。「瘀血」は子宮に古い血がたまっていることを確認する医学検査ではありません。",
     "recommendedTsuboIds": [
@@ -267,7 +267,7 @@ export const SYMPTOMS: SymptomGuide[] = [
   {
     "id": "eye-strain-fatigue",
     "title": "眼精疲労・ドライアイ・目のかすみ",
-    "category": "頭・首・肩",
+    "category": "目・耳・鼻",
     "summary": "画面作業に伴う疲れや乾き、目のかすみ。急な痛み・充血・見え方の変化を画面の見過ぎと決めないことが大切です。",
     "orientalMechanism": "「久視傷血」「肝開竅於目」は伝統医学の説明です。肝血の分類だけで眼科疾患の有無や視力低下の原因を判定することはできません。",
     "recommendedTsuboIds": [
@@ -283,8 +283,8 @@ export const SYMPTOMS: SymptomGuide[] = [
   },
   {
     "id": "constipation-ibs",
-    "title": "便秘・腹部膨満・便通の変化",
-    "category": "消化器・お腹",
+    "title": "便秘・おなかの張り・便通の変化",
+    "category": "消化器・おなか",
     "summary": "便秘、硬い便、お腹の張り、腹痛や下痢。過敏性腸症候群（IBS）かどうかは、症状の経過を伝えて医療機関で確かめます。",
     "orientalMechanism": "伝統医学では「肝脾不和」「大腸気滞」「陰虚腸燥」などの候補を学びます。これらの証とIBSの診断は同じものではありません。",
     "recommendedTsuboIds": [
@@ -301,7 +301,7 @@ export const SYMPTOMS: SymptomGuide[] = [
   {
     "id": "dizziness-tinnitus",
     "title": "めまい・耳鳴り・ふらつき",
-    "category": "頭・首・肩",
+    "category": "目・耳・鼻",
     "summary": "立ちくらみ、回転感、ふらつき、耳鳴り。原因は内耳だけとは限らず、急な難聴や神経症状は速やかな評価が必要です。",
     "orientalMechanism": "「痰湿」「肝陽上亢」などは伝統医学の候補です。痰湿を内耳の水分量と同一視したり、首こりで内耳動脈が塞がったと断定したりすることはできません。",
     "recommendedTsuboIds": [
@@ -319,7 +319,7 @@ export const SYMPTOMS: SymptomGuide[] = [
   {
     "id": "climacteric-hot-flash",
     "title": "更年期のほてり・冷えのぼせ",
-    "category": "女性特有",
+    "category": "月経・更年期",
     "summary": "ほてりや発汗、気分の変化など。更年期にみられることがありますが、年齢だけで原因を確定することはできません。",
     "orientalMechanism": "伝統医学では「肝腎陰虚」「上熱下寒」などを比較します。腎の陰液はホルモン濃度を表す検査値ではなく、伝統理論上の説明です。",
     "recommendedTsuboIds": [
@@ -336,8 +336,8 @@ export const SYMPTOMS: SymptomGuide[] = [
   },
   {
     "id": "allergic-rhinitis-hayfever",
-    "title": "アレルギー性鼻炎・花粉症・鼻閉",
-    "category": "頭・首・肩",
+    "title": "アレルギー性鼻炎・花粉症・鼻づまり",
+    "category": "目・耳・鼻",
     "summary": "くしゃみ、鼻水、鼻づまり、目のかゆみ。原因や適切な治療は医療機関で確認します。",
     "orientalMechanism": "「肺気虚」「衛気不固」などは伝統医学上の分類です。衛気の強さからアレルギー反応や免疫機能を判定することはできません。",
     "recommendedTsuboIds": [
@@ -353,7 +353,7 @@ export const SYMPTOMS: SymptomGuide[] = [
   },
   {
     "id": "knee-joint-pain",
-    "title": "膝の痛み・階段昇降時の違和感",
+    "title": "ひざの痛み・階段の上り下りで感じる違和感",
     "category": "足・脚",
     "summary": "動き始めや階段での膝の痛み、こわばり。関節の状態や痛みの原因は症状だけでは確定できません。",
     "orientalMechanism": "「肝主筋」「腎主骨」「風寒湿」などは伝統医学の枠組みです。肝・腎の証から軟骨の状態や炎症・感染の有無を判定するものではありません。",

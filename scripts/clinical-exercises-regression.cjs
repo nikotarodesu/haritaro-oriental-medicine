@@ -188,4 +188,59 @@ const unavailable = client('src/components/clinical/ClinicalToolBridge.tsx', {
 });
 unavailable.render(); unavailable.flush(); unavailable.render();
 assert.equal(unavailable.tree(), null, 'A missing session draft has no bridge or create-record promotion');
-console.log('Clinical exercises passed: three public comparison sets, legacy links, persistent exercise tabs, guest draft transfer, and safety/storage/12-point guards.');
+
+const diagnosisData = {};
+const diagnosisPath = path.resolve(__dirname, '../src/data/diagnosisData.ts');
+const diagnosisCode = ts.transpileModule(fs.readFileSync(diagnosisPath, 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS },
+}).outputText;
+vm.runInNewContext(diagnosisCode, { exports: diagnosisData });
+const check = client('src/components/diagnosis/DiagnosisClient.tsx', {
+  '@/config/acupunctureLearning': { PATTERN_AGREEMENT_HREF: '/library' },
+  './ClinicalInterviewBoard': () => null,
+  '@/data/acupointLookup': { ACUPOINT_LOOKUP: [] },
+  '@/data/diagnosisData': diagnosisData,
+  '@/utils/clinicalEncounter': {},
+  '@/utils/clinicalInterview': {},
+  '@/utils/analytics': { trackEvent() {} },
+});
+const checkProps = { relatedArticles: [], studyLinks: {} };
+const checkResults = () => {
+  check.button('回答に関連する分類を見る').props.onClick();
+  check.render(checkProps);
+};
+const resultHeadings = () => nodes(check.tree()).filter(node => node.type === 'h2').map(text);
+check.render(checkProps);
+checkResults();
+assert(resultHeadings().includes('選んだ項目はありません'));
+check.button('朝起きたときに体が重く').props.onClick(); check.render(checkProps);
+checkResults();
+assert(resultHeadings().includes('気虚（ききょ）'), 'One match immediately opens that classification');
+check.button('ため息がよく出た').props.onClick(); check.render(checkProps);
+checkResults();
+assert(resultHeadings().includes('同じ数の項目を選んだ分類'), 'Tied results present both choices before opening a classification');
+assert.equal(check.button('気虚').props['aria-pressed'], false);
+assert.equal(check.button('気滞').props['aria-pressed'], false);
+check.button('気滞').props.onClick(); check.render(checkProps);
+assert.equal(check.button('気滞').props['aria-pressed'], true);
+assert(resultHeadings().includes('気滞（きたい）'));
+check.button('気虚').props.onClick(); check.render(checkProps);
+assert(resultHeadings().includes('気虚（ききょ）'));
+check.button('ため息がよく出た').props.onClick(); check.render(checkProps);
+assert(!resultHeadings().includes('同じ数の項目を選んだ分類'), 'Changing an answer invalidates the prior result');
+
+const caseData = {};
+const casePath = path.resolve(__dirname, '../src/data/clinicalCasesData.ts');
+const caseCode = ts.transpileModule(fs.readFileSync(casePath, 'utf8'), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS },
+}).outputText;
+vm.runInNewContext(caseCode, { exports: caseData, require: () => ({ KNEE_POINT_COMPARISON_HREF: '/tsubo' }) });
+const firstQuestions = caseData.CLINICAL_CASES.map(item => item.reasoningSteps[0]);
+assert.equal(new Set(firstQuestions.map(step => step.question)).size, 20);
+assert.equal(new Set(firstQuestions.map(step => step.options.findIndex(option => option.isCorrect))).size, 3);
+for (const clinicalCase of caseData.CLINICAL_CASES) {
+  const answer = clinicalCase.reasoningSteps[0].options.find(option => option.isCorrect);
+  assert.equal(answer.id, 'safety-1', 'Stored answers retain their original ID');
+  assert.notEqual(answer.feedback, caseData.CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id].message);
+}
+console.log('Clinical exercises passed: comparison sets, persistent exercise tabs, safe draft transfer, tied self-check results, and 20 case-specific safety questions.');

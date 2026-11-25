@@ -39,7 +39,12 @@ const gv27JapaneseCorrection = {
   scope: "英語版で「上唇結節の中点」と記す位置を、日本語公式版の訂正に従って「上唇結節上縁の中点」と表記。",
 };
 
-const heartWarning = "胸痛、動悸、脈の乱れを感じるときは医療機関に相談してください。急な強い胸の痛みや息苦しさがあるときは、すぐに119番へ連絡してください。";
+const heartWarning = "急な強い胸の痛みや息苦しさ、胸の中央が締め付けられるような痛みが続く場合は、すぐに119番へ連絡してください。";
+const heartConsultation = "胸の違和感や痛み、動悸、脈の乱れがあるときは、早めに医療機関に相談してください。";
+const locationComparisons: Readonly<Record<string, string>> = {
+  ki23: "神封は第4肋間、霊墟はその一つ上の第3肋間です。胸の中央線からの距離は同じです。",
+  ki24: "霊墟は第3肋間、神封はその一つ下の第4肋間です。胸の中央線からの距離は同じです。",
+};
 
 function sequenceNeighbors(point: AcupointMaster, series: readonly AcupointMaster[]) {
   const index = series.indexOf(point);
@@ -74,7 +79,6 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
   const hasHeartCaution = view.care === "chest" || point.meridianId === "heart" || point.meridianId === "pericardium"
     || ["cv14", "cv15", "bl14", "bl15"].includes(point.codeLower);
   const nameWithCode = `${point.name}（${point.kana}・${point.code}）`;
-  const hasCun = profile.location.includes("寸") || profile.guide.includes("寸");
   const isMidline = point.meridianId === "governor-vessel" || point.meridianId === "conception-vessel";
   const graph = ACUPOINTS_MASTER.filter((candidate) => candidate.meridianId === point.meridianId)
     .sort((first, second) => first.meridianOrder - second.meridianOrder);
@@ -85,21 +89,14 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
   const whoPage = whoAtlasPages[point.codeLower];
   const alternate = alternateLocations[point.codeLower];
 
-  const orderText = `${point.name}は、${point.meridianShort}に並ぶ${graph.length}穴のうち${point.meridianOrder}番目です。`;
-  const compareText = comparison
-    ? `近くの${comparison.name}（${comparison.code}）は、${expandedPoints[comparison.codeLower].location}です。二つの拡大図で、丸印を探すときにどの骨やしわを目印にするか見比べてください。`
-    : `経絡の図で${adjacent.map((other) => other.name).join("と")}の位置を見比べられます。それぞれの拡大図は「位置を見比べるツボ」から開けます。`;
-  const technical = hasCun
-    ? "骨度分寸（こつどぶんすん）は、骨の端やしわの間を決まった数に等分して測る方法です。どこからどこまでを分けるかで1寸の長さが変わります。まず図で区間の両端を確かめてください。"
-    : "図の線は、骨や筋の形と皮膚のしわを読みやすくしたものです。番号と図の下の説明を照らし合わせると、どの部分がツボを探す目印か分かります。";
   const siteNote = isMidline
-    ? "このツボは体の中央線上に一つあります。近くのツボを比べるときは、中央線の上か、左右に離れているかを先に見ます。"
-    : "このツボは左右に一つずつあります。図は片側だけを描いているので、反対側では同じ骨やしわを反対向きにたどります。";
+    ? "このツボは体の中央線上に一つあります。"
+    : "このツボは左右に一つずつあります。";
   const meridianStart = Math.max(1, point.meridianOrder - 2);
   const meridianEnd = Math.min(graph.length, meridianStart + 3);
   const warnings = [
-    care.emergency,
-    hasHeartCaution ? heartWarning : undefined,
+    view.care === "chest" ? heartWarning : care.emergency,
+    view.care !== "chest" && hasHeartCaution ? heartWarning : undefined,
     point.codeLower === "gb21" ? "妊娠中は肩井への強い刺激を控え、施術については担当の産科へ相談してください。" : undefined,
   ].filter(Boolean);
 
@@ -108,15 +105,14 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     description: `${nameWithCode}の位置は、${profile.location}です。${view.label}の拡大図に、探すときの目印を示します。${point.meridianShort}での並び順と注意点も掲載しています。`,
     meridianReading: meridianReadings[point.meridianId],
     regionLabel: view.label,
-    lead: `${nameWithCode}の位置は、${profile.location}です。拡大図では、位置を決める骨や筋、しわなどに番号を付けています。`,
+    lead: `${nameWithCode}の位置は、${profile.location}です。`,
     safetyWarning: warnings.join(" ") || undefined,
-    location: [profile.guide, view.read],
-    traditionalTitle: "経絡の順番と近くのツボ",
-    traditional: [orderText, compareText],
+    location: [profile.guide, locationComparisons[point.codeLower]].filter(Boolean),
+    traditional: [],
     visualOnly: true,
     selfCare: [careOverride ?? care.steps],
-    cautions: [care.caution],
-    expert: [technical, siteNote, ...(alternate ? [alternate] : [])],
+    cautions: [care.caution, hasHeartCaution && heartConsultation].filter((value): value is string => Boolean(value)),
+    expert: [siteNote, ...(alternate ? [alternate] : [])],
     symptomLinks: symptom
       ? [{ href: `/symptoms/${symptom[0]}`, label: symptom[1] }]
       : [{ href: "/symptoms", label: "症状から探す" }],
@@ -128,7 +124,7 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     })),
     sources: [
       {
-        name: `WHO西太平洋地域事務局『WHO標準経穴部位』2009年改訂再版（PDF ${whoPage}ページ）`,
+        name: `WHO西太平洋地域事務局『WHO標準経穴部位』2009年改訂再版 p.${whoPage - 9}（PDFの${whoPage}ページ目）`,
         url: `${WHO_ATLAS_PDF}#page=${whoPage}`,
         scope: `${point.code}の場所と体表の目印。`,
       },
@@ -138,7 +134,7 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     ],
     illustration: {
       region: "expanded", bodyLabel: view.label,
-      closeUpAlt: `${point.name}（${point.code}）の拡大図。${profile.location}に濃い色の丸印。目印に番号を付けています。`,
+      closeUpAlt: `${point.name}（${point.code}）の拡大図。${profile.location}に丸印。`,
       closeUpCaption: `${point.name}の場所と目印`,
       meridianStart,
       meridianEnd,

@@ -26,7 +26,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'oriental-medicine-introduction', seriesId: 'intro',
     title: '東洋医学の学び方と全体像', eyebrow: 'まずここから',
-    description: '鍼灸・漢方・養生が登場する4講の概論です。「昨日から肩が重い」という相談を読み、分かることと次に聞きたいことを書き出します。',
+    description: '鍼灸・漢方・養生の基本を学びます。「昨日から肩が重い」という相談から、分かったことと次に聞きたいことを書き出します。',
     audience: '東洋医学を初めて学ぶ方、鍼灸学生',
     goals: ['教材で扱う東洋医学の範囲と、鍼灸・漢方・養生の位置づけを説明する。', '伝統的な説明、学習上の比喩、研究で確かめられたことを分ける。', '短い例から、観察した事実と未確認事項を挙げる。'],
     steps: [
@@ -41,7 +41,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
     seriesId: 'yinyang',
     title: '陰陽の基礎をつかむ',
     eyebrow: '比較する見方を学ぶ',
-    description: '同じぬるま湯でも、冷水と比べるか熱湯と比べるかで説明が変わります。対になる性質と時間による変化を、4講で学びます。',
+    description: '同じぬるま湯でも、冷水と比べるか熱湯と比べるかで説明が変わります。陰陽で比べる基準と、時間がたったときの変化を学びます。',
     audience: '陰陽の用語から学びたい方、基本を学び直したい方',
     goals: [
       '何を何と比較して、陰・陽と呼んでいるか説明する。',
@@ -65,7 +65,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
     seriesId: 'wuxing',
     title: '五行の関係を整理する',
     eyebrow: '関係を図で覚える',
-    description: '木から火へ向かう相生と、木から土へ向かう相剋。矢印の向きと、五臓をどの行に置くかを4講で学びます。',
+    description: '木から火へ向かう相生と、木から土へ向かう相剋。矢印を見分け、五臓が五行の表のどこに入るかを確かめます。',
     audience: '五行の名前は知っているけれど、関係や配当が混ざってしまう方',
     goals: [
       '木・火・土・金・水という伝統的な分類を整理する。',
@@ -89,7 +89,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
     seriesId: 'qiblood',
     title: '気・血・津液を見分ける',
     eyebrow: '基本の役割を整理',
-    description: '体を温める「温煦」、体を養う「滋養」、皮膚などを潤す「津液」。気・血・津液の働きを表す伝統用語を3講で読みます。',
+    description: '体を温める「温煦」、体を養う「滋養」、皮膚などを潤す「津液」。気・血・津液の働きを、伝統医学の用語で読み解きます。',
     audience: '気・血・津液の意味と役割を確認してから、各講義を読み進めたい方',
     goals: [
       '気・血・津液について、伝統的に説明される役割を整理する。',
@@ -110,7 +110,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'zangfu-foundations', seriesId: 'zangfu',
     title: '臓腑の基本を知る', eyebrow: '五臓・六腑と表裏',
-    description: '飲食物から得たものを扱う脾の「運化」など、臓腑の働きを表す用語を5講で学びます。脾・胃のように対になる臓腑も確認します。',
+    description: '飲食から得たものを体に配るとされる脾の「運化」など、五臓と六腑の働きを学びます。脾と胃のように対になる臓腑も確認します。',
     audience: '五臓・六腑の名前と働きを基礎から確認したい方',
     goals: ['伝統医学の臓腑と、現代解剖学の臓器を区別する。', '五臓・六腑の基本的な役割を伝統的な用語で整理する。', '一つの症状から臓腑の病気を決められないことを説明する。'],
     steps: [
@@ -123,7 +123,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   },
   {
     slug: 'life-functions-foundations', seriesId: 'lifedynamics',
-    title: '精・気・血・津液・神の働き', eyebrow: '生命機能論から4講',
+    title: '精・気・血・津液・神の働き', eyebrow: '成長・活動・心の働き',
     description: '成長を説明するときに使う「精」など、五つの伝統用語を比べます。臓腑が一対になる表裏と、役割の分担も読みます。',
     audience: '臓腑と気血津液を学び、全体の関係を整理したい方',
     goals: ['陰陽・気血津液・臓腑が、それぞれどの働きや関係を説明するかを示す。', '臓腑の表裏関係と、複数の働きによる支え合いを説明する。', '生活の観察事実と、伝統理論による説明を分ける。'],
@@ -137,7 +137,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'meridians-foundations', seriesId: 'meridians',
     title: '経絡・経穴の基本を知る', eyebrow: '位置・関係・安全を分ける',
-    description: '経絡の名前、ツボのコード、骨やしわを目印にした位置の読み方を4講で学びます。位置の図と、施術前に確認する情報も区別します。',
+    description: '経絡の名前とツボのコードを読み、骨やしわを目印にして図鑑からツボの位置を探します。施術前に確認する情報も扱います。',
     audience: '経穴辞典や演習を使う前に、基本的な見方を知りたい方',
     goals: ['経絡と経穴の違いを伝統理論の用語で説明する。', '経穴の名称・コード・所属などの基本情報を読む。', '位置の学習と、個別の施術適応や手技の判断を区別する。'],
     steps: [
@@ -150,7 +150,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'pathomechanism-foundations', seriesId: 'pathomechanism',
     title: '経過から病機の仮説を考える', eyebrow: '複数の説明を比べる',
-    description: '冷えと疲れがある例から、寒熱と虚実をどう考えるか学びます。候補に合う所見と合わない所見を挙げ、追加で何を聞くかを4講で練習します。',
+    description: '冷えと疲れがある例をもとに、寒熱と虚実を考えます。見立てに合う所見と合わない所見を挙げ、次に何を聞くかを練習します。',
     audience: '基礎理論を学び、架空例の経過を整理したい方',
     goals: ['病因・病機・症状・証の違いを説明する。', '同じ所見に対して複数の仮説を挙げる。', '仮説を確認するための質問と未確認事項を示す。'],
     steps: [
@@ -163,7 +163,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'diagnosis-foundations', seriesId: 'diagnosis',
     title: '安全確認から情報整理へ', eyebrow: '判断の根拠を集める',
-    description: '急な変化がないかを先に確認し、いつ始まったか、何に困るかを聞きます。症例の所見を記録し、八綱の各項目に照らすまでを5講で学びます。',
+    description: '架空症例で、急な変化がないかを先に確認します。症状がいつ始まり、何に困るかを聞き、所見を記録して八綱の各項目に照らします。',
     audience: '証名の暗記から、情報を集める順序へ進みたい方',
     goals: ['安全確認を先に行う理由を説明する。', '主訴と経過を整理し、観察事実と解釈を分ける。', '分からないことを記録し、追加確認の優先順位を考える。'],
     steps: [
@@ -177,7 +177,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'treatment-foundations', seriesId: 'treatment',
     title: '治療方針と評価の考え方を知る', eyebrow: '選ぶ理由を説明する',
-    description: '立つ、歩く、仕事をするなど、本人が困っている動作から目標を立てます。経穴を選んだ理由と、次回も比べる項目を書く4講です。',
+    description: '立つ、歩く、仕事をするなど、本人が困っている動作から目標を立てます。ツボを選んだ理由と、次回どんな変化を確かめるかを書きます。',
     audience: '診断・弁証の学習から、治療方針の理由を考える段階へ進む方',
     goals: ['証と治療方針を区別し、改善したいことを具体化する。', '教材の治法・経穴を選ぶ理由と前提条件を説明する。', '変化を何で確かめ、いつ方針を見直すかを示す。'],
     steps: [
@@ -190,7 +190,7 @@ const COURSE_DEFINITIONS: LearningCourse[] = [
   {
     slug: 'clinical-process-foundations', seriesId: 'practice',
     title: '症例の経過を振り返る', eyebrow: '判断を更新する',
-    description: '模擬症例の訴えを短くまとめ、施術直後と次回来院時の記録を比べます。次に確認することを決めるまでの4講です。',
+    description: '模擬症例の訴えを短くまとめ、施術直後と次回来院時の記録を比べて、次に確認することを決めます。',
     audience: '基本的な判断をつなげ、症例の経過を振り返りたい方',
     goals: ['症例の事実、解釈、判断理由を分けて記録する。', '新しい情報や経過に応じて仮説を見直す。', '一時的な変化と、生活への持続的な変化を区別する。'],
     steps: [

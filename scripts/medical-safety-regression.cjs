@@ -165,7 +165,9 @@ for (const [id, design] of Object.entries(PAPER_STUDY_DESIGNS)) {
 const strokeDesign = PAPER_STUDY_DESIGNS['poststroke-motor-aphasia-acupuncture-xingnao-rct-li-2024'];
 assert.equal(strokeDesign.groups.map(group => group.participants).join(','), '125,127', 'Show actual allocations, distinct from the planned 126 each');
 assert.match(strokeDesign.followUp, /計231人/, 'Show the analysis count separately from allocation');
-assert.match(paperById('rct-insomnia-heart-liver-2025').keyFindings[0], /終了時と4週後の追跡まで、群間に統計的に有意な差はありません/);
+const insomniaPrimaryFinding = paperById('rct-insomnia-heart-liver-2025').keyFindings[0];
+assert.match(insomniaPrimaryFinding, /心肝兪原配穴群で平均7\.58点、従来の配穴群で平均5\.71点/);
+assert.match(insomniaPrimaryFinding, /治療終了時と4週間後のいずれも、2群の差は統計的に明確ではありません/);
 assert.equal(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').sampleSize, undefined, 'Conflicting 757/847 participant totals must remain withheld');
 assert.match(paperById('chronic-insomnia-disorder-meta-tsa-yu-2025').clinicalTakeaways.join(' '), /757.*847/);
 assert.equal(paperById('body-weight-control-electroacupuncture-auricular-protocol-zhong-2016').sampleSize, undefined, 'Planned trial enrollment is not a completed patient sample');

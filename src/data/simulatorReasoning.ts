@@ -37,7 +37,17 @@ export function assessFourExaminations(input: FourExaminationsInput) {
 
 function pairOption(pair: PatternModel['pairs'][number], primary: boolean): AcupointOption {
   const [first, second] = pair.codes.map(code => pointMap.get(code)!);
-  const point = (p: typeof first) => ({ id: p.legacyId || p.id, name: p.name, meridian: p.meridian, role: [...new Set(p.categories)].join('・') || '所属経脈・部位を辞典で確認' });
+  const point = (p: typeof first) => {
+    const categories = p.categories
+      .flatMap(category => category.split(/・(?![^（）]*）)/))
+      .map(category => category === '兪土穴' ? '輸土穴' : category);
+    return {
+      id: p.legacyId || p.id,
+      name: p.name,
+      meridian: p.meridian,
+      role: [...new Set(categories)].join('・') || '所属経脈・部位を辞典で確認',
+    };
+  };
   return {
     isPrimary: primary, pairName: `${pair.purpose}：${first.name} ＋ ${second.name}`,
     primaryAcupoint: point(first), secondaryAcupoint: point(second),
@@ -98,7 +108,7 @@ export function synthesizeComprehensiveDiagnosis(
     summary: flags ? '危険兆候がある設定では、弁証や配穴より医療機関での評価を優先します。緊急性に応じた紹介・救急対応を学んでください。' : model?.explanation || 'この組合せから妥当な証名を自動で作ることはできません。主訴と四診の根拠を整理し、候補を比較してください。',
     pathologyMechanism: model?.explanation || '伝統医学の病態分類として整理する段階です。特定の神経・血管・臓器の異常をこの入力から推定しません。',
     differentialCandidates: model?.alternatives || ['寒熱・虚実の選択を再検討', '併存病態と、医療機関で評価する原因の検討'],
-    supportingFindings: findings.observed.length ? findings.observed.map(s => `入力された所見：${s}`) : ['四診は未確認です。選択した分類は仮の条件であり、患者から確認した所見ではありません。'],
+    supportingFindings: findings.observed,
     conflictingFindings: conflicts.length ? conflicts : ['入力された範囲では不一致を検出していません。情報不足のため、矛盾がないことを保証するものではありません。'],
     missingInformation: [...missing, ...(model?.signs || [])],
     nextActionQuestions: [

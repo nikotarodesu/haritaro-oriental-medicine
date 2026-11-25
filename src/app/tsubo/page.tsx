@@ -12,7 +12,7 @@ import TsuboReviewEntry from "@/components/tsubo/TsuboReviewEntry";
 import { DICTIONARY_TAGLINE, SERIES } from "@/config/series";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd } from "@/config/seo";
-import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
+import { ATLAS_STUDIES, getAtlasStudyPoint } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
 import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
@@ -43,7 +43,7 @@ const anatomyCards = [
 const featuredPoints = flagshipPoints.slice(0, 4);
 const otherFlagshipPoints = flagshipPoints.slice(featuredPoints.length);
 const studyGroups = [
-  { label: "ツボ一つを調べた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
+  { label: "一つのツボへの刺激を比較した研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
 ];
 
@@ -176,7 +176,7 @@ export default function TsuboPage() {
             <summary>{label}（{studies.length}件）</summary>
             <ul className="atlas-research-index pb-3">
               {studies.map(study => {
-                const point = study.points[0] ?? study.comparisonPoints?.[0] ?? study.additionalPointGroups?.find(group => group.points.length)?.points[0];
+                const point = getAtlasStudyPoint(study);
                 return point ? <li key={study.id}><Link href={`/tsubo/${point}#${study.id}`} prefetch={false}>{study.topic}</Link></li> : null;
               })}
             </ul>

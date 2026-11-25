@@ -29,7 +29,7 @@ const units: readonly UnitDefinition[] = [
     slug: "yin-yang-basics", chapter: "yin-yang", title: "陰陽とは？ 比べ方と変わり方",
     description: "同じ40℃のお湯が、相手によって温かい側にも冷たい側にもなることを図で見ます。ほてりと冷えが出る時間帯の違いも比べます。",
     opening: [
-      "昼休み、日が差す窓辺でひと休みします。部屋の奥と比べると、窓辺は明るいので「陽」。歩いていたときと比べると、座っている今は動きが少ないので「陰」です。何を基準に比べるかで、同じ場面の見方が変わります。",
+      "陰陽の見方では、何と何を、どんな基準で比べるかを最初に決めます。身近な場面から、比べる基準や時間が変わると読み方がどう変わるかを見ます。",
     ],
     parts: [
       ["lecture-yinyang-1", "明るさで比べるか、動きで比べるか"],
@@ -104,7 +104,7 @@ const units: readonly UnitDefinition[] = [
     slug: "five-elements", chapter: "five-elements", title: "五行とは？ 矢印と表の読み方",
     description: "木から火へ向かう相生と、木から土へ向かう相剋。二本の矢印を比べ、次に五行の表で臓腑や季節がどの行に並ぶかを見ます。",
     opening: [
-      "薪をくべると火が続きます。五行の図では、木が火を支える矢印を「相生」、木が土の勢いを抑える矢印を「相剋」と呼びます。同じ木から出る二本をたどって、行き先と意味を比べます。",
+      "五行の図には、相手を支える「相生」と、相手の働きを抑える「相剋」の矢印があります。矢印の行き先を確かめてから、五臓や季節が表のどこに並ぶかを見ます。",
     ],
     parts: [
       ["lecture-wuxing-1", "五つの名前で何を表す？"],
@@ -141,7 +141,7 @@ const units: readonly UnitDefinition[] = [
     opening: [
       "階段を上るとすぐ疲れる人と、緊張するとお腹が張る人がいます。東洋医学では、どんな場面で何が起きたかを手がかりに、気の不足や滞りといった候補を考えます。",
     ],
-    parts: [["lecture-pathomechanism-3", "気の不足・滞り・逆向き・支え"], ["lecture-pathomechanism-4", "口の乾きと水分の滞り"], ["lecture-pathomechanism-5", "血虚と瘀血はどう違う？"], ["lecture-pathomechanism-6", "寒熱と虚実を掛け合わせる"]],
+    parts: [["lecture-pathomechanism-3", "気虚・気滞・気逆・気陥の違い"], ["lecture-pathomechanism-4", "口の乾きと水分の滞り"], ["lecture-pathomechanism-5", "血虚と瘀血はどう違う？"], ["lecture-pathomechanism-6", "寒熱と虚実を掛け合わせる"]],
     featuredDiagrams: ["lecture-pathomechanism-3", "lecture-pathomechanism-6"],
   },
   {
@@ -178,7 +178,7 @@ const units: readonly UnitDefinition[] = [
     slug: "assessment-frameworks", chapter: "diagnosis", title: "八綱で体の状態をどう読む？",
     description: "夕方に顔がほてり、寝る前に足先が冷える例を使い、寒熱をどう記録するかを見ます。八綱の四つの軸と、臓腑・経絡の見方を学びます。",
     opening: [
-      "「夕方に顔がほてる。寝る前には足先が冷える」と聞きました。どこに、いつ、どのくらい続いたかを別々に書きます。東洋医学で体の状態を四組の見方で整理する方法を「八綱」と呼びます。この例では、その一組の「寒熱」で冷えとほてりを見比べます。",
+      "「夕方に顔がほてる。寝る前には足先が冷える」と聞きました。場所と時刻を別々に記録し、同じ時間帯にも重なったかを尋ねます。東洋医学で体の状態を整理する四組の見方を「八綱」と呼びます。この例では、その一組の「寒熱」で冷えとほてりを見比べます。",
     ],
     parts: [["lecture-diagnosis-7", "顔のほてりと足先の冷えをどう読む？"], ["lecture-diagnosis-8", "何が足りず、何が滞る？"], ["lecture-diagnosis-9", "臓腑は働き、経絡は場所を見る"]],
     featuredDiagrams: ["lecture-diagnosis-7", "lecture-diagnosis-9"],

@@ -70,6 +70,21 @@ const TYPE_LECTURE_MAP: Record<string, { lectureId: string; lectureTitle: string
   },
 };
 
+const SELF_CHECK_QUESTION_TEXT: Readonly<Record<number, string>> = {
+  1: "朝起きたときに体が重く、疲れが残っていた",
+  2: "ため息がよく出た",
+  3: "肌の乾燥が気になった",
+  4: "目の下にクマが目立つ日があった",
+  5: "雨の前後に体が重だるくなった",
+  6: "手足の冷えが気になる日が続いた",
+  7: "食後に強い眠気が出た",
+  8: "いつもは気にならないことでいら立った",
+  9: "立ち上がったときにふらついた",
+  10: "月経のときに痛みが強かった",
+  11: "夕方になると足がむくんだ",
+  12: "寒さが気になる日が続いた",
+};
+
 // 該当項目なしの場合は健康や体質を推定せず、分類を保留する。
 const NEUTRAL_RESULT: DiagnosisResultType = {
   type: "neutral",
@@ -93,7 +108,7 @@ const NEUTRAL_RESULT: DiagnosisResultType = {
 function selfCheckShareLabel(result: DiagnosisResultType) {
   return result.type === "neutral"
     ? "気血水 体質チェックで、東洋医学の6つの分類を学べます。"
-    : `気血水 体質チェックで表示された分類は「${result.name}」でした（学習用）。`;
+    : `気血水 体質チェックで、選んだ項目と伝統医学の分類「${result.name}」の関係を読みました（学習用）。`;
 }
 
 type QuestionStatus = "unconfirmed" | "applicable" | "not_applicable" | "unknown";
@@ -148,7 +163,13 @@ export default function DiagnosisClient({ initialTab: activeTab = "self", relate
 
   // セルフチェック用State
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-  const [selfResult, setSelfResult] = useState<DiagnosisResultType | null>(null);
+  const [selfMatches, setSelfMatches] = useState<{ count: number; results: DiagnosisResultType[] } | null>(null);
+  const [activeSelfType, setActiveSelfType] = useState<DiagnosisResultType["type"] | null>(null);
+  const selfResult = selfMatches
+    ? selfMatches.results.length === 0
+      ? NEUTRAL_RESULT
+      : selfMatches.results.find(result => result.type === activeSelfType)
+    : null;
   const selfStudyLinks = selfResult && selfResult.type !== "neutral" ? studyLinks[selfResult.type] : undefined;
   const [copiedShare, setCopiedShare] = useState(false);
 
@@ -195,6 +216,8 @@ export default function DiagnosisClient({ initialTab: activeTab = "self", relate
 
   // --- セルフチェックハンドラー ---
   const handleToggleSelf = (id: number) => {
+    setSelfMatches(null);
+    setActiveSelfType(null);
     if (selectedAnswers.length === 0) {
       trackEvent("tool_start", { tool_id: "diagnosis_qixueshui" });
     }
@@ -208,48 +231,27 @@ export default function DiagnosisClient({ initialTab: activeTab = "self", relate
   const handleDiagnoseSelf = () => {
     trackEvent("tool_complete", { tool_id: "diagnosis_qixueshui" });
 
-    // 項目が選ばれていなければ分類を表示しない。
-    if (selectedAnswers.length === 0) {
-      setSelfResult(NEUTRAL_RESULT);
-      scrollToResult();
-      return;
+    const counts = new Map<string, number>();
+    for (const { id, type } of DIAGNOSIS_QUESTIONS) {
+      if (selectedAnswers.includes(id)) counts.set(type, (counts.get(type) ?? 0) + 1);
     }
-
-    const counts: Record<string, number> = {
-      qi_deficiency: 0,
-      qi_stagnation: 0,
-      blood_deficiency: 0,
-      blood_stasis: 0,
-      water_retention: 0,
-      yang_deficiency: 0,
-    };
-
-    selectedAnswers.forEach((id) => {
-      const q = DIAGNOSIS_QUESTIONS.find((item) => item.id === id);
-      if (q) counts[q.type] += 1;
-    });
-
-    let highestType = "qi_deficiency";
-    let maxCount = -1;
-    Object.entries(counts).forEach(([type, count]) => {
-      if (count > maxCount) {
-        maxCount = count;
-        highestType = type;
-      }
-    });
-
-    const res = DIAGNOSIS_RESULTS[highestType] || NEUTRAL_RESULT;
-    setSelfResult(res);
-    trackEvent("diagnosis_complete", {
-      tool_id: "diagnosis_qixueshui",
-      primary_type: highestType,
-    });
+    const count = Math.max(0, ...counts.values());
+    const results = [...counts]
+      .filter(([, typeCount]) => typeCount === count)
+      .map(([type]) => DIAGNOSIS_RESULTS[type]);
+    const primaryType = results.length === 1 ? results[0].type : null;
+    setSelfMatches({ count, results });
+    setActiveSelfType(primaryType);
+    if (results.length > 0) {
+      trackEvent("diagnosis_complete", { tool_id: "diagnosis_qixueshui", primary_type: primaryType ?? "tie" });
+    }
     scrollToResult();
   };
 
   const handleResetSelf = () => {
     setSelectedAnswers([]);
-    setSelfResult(null);
+    setSelfMatches(null);
+    setActiveSelfType(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -445,7 +447,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           {/* 設問一覧 */}
           <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3.5 sm:p-9 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 sm:space-y-6 transition-colors">
             <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
-              <span>12問のうち当てはまる項目をすべて選んでください。</span>
+              <span>直近1〜2週間に当てはまった項目を選んでください。1行につき1項目として数えます。</span>
               <span>
                 選択中: <strong className="text-[#1E3D34] dark:text-[#74BA9E]">{selectedAnswers.length}</strong> 項目
               </span>
@@ -459,6 +461,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                     key={q.id}
                     onClick={() => handleToggleSelf(q.id)}
                     type="button"
+                    aria-pressed={isChecked}
                     className={`w-full text-left p-3 sm:p-4 rounded-xl border transition-all flex items-start gap-2.5 sm:gap-3.5 cursor-pointer ${
                       isChecked
                         ? "bg-[#EBF3EF] dark:bg-[#182823] border-[#1E3D34] dark:border-[#4E8C76] text-[#1E3D34] dark:text-[#FAF8F5] shadow-sm"
@@ -474,7 +477,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                     >
                       {isChecked && <CheckCircle2 className="w-4 h-4" />}
                     </div>
-                    <span className="text-sm font-medium leading-relaxed">{q.text}</span>
+                    <span className="text-sm font-medium leading-relaxed">{SELF_CHECK_QUESTION_TEXT[q.id] ?? q.text}</span>
                   </button>
                 );
               })}
@@ -503,6 +506,27 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
             </div>
           </div>
 
+          {selfMatches && selfMatches.results.length > 1 && (
+            <section ref={selfResult ? undefined : resultRef} className="rounded-xl border border-frame bg-panel p-5 space-y-3" aria-labelledby="self-check-tie-heading">
+              <h2 id="self-check-tie-heading" className="text-xl font-bold">同じ数の項目を選んだ分類</h2>
+              <p>以下の分類はそれぞれ{selfMatches.count}項目でした。読みたい分類を選んでください。</p>
+              <ul className="flex flex-wrap gap-2">
+                {selfMatches.results.map(result => (
+                  <li key={result.type}>
+                    <button
+                      type="button"
+                      aria-pressed={activeSelfType === result.type}
+                      className="min-h-11 rounded-lg border border-field px-3 text-accent aria-pressed:bg-panel-selected"
+                      onClick={() => { setActiveSelfType(result.type); scrollToResult(); }}
+                    >
+                      {result.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           {/* 診断結果表示 */}
           {selfResult && (
             <div ref={resultRef} className="space-y-6 animate-fadeIn">
@@ -510,7 +534,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                 {/* 臨床補助の注記（P0要件） */}
                 <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5">
                   <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase">
-                    {selfResult.type === "neutral" ? "体質チェックの結果" : "当てはまる項目が最も多かった分類"}
+                    {selfResult.type === "neutral" ? "質問票の回答" : `選んだ項目が${selfMatches?.count}つ関連する分類`}
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                     {selfResult.name}
@@ -519,7 +543,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                     </span>}
                   </h2>
                   {selfResult.type !== "neutral" && <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-xl mx-auto pt-1 leading-relaxed">
-                    同数の場合は質問票で先に出る分類を表示します。病気の診断や施術を決めるためには使えません。
+                    選んだ項目と伝統医学の分類との対応です。病気の診断や施術を決めるためには使えません。
                   </p>}
                   <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-lg mx-auto pt-2">
                     {selfResult.summary}
@@ -612,7 +636,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                       className="px-4 py-2.5 rounded-xl bg-[#B86924] hover:bg-[#96531B] text-white text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 shadow-sm whitespace-nowrap cursor-pointer"
                     >
                       <Layers className="w-3.5 h-3.5" />
-                      <span>弁証の練習を開く</span>
+                      <span>弁証演習を開く</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>

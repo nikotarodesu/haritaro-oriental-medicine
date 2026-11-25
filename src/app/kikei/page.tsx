@@ -14,9 +14,10 @@ import {
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS, type HachimyakuPair } from "@/data/kikeiData";
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import KikeiEvidenceNote from "@/components/kikei/KikeiEvidenceNote";
+import HashTargetDetails from "@/components/common/HashTargetDetails";
 
-const pageTitle = seriesPageTitle("奇経八脈（きけいはちみゃく）詳説・八脈交会穴", "reading");
-const pageDescription = "奇経八脈（督脈・任脈・衝脈・帯脈・陰陽蹻脈・陰陽維脈）の流注と、八脈交会穴4対の伝統的な主治・配穴を学ぶ資料集。正経十二経脈との関係や古典の説明を確認できます。";
+const pageTitle = seriesPageTitle("奇経八脈の流注図と八脈交会穴", "reading");
+const pageDescription = "督脈・任脈など奇経八脈が体のどこを通るとされるかを図で確認できます。八脈交会穴は、手と足のツボを一つずつ組にした四つの組み合わせを紹介します。";
 
 export const metadata: Metadata = {
   title: pageTitle,
@@ -35,7 +36,7 @@ function MeetingPoint({ point }: { point: HachimyakuPair["master1"] }) {
     >
       <span className="flex items-center gap-1.5 text-muted"><Icon size={16} aria-hidden="true" />{isHand ? "手の経絡" : "足の経絡"}</span>
       <strong className="font-serif text-base text-accent underline underline-offset-4">{point.point} <span className="font-sans text-sm">{point.code}</span></strong>
-      <span>{point.vessel}に通じる</span>
+      <span>{point.vessel}に対応</span>
     </Link>
   );
 }
@@ -115,7 +116,7 @@ export default function KikeiIndexPage() {
         <section id="four-pairs" className="space-y-4 scroll-mt-28" aria-labelledby="four-pairs-title">
           <div className="space-y-2 border-b border-frame pb-3">
             <h2 id="four-pairs-title" className="font-serif text-xl font-bold sm:text-2xl">八脈交会穴の四つの組み合わせ</h2>
-            <p className="text-sm leading-relaxed text-muted">左に手の経絡、右に足の経絡のツボをそろえました。名前を選ぶと、図鑑で場所を確認できます。</p>
+            <p className="text-sm leading-relaxed text-muted">左は手の経絡、右は足の経絡のツボです。名前を選ぶと、図鑑で場所を確認できます。</p>
           </div>
 
           <ul className="grid gap-3 md:grid-cols-2">
@@ -172,10 +173,9 @@ export default function KikeiIndexPage() {
             <summary>『難経』第二十七難の原文</summary>
             <blockquote className="text-sm leading-relaxed">聖人図設溝渠，通利水道，以備不然。天雨降下，溝渠溢満，当此之時，霶霈妄行，聖人不能復図也。此絡脈満溢，諸経不能復拘也。</blockquote>
           </details>
-          <details className="page-help">
-            <summary>鍼の研究で調べたこと</summary>
+          <HashTargetDetails id="kikei-research" className="page-help scroll-mt-28" summary="鍼の研究で調べたこと">
             <KikeiEvidenceNote />
-          </details>
+          </HashTargetDetails>
         </section>
       </div>
     </div>

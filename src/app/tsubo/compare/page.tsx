@@ -6,8 +6,10 @@ import { PointAtlasThumbnail } from "@/components/tsubo/atlas/PointAtlasDiagrams
 import { ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
+import { atlasLocationWithoutUnitNote } from "@/data/tsubo/friendlyLocations";
 import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
+import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import type { Metadata } from "next";
 import CompareClient, { type ComparisonChoice, type ComparisonPoint } from "./CompareClient";
 import { resolveComparisonCodes, type ComparisonSearchParams } from "./selection";
@@ -32,22 +34,21 @@ const comparisonChoices: ComparisonChoice[] = ALL_ACUPOINTS.map(
 const pointsByCode = new Map(ALL_ACUPOINTS.map(point => [point.code, point]));
 
 function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
-  const { legacyId, code, codeLower, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote, categories } = point;
+  const { legacyId, code, codeLower, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, categories } = point;
   const article = ATLAS_ARTICLES[codeLower];
-  const reading = code === "LI4" ? heguAtlasReading : {
-    traditional: article.traditional[0],
-    caution: article.safetyWarning ?? article.cautions[0],
-  };
+  const caution = code === "LI4" ? heguAtlasReading.caution : article.safetyWarning ?? article.cautions[0];
   const marker = ATLAS_POINT_MARKERS[codeLower];
   const locationFigure = code === "LI4"
     ? <HeguHandDiagram thumbnail />
     : marker && <PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />;
   return {
-    id: legacyId, code, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, clinicalNote,
+    id: legacyId, code, name, kana, romaji, meridian, meridianShort, bodyPart,
+    locationSimple: atlasLocationWithoutUnitNote(locationSimple),
+    traditional: TRADITIONAL_POINT_USES[codeLower]?.labels.join("、"),
+    caution,
     category: [...new Set(categories)],
     hasResearch: getAcupointStudies(codeLower).length > 0 || Boolean(DETAILED_ACUPOINTS[codeLower]?.researchEvidence),
     locationFigure,
-    ...reading,
   };
 }
 

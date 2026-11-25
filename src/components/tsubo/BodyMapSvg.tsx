@@ -64,7 +64,7 @@ export default function BodyMapSvg({
               部位から探す
             </h3>
             <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
-              図かボタンで選択
+              図やボタンで調べたい部位を選びます
             </p>
           </div>
         </div>
@@ -256,7 +256,7 @@ export default function BodyMapSvg({
             </svg>
 
           </div>
-          <p className="text-center text-xs text-[#59615D] dark:text-[#A0B0BC]">左右は、図の人物から見た向きです</p>
+          <p className="text-center text-xs text-[#59615D] dark:text-[#A0B0BC]">左右は図の人物を基準にします。</p>
         </div>
 
         {/* ボタン一覧セレクター（7カラム） */}

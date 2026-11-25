@@ -48,9 +48,9 @@ const structuredData = {
 };
 
 const examples = [
-  { area: "forearm", code: "pc6", name: "内関", landmarks: "手首のしわから、ひじの横じわまで", span: boneCunSpans.forearm, amount: 2 },
-  { area: "lowerLeg", code: "sp6", name: "三陰交", landmarks: "内くるぶしの頂点から、陰陵泉の高さまで", span: boneCunSpans.innerShin, amount: 3 },
-  { area: "abdomen", code: "cv4", name: "関元", landmarks: "へその中央から、恥骨結合の上縁まで", span: boneCunSpans.lowerAbdomen, amount: 3 },
+  { area: "forearm", code: "pc6", name: "内関", from: "手首のしわ", to: "ひじの横じわ", direction: "ひじ側", span: boneCunSpans.forearm, amount: 2 },
+  { area: "lowerLeg", code: "sp6", name: "三陰交", from: "内くるぶしの頂点", to: "陰陵泉の高さ", direction: "ひざ側", span: boneCunSpans.innerShin, amount: 3 },
+  { area: "abdomen", code: "cv4", name: "関元", from: "へその中央", to: "恥骨結合の上縁", direction: "下", span: boneCunSpans.lowerAbdomen, amount: 3 },
 ] as const;
 
 const boneSpans = [
@@ -109,18 +109,18 @@ export default function BoneCunPage() {
         <h2 className="atlas-section-title">寸（骨度法・B-cun）</h2>
         <p>骨の出っ張りや関節のしわなど、決められた二つの目印の間を等分します。その一区切りが、その区間での1寸です。</p>
         <div className="cun-examples" role="group" aria-label="骨度法を使う3つの例">
-          {examples.map(({ area, code, name, landmarks, span, amount }) => (
+          {examples.map(({ area, code, name, from, to, direction, span, amount }) => (
             <figure key={code} className="cun-example">
               <BoneCunExampleFigure area={area} span={span} amount={amount} />
               <figcaption>
                 <Link href={`/tsubo/${code}#acupoint-who-location`} className="cun-guide-link">{name}</Link>
                 <strong>{amount}<small>寸</small></strong>
-                <p>{landmarks}を{span}等分。最初の目印から{amount}区切り分です。</p>
+                <p>{from}から{to}までを{span}等分します。{name}は、{from}から{direction}へ{amount}区切り分です。</p>
               </figcaption>
             </figure>
           ))}
         </div>
-        <p className="cun-example-note">太い線は最初の目印からツボまでの距離です。三陰交と関元はどちらも3寸で、等分する区間が異なります。</p>
+        <p className="cun-example-note">太い線は目印からツボまでの距離です。三陰交と関元はどちらも3寸で、等分する区間が異なります。</p>
         <h3 className="cun-spans-heading">部位別の基準表</h3>
         <div className="cun-spans">
           {boneSpans.map(({ region, rows }) => (

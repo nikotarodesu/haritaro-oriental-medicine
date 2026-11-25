@@ -10,7 +10,6 @@ import {
   Stethoscope, 
   BookOpen, 
   AlertCircle, 
-  CheckCircle2, 
   X,
   Compass,
   ChevronDown,
@@ -489,10 +488,10 @@ export default function ThreeStageSimulator() {
 
   return (
     <div className="clinical-exercise-simulator space-y-6 sm:space-y-8">
-<section className="rounded-2xl border border-frame p-4 space-y-3 text-sm">
-        <h3 className="font-bold text-ink">安全判断の学習設定</h3>
+      <section className="rounded-2xl border border-frame p-4 space-y-3 text-sm">
+        <h3 className="font-bold text-ink">演習で使う安全確認の設定</h3>
         <p className="text-sm leading-relaxed text-muted">急な胸痛・呼吸困難・意識障害、腰痛に伴う新しい排尿障害や会陰部の感覚変化など、受診を優先する兆候を確認します。この選択だけで疾患を除外することはできません。</p>
-        <div className="flex flex-wrap gap-2">{([{ value: "unconfirmed", label: "危険兆候：未確認" }, { value: "no_flags", label: "確認した範囲では認めない" }, { value: "red_flags", label: "危険兆候がある設定" }] as const).map(option => <button key={option.value} type="button" aria-pressed={safetyReview === option.value} onClick={() => setSafetyReview(option.value)} className={`rounded-lg border p-2 text-sm ${safetyReview === option.value ? "border-accent bg-panel-selected text-accent" : "border-frame text-muted"}`}>{option.label}</button>)}</div>
+        <div className="flex flex-wrap gap-2">{([{ value: "unconfirmed", label: "まだ確認していない" }, { value: "no_flags", label: "確認した範囲では見当たらない" }, { value: "red_flags", label: "危険兆候がある" }] as const).map(option => <button key={option.value} type="button" aria-pressed={safetyReview === option.value} onClick={() => setSafetyReview(option.value)} className={`rounded-lg border p-2 text-sm ${safetyReview === option.value ? "border-accent bg-panel-selected text-accent" : "border-frame text-muted"}`}>{option.label}</button>)}</div>
       </section>
 
       {/* 症例連携通知バナー */}
@@ -606,7 +605,7 @@ export default function ThreeStageSimulator() {
           </div>
 
           <p className="text-sm text-muted leading-relaxed">
-            八綱・気血水・臓腑の条件を選ぶと、候補を支持する所見、不足している情報、学習用の配穴例が表示されます。条件を変えると、表示内容も変わります。
+            八綱・気血水・臓腑を選びます。候補を見たあと、四診の所見を加えて、選んだ条件と合うか確かめられます。
           </p>
         </div>
 
@@ -620,7 +619,7 @@ export default function ThreeStageSimulator() {
                   1
                 </span>
                 <h3 className="font-serif font-bold text-base sm:text-lg text-ink">
-                  八綱弁証（深浅・冷熱・邪正の勢い）
+                  八綱弁証（表裏・寒熱・虚実）
                 </h3>
               </div>
               <Link
@@ -764,7 +763,7 @@ export default function ThreeStageSimulator() {
               <div className="flex flex-wrap items-center justify-between gap-1.5">
                 <span className="text-sm sm:text-sm font-bold text-[#404743] dark:text-[#C5D2DB] flex items-center gap-1.5">
                   <span className="text-[#B86924] dark:text-[#E6C387]">＋</span>
-                  <span>兼証（挟雑病態の併存）を考慮する</span>
+                  <span>主な候補と一緒に考える証（兼証）</span>
                   <span className="text-sm font-normal text-[#737C77] dark:text-[#8899A6]">※任意（主病態と補助的な病態を区別）</span>
                 </span>
                 {secondaryQixueshui !== "none" && (
@@ -1103,7 +1102,7 @@ export default function ThreeStageSimulator() {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
-                推論結果
+                選んだ条件から考える候補
               </span>
               <span className={`text-sm px-2.5 py-0.5 rounded-full font-bold ${
                 diagnosis.status === "conflict"
@@ -1124,7 +1123,7 @@ export default function ThreeStageSimulator() {
                 title="3つの教材例で鑑別の視点を確認する"
               >
                 <Scale className="w-3.5 h-3.5 text-[#B86924] dark:text-[#E6C387]" />
-                <span>鑑別例を見比べる</span>
+                <span>似た証の違いを3例で見る</span>
                 <ArrowRight className="w-3 h-3 text-[#59615D] dark:text-[#8899A6]" />
               </a>
               <a
@@ -1180,7 +1179,7 @@ export default function ThreeStageSimulator() {
               : "bg-page border-[#1E3D34] dark:border-[#4E8C76]"
           }`}>
             <span className="text-sm font-bold text-accent uppercase tracking-wider block">
-              一文の証
+              選んだ分類と候補
             </span>
             <p className="font-serif text-base sm:text-lg md:text-xl font-bold text-ink leading-relaxed">
               「{diagnosis.oneSentenceFormula}」
@@ -1243,7 +1242,7 @@ export default function ThreeStageSimulator() {
                     </h5>
                   </div>
                   <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                    適応：{primaryOpt.indicationConditions}
+                    教材で着目する所見 {primaryOpt.indicationConditions}
                   </span>
                 </div>
 
@@ -1439,7 +1438,7 @@ export default function ThreeStageSimulator() {
                     ① なぜこの候補と考えたか
                   </h5>
                   <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                    選択条件と整合する典型所見、および矛盾する注意点
+                    入力した所見と、選んだ条件に合わない点
                   </p>
                 </div>
               </div>
@@ -1454,17 +1453,17 @@ export default function ThreeStageSimulator() {
                   {/* 支持する所見 */}
                   <div className="p-4 rounded-xl bg-page border border-[#E5DEC9] dark:border-[#263542] space-y-2">
                     <div className="flex items-center gap-2 text-sm sm:text-sm font-bold text-accent">
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span>この証で見られる典型的な所見</span>
+                      <span>入力した所見</span>
                     </div>
-                    <ul className="space-y-2 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
+                    {diagnosis.supportingFindings.length === 0 ? (
+                      <p className="text-sm text-muted">四診の所見はまだ入力されていません。表示されている候補は、選んだ分類に基づきます。</p>
+                    ) : <ul className="space-y-2 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
                       {diagnosis.supportingFindings.map((finding, i) => (
                         <li key={i} className="flex items-start gap-2 leading-relaxed">
-                          <span className="text-accent font-bold shrink-0 mt-0.5">✔</span>
                           <span>{finding}</span>
                         </li>
                       ))}
-                    </ul>
+                    </ul>}
                   </div>
 
                   {/* 合わない所見・矛盾点 */}
@@ -1475,7 +1474,7 @@ export default function ThreeStageSimulator() {
                   }`}>
                     <div className="flex items-center gap-2 text-sm sm:text-sm font-bold text-[#A83629] dark:text-[#E07971]">
                       <AlertCircle className="w-4 h-4" />
-                      <span>合わない所見・矛盾点</span>
+                      <span>選んだ条件と合わない点</span>
                     </div>
                     <ul className="space-y-2 text-sm sm:text-base text-[#404743] dark:text-[#C5D2DB]">
                       {diagnosis.conflictingFindings.map((conflict, i) => (
@@ -1593,7 +1592,7 @@ export default function ThreeStageSimulator() {
                     ③ 配穴を詳しく見る
                   </h5>
                   <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                    王道ペアと別案ペアの比較、施術後の再評価ポイント
+                    二つの組み合わせと、選んだ理由を比べる
                   </p>
                 </div>
               </div>
@@ -1634,7 +1633,7 @@ export default function ThreeStageSimulator() {
                           </div>
 
                           <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
-                            適応条件：{opt.indicationConditions}
+                            教材で着目する所見 {opt.indicationConditions}
                           </span>
                         </div>
 

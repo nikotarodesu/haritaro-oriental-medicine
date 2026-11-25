@@ -314,7 +314,7 @@ export default function CrossSectionViewer({
               位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。{" "}
               <a href="#acupoint-location" className="atlas-source-link inline-flex min-h-11 items-center">体表の位置図に戻る</a>
             </p>}
-            <p>図の組織か、下の名前を選ぶと、図の該当箇所が強調され、解説が表示されます。</p>
+            <p>図の中の部位か、下の一覧から名前を選ぶと、説明が表示されます。</p>
           </div>
         </figcaption>
       </figure>

@@ -10,12 +10,14 @@ import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/con
 import { getArticlePreviews } from "@/data/articleData";
 import { foundationDiagrams } from "@/data/publicLectures/diagrams/foundations";
 import { readingPartHref, readingUnits } from "@/data/publicLectures/readingUnits";
+import { LEARNING_COURSES } from "@/data/learningCourses";
+import { LEARNING_COURSES_SECTION_ID } from "@/utils/courseJourney";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLearning";
 import styles from "./learning-entry.module.css";
 
 const heading = "東洋医学を図で学ぶ";
 const title = seriesPageTitle(`${heading}｜全${readingUnits.length}講義と要点まとめ`, "reading");
-const introduction = `食事や眠りを例に、陰陽・気血水・経絡の考え方を全${readingUnits.length}講で学びます。`;
+const introduction = `食事や眠りを例に、陰陽、気・血・津液（気血水）、経絡の考え方を全${readingUnits.length}講で学びます。`;
 const description = `${introduction} 各講義に要点まとめと確認問題があります。`;
 
 export const metadata: Metadata = {
@@ -55,7 +57,7 @@ export default function LearnGuidePage() {
           </Link>
           <Link href="/learn/essentials" className="learning-option">
             <span className="learning-option-icon"><List size={21} aria-hidden="true" /></span>
-            <span className="learning-option-label"><strong>用語の要点を読む</strong><span>陰陽や気血水を図で確認</span></span>
+            <span className="learning-option-label"><strong>用語の要点を読む</strong><span>陰陽や気・血・津液を図で確認</span></span>
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </nav>
@@ -99,6 +101,20 @@ export default function LearnGuidePage() {
       <section id="learn-courses-heading" aria-labelledby="reading-topics" className="space-y-4">
         <h2 id="reading-topics" className="reader-section-title">講義の目次</h2>
         <PublicLectureIndex series="reading" />
+      </section>
+
+      <section id={LEARNING_COURSES_SECTION_ID} aria-labelledby="learning-course-title" className="scroll-mt-28 space-y-3">
+        <h2 id="learning-course-title" className="reader-section-title">学習コース</h2>
+        <p>テーマを一つ選び、節ごとの確認問題に取り組みながら進めます。</p>
+        <ul className="page-link-grid">
+          {LEARNING_COURSES.map(course => (
+            <li key={course.slug}>
+              <Link href={`/learn/courses/${course.slug}`} className="ui-text-link">
+                {course.title}（{course.steps.length}ステップ）<ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <div className={styles.resources}>

@@ -28,10 +28,10 @@ export default function ContactPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const topic = params.get('topic');
-    if (topic === 'legacy-services' || topic === 'premium-reopening' || topic === 'premium-support') {
+    if (topic === 'legacy-notes' || topic === 'legacy-services' || topic === 'premium-reopening' || topic === 'premium-support') {
       const timer = setTimeout(() => setFormData(previous => ({ ...previous,
         category: LEGACY_SERVICES_CATEGORY,
-        subject: previous.subject || '終了したサービスに関する問い合わせ',
+        subject: previous.subject || (topic === 'legacy-notes' ? '旧マイノートの保存データについて' : '終了したサービスについて'),
       })), 0);
       return () => clearTimeout(timer);
     }
@@ -252,6 +252,7 @@ export default function ContactPage() {
                 <textarea
                   id="contact-message"
                   name="message"
+                  aria-describedby="contact-message-privacy"
                   required
                   rows={6}
                   value={formData.message}
@@ -259,6 +260,7 @@ export default function ContactPage() {
                   placeholder="例：ツボ図鑑の〇〇ページにある△△の説明について"
                   className="min-h-12 w-full px-3.5 py-2.5 rounded-xl border border-[#D8CFC0] dark:border-[#2A3B4A] bg-[#FAF8F5] dark:bg-[#121920] text-[#232826] dark:text-[#FAF8F5] text-base focus:outline-none focus:border-[#1E3D34] dark:focus:border-[#74BA9E] transition-colors resize-y leading-relaxed"
                 />
+                <p id="contact-message-privacy" className="text-sm text-[#59615D] dark:text-[#A0B0BC]">患者さんの氏名・連絡先など、個人を特定できる情報は入力しないでください。</p>
               </div>
 
               {/* 個人情報取り扱い注意 */}
@@ -301,7 +303,7 @@ export default function ContactPage() {
               <span>返信までの目安</span>
             </div>
             <p className="leading-relaxed">
-              通常、2〜3営業日以内にご入力いただいたメールアドレス宛に回答を差し上げております。内容によってはお時間をいただく場合もございます。
+              通常は2〜3営業日で、入力されたメールアドレスに返信します。内容によって時間がかかる場合があります。
             </p>
           </div>
 

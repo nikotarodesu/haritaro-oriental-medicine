@@ -36,13 +36,13 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
     lectureId: 'lecture-diagnosis-9', caseId: 'back-pain-referral',
     focus: '経絡図の名称・走行と、神経や筋膜の研究で実際に調べた部位・反応を読み比べる。',
     limitation: '神経や筋膜との類似だけで、経絡の走行や機能が実証されたとは言えません。',
-    summary: '十二正経・奇経八脈・絡脈の違いと、経穴の位置が結合組織の境目に重なるかを調べた研究を読みます。動物で神経の反応を測った研究が、患者の症状の変化を調べる試験とどう違うかも説明します。',
+    summary: '十二正経・奇経八脈・絡脈の違いを図で確認します。腕などの上肢で、ツボと結合組織の境目が重なるかを調べた研究を読み、実際に観察した範囲と著者が立てた仮説を比べます。',
   },
   'science-of-acupoints-mechanotransduction': {
     lectureId: 'lecture-treatment-8', caseId: 'back-pain-referral',
     focus: '骨や腱を目印に経穴を探し、鍼を引き抜くときの抵抗を測った研究で、何を比べたかを読む。',
     limitation: '細胞・動物・画像研究の結果を、特定の経穴の臨床効果へ直接置き換えません。',
-    summary: '経穴を探すときの骨・腱・関節の目印を説明します。結合組織の位置や鍼の引き抜き抵抗を調べた研究を読み、測った反応が患者の症状の改善とどう違うかを確かめます。',
+    summary: '骨や腱、関節を目印にツボの位置を探します。鍼を抜くときの抵抗を測った研究を読み、刺激する場所によって症状の変化が違うかを確かめるには、どんな比較が必要かを考えます。',
   },
   'science-of-pulse-diagnosis': {
     lectureId: 'lecture-diagnosis-6', caseId: 'mixed-temperature',
@@ -77,7 +77,7 @@ export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
   'east-west-integrative-unified-theory': {
     lectureId: 'lecture-diagnosis-10', caseId: 'mixed-temperature',
     focus: '「夕方に首が重い」という訴えから、観察したこと、考えた原因、あとで比べる項目を書き分ける。',
-    limitation: '統一的に説明できることと、理論が臨床的に検証されたことは別です。',
+    limitation: '原因を説明できそうでも、診断の正確さや治療の効果を知るには、それぞれを確かめる研究が必要です。',
     summary: '症状や所見を記録すること、病名や証を考えること、治療後の変化を測ることを分けて説明します。同じ結果が得られるか、病気を見分けられるか、治療に役立つかを比べるための筆者の学習例です。',
   },
   'east-west-integrative-gerd-gastric': {

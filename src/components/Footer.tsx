@@ -6,7 +6,6 @@ import { ChevronDown } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
 
 const groups = [
-  { title: "調べる", links: [["/tsubo", "ツボから探す"], ["/symptoms", "症状から探す"]] },
   { title: "学ぶ", links: [[ACUPUNCTURE_GUIDE.href, "はじめての鍼灸"], ["/articles", "解説記事"], ["/learn/review", "講義の復習"], ["/glossary", "用語集"], ["/library", "古典・論文"]] },
   { title: "演習", links: [["/diagnosis", "気血水 体質チェック"], ["/diagnosis?tab=gorou", "五労チェック"], ["/cases", "症例演習"], ["/simulator", "弁証演習"], ["/practice/haiketsu", "配穴演習"]] },
   { title: "運営・出典", links: [["/about", "運営者について"], ["/editorial-policy", "出典・専門確認の状況"], ["/safety", "受診の目安・安全性"], ["/updates", "更新情報"], ["/contact", "お問い合わせ"]] },
@@ -19,7 +18,7 @@ export default function Footer() {
         <Link href="/" aria-label={SITE_NAME} className="site-footer-brand"><BrandLogo symbolClassName="h-8 w-8" wordmarkClassName="font-serif text-lg font-bold" /></Link>
         <nav aria-label="主な入口" className="site-footer-primary">
           {Object.values(SERIES).map(series => <Link key={series.href} href={series.href}>{series.shortName}</Link>)}
-          <Link href="/contact">お問い合わせ</Link>
+          <Link href="/symptoms">症状別ガイド</Link>
         </nav>
         <div className="site-footer-groups site-footer-groups--compact">
           {groups.map(group => <details key={group.title} className="site-footer-disclosure">
@@ -28,7 +27,7 @@ export default function Footer() {
           </details>)}
         </div>
         <div className="site-footer-notice">
-          <p>ツボの位置を図で調べ、東洋医学の講義を読み、架空の症例で練習できるサイトです。急な症状や悪化があるときは、医療機関に相談してください。</p>
+          <p>急な症状や悪化があるときは、医療機関に相談してください。</p>
         </div>
         <div className="site-footer-legal">
           <Link href="/terms">利用規約</Link>

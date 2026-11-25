@@ -1,7 +1,7 @@
 import { BookOpen, ClipboardList, MapPin } from "lucide-react";
 
 export const PLATFORM_DESCRIPTION = "361のツボを図で調べ、東洋医学の講義と模擬症例で学べます。";
-export const DICTIONARY_TAGLINE = "ツボのぜんぶが、ここにある。";
+export const DICTIONARY_TAGLINE = "標準361穴の位置と注意点";
 
 export const SERIES = {
   dictionary: {

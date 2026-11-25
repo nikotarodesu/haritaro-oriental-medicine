@@ -51,6 +51,10 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
   const first = getAcupointByCode(firstId);
   const second = getAcupointByCode(secondId);
   if (!first || !second) return null;
+  const hasClassic = pair.details.some(detail => detail.label.includes("古典"));
+  const hasStudy = pair.details.some(detail => !detail.label.includes("古典"));
+  const detailsLabel = hasClassic && hasStudy ? "古典の記述・研究の詳細と出典"
+    : hasClassic ? "古典の記述と出典" : "研究の詳細と出典";
 
   return (
     <article className={`${styles.card} atlas-target`} id={featuredPairAnchor(pair.id)}>
@@ -80,7 +84,7 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
       </a>
       {pair.details.length > 0 && (
         <details className={`${styles.details} atlas-disclosure`}>
-          <summary>古典・研究の詳細と出典</summary>
+          <summary>{detailsLabel}</summary>
           <dl className={styles.evidence}>
             {pair.details.map(({ label, text, sources }) => (
               <div key={label}>

@@ -4,31 +4,31 @@ import Link from 'next/link';
 import PageIntro from '@/components/design/PageIntro';
 import { SearchCheck, ClipboardCheck, History } from 'lucide-react';
 import summary from '@/data/medicalReviewSummary.json';
-import audit from '@/data/references/bibliographyAudit.json';
 import { PAPERS_DATABASE, VERIFIED_PAPERS } from '@/data/references/papersData';
 import { CLASSICAL_TEXTS } from '@/data/classicalTextsData';
 const title = seriesPageTitle("医学記述・出典の確認方針", "reading");
 
 export const metadata: Metadata = { title, description: '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', ...pageSocialMetadata(title, '書誌の照合、研究結果の解釈、専門家による監修の状況を分けて公開します。', '/editorial-policy'), alternates: { canonical: '/editorial-policy' } };
 export default function EditorialPolicyPage() {
-  const records = Object.values(audit);
+  const checkedPapers = VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked');
   return <div className="page-layout page-layout--reading space-y-7 leading-relaxed">
-    <PageIntro eyebrow="教材の編集方針" title="医学記述・出典の確認方針" description="出典の照合、研究結果の解釈、専門家監修の範囲を確認できます。" art="reading" compact>
+    <PageIntro title="医学記述・出典の確認方針" description="論文や古典のどこを確認したかと、第三者による監修の状況を掲載します。" art="reading" compact>
       <nav aria-label="確認方針の目次" className="page-actions">
         <a href="#current-review" className="page-secondary-action"><SearchCheck size={18} aria-hidden="true" />現在の確認状況</a>
         <a href="#review-criteria" className="page-secondary-action"><ClipboardCheck size={18} aria-hidden="true" />確認する項目</a>
-        <a href="#review-record" className="page-secondary-action"><History size={18} aria-hidden="true" />監修の記録</a>
+        <a href="#review-record" className="page-secondary-action"><History size={18} aria-hidden="true" />第三者監修の状況</a>
       </nav>
     </PageIntro>
     <p className="leading-relaxed">伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別します。文献が存在することと、教材の説明がその文献で支持されることは別々に確認します。</p>
     <section id="current-review" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">現在の確認状況</h2>
-      <p>登録論文{PAPERS_DATABASE.length}件を照合し、書誌一致を確認できたものは{records.filter(record => record.bibliographyStatus === 'matched').length}件です。撤回論文、書誌の不一致、原典を確認できない文献は研究資料一覧と検索の対象から外しています。</p>
-      <p>公開論文のうち{VERIFIED_PAPERS.filter(paper => paper.claimsStatus === 'source-checked').length}件は、抄録や本文の一部を参照し、どんな人を対象に、何を比べ、どんな結果だったかをまとめています。論文ごとに参照した箇所と日付を示しています。書誌情報のみの論文は、論文名・著者・掲載誌を調べるために利用できます。</p>
+      <p>文献ライブラリに登録した{PAPERS_DATABASE.length}件を照合し、{VERIFIED_PAPERS.length}件で論文名・著者・掲載誌などが一致しました。撤回された論文や、書誌・原典を確認できなかった論文は、文献ライブラリの研究一覧とその検索対象から外しています。</p>
+      <p>書誌が一致した論文のうち{checkedPapers.length}件は、抄録または本文の一部も参照しました。研究の対象・比較・結果をまとめ、参照した箇所と日付を論文ごとに示しています。ツボ図鑑や症状別ガイドで直接紹介する研究は、各ページで出典を確認できます。</p>
       <p>古典{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件では、電子本文から確認した箇所を引用し、以前掲載した文章との字句の違いを項目ごとに説明しています。引用の出典は電子本文です。底本の画像を調べる場合は、原典側の資料をご覧ください。</p>
-      <p className="font-bold">専門家による監修は完了していません。</p>
-      <p>{summary.generatedAt}時点で、記事や講義、ツボ図鑑などの記述{summary.statements.toLocaleString('ja-JP')}件を、出典や表現を見直す対象としています。このうち{summary.priorityStatements.toLocaleString('ja-JP')}件は、受診の目安や研究結果の数値など、読者の判断に関わる内容を優先して確認します。各ページに掲載する図や画面の案内文も確認の対象です。</p>
-      <p>ツボ図鑑では、体の表面で位置を見つける目印と、図を読むときの注意を示しています。症例演習では、架空の相談から判断の手がかりを探します。</p>
       <Link href="/safety" className="underline">受診の目安・安全性の出典と確認範囲</Link>
+    </section>
+    <section aria-labelledby="review-inventory" className="space-y-3">
+      <h2 id="review-inventory" className="text-xl font-bold">確認対象の一覧</h2>
+      <p>{summary.generatedAt}に作成した一覧では、記事や講義、ツボ図鑑の文章や図など{summary.statements.toLocaleString('ja-JP')}件を見直しの対象としました。このうち{summary.priorityStatements.toLocaleString('ja-JP')}件は、受診の目安や研究結果の数値など、優先して確認する記述です。</p>
     </section>
     <section id="review-criteria" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">記述ごとに確認すること</h2><ol className="list-decimal pl-5 space-y-2">
       <li>出典の著者、題名、年、識別子が一致しているか。訂正・撤回がないか。</li>
@@ -37,7 +37,11 @@ export default function EditorialPolicyPage() {
       <li>動物実験からヒトへ、別疾患へ、伝統的分類へ過度に一般化していないか。</li>
       <li>紹介・受診の判断や施術上の注意を、資格を持つ監修者が確認したか。</li>
     </ol></section>
-    <section id="review-record" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">監修の記録</h2><p>監修者の氏名・資格、確認した記述の版、対象範囲、確認日、修正内容を記録します。執筆者情報や自動チェックの合格だけを「専門家監修済み」と表示することはありません。</p><p>本文を変更した場合、以前の確認を新しい記述へ自動で引き継ぎません。施術の安全性や緊急の対応が関わる記述を優先して確認します。</p></section>
+    <section id="review-record" className="scroll-mt-28 space-y-3">
+      <h2 className="text-xl font-bold">第三者監修の状況</h2>
+      <p>執筆者が出典を照合しています。第三者の専門家による監修は完了していません。</p>
+      <p>監修を実施した項目は、監修者の氏名・資格、対象の版と範囲、確認日、修正内容を記録します。本文を改訂した場合は、変更した箇所を改めて確認します。</p>
+    </section>
     <section id="revision-history" className="scroll-mt-28 space-y-6 border-t border-[#E5DEC9] pt-6 dark:border-[#2A3B4A]">
       <h2 className="font-serif text-xl font-bold">教材改訂の履歴</h2>
       <section className="space-y-3">
@@ -54,7 +58,7 @@ export default function EditorialPolicyPage() {
       <p><Link href="/articles/science-of-tongue-diagnosis" className="underline">舌診の記事</Link>では別分野の論文を指していた引用を取り下げ、観察・伝統的な解釈・口腔の医学的評価を区別した説明へ修正しました。</p>
       </section>
     </section>
-    <p className="text-sm">確認台帳の作成日：{summary.generatedAt}。記述の誤りや出典の不一致は<Link href="/contact" className="underline">お問い合わせ</Link>からお知らせください。</p>
+    <p className="text-sm">記述の誤りや出典の不一致は<Link href="/contact" className="underline">お問い合わせ</Link>からお知らせください。</p>
     <Link href="/library" className="inline-flex min-h-11 items-center underline">書誌を照合した研究資料を見る</Link>
   </div>;
 }

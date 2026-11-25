@@ -27,7 +27,7 @@ export const CLINICAL_STUDY_ADDITIONS: readonly AtlasStudy[] = [
   },
   {
     id: "si1-postpartum-milk-volume",
-    topic: "産後に母乳量が少ない人での母乳量",
+    topic: "母乳量が少ない産後の人を対象にした試験",
     kind: "point",
     points: ["si1"],
     comparisonPoints: ["li1"],

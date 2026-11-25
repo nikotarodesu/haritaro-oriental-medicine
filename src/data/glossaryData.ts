@@ -4,6 +4,7 @@ import { FOUR_COMMAND_REVIEW_HREF } from '@/data/tsubo/keyPointTypes';
 
 export interface GlossaryTerm {
   term: string;
+  displayTerm?: string;
   reading: string;
   category: "鍼灸の基本" | "気血水・病態" | "経絡・経穴" | "陰陽五行・理論" | "神経生理・科学" | "診断・診察";
   oneLiner: string; // 一言での意味（中学生でもわかる平易な説明）
@@ -191,9 +192,10 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
   },
   相克: {
     term: "相克",
+    displayTerm: "相剋（相克）",
     reading: "そうこく",
     category: "陰陽五行・理論",
-    oneLiner: "五行の伝統理論で、木→土→水→火→金→木の向きに、制約する関係を説明する用語。相剋とも書く。",
+    oneLiner: "五行の伝統理論で、木→土→水→火→金→木の順に、相手の働きを抑える関係を表す用語。",
     analogy: "ブレーキのように行き過ぎを抑える、関係を覚えるための比喩。",
     summary: "例えば木剋土では、木が土を制約する向きで読む。相生と併せて調和を説明する伝統モデルであり、現代医学の恒常性維持やフィードバックと同一の生理機構ではない。臓器の疾患や治療の効果を、この関係だけから判断しない。",
     relatedLectureId: "lecture-wuxing-3",
@@ -255,6 +257,14 @@ const GLOSSARY_DEFINITIONS: Record<string, GlossaryTerm> = {
     relatedLectureId: "lecture-pathomechanism-8",
     relatedToolUrl: "/diagnosis?tab=gorou",
     relatedToolTitle: "五労チェッカー"
+  },
+  四診: {
+    term: "四診",
+    reading: "ししん",
+    category: "診断・診察",
+    oneLiner: "望診・聞診・問診・切診の四つから情報を集める、東洋医学の伝統的な診察法。",
+    summary: "望診では動きや顔色などを見ます。聞診では声や呼吸の音を聞き、においも確かめます。問診では本人の話を聞き、切診では説明と同意の上で、脈や体に触れて確かめます。",
+    relatedLectureId: "lecture-diagnosis-5",
   },
   弁証論治: {
     term: "弁証論治",

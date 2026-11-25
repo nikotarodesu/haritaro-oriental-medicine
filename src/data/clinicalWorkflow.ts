@@ -116,15 +116,16 @@ export const CLINICAL_SOURCES = {
 } as const;
 
 export interface ClinicalComplaint {
-  slug: string; title: string; summary: string; questions: string[]; review: string[];
+  slug: string; title: string; summary: string; questions: string[]; recordPrompt: string; review: string[];
   patternIds: string[]; lectureId: string; sourceKeys: (keyof typeof CLINICAL_SOURCES)[];
   patternExamples?: Readonly<Record<string, string>>;
 }
 export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
   {
     slug: 'shoulder', title: '首・肩こり',
-    summary: 'どの姿勢や動作で痛みが出るか、腕のしびれや力の入り方に変化があるかを確認します。',
+    summary: '姿勢や動作による痛みの変化を確かめ、翌日に仕事や睡眠へどう影響したかを比べます。',
     questions: ['いつ始まり、仕事中や姿勢を変えたときにどう変わりますか。', '痛い場所、痛み方、腕や手まで広がるかを聞きます。力の入り方やしびれも確認します。', '頭痛や冷えはありますか。眠れなかった日や緊張した日は、痛みが普段と違いますか。持病や薬も聞きます。'],
+    recordPrompt: '肩のどこが痛むか、腕を上げるとどう変わるかを見返します。症状に近いツボと離れたツボを考えた場合は、それぞれ何を手がかりにしたかを書きます。',
     review: ['腕を上げるなど、前と同じ動作での痛みと動く範囲', '翌日以降に仕事や睡眠へどんな影響が出たか'],
     patternIds: ['liver-qi', 'stasis', 'damp'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['terminology'],
     patternExamples: {
@@ -133,11 +134,22 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
       damp: '肩が重だるいと感じる時間帯と、休んだあとの変化を聞きます。しびれや力の入りにくさがあるときは、その経過も別に確かめます。',
     },
   },
-  { slug: 'back', title: '腰痛', summary: '痛みが始まった時刻と広がる範囲を聞き、脚のしびれや筋力、排尿・排便の変化を確認します。', questions: ['いつ、何をしていて痛み始めましたか。けがの有無と、動いたときや休んだときの変化を聞きます。','両脚のしびれ、力の入りにくさ、股の周りの感覚、排尿・排便に新しい変化がないかを確認します。','発熱や体重の変化、持病や薬はありますか。靴下をはくなど、困った動作も聞きます。'], review: ['前と同じ動作での痛みと、できるようになった動作','脚の力やしびれの変化と、医療機関で確認したこと'], patternIds: ['stasis','damp','spleen-yang'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['back','terminology'] },
+  {
+    slug: 'back', title: '腰痛',
+    summary: '腰から脚へ広がる痛みを記録し、どの動作に支障が出ているかを確認します。',
+    questions: ['いつ、何をしていて痛み始めましたか。けがの有無と、動いたときや休んだときの変化を聞きます。', '両脚のしびれ、力の入りにくさ、股の周りの感覚、排尿・排便に新しい変化がないかを確認します。', '発熱や体重の変化、持病や薬はありますか。靴下をはくなど、困った動作も聞きます。'],
+    recordPrompt: '腰のどこに痛みがあり、脚のどこまで広がるかを見返します。動作による変化と、それぞれのツボを候補にした理由を書き分けます。',
+    review: ['前と同じ動作での痛みと、できるようになった動作', '脚の力やしびれの変化と、医療機関で確認したこと'],
+    patternIds: ['stasis', 'damp', 'spleen-yang'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['back', 'terminology'],
+    patternExamples: {
+      'spleen-yang': '腰痛に加えて、おなかの冷え、食欲や便の変化があるかを聞きます。腰の痛みと胃腸の訴えが同じ時期に出たかも分けて記録します。',
+    },
+  },
   {
     slug: 'headache', title: '頭痛',
-    summary: '突然始まったか、いつもの頭痛と違うか、発熱や見え方の変化があるかを先に確認します。',
+    summary: '急いで受診する必要がないかを先に確かめ、頭痛が出た日数、仕事への影響、薬を使った回数を記録します。',
     questions: ['突然始まりましたか。いつもの痛みと違うか、頭を打ったことや発熱がないかも聞きます。', 'どこがどんなふうに痛み、何分・何時間続きますか。見え方、言葉、手足の動きの変化も確認します。', '睡眠、緊張した日、月経の前後で変わりますか。使った薬と、仕事などで困ったことも聞きます。'],
+    recordPrompt: '痛む場所と、頭痛が強まる時間や場面を見返します。場所を手がかりに選んだツボと、一緒に出た症状を手がかりに選んだツボを分けて書きます。',
     review: ['頭痛が出た日数、一回の長さ、痛みの程度', '中断した仕事や家事、薬を使った回数、受診結果'],
     patternIds: ['liver-qi', 'liver-heat', 'stasis', 'yin'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['headache', 'terminology'],
     patternExamples: {
@@ -145,9 +157,35 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
       stasis: 'こめかみや後頭部など、毎回同じところが痛むか、刺すような痛みかを確かめます。頭を打ったあとに始まった頭痛では、証を考える前に受診の状況を確認します。',
     },
   },
-  { slug: 'sleep', title: '不眠', summary: '寝付くまでの時間、夜に目が覚める回数、翌日の眠気で困る場面を聞き取ります。', questions: ['何時に床に入り、何時に起きますか。寝付きにくい、夜中や早朝に目が覚めるなど、いつから続いているかも聞きます。','翌日、眠気で何に困りますか。いびきや睡眠中の呼吸、カフェイン・飲酒・服薬も聞きます。','痛み、気分の変化、ほてりや口の乾きはありますか。持病や受診状況も確認します。'], review: ['床に入ってから寝るまでの時間と、夜に目が覚めた回数','昼間の眠気が、仕事や家事にどの程度影響したか'], patternIds: ['liver-qi','liver-heat','yin'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['sleep','terminology'] },
-  { slug: 'digestion', title: '胃腸の不調', summary: '食後に何が起きるか、便の回数や状態、体重の変化を聞きます。冷えがあれば、温めたときに変わるかも確認します。', questions: ['いつ始まり、食前と食後でどう違いますか。便の硬さと一日の回数も聞きます。','強い腹痛、血の混じる便、発熱、体重の変化はありますか。持病や薬も確認します。','疲れや冷えがあるか、温めたときや緊張した日で症状が変わるかを聞きます。'], review: ['以前と比べた食欲、便の硬さと回数','食後にできなかったこと、体重や体調の変化'], patternIds: ['spleen-qi','spleen-yang','damp','liver-qi'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['terminology'] },
-  { slug: 'fatigue', title: '疲労・倦怠感', summary: '疲れが出る時間帯、休んだ後の変化、できなくなった日常動作を聞き、受診や検査の結果も確認します。', questions: ['いつから疲れが続き、何時ごろ強まりますか。動いたときと休んだ後、どんなことに困るかを聞きます。','眠り、食欲、便通は変わりましたか。息切れ、動悸、体重の変化も確認します。','これまでの病気や服薬、受診や検査の結果を聞きます。冷えやほてりの有無も尋ねます。'], review: ['同じ買い物や家事での疲れ方と、休んで戻るまでの時間','睡眠と食欲の変化、受診の結果、施術後に困った反応'], patternIds: ['spleen-qi','spleen-yang','damp','yin'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['fatigue','terminology'] },
+  {
+    slug: 'sleep', title: '不眠',
+    summary: '寝付くまでの時間、夜に目が覚める回数、翌日の眠気で困る場面を聞き取ります。',
+    questions: ['何時に床に入り、何時に起きますか。寝付きにくい、夜中や早朝に目が覚めるなど、いつから続いているかも聞きます。', '翌日、眠気で何に困りますか。いびきや睡眠中の呼吸、カフェイン・飲酒・服薬も聞きます。', '痛み、気分の変化、ほてりや口の乾きはありますか。持病や受診状況も確認します。'],
+    recordPrompt: '寝付けないときと、夜中に目が覚めたときの記録を見返します。痛み、ほてり、翌日の眠気など、どの訴えを手がかりにツボを考えたかを書きます。',
+    review: ['床に入ってから寝るまでの時間と、夜に目が覚めた回数', '昼間の眠気が、仕事や家事にどの程度影響したか'],
+    patternIds: ['liver-qi', 'liver-heat', 'yin'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['sleep', 'terminology'],
+    patternExamples: {
+      'liver-qi': '緊張した日とそうでない日で、寝付くまでの時間を比べます。胸や肋骨の下が張る感じがあったかも別に聞きます。',
+      'liver-heat': '寝付きにくさに加え、ほてり、口の苦さ、目の赤みが同じ日に出たかを確認します。眠りの変化だけで候補を決めません。',
+      yin: '夜に目が覚めたとき、口が乾いていたか、汗で目が覚めたかを聞きます。眠りの記録と乾きやほてりの記録を照らし合わせます。',
+    },
+  },
+  {
+    slug: 'digestion', title: '胃腸の不調',
+    summary: '食前と食後の症状、便の状態、体重の変化を分けて聞きます。',
+    questions: ['食後に胃が重くなる、痛む、眠くなるといった変化はありますか。何がどのくらい続きますか。便の硬さと回数も聞きます。', '強い腹痛、血の混じる便、発熱、体重の変化はありますか。持病や薬も確認します。', '疲れや冷えがあるか、温めたときや緊張した日で症状が変わるかを聞きます。'],
+    recordPrompt: '胃もたれが出る時刻と、便の変化が出る時期を見返します。どちらを主な手がかりにツボを考えたか、その理由を書きます。',
+    review: ['以前と比べた食欲、便の硬さと回数', '食後に仕事や家事を中断したか、その時間。体重や体調の変化'],
+    patternIds: ['spleen-qi', 'spleen-yang', 'damp', 'liver-qi'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['terminology'],
+  },
+  {
+    slug: 'fatigue', title: '疲労・倦怠感',
+    summary: '疲れが出る時間帯、休んだ後の変化、できなくなった日常動作を聞き、受診や検査の結果も確認します。',
+    questions: ['いつから疲れが続き、何時ごろ強まりますか。動いたときと休んだ後、どんなことに困るかを聞きます。', '眠り、食欲、便通は変わりましたか。息切れ、動悸、体重の変化も確認します。', 'これまでの病気や服薬、受診や検査の結果を聞きます。冷えやほてりの有無も尋ねます。'],
+    recordPrompt: '動いたときの疲れと、食後に強くなる疲れの記録を見返します。どちらの訴えを手がかりに各穴を検討したかを書きます。',
+    review: ['同じ買い物や家事での疲れ方と、休み始めてから動作を再開できるまでの時間', '睡眠と食欲の変化、受診の結果、施術後に困った反応'],
+    patternIds: ['spleen-qi', 'spleen-yang', 'damp', 'yin'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['fatigue', 'terminology'],
+  },
 ];
 
 export const CLINICAL_INFORMATION_SCOPE = '診察で確かめたことを「所見」、症状や所見から東洋医学で考える体の状態を「証」と呼びます。この教材では、選んだ所見を証の説明と比べます。候補の表示から、病気の有無や治療の効果は分かりません。表示されなかった証も、除外できたことにはなりません。';

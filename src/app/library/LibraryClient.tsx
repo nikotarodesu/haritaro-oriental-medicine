@@ -245,6 +245,7 @@ export default function LibraryClient() {
                           <summary>著者・掲載誌と、確認した箇所</summary>
                           <div className="reference-disclosure-body">
                             <p>{paper.title}</p>
+                            {paper.authors.length > 0 && <p>{paper.authors.join(", ")}</p>}
                             <p>{paper.journal} ({paper.year})</p>
                             {paper.sourceLocator && <p>
                               <strong>確認範囲: </strong>

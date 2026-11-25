@@ -145,7 +145,7 @@ export default function TokushohoPage() {
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB] space-y-1">
                 <p>
-                  初回のお申し込み時に決済されていました。
+                  初回の申し込み時に決済しました。
                 </p>
                 <p className="text-sm text-[#737C77] dark:text-[#8899A6]">
                   販売期間中の条件では、月額プランは初回決済日から1か月ごと、年額プランは1年ごとに自動更新・自動決済でした。
@@ -159,7 +159,7 @@ export default function TokushohoPage() {
                 役務の提供時期
               </dt>
               <dd className="sm:col-span-2 text-[#404743] dark:text-[#C5D2DB]">
-                決済完了後、プレミアム会員機能（全20症例の閲覧・演習、シミュレーター拡張機能、1,000件保存枠等）をすぐに利用できる条件でした。
+                決済後すぐに、プレミアム会員機能（全20症例の閲覧・演習、シミュレーター拡張機能、1,000件保存枠等）を利用できました。
               </dd>
             </div>
 

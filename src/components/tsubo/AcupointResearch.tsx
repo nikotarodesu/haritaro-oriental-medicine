@@ -3,7 +3,7 @@ import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, RADIATION_DRY_MOUTH_RESEARCH_HREF, S
 import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { EXTRA_POINTS } from "@/data/tsubo/extraPoints";
-import { getAcupointStudies, getClassicalCombinations, getStudyPointRole, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
+import { getAcupointStudies, getAtlasStudyPoint, getClassicalCombinations, getStudyPointRole, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
@@ -46,6 +46,8 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
   const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
   const reading = studyReadingLinks[study.id];
   const label = getStudyScopeLabel(study, currentCode);
+  const mainPoint = getAtlasStudyPoint(study);
+  const showFullMethod = !currentCode || !mainPoint || currentCode === mainPoint;
   const showMainPoints = study.points.length > 0 && (study.kind === "combination" || role === "comparison");
   const mainPointsOnly = showMainPoints && !study.comparisonPoints?.length && !study.additionalPointGroups?.length && !study.otherPoints;
   const hasPointDetails = showMainPoints || study.comparisonPoints?.length || study.additionalPointGroups?.length || study.otherPoints;
@@ -67,7 +69,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
         </ul>
       </div>
       {reading && <p><Link href={reading.href} className="atlas-source-link">{reading.label}</Link></p>}
-      <details className="atlas-disclosure atlas-study-method">
+      {showFullMethod ? <details className="atlas-disclosure atlas-study-method">
         <summary>{detailsLabel}</summary>
         <div className="atlas-study-details">
           <p>{study.design}</p>
@@ -91,7 +93,9 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
             </div>
           ))}
         </div>
-      </details>
+      </details> : (
+        <p><Link href={`/tsubo/${mainPoint}#${study.id}`} className="atlas-source-link" prefetch={false}>研究方法・使われたツボを読む</Link></p>
+      )}
     </article>
   );
 }

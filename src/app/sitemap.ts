@@ -1,4 +1,4 @@
-import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT, PUBLIC_VISUALS_REVISED_AT } from "@/config/contentUpdates";
+import { PAGE_REVISIONS, SITE_REVISED_AT, ACUPOINT_PAGE_REVISED_AT, PUBLIC_COPY_REVISED_AT, PUBLIC_VISUALS_REVISED_AT } from "@/config/contentUpdates";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { SITE_ORIGIN } from "@/config/seo";
 import type { MetadataRoute } from "next";
@@ -153,7 +153,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const image = ACUPOINT_LOCATION_IMAGES[point.codeLower];
     return {
       url: `${baseUrl}/tsubo/${point.codeLower}`,
-      lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
+      lastModified: new Date(PUBLIC_COPY_REVISED_AT),
       ...(image && { images: [baseUrl + image.src] }),
     };
   });
@@ -167,13 +167,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 臨床症例演習ページ（全20症例）
   const casePages: MetadataRoute.Sitemap = CLINICAL_CASES.map((c) => ({
     url: `${baseUrl}/cases/${c.id}`,
-    lastModified: new Date(PUBLIC_VISUALS_REVISED_AT),
+    lastModified: new Date(PUBLIC_COPY_REVISED_AT),
   }));
 
   // 奇経八脈詳細ページ（全8経脈）
   const kikeiPages: MetadataRoute.Sitemap = KIKEI_VESSELS.map((v) => ({
     url: `${baseUrl}/kikei/${v.slug}`,
-    lastModified: new Date("2026-09-20"),
+    lastModified: new Date(PUBLIC_COPY_REVISED_AT),
   }));
 
   return [

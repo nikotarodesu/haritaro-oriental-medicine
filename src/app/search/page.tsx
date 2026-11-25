@@ -66,8 +66,8 @@ export default async function SearchPage({ searchParams }: {
       <PlatformSearchForm key={query} query={query} />
       {query && <section className="space-y-4" aria-labelledby="search-results-title">
         <h2 id="search-results-title" className="text-lg font-bold">「{query}」の検索結果 <span className="ui-muted">{results.length}件</span></h2>
-        {dictionaryHref && <Link href={dictionaryHref} className="page-secondary-action">同じ言葉でツボ図鑑を探す</Link>}
-        {results.length === 0 ? <p className="ui-muted">ツボは「合谷」「ごうこく」「LI4」のように名前・読み・番号で探せます。症状は「肩こり」のように短く入力するか、<Link href="/symptoms" className="ui-text-link">症状別ガイド</Link>から探してください。</p> : (
+        {dictionaryHref && <Link href={dictionaryHref} className="page-secondary-action">この検索語でツボ図鑑を絞り込む</Link>}
+        {results.length === 0 ? <p className="ui-muted">ツボは名前（合谷）、読み方（ごうこく）、経穴コード（LI4）で検索できます。症状は「肩こり」のように短く入力するか、<Link href="/symptoms" className="ui-text-link">症状別ガイド</Link>から探してください。</p> : (
           <ul className="platform-result-list">
             {results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(item => (
               <li key={item.id}>

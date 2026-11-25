@@ -50,8 +50,7 @@ function vertebraLocation(level: number, offset: number, part: "胸椎" | "腰�
   const levelText = offset ? `${anchor}端と同じ高さで、背骨の中央線から横へ${offset}寸` : `背骨の中央線で、${anchor}のくぼみ`;
   const sibling = offset === 1.5 ? "背骨の中央線から横に1.5寸です。図では中央線と、その外側にある3寸の列の中間に示しています。"
     : offset === 3 ? "同じ高さでも、中央から1.5寸の列より外側です。" : "横にずれると、背骨の左右にある点の列になります。";
-  const start = part === "腰椎" ? "背中から腰に下りたところ" : "首の付け根より下の背中";
-  const guide = `${start}で、図の縦に並ぶ背骨から第${level}${part}の高さを確認します。${offset ? "骨の突起の下端と同じ高さを保って真横に視線を移します。" : "図の中央線上で、骨の突起のすぐ下の間を見ます。"}${sibling}自分で背骨の段を強く押して数える必要はありません。`;
+  const guide = `図の第${level}${part}を目印にします。${offset ? "骨の突起の下端と同じ高さで、背骨の中央線から横へ移ります。" : "図の中央線上で、骨の突起のすぐ下の間を見ます。"}${sibling}自分で背骨の段を強く押して数える必要はありません。`;
   return { levelText, guide };
 }
 

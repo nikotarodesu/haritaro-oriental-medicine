@@ -35,9 +35,9 @@ if (process.argv.includes('--build-output')) {
   assert(html('learn').includes('href="/curriculum/lecture-intro-1"'), 'The reading home links directly to the canonical introduction');
   assert(html('learn/courses/pathomechanism-foundations').includes('id="concept-comparison"'));
   const score = html('practice/haiketsu');
-  assert(score.includes('配穴の構成バランス') && score.includes('構成表示の判定条件を見る'));
-  assert(score.includes('穴数による減点なし'));
+  assert(score.includes('選んだツボで見直せる項目') && score.includes('見直す項目の表示条件'));
+  assert(!score.includes('穴数による減点') && !score.includes('点数を引き'));
   assert(!score.includes('黄金比（2〜4穴）') && !score.includes('理想は40〜60%') && !score.includes('相殺のない秀逸な最小構成'));
-  console.log('Built HTML passed: all 11 reading totals, both direct entries, shared-case comparison, live prescription classification and calculation scope.');
+  console.log('Built HTML passed: all 11 reading totals, both direct entries, shared-case comparison, and ungraded prescription review.');
 }
 console.log(JSON.stringify({ passed: true, selectedStepAggregation: true, invalidEstimatesRejected: true, countLabelBoundaries: 6, readingMinutesByCourse: totals }));

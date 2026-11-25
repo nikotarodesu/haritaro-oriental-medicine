@@ -29,7 +29,17 @@ const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "�
 const historyLookupTerms = ["鍼灸の歴史", "日本の鍼灸の歴史", "管鍼法"];
 const symptomLookupTerms: Readonly<Record<string, readonly string[]>> = {
   "headache-stiff-neck": ["頭痛", "肩こり", "首こり"],
-  "stress-insomnia": ["不眠", "寝つき", "寝付き"],
+  "stress-insomnia": ["不眠", "寝つき", "寝付き", "ストレス", "不安", "中途覚醒"],
+  "menstrual-pain-chill": ["生理痛", "月経痛", "下肢のむくみ"],
+  "constipation-ibs": ["腹部膨満", "過敏性腸症候群", "IBS"],
+  "allergic-rhinitis-hayfever": ["鼻閉", "鼻づまり"],
+  "knee-joint-pain": ["膝痛", "膝の痛み", "階段昇降"],
+};
+
+const progressiveCaseDescriptions: Readonly<Record<string, string>> = {
+  'fatigue-reasoning': '疲れが出る時間と便の変化を別々に聞き、候補を絞る練習',
+  'back-pain-referral': '急な腰痛の相談から、受診を優先する手がかりを探す練習',
+  'mixed-temperature': 'ほてりと冷えが出る部位と時刻を比べる練習',
 };
 
 const STATIC_TOOLS: SearchResultItem[] = [
@@ -220,7 +230,7 @@ export function buildSearchCatalog(): SearchResultItem[] {
     })));
     list.push(...REFLECTION_CASES.map((caseItem): SearchResultItem => ({
       id: `progressive-case-${caseItem.id}`, type: "case", title: caseItem.title,
-      subtitle: "架空の教材で、追加質問・安全判断・候補の比較・根拠・再評価を段階的に練習",
+      subtitle: progressiveCaseDescriptions[caseItem.id],
       badge: "段階式の模擬症例", url: `/simulator?case=${caseItem.id}#case-training`,
       tags: ["症例", "段階式", "症例演習", "判断根拠", "安全確認", "再評価"],
     })));

@@ -39,7 +39,7 @@ type KeyPointType = {
 export const KEY_POINT_TYPES: readonly KeyPointType[] = [
   {
     id: "yuan", label: "原穴", reading: "げんけつ",
-    description: "十二経脈に一つずつある、原気と結びつけて説明されるツボです。陰経では五輸穴の兪穴が原穴を兼ね、陽経では別のツボです。",
+    description: "十二経脈に一つずつある、原気と結びつけて説明されるツボです。陰経では同じツボが原穴と兪穴を兼ねます。陽経では原穴と兪穴は別々です。",
     codes: ["lu9", "li4", "st42", "sp3", "ht7", "si4", "bl64", "ki3", "pc7", "te4", "gb40", "lr3"],
     exampleCode: "li4",
   },
@@ -51,7 +51,7 @@ export const KEY_POINT_TYPES: readonly KeyPointType[] = [
   },
   {
     id: "xi", label: "郄穴", reading: "げきけつ",
-    description: "経脈の気血が深く集まると説明されるツボです。十二経脈に加え、陰蹻脈・陽蹻脈・陰維脈・陽維脈にも一つずつあります。",
+    description: "伝統医学で気血が深いところに集まるとされるツボです。十二経脈に加え、陰蹻脈・陽蹻脈・陰維脈・陽維脈にも一つずつあります。",
     codes: ["lu6", "li7", "st34", "sp8", "ht6", "si6", "bl63", "ki5", "pc4", "te7", "gb36", "lr6", "ki8", "bl59", "ki9", "gb35"],
     exampleCode: "st34",
   },

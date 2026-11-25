@@ -155,7 +155,7 @@ export default async function ReadingLecturePage({ params }: Props) {
           <PageBreadcrumb items={[{ href: lectureIndexHref, name: "講義一覧" }, { href: unit.href, name: unit.title }]} hideCurrent />
           <p className="lecture-reading-position">
             <span>{chapter?.label}</span>
-            <span>第{index + 1}講 ／ 全{readingUnits.length}講</span>
+            <span>第{index + 1}講 ／ 全{readingUnits.length}講（{unit.parts.length}節）</span>
           </p>
         </div>
         <h1 className="reader-title">{unit.title}</h1>

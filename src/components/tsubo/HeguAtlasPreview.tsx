@@ -15,7 +15,6 @@ import { getMeridianPoints } from "@/data/tsubo";
 import type { AcupointDetail } from "@/data/tsubo/types";
 
 export const heguAtlasReading = {
-  traditional: "伝統的な鍼灸では、合谷は頭痛や歯の痛みなど、頭や顔の不調に使われてきました。",
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
 };
 
@@ -32,6 +31,9 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} />
+      <aside className="atlas-caution-priority">
+        <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
+      </aside>
       <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
 
       <AcupointTraditionalUses code={point.codeLower} />
@@ -49,10 +51,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       <AcupointAnatomy point={point} />
 
       <div className="atlas-care-section">
-        <AcupointCautions priority={<>
-          <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
-          <p>{heguAtlasReading.caution}</p>
-        </>}>
+        <AcupointCautions priority={<p>{heguAtlasReading.caution}</p>}>
           <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
           <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
           <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>

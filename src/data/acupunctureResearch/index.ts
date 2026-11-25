@@ -42,7 +42,7 @@ export const ACUPUNCTURE_RESEARCH_TOPICS = [
     id: "research-safety",
     title: "施術の安全性",
     entries: [
-      { article: SAFETY_RESEARCH, summary: "施術の回数で割る調査と、受けた人の数で割る調査を比較。" },
+      { article: SAFETY_RESEARCH, summary: "施術100回あたりの不調の報告件数と、不調を経験した人の割合を比較。" },
       { article: ANTICOAGULANTS_AND_BLEEDING_RESEARCH, summary: "抗凝固薬を使う人の出血を、保険記録と病院での観察から確認。" },
     ],
   },
