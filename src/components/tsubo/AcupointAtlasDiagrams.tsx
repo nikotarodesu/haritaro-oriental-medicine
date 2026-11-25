@@ -15,10 +15,10 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints, children 
   const nearby = meridianPoints.slice(0, 6);
 
   return (
-    <AtlasLocationFigures pointName={point.name} notes={children} primary={
+    <AtlasLocationFigures notes={children} primary={
       <figure className="atlas-figure atlas-figure--labelled">
         <AtlasLandmarkGuide code="li4">
-          <ZoomableAtlasDiagram label="合谷の場所と目印">
+          <ZoomableAtlasDiagram label="合谷の場所と目印" pointName={point.name}>
             <HeguHandDiagram />
           </ZoomableAtlasDiagram>
         </AtlasLandmarkGuide>

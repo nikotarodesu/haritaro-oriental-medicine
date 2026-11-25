@@ -918,9 +918,7 @@
 .atlas-location-key {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: .4rem;
-  margin: .35rem .1rem 0;
   color: var(--atlas-muted);
   font-size: .875rem;
 }

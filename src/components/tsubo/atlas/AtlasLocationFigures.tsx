@@ -1,8 +1,7 @@
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 import type { ReactNode } from "react";
 
-export default function AtlasLocationFigures({ pointName, primary, notes, finding = [], children }: {
-  pointName: string;
+export default function AtlasLocationFigures({ primary, notes, finding = [], children }: {
   primary: ReactNode;
   notes?: ReactNode;
   finding?: readonly string[];
@@ -12,7 +11,6 @@ export default function AtlasLocationFigures({ pointName, primary, notes, findin
     <div className="atlas-location-layout">
       <div id="acupoint-diagram" className="atlas-target atlas-location-figure">
         {primary}
-        <p className="atlas-location-key">丸印が{pointName}</p>
       </div>
       <div className="atlas-location-notes">
         {finding.length > 0 && (

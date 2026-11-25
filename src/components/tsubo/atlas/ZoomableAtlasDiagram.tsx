@@ -2,8 +2,9 @@
 
 import { type ReactNode, useId, useState } from "react";
 
-export default function ZoomableAtlasDiagram({ label, children }: {
+export default function ZoomableAtlasDiagram({ label, pointName, children }: {
   label: string;
+  pointName?: string;
   children: ReactNode;
 }) {
   const id = useId();
@@ -11,7 +12,7 @@ export default function ZoomableAtlasDiagram({ label, children }: {
 
   return (
     <div role="group" aria-label={label} className="min-w-0 space-y-2">
-      <div className="flex flex-wrap items-center justify-between gap-x-3">
+      <div className={`flex flex-wrap items-center gap-x-3 ${pointName ? "justify-start" : "justify-between"}`}>
         <button
           type="button"
           aria-expanded={enlarged}
@@ -21,7 +22,8 @@ export default function ZoomableAtlasDiagram({ label, children }: {
         >
           {enlarged ? "元の大きさに戻す" : "図を拡大する"}
         </button>
-        {enlarged && <p id={`${id}-hint`} className="text-sm text-muted">図が収まらない場合は横に動かせます。</p>}
+        {pointName && <p className="atlas-location-key">丸印が{pointName}</p>}
+        {enlarged && <p id={`${id}-hint`} className={pointName ? "basis-full text-sm text-muted" : "text-sm text-muted"}>図が収まらない場合は横に動かせます。</p>}
       </div>
       <div
         id={id}

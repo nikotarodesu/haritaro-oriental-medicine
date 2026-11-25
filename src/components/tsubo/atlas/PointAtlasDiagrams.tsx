@@ -128,7 +128,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const diagramLabel = `${point.name}の場所と目印`;
   const landmarkArtwork = <CloseUp marker={closeUpMarker} label={pointLabel} labelled landmarkIds={expandedPoint && expandedLandmarkIds(expandedPoint, point.codeLower)} />;
   const locationDiagram = (
-    <ZoomableAtlasDiagram label={diagramLabel}>
+    <ZoomableAtlasDiagram label={diagramLabel} pointName={point.name}>
       {surfaceLandmarks && landmarkView ? (
         <LandmarkCloseUp marker={{ x: markerX, y: markerY }} pointLabel={pointLabel} landmarks={surfaceLandmarks} left={landmarkView.left}
           numbered={elbowPoint || point.codeLower === "pc7" || point.codeLower === "lr3"}
@@ -148,7 +148,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const guidedPoint = code === "pc4" || code === "pc5" || code === "pc6" || code === "st36" ? code : undefined;
 
   return (
-    <AtlasLocationFigures pointName={point.name} notes={children} finding={finding} primary={
+    <AtlasLocationFigures notes={children} finding={finding} primary={
       <figure className={`${figureClass} ${measured ? "atlas-figure--measured" : "atlas-figure--labelled"}`}>
         {guidedPoint ? <AtlasLandmarkGuide code={guidedPoint}>{locationDiagram}</AtlasLandmarkGuide> : locationDiagram}
         <figcaption>
