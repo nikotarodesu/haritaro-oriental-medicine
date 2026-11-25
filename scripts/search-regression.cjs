@@ -106,6 +106,18 @@ assert.equal(rankPurposeSearchResults(learningFixtures, preparePurposeSearchQuer
 
 const publicIndex = load('src/data/searchCatalog').SEARCH_CATALOG.map(prepareSearchItem);
 for (const [query, href] of [
+  ['LI-4', '/tsubo/li4'],
+  ['ＬＩ－４', '/tsubo/li4'],
+  ['LI-4の目印', '/tsubo/li4'],
+  ['列缺', '/tsubo/lu7'],
+  ['列欠', '/tsubo/lu7'],
+  ['れっけつ', '/tsubo/lu7'],
+  ['印堂', '/tsubo/extra-points/yintang'],
+  ['EX-HN3', '/tsubo/extra-points/yintang'],
+  ['GV24+', '/tsubo/extra-points/yintang'],
+  ['GV24', '/tsubo/gv24'],
+  ['頭痛', '/symptoms/headache-stiff-neck'],
+  ['ずつう', '/symptoms/headache-stiff-neck'],
   ['合谷 場所', '/tsubo/li4'],
   ['ごうこくの位置はどこですか？', '/tsubo/li4'],
   ['ＬＩ ４ の目印', '/tsubo/li4'],
@@ -163,6 +175,7 @@ for (const [canonical, aliases] of [
   ['肝気鬱結', ['肝気郁結', '肝気欝結', 'かんきうっけつ', 'カンキウッケツ']],
   ['瘀血', ['お血', 'おけつ', 'オケツ']],
   ['肩こり', ['肩凝り', 'かたこり']],
+  ['頭痛', ['ずつう', 'ズツウ']],
   ['陰陽', ['いんよう', 'インヨウ']],
   ['相克', ['相剋', 'そうこく']],
 ]) {
@@ -175,6 +188,9 @@ for (const [canonical, aliases] of [
   }
 }
 assert.equal(normalizeSearchText('郁子'), '郁子', 'Do not replace unrelated characters in names');
+for (const unchanged of ['li-99', 'ab-4', 'ab 4', '2026-11-25', 'li-4 研究', 'ex-hn3', 'gv24+']) {
+  assert.equal(normalizeSearchText(unchanged), unchanged, 'Preserve punctuation and boundaries for ' + unchanged);
+}
 assert.notEqual(normalizeSearchText('うつ病'), normalizeSearchText('肝気鬱結'), 'A medical diagnosis is not a traditional term alias');
 assert.notEqual(normalizeSearchText('血栓'), normalizeSearchText('瘀血'), 'No aliases from medical findings to traditional patterns');
 const shoulder = render('肩こり');

@@ -1,20 +1,30 @@
 import { normalizeSearchAliases } from './searchAliases';
+import { whoAtlasPages } from '@/data/tsubo/atlas/whoAtlasPages';
+
+function normalizePointCode(value: string): string {
+  // Only normalize a complete code. Leave date separators and punctuation in mixed text intact.
+  const match = /^([a-z]{2})\s*(?:[-‐‑‒–—−]\s*)?(\d{1,2})$/u.exec(value);
+  if (!match) return value;
+  const code = match[1] + match[2];
+  return Object.hasOwn(whoAtlasPages, code) ? code : value;
+}
 
 /** Normalize both the query and the index, preserving word boundaries. */
 export function normalizeSearchText(text: string): string {
-  return normalizeSearchAliases(text.normalize('NFKC').toLowerCase()
+  const normalized = text.normalize('NFKC').toLowerCase()
     .replace(/[āâēêīîōôūû]/g, char => char.normalize('NFD')[0])
     .replace(/[\u30a1-\u30f6]/g, char => String.fromCharCode(char.charCodeAt(0) - 0x60))
     .replace(/谿/g, '渓').replace(/兪/g, '輸')
-    .replace(/([a-z]{2})\s+(\d+)/g, '$1$2')
-    .replace(/\s+/g, ' ').trim());
+    .replace(/\b[a-z]{2}\s+\d{1,2}(?![a-z\d+])/g, normalizePointCode)
+    .replace(/\s+/g, ' ').trim();
+  return normalizeSearchAliases(normalizePointCode(normalized));
 }
 
 const POINT_QUESTION_END = /\s*(?:の\s*(?:近く|周り)\s*の|(?:周辺|付近|近く)\s*の|の|に\s*(?:ある|効く|きく|よい|いい|使う)|と\s*(?:関連|関係)する)\s*(?:つぼ|経穴)(?:\s*(?:は\s*どこ(?:ですか)?|を\s*(?:探す|知りたい|教えて(?:ください)?)))?$/u;
 
 export function getPointSearchTopic(normalizedQuery: string): string {
   const question = normalizedQuery.replace(/[?？。!！]+\s*$/, "").trim();
-  return question.replace(POINT_QUESTION_END, "").trim() || normalizedQuery;
+  return normalizePointCode(question.replace(POINT_QUESTION_END, "").trim() || normalizedQuery);
 }
 
 export interface SearchableItem { title: string; subtitle?: string; tags?: string[]; exactCode?: string; exactTerms?: string[] }
@@ -26,7 +36,7 @@ export const SEARCH_CATEGORIES: ReadonlyArray<{ id: SearchCategory; label: strin
   { id: 'acupoint', label: '経穴' },
   { id: 'lecture', label: '講義・コース' },
   { id: 'glossary', label: '専門用語' },
-  { id: 'symptom', label: '症状別ケア' },
+  { id: 'symptom', label: '一般向け症状ガイド' },
   { id: 'library', label: '論文・古典' },
   { id: 'case', label: '症例教材' },
   { id: 'tool', label: 'ツール' },

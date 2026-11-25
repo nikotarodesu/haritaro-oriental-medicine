@@ -36,15 +36,15 @@ export const POSTOPERATIVE_NAUSEA_RESEARCH: AcupunctureResearchArticle = {
   sources: [
     {
       id: "fan-1997",
-      label: "Fan ほか · Anesthesia & Analgesia（1997）",
-      url: "https://doi.org/10.1097/00000539-199704000-00023",
-      scope: "原著の抄録。短時間の手術、バンドを付けた部位、両群で吐き気や嘔吐が記録された人数を確認。",
+      label: "Fan ほか · Anesthesia & Analgesia（1997年、原著抄録）",
+      url: "https://pubmed.ncbi.nlm.nih.gov/9085965/",
+      scope: "短時間の手術、バンドを付けた部位、両群で吐き気や嘔吐が記録された人数を抄録で確認（2026-11-25）。DOI 10.1097/00000539-199704000-00023",
     },
     {
       id: "klein-2004",
-      label: "Klein ほか · Journal of Cardiothoracic and Vascular Anesthesia（2004）",
-      url: "https://doi.org/10.1053/j.jvca.2003.10.014",
-      scope: "原著の抄録。心臓手術を受けた成人、模擬バンド、術後24時間の結果を確認。",
+      label: "Klein ほか · Journal of Cardiothoracic and Vascular Anesthesia（2004年、原著抄録）",
+      url: "https://pubmed.ncbi.nlm.nih.gov/14973803/",
+      scope: "心臓手術を受けた成人、模擬バンド、術後24時間の結果を抄録で確認（2026-11-25）。DOI 10.1053/j.jvca.2003.10.014",
     },
     {
       id: "cochrane-2025",

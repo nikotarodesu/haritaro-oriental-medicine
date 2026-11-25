@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getAcupointByCode } from "@/data/tsubo";
+import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
 import {
   FIVE_TRANSPORT_STAGES,
@@ -62,6 +63,7 @@ export default function KeyPointTypesPage() {
           </nav>
           <h1 className="mt-2 text-3xl font-bold leading-snug sm:text-4xl">{heading}</h1>
           <p className="mt-3">要穴（ようけつ）は、鍼灸で使われる伝統的なツボの分類です。たとえば合谷は、手の陽明大腸経の原穴であり、古典に出てくる四総穴の一つでもあります。</p>
+          <p className="mt-2">標準361経穴には、十二経脈と任脈・督脈の経穴が含まれます。印堂・太陽の場所と、資料によるコードの違いは<Link href={EXTRA_POINTS_PATH} className="atlas-source-link">奇穴の図鑑</Link>で確認できます。</p>
           <nav aria-label="要穴の分類へ移動" className="atlas-directory-actions mt-2">
             {KEY_POINT_TYPES.map(({ id, label }) => (
               <a key={id} href={`#${id}`} className="atlas-text-action">{label}</a>
@@ -81,6 +83,13 @@ export default function KeyPointTypesPage() {
             <section id={id} key={id} aria-labelledby={`${id}-heading`} className={`atlas-target min-w-0 space-y-2 rounded-xl border border-frame bg-panel p-4 ${id === "five-transport" ? "sm:col-span-2" : ""}`}>
               <h2 id={`${id}-heading`} className="atlas-section-title">{label}<span className="ml-2 text-sm font-normal ui-muted">（{reading}）</span></h2>
               <p>{description}</p>
+              {id === "four-command" && (
+                <ul className="flex flex-wrap gap-x-4" aria-label="四総穴の図鑑リンク">
+                  {codes.map(getAcupointByCode).map(point => point && (
+                    <li key={point.code}><Link href={`/tsubo/${point.codeLower}`} className="atlas-text-action">{point.name}（{point.code}）</Link></li>
+                  ))}
+                </ul>
+              )}
               {example && (
                 <p className="text-sm ui-muted">
                   {exampleLocation ? "位置の例 " : "例 "}

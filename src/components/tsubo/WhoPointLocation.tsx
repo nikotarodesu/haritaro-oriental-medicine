@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
+import { WHO_ATLAS_CATALOG, WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
 import { whoLocations, whoLocationNotes } from "@/data/tsubo/atlas/whoLocations";
 import { getWhoMeasurements, measurementUnits } from "@/data/tsubo/atlas/whoMeasurements";
 import WhoMeasurementFigures from "./WhoMeasurementFigures";
 
 const guide = "/tsubo/basics/bone-cun";
+const recentSourceChecks = new Set(["lu7", "li4", "st36", "bl40", "cv24"]);
+const sourceCheckedAt = "2026-11-25";
 
 export default function WhoPointLocation({ code, pointName }: { code: string; pointName: string }) {
   const location = whoLocations[code];
@@ -31,9 +33,14 @@ export default function WhoPointLocation({ code, pointName }: { code: string; po
               return <Link key={unit} className="atlas-text-action" href={guide + anchor}>{label}</Link>;
             })
           : <Link className="atlas-text-action" href={guide}>寸・指幅の測り方</Link>}
-        <a className="atlas-text-action" href={`${WHO_ATLAS_PDF}#page=${page}`}>WHO原本 p.{page - 9}（PDF）</a>
         {code === "gv27" && <a className="atlas-text-action" href="https://www.idononippon.com/book/errata/3419/">日本語公式版の正誤表</a>}
       </div>
+      <p className="text-sm">
+        位置の出典は WHO西太平洋地域事務局『WHO標準経穴部位』（2008年、2009年改訂再版）です。{" "}
+        <a className="atlas-source-link" href={`${WHO_ATLAS_PDF}#page=${page}`}>WHO原本 p.{page - 9}（PDF）</a>{" "}
+        <a className="atlas-source-link" href={WHO_ATLAS_CATALOG}>WHOの書誌情報</a>
+        {recentSourceChecks.has(code) && <>（該当ページ照合 <time dateTime={sourceCheckedAt}>{sourceCheckedAt}</time>）</>}
+      </p>
     </section>
   );
 }

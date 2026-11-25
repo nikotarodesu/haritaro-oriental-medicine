@@ -34,7 +34,7 @@ const symptomLookupTerms: Readonly<Record<string, readonly string[]>> = {
 const STATIC_TOOLS: SearchResultItem[] = [
   { id: "tool-learning-essentials", type: "tool", title: "東洋医学の要点", subtitle: "陰陽・気血津液・経絡などの基本を一問ずつ確認する", badge: "学習ガイド", url: "/learn/essentials", tags: ["東洋医学", "要点", "まとめ", "基礎", "陰陽", "気血津液", "経絡"] },
   { id: 'clinical-home', type: 'tool', title: '臨床演習', subtitle: '体質チェック、模擬症例、主訴別の確認ガイドを選ぶ', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
-  ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '主訴別・専門家', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
+  ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '臨床演習ガイド', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
   {
     id: "tool-kokushi",
     type: "tool",
@@ -210,7 +210,7 @@ export function buildSearchCatalog(): SearchResultItem[] {
     list.push(...REFLECTION_CASES.map((caseItem): SearchResultItem => ({
       id: `progressive-case-${caseItem.id}`, type: "case", title: caseItem.title,
       subtitle: "架空の教材で、追加質問・安全判断・候補の比較・根拠・再評価を段階的に練習",
-      badge: "段階式症例演習", url: `/simulator?case=${caseItem.id}#case-training`,
+      badge: "段階式の模擬症例", url: `/simulator?case=${caseItem.id}#case-training`,
       tags: ["症例", "段階式", "症例演習", "判断根拠", "安全確認", "再評価"],
     })));
 
@@ -342,7 +342,7 @@ export function buildSearchCatalog(): SearchResultItem[] {
         type: "symptom",
         title: s.title,
         subtitle: summary,
-        badge: "症状別ガイド",
+        badge: "一般向け症状ガイド",
         url: `/symptoms/${s.id}`,
         tags: [
           s.title,
@@ -360,7 +360,7 @@ export function buildSearchCatalog(): SearchResultItem[] {
         type: "case",
         title: c.title,
         subtitle: `${c.patient?.chiefComplaint || c.subTitle}（${c.difficulty}・${c.category}）`,
-        badge: "症例演習",
+        badge: "模擬症例",
         url: `/cases/${c.id}`,
         tags: [
           c.title,

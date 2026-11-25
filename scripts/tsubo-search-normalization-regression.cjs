@@ -20,9 +20,10 @@ for (const point of points) {
     assert(codes(query).includes(point.code), point.code + ': lookup failed for ' + query);
   }
 }
-for (const variants of [['ごうこく', 'ゴウコク', 'ｺﾞｳｺｸ'], ['たいしょう', 'タイショウ', 'ﾀｲｼｮｳ'], ['LI4', 'ｌｉ４', 'ＬＩ ４'], ['太谿', '太渓']]) {
+for (const variants of [['ごうこく', 'ゴウコク', 'ｺﾞｳｺｸ'], ['たいしょう', 'タイショウ', 'ﾀｲｼｮｳ'], ['LI4', 'ｌｉ４', 'ＬＩ ４', 'LI-4', 'ＬＩ－４'], ['太谿', '太渓'], ['頭痛', 'ずつう']]) {
   for (const query of variants) assert.deepEqual(codes(query), codes(variants[0]), query + ': spellings must return the same results');
 }
+for (const query of ['列缺', '列欠', 'れっけつ']) assert(codes(query).includes('LU7'), query);
 const li4 = indices.find(({ point }) => point.code === 'LI4');
 assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('ｺﾞｳｺｸ')), '読み方に含まれる');
 assert.equal(getAcupointMatchReason(li4.search, normalizeSearchText('ＬＩ ４')), '番号が一致');

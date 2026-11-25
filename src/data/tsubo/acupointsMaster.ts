@@ -199,6 +199,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "name": "列缺",
     "kana": "れっけつ",
     "romaji": "Lieque",
+    "aliases": ["列欠"],
     "meridianId": "lung",
     "meridian": "手の太陰肺経",
     "meridianShort": "肺経",

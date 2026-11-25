@@ -81,7 +81,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomGuideJsonLd(guide)).replace(/</g, '\\u003c') }} />
       <header className="atlas-guide-heading">
         <div>
-          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.category}</span></nav>
+          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">一般向け症状ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.category}</span></nav>
           <h1>{guide.title}</h1>
           <p>{summaryOpening}</p>
         </div>
@@ -177,7 +177,7 @@ export default async function SymptomGuidePage({ params }: Props) {
           {lectureId && lecture && <li><Link href={`/curriculum/${lectureId}`} className={linkClass}>{lecture.title}</Link></li>}
           {article && <li><Link href={`/articles/${article.id}`} className={linkClass}>{article.title}</Link></li>}
           {clinicalCase && <li><Link href={`/cases/${clinicalCase.id}`} className={linkClass}>{clinicalCase.title}（架空症例）</Link><p className="text-sm">症例の答えを自分の症状の診断や施術の指示に置き換えないでください。</p></li>}
-          {resources?.clinicalSlug && <li><Link href={`/clinical/symptoms/${resources.clinicalSlug}`} className={linkClass}>問診で聞くことと次回に確かめること（鍼灸師向け）</Link></li>}
+          {resources?.clinicalSlug && <li><Link href={`/clinical/symptoms/${resources.clinicalSlug}`} className={linkClass}>問診と再評価を考える臨床演習ガイド（鍼灸師・学習者向け）</Link></li>}
           <li><Link href="/diagnosis" className={linkClass}>気血水 体質チェック</Link><p className="text-sm">気虚・気滞など6つの伝統的な分類を、12の質問で学べます。</p></li>
         </ul>
         {relatedGuides.length > 0 && <div className="space-y-2 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><h3 className="text-lg font-bold">同じ分野のガイド</h3><ul className="space-y-1">{relatedGuides.map(item => <li key={item.id}><Link href={symptomGuidePath(item)} className={linkClass}>{item.title}</Link></li>)}</ul></div>}

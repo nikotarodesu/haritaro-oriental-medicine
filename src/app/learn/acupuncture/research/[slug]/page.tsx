@@ -7,6 +7,7 @@ import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import PageIntro from "@/components/design/PageIntro";
 import ReadingContents from "@/components/reading/ReadingContents";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref } from "@/config/acupunctureLearning";
+import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
 import { ACUPUNCTURE_RESEARCH_ARTICLES } from "@/data/acupunctureResearch";
 import type { AcupunctureResearchArticle } from "@/data/acupunctureResearch/types";
@@ -29,6 +30,7 @@ async function getArticle(params: Props["params"]) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getArticle(params);
   const path = acupunctureResearchHref(article.slug);
+  const revisedAt = PAGE_REVISIONS[path] ?? ACUPUNCTURE_RESEARCH.revisedAt;
   const title = seriesPageTitle(article.title, "reading");
   const social = pageSocialMetadata(title, article.description, path);
   return {
@@ -36,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: article.description,
     alternates: { canonical: path },
     ...social,
-    openGraph: { ...social.openGraph, type: "article", modifiedTime: ACUPUNCTURE_RESEARCH.revisedAt },
+    openGraph: { ...social.openGraph, type: "article", modifiedTime: revisedAt },
   };
 }
 
@@ -67,7 +69,7 @@ function ResearchComparison({ comparison, sources }: {
         <p id="study-comparison-note">{comparison.note}</p>
         <ul className={styles.sourceLinks} aria-label="表の出典">
           {sources.filter(source => comparison.rows.some(row => row.sourceId === source.id)).map(source => (
-            <li key={source.id}><a href={`#source-${source.id}`} className="ui-text-link">{source.label}</a></li>
+            <li key={source.id}><a href={source.url} className="ui-text-link" data-analytics-action="topic_source">{source.label}<ExternalLink size={14} aria-hidden="true" /></a></li>
           ))}
         </ul>
       </figcaption>
@@ -78,6 +80,7 @@ function ResearchComparison({ comparison, sources }: {
 export default async function AcupunctureResearchPage({ params }: Props) {
   const article = await getArticle(params);
   const path = acupunctureResearchHref(article.slug);
+  const revisedAt = PAGE_REVISIONS[path] ?? ACUPUNCTURE_RESEARCH.revisedAt;
   const url = SITE_ORIGIN + path;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -88,8 +91,7 @@ export default async function AcupunctureResearchPage({ params }: Props) {
     description: article.description,
     inLanguage: "ja",
     learningResourceType: "鍼灸の研究解説",
-    datePublished: ACUPUNCTURE_RESEARCH.revisedAt,
-    dateModified: ACUPUNCTURE_RESEARCH.revisedAt,
+    dateModified: revisedAt,
     isPartOf: { "@id": SITE_ORIGIN + ACUPUNCTURE_RESEARCH.href },
     citation: article.sources.map(source => source.url),
   };
@@ -146,7 +148,7 @@ export default async function AcupunctureResearchPage({ params }: Props) {
               {section.sources.length > 0 && (
                 <ul className={styles.sourceLinks} aria-label="この節の出典">
                   {article.sources.filter(source => section.sources.includes(source.id)).map(source => (
-                    <li key={source.id}><a href={`#source-${source.id}`} className="ui-text-link">{source.label}</a></li>
+                    <li key={source.id}><a href={source.url} className="ui-text-link" data-analytics-action="topic_source">{source.label}<ExternalLink size={14} aria-hidden="true" /></a></li>
                   ))}
                 </ul>
               )}
@@ -171,7 +173,7 @@ export default async function AcupunctureResearchPage({ params }: Props) {
               ))}
             </ul>
           </section>
-          <AuthorSupervisorCard revisedAt={ACUPUNCTURE_RESEARCH.revisedAt} />
+          <AuthorSupervisorCard revisedAt={revisedAt} />
         </div>
       </div>
     </article>

@@ -67,7 +67,7 @@ export function symptomGuideSummary(guide: SymptomGuide) {
 }
 
 export function symptomGuideDescription(guide: SymptomGuide) {
-  return `${symptomGuideSummary(guide)} 受診の目安、日常の工夫、関連するツボの位置を紹介します。`;
+  return `${symptomGuideSummary(guide)} 一般向けに、受診の目安、日常の工夫、関連するツボの位置を紹介します。`;
 }
 
 export function getSymptomGuideSources(guide: SymptomGuide) {

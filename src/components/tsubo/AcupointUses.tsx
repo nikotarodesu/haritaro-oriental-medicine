@@ -56,6 +56,9 @@ export default function AcupointUses({ code, context, links }: {
           {!extraIds && studies.length > 0 && (
             <a className="atlas-text-action atlas-use-source" href="#acupoint-research">掲載研究をすべて見る（{studies.length}件）</a>
           )}
+          {studies.some(study => study.kind === "combination") && (
+            <p className="atlas-use-status">複数のツボを使った試験の結果は、比較された組み合わせと施術条件の範囲で読みます。</p>
+          )}
         </section>
       </div>
       {context && (

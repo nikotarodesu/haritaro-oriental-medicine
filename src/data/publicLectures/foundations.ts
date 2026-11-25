@@ -1,5 +1,5 @@
 import type { PublicLectureArticle } from "./types";
-import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from "@/config/acupunctureLearning";
+import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from "@/config/acupunctureLearning";
 
 export const foundationArticles: Record<string, PublicLectureArticle> = {
   "lecture-intro-2": {
@@ -42,6 +42,7 @@ export const foundationArticles: Record<string, PublicLectureArticle> = {
           "「点数が変わった」は測った結果です。「なぜ変わったのか」は、研究者が別に考える問いです。考察に書かれた仕組みを見かけたら、研究でその仕組みも測ったかを本文に戻って確認します。",
           "「気をエネルギーにたとえる」ような文章は、用語を想像しやすくする比喩として読むことができます。引用元が何を示した資料かを考えると、用語の定義、たとえ、測定結果を区別できます。",
         ],
+        links: [{ href: ACUPUNCTURE_TRIAL_COMPARISON_HREF, label: "ツボ一つを調べた試験と、組み合わせを調べた試験の例を読む" }],
       },
       {
         heading: "実際の論文で、三つの群を比べる",

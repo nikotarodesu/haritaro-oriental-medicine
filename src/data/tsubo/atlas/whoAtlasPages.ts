@@ -193,3 +193,4 @@ export const whoAtlasPages: Readonly<Record<string, number>> = Object.fromEntrie
 );
 
 export const WHO_ATLAS_PDF = "https://iris.who.int/server/api/core/bitstreams/d98c1c98-3fbf-4e4e-8c9a-1bbe72ccd00e/content";
+export const WHO_ATLAS_CATALOG = "https://iris.who.int/items/f188654a-d8a7-4519-9979-8e2de713c060";

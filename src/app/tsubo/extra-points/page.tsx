@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { EXTRA_POINTS, EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
+import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 import ExtraPointDiagram from "./ExtraPointDiagram";
 import styles from "./extra-points.module.css";
 
@@ -27,6 +28,7 @@ export default function ExtraPointsIndex() {
         <PageBreadcrumb items={[{ href: "/tsubo", name: "はり太郎のツボ図鑑" }, { href: EXTRA_POINTS_PATH, name: title }]} />
         <h1>{title}</h1>
         <p>奇穴（きけつ）は、十四経脈に属する経穴とは別に名前と位置が伝えられてきたツボです。この図鑑では、WHO西太平洋地域の標準361経穴と分けて掲載しています。</p>
+        <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action">標準経穴とツボの分類を読む<ArrowRight size={16} aria-hidden="true" /></Link>
       </header>
       <section aria-labelledby="extra-points-heading">
         <h2 id="extra-points-heading" className={styles.sectionTitle}>顔の奇穴</h2>

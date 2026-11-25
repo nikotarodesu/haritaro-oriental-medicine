@@ -57,8 +57,11 @@ function pointLookupResult<T extends PurposeSearchItem>(
       !POINT_SEPARATORS.test(normalized) && !normalized.includes("と")) return;
 
   const points = indexes.filter(index => index.item.type === "acupoint");
-  const exactPoint = (name: string) => points.find(index => index.code === name) ??
-    points.find(index => index.exactTerms.includes(name));
+  const exactPoint = (name: string) => {
+    const normalizedName = normalizeSearchText(name);
+    return points.find(index => index.code === normalizedName) ??
+      points.find(index => index.exactTerms.includes(normalizedName));
+  };
   if (locationTopic !== normalized && locationTopic) {
     const point = exactPoint(locationTopic);
     if (point) return { item: point.item, score: 150, hint: "経穴の位置" };

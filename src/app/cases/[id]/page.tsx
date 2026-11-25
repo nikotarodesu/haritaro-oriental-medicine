@@ -18,6 +18,10 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+function caseSummary(subTitle: string) {
+  return `学習用の架空症例です。四診の所見から弁証・治法・配穴を練習します。${subTitle}`;
+}
+
 const caseResearchExercises: Readonly<Partial<Record<string, { topic: string; href: string; question: string; answer: string }>>> = {
   "case-14-knee-osteoarthritis": {
     topic: "変形性膝関節症の比較試験",
@@ -50,8 +54,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = `${clinicalCase.title}｜はり太郎の臨床演習`;
-  const description = `架空の症例で、四診の所見から弁証・治法・配穴を練習します。${clinicalCase.subTitle}`;
+  const title = `模擬症例｜${clinicalCase.title}｜はり太郎の臨床演習`;
+  const description = caseSummary(clinicalCase.subTitle);
   const path = `/cases/${clinicalCase.id}`;
 
   return {
@@ -93,8 +97,8 @@ export default async function CaseDetailPage({ params }: Props) {
     "@type": ["WebPage", "LearningResource"],
     "@id": url,
     url,
-    name: clinicalCase.title,
-    description: clinicalCase.subTitle,
+    name: `模擬症例｜${clinicalCase.title}`,
+    description: caseSummary(clinicalCase.subTitle),
     inLanguage: "ja",
     learningResourceType: "模擬症例演習",
     isPartOf: { "@type": "CollectionPage", "@id": SITE_ORIGIN + "/cases" },

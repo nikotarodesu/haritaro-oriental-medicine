@@ -9,7 +9,7 @@ import { matchesSearchText } from '@/utils/search';
 const categories: GlossaryTerm['category'][] = ['鍼灸の基本', '陰陽五行・理論', '気血水・病態', '経絡・経穴', '診断・診察', '神経生理・科学'];
 const focusClass = 'focus-visible:outline-2 focus-visible:outline-offset-4';
 
-export default function GlossaryIndex({ terms }: { terms: GlossaryTerm[] }) {
+export default function GlossaryIndex({ terms }: { terms: Array<GlossaryTerm & { relatedLectureHref?: string }> }) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('all');
   const filtered = terms.filter(term => (category === 'all' || term.category === category) && matchesSearchText(query, [term.term, term.reading, term.oneLiner, term.summary]));
@@ -46,7 +46,7 @@ export default function GlossaryIndex({ terms }: { terms: GlossaryTerm[] }) {
           {term.readingLink && <Link href={term.readingLink.href} className="ui-text-link">{term.readingLink.label} <ArrowRight size={16} aria-hidden="true" /></Link>}
           <details>
             <summary className={`min-h-11 cursor-pointer py-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC] ${focusClass}`}><BookOpen aria-hidden="true" className="mr-2 inline h-4 w-4" />詳しい説明と解釈の注意</summary>
-            <div className="space-y-2 pb-2"><p className="whitespace-pre-line text-base leading-[1.75]">{term.summary}</p>{term.relatedLectureId && <Link href={`/curriculum/${term.relatedLectureId}`} className={`inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4 ${focusClass}`}>{term.relatedLectureTitle || `${term.term}を扱う講義`} <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" /></Link>}</div>
+            <div className="space-y-2 pb-2"><p className="whitespace-pre-line text-base leading-[1.75]">{term.summary}</p>{term.relatedLectureHref && <Link href={term.relatedLectureHref} className={`inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4 ${focusClass}`}>{term.relatedLectureTitle || `${term.term}を扱う講義`} <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" /></Link>}</div>
           </details>
         </section>)}</div>
       </section>;

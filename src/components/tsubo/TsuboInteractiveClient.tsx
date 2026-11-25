@@ -191,8 +191,8 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
         if (searchTopic) {
           const aIndexed = searchIndex.get(a.code)!;
           const bIndexed = searchIndex.get(b.code)!;
-          const aExact = aIndexed.name === searchTopic || aIndexed.code === searchTopic;
-          const bExact = bIndexed.name === searchTopic || bIndexed.code === searchTopic;
+          const aExact = [aIndexed.name, aIndexed.code, aIndexed.kana, ...aIndexed.aliases].includes(searchTopic);
+          const bExact = [bIndexed.name, bIndexed.code, bIndexed.kana, ...bIndexed.aliases].includes(searchTopic);
           if (aExact !== bExact) return aExact ? -1 : 1;
           const aJoint = matchesPrimaryJoint(aIndexed, searchTopic);
           const bJoint = matchesPrimaryJoint(bIndexed, searchTopic);

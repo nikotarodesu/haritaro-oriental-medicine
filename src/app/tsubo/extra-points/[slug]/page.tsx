@@ -41,6 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ExtraPointPage({ params }: Props) {
   const point = await pointFromParams(params);
   const anatomySection = getRegionalSection(point.code.toLowerCase());
+  const [namingSource, positionSource] = point.sources;
   const url = SITE_ORIGIN + point.href;
   const schema = {
     "@context": "https://schema.org",
@@ -70,7 +71,12 @@ export default async function ExtraPointPage({ params }: Props) {
           <h1>{point.name}<small>{point.kana}</small></h1>
           <span className={styles.code}>{point.code}</span>
         </div>
-        <p>ピンイン <span lang="zh-Latn">{point.pinyin}</span></p>
+        <p>奇穴の図鑑 <span aria-hidden="true">·</span> {point.bodyPart} <span aria-hidden="true">·</span> ピンイン <span lang="zh-Latn">{point.pinyin}</span></p>
+        <p>
+          {point.classification ?? `WHOの名称案では奇穴${point.code}として収録されています。`}{" "}
+          <a href={namingSource.href} className="atlas-source-link">WHOの名称資料（PDF）</a>
+          {point.classification && <>{" "}<a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
+        </p>
         <nav className="atlas-section-nav" aria-label="このツボのページ内を移動">
           {anatomySection && <a href="#acupoint-anatomy">断面図</a>}
           <a href="#acupoint-traditional">使われ方・研究</a>
@@ -90,6 +96,9 @@ export default async function ExtraPointPage({ params }: Props) {
               <li><span className={styles.keyWhite} aria-hidden="true" /><span>{point.landmark}（位置の目印）</span></li>
               <li><span className={styles.keyOrange} aria-hidden="true" /><span>{point.name}（{point.code}）</span></li>
             </ul>
+            <p className="mt-3 text-sm">
+              位置の出典 <a href={positionSource.href} className="atlas-source-link">{positionSource.title}（PDF）</a>
+            </p>
           </div>
         </div>
       </section>
@@ -100,7 +109,7 @@ export default async function ExtraPointPage({ params }: Props) {
           name={point.name}
           section={anatomySection}
           position={point.position}
-          locationSource={{ title: point.sources[1].title, url: point.sources[1].href }}
+          locationSource={{ title: positionSource.title, url: positionSource.href }}
           surface={<ExtraPointDiagram point={point} />}
         />
       )}
@@ -123,12 +132,11 @@ export default async function ExtraPointPage({ params }: Props) {
 
       <section id="extra-point-sources" className={`atlas-target ${styles.section}`} aria-labelledby="extra-point-sources-heading">
         <h2 id="extra-point-sources-heading" className={styles.sectionTitle}>出典と確認した範囲</h2>
-        {point.classification && <p className={styles.classification}>{point.classification}</p>}
         <ul className={styles.sources}>
           {point.sources.map(source => (
             <li key={source.href}>
               <a href={source.href}>{source.title}<ExternalLink size={15} aria-hidden="true" /></a>
-              <p>{source.note}</p>
+              <p>{source.note} 照合日 <time dateTime={source.checkedAt}>{source.checkedAt}</time></p>
             </li>
           ))}
         </ul>

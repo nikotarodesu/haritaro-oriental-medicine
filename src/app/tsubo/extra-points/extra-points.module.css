@@ -290,10 +290,6 @@
   font-size: .8125rem;
 }
 
-.classification {
-  margin-block: .5rem .75rem;
-}
-
 .sources li {
   padding-block: .625rem;
   border-block-end: 1px solid var(--border-subtle);

@@ -34,8 +34,8 @@ export const MIGRAINE_RESEARCH: AcupunctureResearchArticle = {
     },
   ],
   sources: [
-    { id: "xu-2020", label: "Xuほか（2020年）", url: "https://www.bmj.com/content/368/bmj.m697", scope: "BMJ。前兆のない反復性片頭痛で、手技鍼、模擬鍼、通常ケアを比較した試験。" },
-    { id: "diener-2006", label: "Dienerほか（2006年）", url: "https://pubmed.ncbi.nlm.nih.gov/16545747/", scope: "The Lancet Neurology。鍼、模擬鍼、予防薬の3群で片頭痛の日数を比較した試験。" },
+    { id: "xu-2020", label: "Xu ほか · BMJ（2020年、原著PDF）", url: "https://www.bmj.com/content/bmj/368/bmj.m697.full.pdf", scope: "前兆のない反復性片頭痛で、複数の経穴への手技鍼、模擬鍼、通常ケアを比較した試験。方法と17〜20週の結果を本文で確認（2026-11-25）。DOI 10.1136/bmj.m697" },
+    { id: "diener-2006", label: "Diener ほか · The Lancet Neurology（2006年、原著抄録）", url: "https://pubmed.ncbi.nlm.nih.gov/16545747/", scope: "鍼、模擬鍼、予防薬の3群で片頭痛の日数を比較した試験。割り付け、解析人数、23〜26週の結果を抄録で確認（2026-11-25）。DOI 10.1016/S1474-4422(06)70382-9" },
     { id: "zhao-2017", label: "Zhaoほか（2017年）", url: "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2603492", scope: "JAMA Internal Medicine。前兆のない片頭痛で、発作回数を主な指標とした試験。" },
   ],
   related: [

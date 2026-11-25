@@ -150,6 +150,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <p className="text-sm font-semibold text-accent">模擬症例 {String(clinicalCase.caseNumber).padStart(2, "0")} · {clinicalCase.category} · {clinicalCase.difficulty}</p>
         <h1 className="reader-title">{clinicalCase.title}</h1>
         <p className="reader-lead">{clinicalCase.subTitle}</p>
+        <p className="text-sm ui-muted">学習用の架空症例です。</p>
       </header>
       <nav aria-label="症例の進め方">
         <ol className="case-reading-path">

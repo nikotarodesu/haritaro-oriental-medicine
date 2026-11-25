@@ -82,7 +82,7 @@ for (const lectureId of lectureIds) {
 const revisedLecturePaths = {
   '/learn/lectures/body-functions': '2026-11-24',
   '/learn/lectures/meridians-and-points': '2026-11-24',
-  '/learn/lectures/reading-evidence': '2026-11-24',
+  '/learn/lectures/reading-evidence': '2026-11-25',
 };
 for (const unit of readingUnits) assert.equal(dateAt(unit.href), revisedLecturePaths[unit.href] ?? READING_LECTURES_REVISED_AT, unit.href);
 for (const pathname of ['/tsubo/sp11','/tsubo/bl57']) {
@@ -90,7 +90,7 @@ for (const pathname of ['/tsubo/sp11','/tsubo/bl57']) {
 }
 const { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } = load('src/data/tsubo/keyPointTypes');
 const { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } = load('src/data/tsubo/extraPoints');
-const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/symptoms/constipation-ibs', '/symptoms/headache-stiff-neck']);
+const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/tsubo/lu7', KEY_POINT_TYPES_GUIDE, '/symptoms/constipation-ibs', '/symptoms/headache-stiff-neck']);
 for (const pathname of ['/updates', KEY_POINT_TYPES_GUIDE,
   ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st38', 'st41'].map(code => `/tsubo/${code}`),
 ].filter(pathname => !searchRevised.has(pathname))) assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
@@ -114,7 +114,8 @@ const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch');
 for (const article of ACUPUNCTURE_RESEARCH_ARTICLES) {
   const route = acupunctureResearchHref(article.slug);
   const knownSources = new Set(article.sources.map(source => source.id));
-  assert.equal(dateAt(route), ACUPUNCTURE_RESEARCH.revisedAt, route + ' sitemap revision');
+  const revisedSources = ['migraine-prevention', 'postoperative-nausea'].includes(article.slug);
+  assert.equal(dateAt(route), revisedSources ? '2026-11-25' : ACUPUNCTURE_RESEARCH.revisedAt, route + ' sitemap revision');
   assert.equal(knownSources.size, article.sources.length, route + ' source IDs are unique');
   assert(article.sources.every(source => new URL(source.url).protocol === 'https:' && source.scope), route + ' direct sources and their scope');
   assert(article.sections.every(section => (section.sources.length > 0 || section.exercise) && section.sources.every(id => knownSources.has(id))), route + ' evidence sections cite originals and uncovered fictional exercises stay distinct');
