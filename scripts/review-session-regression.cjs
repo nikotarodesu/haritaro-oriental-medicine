@@ -172,6 +172,9 @@ function showsCaseReview() { return nodes(tree).some(node => node.type === Focus
 const { CURRICULUM_CHAPTERS_META } = load('src/data/curriculumOutline');
 mount();
 assert(!showsCaseReview(), 'A new learner is not shown advanced case reasoning controls');
+assert(button('最初の確認問題を解く'));
+assert(!text(tree).includes('今日の復習：0問') && !text(tree).includes('苦手分野：0問') && !text(tree).includes('前回の続き'));
+assert(nodes(tree).some(node => node.type === Link && node.props.href === '/learn/lectures/getting-started' && text(node) === '第1講を読む'));
 assert(nodes(tree).some(node => node.type === Link && node.props.href === '/learn/courses/oriental-medicine-introduction#course-mini-case-intro'));
 progress.completedLectures = { 'lecture-yinyang-1': true }; progress.lastVisitedLectureId = 'lecture-yinyang-2'; mount();
 assert(!showsCaseReview(), 'Basic study remains focused on review and short examples');
@@ -204,7 +207,7 @@ sync = { ready: true, values: { ['case:' + caseItem.id]: { ...caseRecord, revisi
 assert(!showsCaseReview(), 'An obsolete case record does not trigger advanced suggestions');
 sync.values = {};
 mount();
-button('今日の復習').props.onClick(); render();
+button('最初の確認問題を解く').props.onClick(); render();
 const started = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
 button(questions[0].options[questions[0].correctIndex]).props.onClick(); render();
 const grade = button('回答を確定').props.onClick;
@@ -238,7 +241,7 @@ assert(text(tree).includes('今回の復習が完了しました'));
 mount();
 assert(!text(tree).includes(questions[2].question), 'completed sets cannot resurrect');
 browser.location.search = ''; mount();
-button('今日の復習').props.onClick(); render();
+button('未回答の確認問題を解く').props.onClick(); render();
 const legacySession = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
 storage.setItem(session.REVIEW_SESSION_KEY, JSON.stringify({ ...legacySession, owner: 'former-account' }));
 mount();
@@ -334,7 +337,7 @@ assert.equal(storage.getItem(session.REVIEW_SESSION_KEY), null);
 
 // Leaving a similar question before answering also retains the submitted original state.
 progress.quizResults = {};
-mount(); button('今日の復習').props.onClick(); render();
+mount(); button('最初の確認問題を解く').props.onClick(); render();
 button(tenQuestions[0].options[0]).props.onClick(); render();
 button('回答を確定').props.onClick(); render();
 const beforeEarlyReturn = JSON.parse(storage.getItem(session.REVIEW_SESSION_KEY));
@@ -435,7 +438,7 @@ assert.equal(sync.values[practiceReviewKey(caseQuestion.id)].mistakes, 1);
 sync.values[caseStudyAttemptKey(legacy.caseId)] = 'new-attempt';
 assert.equal(readPracticeReview(sync.values, caseQuestion).isCorrect, true, 'The new review result survives restarting the case');
 render();
-assert(button('苦手分野').props.disabled);
+assert(!nodes(tree).some(node => node.type === 'button' && text(node).includes('苦手分野')));
 assert.deepEqual(activityLinks(), []);
 setLearningStorageAdapter(null);
 

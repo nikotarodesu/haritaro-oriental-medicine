@@ -176,6 +176,8 @@ for (const [canonical, aliases] of [
   ['瘀血', ['お血', 'おけつ', 'オケツ']],
   ['肩こり', ['肩凝り', 'かたこり']],
   ['頭痛', ['ずつう', 'ズツウ']],
+  ['膝の内側', ['ひざの内側']],
+  ['胃もたれ', ['胃がもたれる']],
   ['陰陽', ['いんよう', 'インヨウ']],
   ['相克', ['相剋', 'そうこく']],
 ]) {
@@ -193,6 +195,10 @@ for (const unchanged of ['li-99', 'ab-4', 'ab 4', '2026-11-25', 'li-4 研究', '
 }
 assert.notEqual(normalizeSearchText('うつ病'), normalizeSearchText('肝気鬱結'), 'A medical diagnosis is not a traditional term alias');
 assert.notEqual(normalizeSearchText('血栓'), normalizeSearchText('瘀血'), 'No aliases from medical findings to traditional patterns');
+const kneeUrls = optionUrls(render('膝の内側'));
+assert(kneeUrls.includes('/tsubo/sp10#acupoint-nearby'), 'Knee location searches find the diagram');
+assert(kneeUrls.includes('/cases/case-14-knee-osteoarthritis'), 'Knee location searches also find the related case');
+assert.equal(optionUrls(render('胃がもたれる'))[0], '/symptoms/stomach-fatigue', 'Everyday wording opens the public stomach symptom guide first');
 const shoulder = render('肩こり');
 const shoulderUrls = optionUrls(shoulder);
 assert.equal(shoulderUrls[0], '/symptoms/headache-stiff-neck', 'Symptom lookup opens the individual public guide first');

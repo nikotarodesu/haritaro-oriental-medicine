@@ -107,6 +107,11 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
   });
   const dueCount = due.length + overduePractice.length;
   const weakCount = weak.length + weakPractice.length;
+  const firstPractice = !lastVisitedLectureId && !session && !hasCaseHistory && !practice.length
+    && !quizHistory.length && !Object.keys(quizResults).length && !Object.values(completedLectures).some(Boolean);
+  const reviewHeading = firstPractice ? '確認問題' : '今日の復習';
+  const dailyLabel = dueCount ? `今日の復習：${dueCount}問`
+    : firstPractice ? '最初の確認問題を解く' : '未回答の確認問題を解く';
   const q = queue[index];
   const readingUnitHref = q?.href.startsWith('/learn/lectures/') ? q.href.split('#', 1)[0] : undefined;
 
@@ -230,9 +235,17 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
   const questionsForFilter = practiceFilter === 'weak' ? weak : due.slice(0, 10);
   const reviewControls = <>
       <div className={`grid grid-cols-1 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-3 text-sm`}>
-        <button type="button" disabled={!isMounted} onClick={startDailyReview} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left disabled:opacity-50">今日の復習：{isMounted ? dueCount : '…'}問<br /><span className="text-xs">{dueCount ? '予定日が来た問題を確認' : '未回答の問題から始める'}</span></button>
-        {!compact && <Link href={lastVisitedLectureId ? `/curriculum/${lastVisitedLectureId}` : '/curriculum/lecture-intro-1'} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-[#1E3D34] dark:text-[#83BEA8]">前回の続き<br /><span className="text-xs">講義を読み、理解度を確認</span></Link>}
-        <button type="button" disabled={!isMounted || !weakCount} onClick={startWeakReview} className="rounded-xl bg-white dark:bg-[#17212A] p-3 text-left text-[#1E3D34] dark:text-[#83BEA8] disabled:opacity-50">苦手分野：{isMounted ? weakCount : '…'}問<br /><span className="text-xs">{practiceQuestions ? '間違えた問題を解き直す' : '講義と経穴の確認問題を復習'}</span></button>
+        {dueCount > 0 || unlearned.length > 0 ? (
+          <button type="button" onClick={startDailyReview} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left">
+            {dailyLabel}{dueCount > 0 && <><br /><span className="text-xs">予定日が来た問題を確認</span></>}
+          </button>
+        ) : <p className="p-3 ui-muted">今日の復習はありません。</p>}
+        {!compact && (
+          <Link href={lastVisitedLectureId ? `/curriculum/${lastVisitedLectureId}` : '/learn/lectures/getting-started'} className="inline-flex min-h-11 items-center rounded-xl bg-white dark:bg-[#17212A] p-3 text-[#1E3D34] dark:text-[#83BEA8]">
+            {lastVisitedLectureId ? '前回の続き' : '第1講を読む'}
+          </Link>
+        )}
+        {weakCount > 0 && <button type="button" onClick={startWeakReview} className="min-h-11 rounded-xl bg-white dark:bg-[#17212A] p-3 text-left text-[#1E3D34] dark:text-[#83BEA8]">苦手分野：{weakCount}問<br /><span className="text-xs">{practiceQuestions ? '間違えた問題を解き直す' : '講義と経穴の確認問題を復習'}</span></button>}
       </div>
   </>;
   const reviewSupport = <div className="review-support space-y-3">
@@ -246,9 +259,9 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
   return (
     <section id="learning-review" className={compact ? 'curriculum-review-compact scroll-mt-24 print:hidden' : 'scroll-mt-24 rounded-2xl border border-[#C5DED4] dark:border-[#2A5243] bg-[#EBF3EF] dark:bg-[#182823] p-4 sm:p-6 space-y-4 print:hidden'}>
       {compact ? <details className="curriculum-review-disclosure">
-        <summary><span>今日の復習</span><span className="curriculum-review-due">{due.length}問</span></summary>
+        <summary><span>{reviewHeading}</span>{dueCount > 0 && <span className="curriculum-review-due">{dueCount}問</span>}</summary>
         <div className="space-y-4 pb-4 pt-2">{reviewControls}{!showSyncAttention && <LearningSyncStatus compact />}{reviewSupport}</div>
-      </details> : <><h2 className="font-serif text-lg font-bold text-[#1E3D34] dark:text-[#83BEA8]">今日の復習</h2>{reviewControls}<LearningSyncStatus compact /></>}
+      </details> : <><h2 className="font-serif text-lg font-bold text-[#1E3D34] dark:text-[#83BEA8]">{reviewHeading}</h2>{reviewControls}<LearningSyncStatus compact /></>}
       {practice.length > 0 && (
         <section id={PRACTICE_REVIEW_SECTION_ID} tabIndex={-1} aria-labelledby="practice-reviews-title" className="scroll-mt-28 space-y-3 rounded-xl border border-frame bg-panel p-4">
           <h3 id="practice-reviews-title" className="font-semibold">図と症例の復習</h3>
@@ -275,7 +288,7 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
       {isMounted && revisedQuestionCount > 0 && <p className="text-xs font-semibold text-[#B86924] dark:text-[#E6C387]">{revisedQuestionCount}問に旧形式・改訂前の回答があります。旧回答を採点に使わず、再確認の対象にしています。</p>}
       {review.status === 'restored' && session && <p role="status" className="text-sm font-semibold">中断した復習を再開しました（{index + 1} / {queue.length}問）。選択と回答結果を引き継いでいます。</p>}
       {review.status === 'returned' && session && <p role="status" className="text-sm font-semibold">元の復習に戻りました。回答と出題順を引き継いでいます。</p>}
-      {(review.status === 'invalid' || review.status === 'different') && <p role="status" className="text-sm">中断した復習は終了・期限切れ・教材の改訂などで再開できません。上の「今日の復習」から現在の問題を始められます。保存済みの回答履歴は残っています。</p>}
+      {(review.status === 'invalid' || review.status === 'different') && <p role="status" className="text-sm">中断した復習は終了・期限切れ・教材の改訂などで再開できません。保存済みの回答履歴は残っています。</p>}
       {!storageAvailable && session && <p role="status" className="text-sm">このブラウザでは復習の途中状態を一時保存できません。ページを移動すると、このセットの途中状態を引き継げない場合があります。</p>}
       {review.status === 'complete' && <p role="status" className="text-sm font-bold">今回の復習が完了しました。次の予定日にもう一度確認しましょう。</p>}
       {q && session && <div id="learning-review-practice" tabIndex={-1} aria-label="現在の復習問題" className="review-question scroll-mt-28 rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-base text-[#232826] dark:text-[#FAF8F5]">

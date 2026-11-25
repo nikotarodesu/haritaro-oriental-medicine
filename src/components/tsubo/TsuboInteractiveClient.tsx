@@ -346,7 +346,7 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
           <Link href="/symptoms" className="atlas-search-index-link">症状から探す</Link>
           <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
           {nearbyComparisons && <a href="#nearby-comparisons" className="atlas-search-index-link">近いツボを比べる</a>}
-          <Link href="/tsubo/compare" className="atlas-search-index-link">ツボを選んで比べる</Link>
+          <Link href="/tsubo/compare?empty=1" className="atlas-search-index-link">ツボを選んで比べる</Link>
         </nav>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
       </form>

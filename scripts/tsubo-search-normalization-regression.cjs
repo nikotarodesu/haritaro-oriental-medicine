@@ -104,7 +104,7 @@ function dictionary(params = '') {
 const initial = dictionary();
 assert.equal(initial.resultCodes().length, 24, 'The initial card list renders independently of the URL observer');
 assert(initial.hasSearchForm(), 'Native search remains available before JavaScript starts');
-for (const href of ['#nearby-comparisons', '/symptoms', '/tsubo/compare']) assert(initial.searchLinks().includes(href), href);
+for (const href of ['#nearby-comparisons', '/symptoms', '/tsubo/compare?empty=1']) assert(initial.searchLinks().includes(href), href);
 assert(!initial.comparisonFollowsResults(), 'The comparison index is near the search form while browsing');
 const firstPoint = points.find(point => point.code === initial.resultCodes()[0]);
 const firstStop = firstPoint.locationSimple.indexOf('。');
