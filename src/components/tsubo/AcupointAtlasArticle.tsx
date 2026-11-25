@@ -8,6 +8,7 @@ import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
 import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
+import AcupointSelfCare from "./AcupointSelfCare";
 import AcupointUses, { AcupointTraditionalUses } from "./AcupointUses";
 import FeaturedAcupointPairs from "./FeaturedAcupointPairs";
 import WhoPointLocation from "./WhoPointLocation";
@@ -17,6 +18,7 @@ import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas
 import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
 import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
+import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
 
@@ -53,23 +55,21 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
-        <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker}>
-          <div className="atlas-location-copy">
-            <h3>図の読み方</h3>
-            <Paragraphs paragraphs={article.location} />
-          </div>
+        <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
         </PointAtlasDiagrams>
       </section>
 
-      <AcupointCautions priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
+      <AcupointCautions initiallyOpen={Boolean(ATLAS_SELF_CARE[point.codeLower]?.length)} priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
         <Paragraphs paragraphs={article.cautions} />
-        {article.visualOnly && <Paragraphs paragraphs={article.selfCare} />}
+        {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
         {hasIndividualAnatomy && (
           <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
         )}
       </AcupointCautions>
+
+      <AcupointSelfCare code={point.codeLower} />
 
       {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
       {regionalSection && (
@@ -103,13 +103,6 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       />
 
       <FeaturedAcupointPairs pointCode={point.codeLower} />
-
-      {!article.visualOnly && (
-        <section>
-          <h2 className={headingClass}>自分で押してみる</h2>
-          <Paragraphs paragraphs={article.selfCare} />
-        </section>
-      )}
 
       <AcupointResearch point={point} />
       <AcupointNameGuide code={point.codeLower} />

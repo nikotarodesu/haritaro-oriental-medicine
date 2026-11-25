@@ -5,6 +5,7 @@ import { SYMPTOM_RESEARCH_NOTES, SYMPTOM_RESEARCH_REVISED_AT } from '@/data/symp
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, MIGRAINE_RESEARCH_HREF, acupunctureResearchHref } from '@/config/acupunctureLearning';
 import { ATLAS_EVIDENCE_REVISED_AT, ATLAS_STUDIES, SCITE_FOLLOWUP_ATLAS_RESEARCH_ROUTES } from '@/data/tsubo/atlas/evidence';
 import { ACUPOINT_PAIRS_PATH, featuredPairs } from '@/data/tsubo/atlas/featuredPairs';
+import { ATLAS_SELF_CARE } from '@/data/tsubo/atlas/selfCare';
 import { CLASSIFIED_ACUPOINT_CODES, FOUR_COMMAND_REVIEW_HREF, KEY_POINT_TYPES_GUIDE } from '@/data/tsubo/keyPointTypes';
 import { SYMPTOM_GUIDES_REVISED_AT } from '@/utils/symptomGuidePaths';
 
@@ -297,6 +298,7 @@ export const PAGE_REVISIONS: Record<string, string> = {
   '/tsubo': '2026-11-25',
   [ACUPOINT_PAIRS_PATH]: '2026-11-25',
   ...Object.fromEntries(featuredPairs.flatMap(({ pointIds }) => pointIds.map(code => [`/tsubo/${code}`, '2026-11-25']))),
+  ...Object.fromEntries(Object.keys(ATLAS_SELF_CARE).map(code => [`/tsubo/${code}`, '2026-11-25'])),
   '/tsubo/st37': '2026-11-25',
   '/tsubo/lu7': '2026-11-25',
   [KEY_POINT_TYPES_GUIDE]: '2026-11-25',

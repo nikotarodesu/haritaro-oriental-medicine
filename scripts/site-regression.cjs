@@ -99,7 +99,9 @@ const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/tsubo/l
 const { ACUPOINT_PAIRS_PATH, featuredPairs, featuredPairPreview } = load('src/data/tsubo/atlas/featuredPairs');
 const { ATLAS_POINT_MARKERS } = load('src/data/tsubo/atlas/markers');
 const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
+const { ATLAS_SELF_CARE } = load('src/data/tsubo/atlas/selfCare');
 const pairRevised = new Set([ACUPOINT_PAIRS_PATH, ...featuredPairs.flatMap(pair => pair.pointIds.map(code => `/tsubo/${code}`))]);
+const selfCareRevised = new Set(Object.keys(ATLAS_SELF_CARE).map(code => `/tsubo/${code}`));
 assert.equal(featuredPairPreview.length, 4);
 assert(featuredPairs.length > featuredPairPreview.length, 'The directory includes more examples than the atlas preview');
 assert.equal(new Set(featuredPairs.map(pair => pair.id)).size, featuredPairs.length, 'Pair anchors are unique');
@@ -111,12 +113,17 @@ for (const pair of featuredPairs) {
 }
 for (const pathname of ['/updates', KEY_POINT_TYPES_GUIDE,
   ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st38', 'st41'].map(code => `/tsubo/${code}`),
-].filter(pathname => !searchRevised.has(pathname) && !pairRevised.has(pathname))) assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
+].filter(pathname => !searchRevised.has(pathname) && !pairRevised.has(pathname) && !selfCareRevised.has(pathname))) {
+  assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
+}
 for (const pathname of searchRevised) {
   assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its search and navigation revisions');
 }
 for (const pathname of pairRevised) {
   assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its new pairing guide');
+}
+for (const pathname of selfCareRevised) {
+  assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its new self-care guidance');
 }
 for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.href)]) {
   assert.equal(dateAt(pathname), EXTRA_POINTS_REVISED_AT, pathname + ' has its own sitemap entry');

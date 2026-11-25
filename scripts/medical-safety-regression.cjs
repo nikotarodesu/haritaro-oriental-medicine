@@ -21,6 +21,15 @@ for (const route of ['/safety', '/editorial-policy', '/library', '/glossary']) {
   assert.equal(seo.pageSocialMetadata('title', 'description', route).openGraph.url, `https://www.haritaro.jp${route}`);
 }
 const { getPublicCrossSectionElements, getPublicAnatomyDescription, getPublicCrossSectionModel } = load('src/data/medicalSafety');
+const { ATLAS_SELF_CARE } = load('src/data/tsubo/atlas/selfCare');
+for (const [code, methods] of Object.entries(ATLAS_SELF_CARE)) {
+  assert(points.getAcupointByCode(code), code + ' self-care route exists');
+  for (const method of methods) {
+    assert(method.context && method.instructions && method.timing.length > 0, code + ' includes how and when the method was described');
+    assert.equal(new URL(method.source.url).protocol, 'https:', code + ' links to the source guidance');
+    assert(!/必ず効く|即効|鍼を刺す|据灸/.test(method.instructions), code + ' avoids treatment guarantees and needle or moxa instructions');
+  }
+}
 let withheldElements = 0;
 for (const point of points.ALL_ACUPOINTS) {
   const detail = points.getAcupointDetail(point.code);

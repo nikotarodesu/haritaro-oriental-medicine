@@ -7,6 +7,7 @@ import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
+import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
 import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
@@ -28,7 +29,6 @@ export const heguSources = [
   { name: "Memorial Sloan Kettering Cancer Center の患者向け合谷ガイド", url: "https://www.mskcc.org/cancer-care/patient-education/acupressure-pain-and-headaches", scope: "指で押す方法と妊娠・皮膚の異常時の注意" },
   { name: "全日本鍼灸学会 鍼灸安全対策ガイドライン2025年版", url: "https://safety.jsam.jp/img/file1.pdf", scope: "鍼灸施術時の妊娠に関する注意" },
   { name: "厚生労働省 こんな時は迷わず119へ", url: "https://kakarikata.mhlw.go.jp/kakaritsuke/urgency.html", scope: "119番に連絡する目安" },
-  { name: "製品評価技術基盤機構 温活グッズの事故", url: "https://r1.prtr.nite.go.jp/jiko/chuikanki/mailmagazin/2024fy/vol468_250114.html", scope: "発熱製品による低温やけどへの注意" },
 ];
 
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
@@ -41,25 +41,22 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       <section id="acupoint-location" className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
-          <div className="atlas-location-copy">
-            <h3>図の読み方</h3>
-            <p>手を楽にして甲を上に向けます。人差し指の付け根から手首へ向かって、反対の手の指で骨をたどります。骨の長さの真ん中から、少し親指側にずらしたところが合谷です。</p>
-            <p>拡大図の①は人差し指につながる骨（第2中手骨）、②は親指につながる骨（第1中手骨）です。丸印は①の真ん中から②の方へ少し寄ったところにあります。</p>
-          </div>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           <AcupointPointDetails point={point} meridianReading="てのようめいだいちょうけい" />
         </AcupointAtlasDiagrams>
       </section>
 
-      <AcupointCautions priority={<>
+      <AcupointCautions initiallyOpen priority={<>
         <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
         <p>{heguAtlasReading.caution}</p>
       </>}>
         <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
         <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
-        <p>手を温めるときは、カイロを肌に直接当てたり、同じ場所を長時間温めたりすることは避けてください。</p>
+        <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
         <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
       </AcupointCautions>
+
+      <AcupointSelfCare code={point.codeLower} />
 
       <AcupointAnatomy point={point} />
 
@@ -75,11 +72,6 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       />
 
       <FeaturedAcupointPairs pointCode={point.codeLower} />
-
-      <section>
-        <h2 className={headingClass}>自分で押してみる</h2>
-        <p>反対の手の親指の腹を当て、痛みを感じない強さでゆっくり押し、力を抜きます。手が冷えるときは、手袋などで温めてください。</p>
-      </section>
 
       <AcupointResearch point={point} />
       <AcupointNameGuide code={point.codeLower} />

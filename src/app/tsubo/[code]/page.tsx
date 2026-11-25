@@ -31,6 +31,7 @@ import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
 import { ACUPOINT_LOCATION_IMAGES } from "@/data/tsubo/atlas/locationImages";
 import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas/evidence";
+import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
 import { FEATURED_ACUPOINT_PAIRS_ANCHOR, getFeaturedPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { getAcupointName } from "@/data/tsubo/names";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
@@ -187,6 +188,7 @@ export default async function AcupointDetailPage({ params }: Props) {
   const sources = [...new Map([
     ...locationSources,
     ...researchSources.map(({ label, url }) => ({ name: label, url })),
+    ...(ATLAS_SELF_CARE[point.codeLower] ?? []).map(({ source }) => ({ name: source.label, url: source.url })),
     ...nameSources,
   ].map(source => [source.url, source])).values()];
 

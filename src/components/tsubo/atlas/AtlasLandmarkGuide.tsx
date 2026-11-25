@@ -46,7 +46,7 @@ export default function AtlasLandmarkGuide({ code, children }: {
   return (
     <div className={styles.guide} data-atlas-landmark-guide="">
       <fieldset className={styles.controls}>
-        <legend>図で場所をたどる</legend>
+        <legend>ツボの探し方</legend>
         <div className={styles.choices}>
           {choices.map(({ value, label }) => (
             <label key={value}>

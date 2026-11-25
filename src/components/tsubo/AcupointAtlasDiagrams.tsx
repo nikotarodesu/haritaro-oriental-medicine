@@ -15,7 +15,7 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints, children 
   const nearby = meridianPoints.slice(0, 6);
 
   return (
-    <AtlasLocationFigures notes={children} primary={
+    <AtlasLocationFigures pointName={point.name} notes={children} primary={
       <figure className="atlas-figure atlas-figure--labelled">
         <AtlasLandmarkGuide code="li4">
           <ZoomableAtlasDiagram label="合谷の場所と目印">
@@ -23,7 +23,7 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints, children 
           </ZoomableAtlasDiagram>
         </AtlasLandmarkGuide>
         <figcaption>
-          <span className="block text-sm font-semibold">右手の甲</span>
+          <span className="block text-sm font-semibold">右手の甲を上に向けた図</span>
           ①人差し指につながる骨の中央から、②親指につながる骨の方へ少し寄ったところです。
         </figcaption>
       </figure>

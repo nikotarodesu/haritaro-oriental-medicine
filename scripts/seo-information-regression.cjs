@@ -63,7 +63,7 @@ assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...new Set([...Object
 assert.deepEqual(['li4', ...Object.keys(ATLAS_ARTICLES)].sort(), Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort(),
   'Every standard point has a full atlas article, including the dedicated LI4 page');
 for (const [code, article] of Object.entries(ATLAS_ARTICLES)) {
-  const folded = [...article.cautions, ...(article.visualOnly ? article.selfCare : [])].join(' ');
+  const folded = [...article.cautions, ...article.selfCare].join(' ');
   assert(!/119番|救急要請/.test(folded), code + ' emergency instructions must appear in the visible warning');
 }
 const standardPointCodes = Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort();
@@ -327,14 +327,19 @@ for (const guide of SYMPTOMS) {
 }
 assert.deepEqual(getAcupointGuideLinks('pc4', ATLAS_ARTICLES.pc4.symptomLinks)[0], ATLAS_ARTICLES.pc4.symptomLinks[0],
   'A curated safety link retains priority');
+function checkArticleLocationCopy(article, code) {
+  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
+  assert(article.location.length >= 2 && article.location.every(paragraph => paragraph.trim()), code + ' has step-by-step location details');
+  assert(article.cautions.some(paragraph => paragraph.trim()), code + ' has local precautions');
+  assert(body.length <= 900, code + ' article remains concise');
+}
 for (const [code, foot] of Object.entries(footLandmarks)) {
   const article = ATLAS_ARTICLES[code];
   const marker = ATLAS_POINT_MARKERS[code];
   assert.equal(marker.footCode, code);
   assert(article.sources[0].url.endsWith('#page=' + foot.pdfPage), code);
   assert(article.relatedPoints.every(point => getAcupointByCode(point.code)), code);
-  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
-  assert(body.length >= 700 && body.length <= 900, code + ' article length');
+  checkArticleLocationCopy(article, code);
 }
 assert(footLandmarks.sp2.x > 240 && footLandmarks.sp3.x < 240, 'SP2 and SP3 sit on opposite sides of the great toe joint');
 assert(footLandmarks.bl66.x > 240 && footLandmarks.bl65.x < 240, 'BL65 and BL66 sit on opposite sides of the little toe joint');
@@ -399,8 +404,7 @@ for (const [code, point] of Object.entries(legLandmarks)) {
   assert.equal(marker.y, point.y, code);
   assert(article.sources[0].url.endsWith('#page=' + point.pdfPage), code);
   assert(article.relatedPoints.every(point => getAcupointByCode(point.code)), code);
-  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
-  assert(body.length >= 700 && body.length <= 900, code + ' article length');
+  checkArticleLocationCopy(article, code);
 }
 assert.equal(legLandmarks.ki1.y, (soleEndpoints.heel.y - soleEndpoints.web.y) / 3 + soleEndpoints.web.y);
 assert(legLandmarks.gb35.y === legLandmarks.gb36.y && legLandmarks.gb35.x < legLandmarks.gb36.x);
@@ -452,8 +456,7 @@ for (const [code, part, number, position, pdfPage] of digitLocations) {
   assert(article.sources.some(source => source.url.endsWith('#page=' + pdfPage)), code);
   assert.equal(article.illustration.region, part === 'hand' ? 'finger' : 'toe', code);
   for (const related of article.relatedPoints) assert(getAcupointByCode(related.code), code);
-  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(p => p.text)].join('');
-  assert(body.length >= 700 && body.length <= 900, code + ' article length');
+  checkArticleLocationCopy(article, code);
 }
 for (const [code, distance, page] of [['st37', 6, 64], ['st38', 8, 65], ['st39', 9, 65]]) {
   const article = ATLAS_ARTICLES[code];

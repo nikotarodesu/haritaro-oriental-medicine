@@ -84,11 +84,12 @@ export function PointAtlasThumbnail({ point, illustration, marker }: {
   );
 }
 
-export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker, children }: {
+export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker, finding, children }: {
   point: AcupointMaster;
   meridianPoints: readonly AcupointMaster[];
   illustration: AcupointAtlasArticle["illustration"];
   marker: AtlasMarker;
+  finding?: readonly string[];
   children?: ReactNode;
 }) {
   const { BodyHighlight, CloseUp } = regions[illustration.region];
@@ -147,7 +148,7 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const guidedPoint = code === "pc4" || code === "pc5" || code === "pc6" || code === "st36" ? code : undefined;
 
   return (
-    <AtlasLocationFigures notes={children} primary={
+    <AtlasLocationFigures pointName={point.name} notes={children} finding={finding} primary={
       <figure className={`${figureClass} ${measured ? "atlas-figure--measured" : "atlas-figure--labelled"}`}>
         {guidedPoint ? <AtlasLandmarkGuide code={guidedPoint}>{locationDiagram}</AtlasLandmarkGuide> : locationDiagram}
         <figcaption>

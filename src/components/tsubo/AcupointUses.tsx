@@ -60,7 +60,7 @@ export default function AcupointUses({ code, context, links }: {
           <p className="atlas-use-status">複数のツボを使った試験の結果は、比較された組み合わせと施術条件の範囲で読みます。</p>
         )}
       </div>
-      {context && (
+      {context && context.paragraphs.length > 0 && (
         <details className="atlas-disclosure atlas-use-context">
           <summary>{context.title}</summary>
           <div className="space-y-2 pb-3">

@@ -186,6 +186,39 @@
 .atlas-use-source { margin-top: .2rem; overflow-wrap: anywhere; }
 .atlas-use-context { margin-top: .65rem; border-block: 1px solid var(--atlas-line); }
 
+.atlas-self-care-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: .75rem;
+}
+.atlas-care-method {
+  display: grid;
+  align-content: start;
+  gap: .45rem;
+}
+.atlas-care-method h3 {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  color: var(--atlas-accent);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+.atlas-care-context { color: var(--atlas-muted); }
+.atlas-care-timing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.atlas-care-timing li {
+  padding: .25rem .6rem;
+  border-radius: .45rem;
+  background: var(--atlas-soft);
+  color: var(--atlas-ink);
+  font-weight: 700;
+}
+.atlas-care-method .atlas-use-source { justify-self: start; }
+
 .atlas-search-layout { display: grid; min-width: 0; gap: 1.25rem; }
 .atlas-search-panel { display: grid; gap: .5rem; }
 .atlas-search-label { font-weight: 700; }
@@ -853,8 +886,24 @@
   padding: clamp(.5rem, 2vw, 1.125rem);
   background: var(--bg-washi);
 }
-.atlas-entry .atlas-location-copy { display: grid; gap: .375rem; }
-.atlas-entry .atlas-location-copy h3 { color: var(--atlas-accent); font-weight: 700; }
+.atlas-location-key {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin: .35rem .1rem 0;
+  color: var(--atlas-muted);
+  font-size: .875rem;
+}
+.atlas-location-key::before {
+  content: "";
+  flex: none;
+  width: .65rem;
+  height: .65rem;
+  border: 1px solid #fff9f0;
+  border-radius: 50%;
+  background: #7f3520;
+}
+.atlas-location-finding { border-block: 1px solid var(--atlas-line); }
 .atlas-entry .atlas-location-notes { gap: .75rem; }
 .atlas-entry .atlas-location-notes > .atlas-who-location { margin-top: 0; }
 .atlas-cautions {
