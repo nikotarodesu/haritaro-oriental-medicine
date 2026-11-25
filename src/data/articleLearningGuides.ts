@@ -10,8 +10,8 @@ export interface ArticleLearningGuide {
 export const ARTICLE_LEARNING_GUIDES: Record<string, ArticleLearningGuide> = {
   [FOUR_COMMAND_REVIEW_ARTICLE.id]: {
     lectureId: 'lecture-treatment-8', caseId: 'back-pain-referral',
-    focus: '四総穴歌が挙げる部位と、四つの経穴の位置を図鑑で見比べます。',
-    limitation: '歌は伝統的な対応を覚える資料です。治療効果は対象疾患や施術条件ごとの研究で確かめます。',
+    focus: '四総穴の早見表で体の部位とツボの対応を見て、図鑑でツボの位置を確かめます。',
+    limitation: '四総穴歌は、体の部位とツボの対応を覚えるための短い詩です。治療効果は、対象の病気や施術の条件ごとに研究で確かめます。',
     summary: FOUR_COMMAND_REVIEW_ARTICLE.summary,
   },
   'science-of-oriental-medicine-history': {

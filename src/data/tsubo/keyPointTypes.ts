@@ -82,7 +82,7 @@ export const KEY_POINT_TYPES: readonly KeyPointType[] = [
   },
   {
     id: "four-command", label: "四総穴", reading: "しそうけつ",
-    description: "古典の歌で、体の四つの部位とツボを対応づけた分類です。顔と口に合谷、お腹に足三里、頭と首の後ろに列缺、腰と背中に委中を当てます。",
+    description: "体の四つの部位とツボの対応を覚える、昔からの分類です。「四総穴歌」という短い詩では、お腹には足三里、腰と背中には委中、頭と首の後ろには列缺、顔と口には合谷が対応します。",
     codes: ["li4", "st36", "lu7", "bl40"],
     exampleCode: "bl40",
     exampleLocation: "ひざ裏の横じわの中央にあります。",

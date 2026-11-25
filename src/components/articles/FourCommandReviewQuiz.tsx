@@ -5,24 +5,24 @@ import { useState } from "react";
 const questions = [
   {
     id: "region",
-    prompt: "歌の「頭項」に対応する経穴はどれですか？",
+    prompt: "四総穴歌では、頭と首の後ろ（頭項）にどのツボが対応しますか？",
     options: [
       { value: "bl40", label: "委中（BL40）" },
       { value: "lu7", label: "列缺（LU7）" },
       { value: "li4", label: "合谷（LI4）" },
     ],
     answer: "lu7",
-    explanation: "「頭項」は頭と首の後ろ。歌では列缺と結びつけています。",
+    explanation: "四総穴歌では、頭と首の後ろを指す「頭項」と列缺を結びつけて覚えます。",
   },
   {
     id: "group",
-    prompt: "左右の合谷と左右の太衝を4か所と数えるのはどちらですか？",
+    prompt: "両手の合谷と両足の太衝を合わせた4か所を、何と呼びますか？",
     options: [
       { value: "four-command", label: "四総穴" },
       { value: "four-gates", label: "四関" },
     ],
     answer: "four-gates",
-    explanation: "左右の合谷と左右の太衝を合わせた4か所が四関です。",
+    explanation: "四関は、手の合谷と足の太衝をそれぞれ左右で数えた4か所です。",
   },
 ] as const;
 
@@ -36,7 +36,7 @@ export default function FourCommandReviewQuiz() {
 
   return (
     <div className="not-prose my-4 space-y-4 rounded-xl border border-frame bg-panel p-3 sm:p-5">
-      <p className="text-sm ui-muted">2問とも選んでから答え合わせできます。</p>
+      <p className="text-sm ui-muted">「四総穴歌」は、体の部位とツボの対応を覚えるための短い詩です。2問とも選ぶと答え合わせできます。</p>
       {questions.map(({ id, prompt, options }, index) => (
         <fieldset className="min-w-0 space-y-1 rounded-lg border border-frame px-3 pb-2" key={id}>
           <legend className="px-1 text-base font-semibold">{index + 1}. {prompt}</legend>
