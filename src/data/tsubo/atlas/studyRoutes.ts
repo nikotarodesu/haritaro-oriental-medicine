@@ -12,6 +12,17 @@ type AtlasStudyRoute = {
   exerciseLabel: string;
 };
 
+export const KNEE_STUDY_LECTURE_ID = "lecture-meridians-1";
+export const KNEE_STUDY_SECTION = 3;
+export const KNEE_ATLAS_STUDY_ROUTE = {
+  codes: ["SP10", "LR8", "SP9"],
+  readingHref: `${readingPartHref(KNEE_STUDY_LECTURE_ID)}-section-${KNEE_STUDY_SECTION}`,
+  readingLabel: "ひざの位置の目印を学ぶ",
+  caseId: "case-14-knee-osteoarthritis",
+  stepTitle: "膝の近くにあるツボと要穴を比べる",
+  exerciseLabel: "ひざの症例で試す",
+} as const satisfies AtlasStudyRoute;
+
 export const ATLAS_STUDY_ROUTES: readonly AtlasStudyRoute[] = [
   {
     codes: ["PC6", "SP4"],
@@ -32,11 +43,12 @@ export const ATLAS_STUDY_ROUTES: readonly AtlasStudyRoute[] = [
   {
     codes: ["ST36", "SP6"],
     readingHref: readingPartHref("lecture-zangfu-3"),
-    readingLabel: "脾と胃の働きを読む",
+    readingLabel: "脾と胃を講義で読む",
     caseId: "case-07-ibs-liver-spleen",
     stepTitle: "肝と脾の両方を考える配穴例",
-    exerciseLabel: "足三里と三陰交の設問を解く",
+    exerciseLabel: "お腹の症例で試す",
   },
+  KNEE_ATLAS_STUDY_ROUTE,
 ];
 
 export function atlasStudyExercise(route: AtlasStudyRoute) {

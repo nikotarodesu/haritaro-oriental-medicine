@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import StudyDiagram from "@/components/reading/StudyDiagram";
 import { getCurriculumReadingInserts } from "@/data/curriculumReadingGuides";
 import { getPublicLectureDiagram } from "@/data/publicLectures/diagrams";
@@ -18,12 +18,13 @@ export function PublicLectureLinks({ links, unitHref }: { links: readonly Public
   );
 }
 
-export default function PublicLectureSections({ lectureId, sections, partAnchor, unitHref, collapseDiagram = false }: {
+export default function PublicLectureSections({ lectureId, sections, partAnchor, unitHref, collapseDiagram = false, sectionPreface }: {
   lectureId: string;
   sections: PublicLectureArticle["sections"];
   partAnchor?: string;
   unitHref?: string;
   collapseDiagram?: boolean;
+  sectionPreface?: { sectionNumber: number; content: ReactNode };
 }) {
   const diagram = getPublicLectureDiagram(lectureId);
   const diagramIndex = (diagram?.afterSection ?? 1) - 1;
@@ -63,6 +64,7 @@ export default function PublicLectureSections({ lectureId, sections, partAnchor,
       {(!partAnchor || index > 0) && (
         <Heading className={partAnchor ? "lecture-unit-subtitle" : "reader-section-title"}>{section.heading}</Heading>
       )}
+      {sectionPreface?.sectionNumber === index + 1 && sectionPreface.content}
       {section.paragraphs.map((paragraph, paragraphIndex) => (
         <Fragment key={paragraphIndex}>
           <p>{paragraph}</p>

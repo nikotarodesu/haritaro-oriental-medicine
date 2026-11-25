@@ -1,4 +1,7 @@
+import { KNEE_POINT_COMPARISON_HREF } from "@/config/acupunctureLearning";
 import type { PublicLectureArticle } from "./types";
+
+export const KNEE_LOCATION_READING = "ひざの内側を横から見た図では、まず前側とひざ裏を確かめます。血海はお皿より上の筋肉、陰陵泉はひざの下で、すねの骨が広がる部分のすぐ下が目印です。曲泉はひざ裏のしわの内側端で、太ももの裏から続くすじ（腱）より内側にあります。三つの丸印を、近くにある骨や腱の名前と一緒に読んでみましょう。";
 
 export const functionAndPatternsArticles: Record<string, PublicLectureArticle> = {
   "lecture-lifedynamics-1": {
@@ -131,6 +134,11 @@ export const functionAndPatternsArticles: Record<string, PublicLectureArticle> =
     sections: [
       { heading: "道筋と、一つずつ名前が付いた点", paragraphs: ["経絡（けいらく）は体のつながりを道筋として表す伝統医学の考え方です。主な道筋を経脈（けいみゃく）、枝分かれしてつながる道筋を絡脈（らくみゃく）と呼びます。経穴（けいけつ）は個別の位置に名前がついた点で、一般にはツボと呼ばれます。合谷は手の陽明大腸経に属する経穴です。"] },
       { heading: "図と辞典で見るものを変える", paragraphs: ["経絡図では、名前の付いた道筋がどの領域を通ると描かれているかを見ます。一つのツボの場所を探すなら辞典を開き、人差し指につながる骨など、体の目印を確かめます。WHOの標準部位はその位置を共通の言葉で示す資料です。経絡が現代解剖学でどのように検討されているかは、図の読み方とは別に研究資料を参照します。"] },
+      {
+        heading: "ひざの図では何を目印にする？",
+        paragraphs: [KNEE_LOCATION_READING],
+        links: [{ href: KNEE_POINT_COMPARISON_HREF, label: "ひざの比較図で三つの目印を確かめる" }],
+      },
     ],
     links: [
       { href: "/articles/science-of-meridians-network", label: "経絡の説明と研究の読み方" },

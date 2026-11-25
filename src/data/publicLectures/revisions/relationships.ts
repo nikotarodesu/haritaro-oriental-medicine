@@ -1,3 +1,4 @@
+import { KNEE_LOCATION_READING } from "../functionAndPatterns";
 import type { ReadingUnitRevision } from "./types";
 
 export const relationshipRevisions = {
@@ -100,6 +101,7 @@ export const relationshipRevisions = {
           "手で合谷の場所を確かめたいときは、図鑑でLI4を開きます。拡大図には、人差し指につながる骨と、そこから見た合谷の位置が描かれています。",
           "WHOの標準部位は、経穴の位置を共通の表現で示す資料です。経絡についての研究では、調べた部位と、そこで何を観察したかを読みます。",
         ],
+        KNEE_LOCATION_READING,
       ],
     },
     takeaways: [

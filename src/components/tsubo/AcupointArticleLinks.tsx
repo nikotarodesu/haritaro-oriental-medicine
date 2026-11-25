@@ -95,9 +95,14 @@ export function AcupointReadingLinks({ code, editorialLinks }: {
   if (!links.length && !hasDiagnosisLink) return null;
 
   return (
-    <ul className="mt-2 space-y-1 text-sm">
-      {links.map(({ href, label }) => <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>)}
-      {hasDiagnosisLink && <li><Link href="/diagnosis" className={linkClass}>気血水の体質チェックで学ぶ</Link></li>}
-    </ul>
+    <details className="atlas-disclosure atlas-reference-row">
+      <summary>関連する症状ガイド・体質チェック</summary>
+      <div className="atlas-reference-content">
+        <ul className="mt-2 space-y-1 text-sm">
+          {links.map(({ href, label }) => <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>)}
+          {hasDiagnosisLink && <li><Link href="/diagnosis" className={linkClass}>気血水の体質チェックで学ぶ</Link></li>}
+        </ul>
+      </div>
+    </details>
   );
 }

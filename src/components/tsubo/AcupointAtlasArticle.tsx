@@ -1,7 +1,7 @@
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "./AcupointAnatomy";
 import RegionalPointAnatomy from "./RegionalPointAnatomy";
-import { AcupointComparisonLink } from "./AcupointArticleLinks";
+import { AcupointComparisonLink, AcupointStudyLinks } from "./AcupointArticleLinks";
 import AcupointArticleHeader from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
@@ -59,6 +59,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
             近いツボを同じ図で比べる
           </a>
         )}
+        <AcupointStudyLinks code={point.code} />
         <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
           {!hasIndividualAnatomy && article.expert.length > 0 && (

@@ -53,6 +53,8 @@ export interface CaseFourExaminations {
 export interface CaseReasoningStep {
   stepNumber: number;
   stepTitle: string;
+  termNote?: string;
+  studyLink?: { href: string; label: string };
   question: string;
   options: {
     id: string;

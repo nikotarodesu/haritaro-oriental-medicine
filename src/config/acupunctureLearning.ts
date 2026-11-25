@@ -21,6 +21,7 @@ export function acupunctureResearchHref(slug: string) {
 
 export const PATTERN_AGREEMENT_HREF = acupunctureResearchHref("pattern-diagnosis-agreement");
 export const KNEE_RESEARCH_HREF = acupunctureResearchHref("knee-osteoarthritis");
+export const KNEE_POINT_COMPARISON_HREF = "/tsubo/sp10#acupoint-nearby";
 export const MIGRAINE_RESEARCH_HREF = acupunctureResearchHref("migraine-prevention");
 export const MOXIBUSTION_KNEE_RESEARCH_HREF = acupunctureResearchHref("moxibustion-knee-pain");
 export const AROMATASE_JOINT_PAIN_RESEARCH_HREF = acupunctureResearchHref("aromatase-inhibitor-joint-pain");

@@ -72,6 +72,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   const progress = getCaseStudyProgress(values, clinicalCase);
   const [showExplanation, setShowExplanation] = useState(false);
   const [retry, setRetry] = useState<{ stepNumber: number; optionId?: string } | null>(null);
+  const [activeAnchor, setActiveAnchor] = useState("");
   const retryStep = retry?.stepNumber;
   const history = clinicalCase.patient.historyOfPresentIllness;
   const observations = clinicalCase.clinicalExplanation.observations;
@@ -79,18 +80,25 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   useEffect(() => {
     if (!ready) return;
     let frame = 0;
-    function openReviewAnchor() {
+    function syncCaseAnchor() {
       cancelAnimationFrame(frame);
-      if (window.location.hash !== `#${CASE_REVIEW_ANCHOR}`) return;
-      frame = requestAnimationFrame(() => focusCaseAnchor(progress.complete ? CASE_REVIEW_ANCHOR : CASE_REASONING_ANCHOR));
+      const anchor = window.location.hash.slice(1);
+      frame = requestAnimationFrame(() => {
+        setActiveAnchor(anchor);
+        if (anchor === CASE_REVIEW_ANCHOR) {
+          focusCaseAnchor(progress.complete ? CASE_REVIEW_ANCHOR : CASE_REASONING_ANCHOR);
+        }
+      });
     }
-    openReviewAnchor();
-    window.addEventListener("hashchange", openReviewAnchor);
+    syncCaseAnchor();
+    window.addEventListener("hashchange", syncCaseAnchor);
+    window.addEventListener("popstate", syncCaseAnchor);
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("hashchange", openReviewAnchor);
+      window.removeEventListener("hashchange", syncCaseAnchor);
+      window.removeEventListener("popstate", syncCaseAnchor);
     };
-  }, [ready, progress.complete]);
+  }, [ready, progress.complete, clinicalCase.id]);
 
   useEffect(() => {
     if (!ready) return;
@@ -339,8 +347,9 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <div className="space-y-6">
           {clinicalCase.reasoningSteps.filter(step => !retry || step.stepNumber === retry.stepNumber).map((step) => {
             const selected = retry ? retry.optionId : progress.answers[step.stepNumber];
+            const anchor = caseQuestionAnchor(step.stepNumber);
             return (
-              <div key={step.stepNumber} id={caseQuestionAnchor(step.stepNumber)} tabIndex={-1} className="case-question scroll-mt-28 space-y-3">
+              <div key={step.stepNumber} id={anchor} tabIndex={-1} className="case-question scroll-mt-3 space-y-3">
                 <div className="flex items-center gap-2">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-panel-selected text-sm font-semibold text-accent">
                     {step.stepNumber}
@@ -350,7 +359,18 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                   </h3>
                 </div>
 
+                {activeAnchor === anchor && step.stepNumber > 1 && (
+                  <p className="text-sm leading-relaxed text-muted">
+                    <strong className="font-semibold text-ink">この症例の訴え</strong>　「{clinicalCase.patient.chiefComplaint}」
+                  </p>
+                )}
                 <CaseQuestionReferences patient={clinicalCase.patient} examinations={clinicalCase.examinations} />
+                {step.studyLink && (
+                  <Link href={step.studyLink.href} className="ui-text-link inline-flex min-h-11 items-center text-sm">
+                    {step.studyLink.label}
+                  </Link>
+                )}
+                {step.termNote && <p className="text-sm leading-relaxed text-muted">{step.termNote}</p>}
                 <p className="text-base leading-[1.8] text-ink">
                   {step.question}
                 </p>

@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { ArrowDown, ArrowRight, ChevronDown, ListChecks } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
+import CaseCourseLectureContext from "@/components/cases/CaseCourseLectureContext";
 import CaseReviewReturnLink from "@/components/cases/CaseReviewReturnLink";
 import PublicLecturePosition from "@/components/curriculum/PublicLecturePosition";
 import PublicLectureSections, { PublicLectureLinks } from "@/components/curriculum/PublicLectureSections";
@@ -17,7 +18,7 @@ import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
 import { PUBLIC_CASE_STUDY_IDS } from "@/data/cases/caseStudyCatalog";
-import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
+import { ATLAS_STUDY_ROUTES, atlasStudyExercise, KNEE_ATLAS_STUDY_ROUTE, KNEE_STUDY_LECTURE_ID, KNEE_STUDY_SECTION } from "@/data/tsubo/atlas/studyRoutes";
 import { CURRICULUM_QUIZZES } from "@/data/curriculumQuizzes";
 import { getPublicLectureArticle } from "@/data/publicLectures";
 import { approvedIntroId, approvedIntroReferences } from "@/data/publicLectures/approvedIntro";
@@ -28,7 +29,7 @@ import { getPublicLectureReferences, publishedLectureRecords } from "@/data/publ
 import { readingUnitRevisions } from "@/data/publicLectures/revisions";
 import { reviseLectureSections } from "@/data/publicLectures/revisions/types";
 import { originalLectureHref } from "@/utils/curriculumLegacyPaths";
-import { CASE_REVIEW_LECTURE_ID } from "@/utils/caseStudyNavigation";
+import { CASE_COURSE_REVIEW_LECTURE_ID, CASE_COURSE_REVIEW_SECTION, CASE_REVIEW_LECTURE_ID } from "@/utils/caseStudyNavigation";
 import styles from "./lecture-reading.module.css";
 
 const practiceByUnit: Readonly<Partial<Record<string, { href: string; label: string; headerLabel: string }>>> = {
@@ -191,6 +192,14 @@ export default async function ReadingLecturePage({ params }: Props) {
           if (!article) notFound();
           const topic = ATLAS_STUDY_ROUTES.find(route => route.readingHref === `${unit.href}#${part.anchor}`);
           const exercise = topic && atlasStudyExercise(topic);
+          const sections = reviseLectureSections(article.sections, revision.copy[part.lectureId]);
+          if (part.lectureId === KNEE_STUDY_LECTURE_ID) {
+            const kneeExercise = atlasStudyExercise(KNEE_ATLAS_STUDY_ROUTE);
+            const section = sections[KNEE_STUDY_SECTION - 1];
+            if (section && kneeExercise) {
+              sections[KNEE_STUDY_SECTION - 1] = { ...section, links: [...(section.links ?? []), kneeExercise] };
+            }
+          }
           return (
             <section key={part.lectureId} id={part.anchor} tabIndex={-1} className="lecture-unit-part" data-lecture-part={part.lectureId} aria-labelledby={`${part.anchor}-heading`}>
               <h2 id={`${part.anchor}-heading`} className="reader-section-title">{part.label}</h2>
@@ -204,10 +213,14 @@ export default async function ReadingLecturePage({ params }: Props) {
               )}
               <PublicLectureSections
                 lectureId={part.lectureId}
-                sections={reviseLectureSections(article.sections, revision.copy[part.lectureId])}
+                sections={sections}
                 partAnchor={part.anchor}
                 unitHref={unit.href}
                 collapseDiagram={unit.featuredDiagrams && !unit.featuredDiagrams.includes(part.lectureId)}
+                sectionPreface={part.lectureId === CASE_COURSE_REVIEW_LECTURE_ID ? {
+                  sectionNumber: CASE_COURSE_REVIEW_SECTION,
+                  content: <Suspense fallback={null}><CaseCourseLectureContext /></Suspense>,
+                } : undefined}
               />
               {article.links?.length ? <PublicLectureLinks links={article.links} unitHref={unit.href} /> : null}
             </section>

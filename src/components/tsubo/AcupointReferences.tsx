@@ -3,7 +3,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 import type { AcupointDetail } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
-import { AcupointReadingLinks, AcupointStudyLinks } from "./AcupointArticleLinks";
+import { AcupointReadingLinks } from "./AcupointArticleLinks";
 import AcupointNameGuide from "./AcupointNameGuide";
 
 export function AcupointPointBasics({ point, meridianReading }: {
@@ -32,13 +32,7 @@ export default function AcupointReferences({ point, editorialLinks, sources, sou
 }) {
   return (
     <div className="atlas-reference-list">
-      <details className="atlas-disclosure atlas-reference-row">
-        <summary>症状ガイドと学習リンク</summary>
-        <div className="atlas-reference-content">
-          <AcupointReadingLinks code={point.codeLower} editorialLinks={editorialLinks} />
-          <AcupointStudyLinks code={point.code} />
-        </div>
-      </details>
+      <AcupointReadingLinks code={point.codeLower} editorialLinks={editorialLinks} />
       <HashTargetDetails className="atlas-disclosure atlas-reference-row" summary="出典・執筆者">
         <section id="acupoint-sources" className="atlas-reference-content atlas-target" aria-label="出典と執筆者">
           {sourceNote}

@@ -1,4 +1,5 @@
 import { ClinicalCase } from "@/types/clinicalCase";
+import { KNEE_POINT_COMPARISON_HREF } from "@/config/acupunctureLearning";
 
 const CASE_MODELS: ClinicalCase[] = [
   // ==========================================
@@ -841,6 +842,7 @@ const CASE_MODELS: ClinicalCase[] = [
           {
                 stepNumber: 3,
                 stepTitle: "肝と脾の両方を考える配穴例",
+                termNote: "この設問の「抑肝・扶脾（よくかん・ふひ）」は、肝の働きを落ち着かせ、脾の働きを支えるという東洋医学の方針です。",
                 question: "抑肝・扶脾という伝統的な治法に当たるツボの組み合わせはどれですか。",
                 options: [
                       {
@@ -1766,6 +1768,8 @@ const CASE_MODELS: ClinicalCase[] = [
           {
                 stepNumber: 3,
                 stepTitle: "膝の近くにあるツボと要穴を比べる",
+                termNote: "要穴（ようけつ）は、伝統的な分類で役割が付いたツボです。",
+                studyLink: { href: KNEE_POINT_COMPARISON_HREF, label: "ひざの比較図で位置を確かめる" },
                 question: "膝の周囲にある二穴と、脾経の合水穴・胆の下合穴を合わせた配穴例はどれですか。",
                 options: [
                       {

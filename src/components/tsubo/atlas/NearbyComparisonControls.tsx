@@ -219,7 +219,7 @@ export default function NearbyComparisonControls({
             ))}
           </ol>
         )}
-        {!isQuiz && relatedReading}
+        {(!isQuiz || isSolved) && relatedReading}
       </div>
     </HashTargetDetails>
   );

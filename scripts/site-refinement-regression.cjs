@@ -10,10 +10,11 @@ const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader();
 const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
 const { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } = load('src/utils/caseStudyProgress');
-const { caseReviewLectureHref, caseReviewReturnHref } = load('src/utils/caseStudyNavigation');
+const { CASE_COURSE_READING_HREF, caseReviewLectureHref, caseReviewReturnHref, isReadingFromCaseCourse } = load('src/utils/caseStudyNavigation');
+const { KNEE_POINT_COMPARISON_HREF } = load('src/config/acupunctureLearning');
 const { CASE_STUDY_DESCRIPTORS, PUBLIC_CASE_STUDY_IDS, getCaseStudyUsingAcupoint } = load('src/data/cases/caseStudyCatalog');
 const { ATLAS_LEARNING_PAIRS, getAtlasLearningPair } = load('src/data/tsubo/atlas/learningPairs');
-const { ATLAS_STUDY_ROUTES, atlasStudyExercise } = load('src/data/tsubo/atlas/studyRoutes');
+const { ATLAS_STUDY_ROUTES, atlasStudyExercise, KNEE_ATLAS_STUDY_ROUTE } = load('src/data/tsubo/atlas/studyRoutes');
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
 const { OVERDOSE_PRESETS } = load('src/data/haiketsuData');
 const { NEARBY_COMPARISONS } = load('src/data/tsubo/atlas/nearbyComparisons');
@@ -71,6 +72,11 @@ const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/c
 assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
 assert.match(casesIndex, /href="#case-comparison"/);
 assert.match(casesIndex, /id="case-comparison"[^>]*>.*<table/);
+assert(casesIndex.includes('href="' + CASE_COURSE_READING_HREF + '"'));
+const comparisonReading = new URL(CASE_COURSE_READING_HREF, 'https://www.haritaro.jp');
+assert(isReadingFromCaseCourse(comparisonReading.searchParams));
+assert(!isReadingFromCaseCourse(new URLSearchParams('fromExercise=case-comparison&fromExercise=case-comparison')));
+assert.equal(comparisonReading.hash, '#part-lecture-treatment-1-section-2');
 caseCatalogSearch = 'symptom=fatigue';
 const fatigueIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
 assert(fatigueIndex.includes('aria-pressed="true"') && fatigueIndex.includes('2件の症例'));
@@ -93,6 +99,10 @@ for (const clinicalCase of CLINICAL_CASES) {
   assert.equal(caseReviewReturnHref(readingUrl.searchParams, PUBLIC_CASE_STUDY_IDS), '/cases/' + clinicalCase.id + '#case-practice-review');
   const viewer = React.createElement(CaseViewer, { clinicalCase, reviewResources: { readingHref } });
   const html = renderToStaticMarkup(viewer);
+  for (const step of clinicalCase.reasoningSteps) {
+    if (step.termNote) assert(html.includes(step.termNote), clinicalCase.id + ' explains the term before answering');
+    if (step.studyLink) assert(html.includes('href="' + step.studyLink.href + '"'), clinicalCase.id + ' links to the relevant diagram');
+  }
   assert(html.includes('href="#case-examination"') && html.includes('id="case-examination"'), clinicalCase.id);
   assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
   assert(html.includes('aria-label="表示する所見"') && html.includes('aria-pressed="true"'), clinicalCase.id);
@@ -161,6 +171,8 @@ for (const route of ATLAS_STUDY_ROUTES) {
   assert.equal(atlasStudyExercise(route).href, '/cases/' + study.id + '#case-question-' + step.stepNumber);
 }
 assert.equal(atlasStudyExercise(ATLAS_STUDY_ROUTES.find(route => route.codes.includes('PC6'))).href, '/cases/case-06-gerd-liver-stomach#case-question-4');
+const kneeCase = CLINICAL_CASES.find(study => study.id === KNEE_ATLAS_STUDY_ROUTE.caseId);
+assert.equal(kneeCase.reasoningSteps.find(step => step.stepTitle === KNEE_ATLAS_STUDY_ROUTE.stepTitle).studyLink.href, KNEE_POINT_COMPARISON_HREF);
 for (const pair of ATLAS_LEARNING_PAIRS) {
   assert(PUBLIC_CASE_STUDY_IDS.includes(pair.caseId), pair.caseId);
   assert.equal(getAtlasLearningPair(pair.codes), pair);

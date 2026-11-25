@@ -10,6 +10,7 @@ import { SERIES } from "@/config/series";
 import CaseCatalog from "@/components/cases/CaseCatalog";
 import CaseCourseComparison from "@/components/cases/CaseCourseComparison";
 import CaseStudyResume from "@/components/cases/CaseStudyResume";
+import { CASE_COURSE_COMPARISON_ANCHOR } from "@/utils/caseStudyNavigation";
 
 const title = "症例演習";
 const description = "模擬症例の主訴と経過、四診の所見を読み、どの記述を根拠に見立てやツボを選ぶか考えます。選んだ後に、解答例と理由を読めます。";
@@ -38,7 +39,7 @@ export default function CasesIndexPage() {
           <h2 id="case-catalog-title" className="font-bold text-lg text-ink">
             全{totalCaseCount}症例一覧
           </h2>
-          <a href="#case-comparison" className="ui-text-link inline-flex min-h-11 items-center gap-1 text-sm">
+          <a href={`#${CASE_COURSE_COMPARISON_ANCHOR}`} className="ui-text-link inline-flex min-h-11 items-center gap-1 text-sm">
             同じ症状の2例を比べる<ArrowRight size={15} aria-hidden="true" />
           </a>
         </div>
