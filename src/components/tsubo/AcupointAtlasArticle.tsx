@@ -5,7 +5,7 @@ import { AcupointComparisonLink } from "./AcupointArticleLinks";
 import AcupointArticleHeader from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
-import AcupointReferences from "./AcupointReferences";
+import AcupointReferences, { AcupointPointBasics } from "./AcupointReferences";
 import AcupointResearch from "./AcupointResearch";
 import AcupointSelfCare from "./AcupointSelfCare";
 import { AcupointTraditionalUses } from "./AcupointUses";
@@ -17,7 +17,6 @@ import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas
 import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
 import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
-import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
 
@@ -48,10 +47,11 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} lead={article.lead} hasAnatomyDiagram={hasIndividualAnatomy || !!regionalSection} />
+      <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
 
       <AcupointTraditionalUses code={point.codeLower} />
 
-      <section id="acupoint-location" className="atlas-target">
+      <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
@@ -65,7 +65,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       </section>
 
       <div className="atlas-care-section">
-        <AcupointCautions initiallyOpen={Boolean(ATLAS_SELF_CARE[point.codeLower]?.length)} priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
+        <AcupointCautions priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
           <Paragraphs paragraphs={article.cautions} />
           {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
           {hasIndividualAnatomy && (
@@ -103,7 +103,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       <div className="atlas-secondary-sections">
         <FeaturedAcupointPairs pointCode={point.codeLower} />
         <AcupointResearch point={point} context={{ title: contextTitle, paragraphs: article.traditional }} />
-        <AcupointReferences point={point} meridianReading={article.meridianReading} editorialLinks={article.symptomLinks} sources={article.sources} />
+        <AcupointReferences point={point} editorialLinks={article.symptomLinks} sources={article.sources} />
       </div>
       <ContentEndAd key={point.code} />
     </article>

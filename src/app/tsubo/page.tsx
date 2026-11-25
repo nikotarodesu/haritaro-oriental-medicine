@@ -1,20 +1,23 @@
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
 import { ArrowRight, BookOpen, FlaskConical, GitMerge, Layers, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
+import ClinicalPairsSection from "@/components/ClinicalPairsSection";
+import HashTargetDetails from "@/components/common/HashTargetDetails";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
+import TsuboReviewEntry from "@/components/tsubo/TsuboReviewEntry";
 import { DICTIONARY_TAGLINE, SERIES } from "@/config/series";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
-import { FEATURED_ACUPOINT_PAIRS_ANCHOR } from "@/data/tsubo/atlas/featuredPairs";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
 import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 import { NEARBY_COMPARISON_LINKS } from "@/data/tsubo/atlas/nearbyComparisonLinks";
+import styles from "./atlas-index.module.css";
 
 const regions = [...new Set(ALL_ACUPOINTS.map(point => point.bodyPart))].map(region => ({
   region, points: ALL_ACUPOINTS.filter(point => point.bodyPart === region),
@@ -34,7 +37,8 @@ const anatomyCards = [
   const point = ALL_ACUPOINTS.find(point => point.codeLower === code);
   return point && DETAILED_ACUPOINTS[code]?.crossSection ? [{ point, structure }] : [];
 });
-const otherFlagshipPoints = flagshipPoints.filter(point => !anatomyCards.some(card => card.point.code === point.code));
+const featuredPoints = flagshipPoints.slice(0, 4);
+const otherFlagshipPoints = flagshipPoints.slice(featuredPoints.length);
 const studyGroups = [
   { label: "ツボ一つを調べた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "point") },
   { label: "複数のツボを用いた研究", studies: ATLAS_STUDIES.filter(study => study.kind === "combination") },
@@ -52,88 +56,91 @@ export default function TsuboPage() {
   );
 
   return (
-    <div className="page-layout atlas-page atlas-directory">
+    <div className={`page-layout atlas-page atlas-directory ${styles.index}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(
         "/tsubo", SERIES.dictionary.name, DESCRIPTION, "代表的なツボ",
         flagshipPoints.map(({ codeLower, name }) => ({ name, href: `/tsubo/${codeLower}` })),
       ) }} />
-      <header className="atlas-directory-header atlas-directory-intro">
+      <header className={`atlas-directory-header ${styles.header}`}>
         <div>
           <h1>{SERIES.dictionary.name}</h1>
           <p className="atlas-directory-tagline">{DICTIONARY_TAGLINE}</p>
-          <p>{ALL_ACUPOINTS.length}のツボを探し、図で場所を確かめる。</p>
-          <a href={`#${FEATURED_ACUPOINT_PAIRS_ANCHOR}`} className="atlas-text-action mt-1">
-            <GitMerge size={17} aria-hidden="true" />ツボの組み合わせを見る
-          </a>
         </div>
         <AtlasOverviewArt />
       </header>
 
-      <TsuboInteractiveClient relatedGuides={guideLinks} featuredPoints={<>
-        <section id="atlas-anatomy-index" className="atlas-directory-anatomy atlas-target" aria-labelledby="atlas-anatomy-index-title">
-          <div>
-            <h2 id="atlas-anatomy-index-title"><Layers size={20} aria-hidden="true" />断面図から見る</h2>
-            <a href="#illustrated-points" className="atlas-text-action">全361穴を部位から探す</a>
-          </div>
-          <ul>
-            {anatomyCards.map(({ point, structure }) => (
-              <li key={point.code}>
-                {/* Use browser fragment navigation to reveal the nested disclosure on arrival. */}
-                <a href={`/tsubo/${point.codeLower}#acupoint-anatomy-diagram`}>
-                  <span className="atlas-anatomy-card-title"><strong>{point.name}</strong><small>{point.code}</small></span>
-                  <span>{structure}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
+      <TsuboInteractiveClient featuredPoints={
         <nav aria-label="代表的なツボ" className="atlas-directory-featured">
           <h2>代表的なツボ</h2>
           <ul>
-            {otherFlagshipPoints.slice(0, 4).map(({ name, code, codeLower }) => (
-              <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false}>{name}<span>{code}</span></Link></li>
+            {featuredPoints.map(({ name, code, codeLower }) => (
+              <li key={code}><Link href={`/tsubo/${codeLower}#acupoint-location`} prefetch={false}>{name}<span>{code}</span></Link></li>
             ))}
           </ul>
         </nav>
-        <nav aria-label="要穴と奇穴の索引" className="atlas-directory-actions">
-          <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
-          <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
-        </nav>
-      </>} nearbyComparisons={
-        <section id="nearby-comparisons" tabIndex={-1} className="atlas-target space-y-2" aria-labelledby="nearby-comparisons-title">
-          <h2 id="nearby-comparisons-title" className="atlas-section-title">近いツボを比べる</h2>
-          <p className="atlas-muted text-sm">手首のしわやひじの腱など、近いツボを見分ける目印を図で確認できます。</p>
-          <ul className="grid grid-cols-2 gap-2 lg:grid-cols-3">
+      } nearbyComparisons={
+        <HashTargetDetails id="nearby-comparisons" className="atlas-disclosure atlas-target dictionary-index-disclosure" summary={<h2 id="nearby-comparisons-title"><GitMerge size={17} aria-hidden="true" />近いツボを比べる</h2>}>
+          <ul className={styles.nearbyList}>
             {NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href }) => (
-              <li key={id} className="min-w-0 rounded-lg border border-frame bg-panel p-2">
-                <Link href={href} prefetch={false} className="flex min-h-11 items-center justify-between gap-2 px-1 text-sm hover:underline" aria-label={`${region}の比較図を開く`}>
-                  <strong className="text-accent">{region}</strong>
-                  <span className="flex shrink-0 items-center gap-1 text-accent">比較図<ArrowRight size={14} aria-hidden="true" /></span>
+              <li key={id}>
+                <Link href={href} prefetch={false} className={styles.nearbyRegion} aria-label={`${region}の比較図を開く`}>
+                  <strong>{region}</strong>
+                  <span>比較図</span>
+                  <ArrowRight size={16} aria-hidden="true" />
                 </Link>
-                <ul className="flex flex-wrap gap-1">
+                <ul className={styles.nearbyPoints}>
                   {codes.map((code, index) => (
-                    <li key={code}><Link href={`/tsubo/${code}`} prefetch={false} className="atlas-index-point">{names[index]}</Link></li>
+                    <li key={code}><Link href={`/tsubo/${code}#acupoint-location`} prefetch={false} className="atlas-index-point">{names[index]}</Link></li>
                   ))}
                 </ul>
               </li>
             ))}
           </ul>
-        </section>
+        </HashTargetDetails>
       } />
 
-      <FeaturedAcupointPairs />
+      <HashTargetDetails
+        id="atlas-anatomy-index"
+        className="atlas-disclosure atlas-target dictionary-index-disclosure"
+        summary={<h2 id="atlas-anatomy-index-title"><Layers size={17} aria-hidden="true" />断面図から見る</h2>}
+      >
+        <div className={styles.anatomy}>
+          <div className="atlas-directory-anatomy">
+            <ul>
+              {anatomyCards.map(({ point, structure }) => (
+                <li key={point.code}>
+                  {/* Use browser fragment navigation to reveal the nested disclosure on arrival. */}
+                  <a href={`/tsubo/${point.codeLower}#acupoint-anatomy-diagram`}>
+                    <span className="atlas-anatomy-card-title"><strong>{point.name}</strong><small>{point.code}</small></span>
+                    <span>{structure}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <a href="#illustrated-points" className="atlas-text-action">全361穴を部位から探す</a>
+        </div>
+      </HashTargetDetails>
 
       <details className="atlas-disclosure atlas-region-index">
         <summary>ほかの代表的なツボ</summary>
         <ul className="flex flex-wrap gap-2 pb-3">
-          {otherFlagshipPoints.slice(4).map(({ name, code, codeLower }) => (
-            <li key={code}><Link href={`/tsubo/${codeLower}`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>
+          {otherFlagshipPoints.map(({ name, code, codeLower }) => (
+            <li key={code}><Link href={`/tsubo/${codeLower}#acupoint-location`} prefetch={false} className="atlas-index-point">{name}<span>{code}</span></Link></li>
           ))}
         </ul>
       </details>
 
-      <section id="atlas-research-index" className="atlas-target space-y-3" aria-labelledby="atlas-research-index-title">
-        <h2 id="atlas-research-index-title" className="atlas-section-title flex items-center gap-2"><FlaskConical size={20} aria-hidden="true" />研究から探す</h2>
+      <nav aria-label="ツボ図鑑の索引" className="atlas-directory-index-links">
+        <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
+        <a href="#tsubo-index" className="atlas-search-index-link">経絡別の索引</a>
+        <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
+        <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
+        <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
+      </nav>
+
+      <HashTargetDetails id="atlas-research-index" className="atlas-disclosure atlas-target dictionary-index-disclosure" summary={<h2 id="atlas-research-index-title"><FlaskConical size={17} aria-hidden="true" />研究から探す</h2>}>
+        <div className={styles.learning}>
         <Link href={ACUPUNCTURE_RESEARCH.href} className="atlas-text-action">鍼灸の研究を読む</Link>
         {studyGroups.map(({ label, studies }) => (
           <details key={label} className="atlas-disclosure atlas-region-index">
@@ -146,8 +153,7 @@ export default function TsuboPage() {
             </ul>
           </details>
         ))}
-        <details id="atlas-research-search" className="atlas-disclosure atlas-target">
-          <summary>文献の調べ方</summary>
+        <HashTargetDetails id="atlas-research-search" className="atlas-disclosure atlas-target" summary="文献の調べ方">
           <div className="atlas-study-details">
             <p><time dateTime={ATLAS_LITERATURE_SEARCH_DATE}>{ATLAS_LITERATURE_SEARCH_DATE}</time> に、当時まだ研究を載せていなかった{Object.keys(ATLAS_LITERATURE_SEARCH_COUNTS).length}穴を検索しました。</p>
             <p>経穴名とコードで、PubMedの題名・抄録などと、PubMed Centralの本文の方法欄を検索しました。人を対象とした比較試験のうち、実際に使われた経穴と結果を原典で確認できたものを紹介しています。</p>
@@ -158,8 +164,9 @@ export default function TsuboPage() {
               <li><a href="https://pmc.ncbi.nlm.nih.gov/about/userguide/">PubMed Centralの検索方法</a></li>
             </ul>
           </div>
-        </details>
-      </section>
+        </HashTargetDetails>
+        </div>
+      </HashTargetDetails>
 
       <section aria-labelledby="illustrated-points" className="space-y-3">
         <h2 id="illustrated-points" className="atlas-section-title atlas-target">部位別の索引</h2>
@@ -174,11 +181,6 @@ export default function TsuboPage() {
             </details>
           ))}
         </div>
-      </section>
-
-      <section aria-labelledby="dictionary-reading" className="space-y-4">
-        <h2 id="dictionary-reading" className="atlas-section-title">経絡とツボの索引を使う</h2>
-        <PublicLectureIndex series="dictionary" />
       </section>
 
       <section id="tsubo-index" aria-labelledby="tsubo-index-heading" className="tsubo-static-index atlas-target space-y-3">
@@ -198,6 +200,21 @@ export default function TsuboPage() {
           })}
         </div>
       </section>
+
+      <FeaturedAcupointPairs />
+
+      <HashTargetDetails className="atlas-disclosure dictionary-index-disclosure" summary={<h2 id="dictionary-reading" className="atlas-target">学習ガイド・復習</h2>}>
+        <div className={styles.learning}>
+          {guideLinks}
+          <PublicLectureIndex series="dictionary" />
+          <TsuboReviewEntry placement="dictionary" />
+          <nav className="dictionary-tools" aria-label="経穴の学習ツール">
+            <Link href="/tsubo/practice"><BookOpen aria-hidden="true" size={16} />今日の復習<ArrowRight aria-hidden="true" size={16} /></Link>
+            <Link href="/kikei">奇経八脈<ArrowRight aria-hidden="true" size={16} /></Link>
+          </nav>
+          <ClinicalPairsSection />
+        </div>
+      </HashTargetDetails>
 
       <footer className="atlas-directory-policy" aria-labelledby="atlas-directory-policy-title">
         <h2 id="atlas-directory-policy-title">

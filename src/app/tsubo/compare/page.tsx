@@ -1,6 +1,5 @@
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import Link from "next/link";
-import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
 import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { PointAtlasThumbnail } from "@/components/tsubo/atlas/PointAtlasDiagrams";
@@ -9,10 +8,10 @@ import type { AcupointMaster } from "@/data/tsubo/types";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
-import { getAtlasLearningPair } from "@/data/tsubo/atlas/learningPairs";
 import type { Metadata } from "next";
 import CompareClient, { type ComparisonChoice, type ComparisonPoint } from "./CompareClient";
 import { resolveComparisonCodes, type ComparisonSearchParams } from "./selection";
+import "./compare-flow.css";
 
 const title = seriesPageTitle("経穴比較ツール｜ツボの位置・経絡・注意点", "dictionary");
 const description = `ツボ図鑑の全${ALL_ACUPOINTS.length}穴から選んだツボを図で見比べ、場所の目印、所属する経絡、分類、安全上の注意を確認できます。各ツボの詳しい図や、掲載している研究の出典にも進めます。`;
@@ -54,7 +53,6 @@ function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
 
 export default async function TsuboComparePage({ searchParams }: { searchParams: Promise<ComparisonSearchParams> }) {
   const selectedCodes = resolveComparisonCodes(await searchParams, comparisonChoices);
-  const learningPair = getAtlasLearningPair(selectedCodes);
   const selectedTsubos = selectedCodes.flatMap(code => {
     const point = pointsByCode.get(code);
     return point ? [getComparisonPoint(point)] : [];
@@ -63,30 +61,13 @@ export default async function TsuboComparePage({ searchParams }: { searchParams:
   return (
     <div className="tsubo-compare-page atlas-page min-h-screen">
       <div className="page-layout page-layout--intro">
-        <header className="atlas-directory-header atlas-directory-intro">
-          <div>
-            <nav aria-label="パンくず" className="atlas-breadcrumb">
-              <Link href="/tsubo">はり太郎のツボ図鑑</Link>
-              <span aria-hidden="true">/</span>
-              <span aria-current="page">比較</span>
-            </nav>
-            <h1>経穴を比べる</h1>
-            <p>{comparisonChoices.length}穴から2〜3穴を選び、場所の目印や注意点を比べます。</p>
-            {learningPair && (
-              <div className="mt-3 print:hidden">
-                <Link
-                  href={`/cases/${learningPair.caseId}`}
-                  prefetch={false}
-                  className="page-secondary-action"
-                  data-analytics-action="compare_case"
-                >
-                  {learningPair.caseLabel}
-                </Link>
-                <p className="text-sm">{learningPair.casePrompt}</p>
-              </div>
-            )}
-          </div>
-          <AtlasOverviewArt />
+        <header className="tsubo-compare-header">
+          <nav aria-label="パンくず" className="atlas-breadcrumb">
+            <Link href="/tsubo">はり太郎のツボ図鑑</Link>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">比較</span>
+          </nav>
+          <h1>ツボを比べる</h1>
         </header>
       </div>
       <CompareClient choices={comparisonChoices} selectedTsubos={selectedTsubos} />

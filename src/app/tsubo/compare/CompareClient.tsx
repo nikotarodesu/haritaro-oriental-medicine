@@ -3,11 +3,12 @@
 import React, { useState, useMemo, useEffect, useRef, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { 
-  Search, 
-  X, 
-  Plus, 
+import {
+  Search,
+  X,
+  Plus,
   AlertTriangle,
+  ArrowRight,
   Pencil,
   Printer,
 } from "lucide-react";
@@ -34,17 +35,6 @@ type CompareProps = {
 };
 
 const COMPARISON_FIELDS = [
-  {
-    label: "場所と目印",
-    emphasis: "location",
-    content: (point: ComparisonPoint) => (
-      <>
-        {point.locationFigure && <div className="tsubo-compare-location-figure">{point.locationFigure}</div>}
-        <p>{point.locationSimple}</p>
-        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`} className="tsubo-compare-detail-link" aria-label={`${point.name}の図で場所を確認`} data-analytics-action="compare_atlas">図で場所を確認</Link>
-      </>
-    ),
-  },
   {
     label: "注意事項",
     emphasis: "caution",
@@ -93,6 +83,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const focusResultsAfterNavigation = useRef(false);
+  const picker = useRef<HTMLDetailsElement>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingSwapTsubo, setPendingSwapTsubo] = useState<ComparisonChoice | null>(null);
@@ -101,11 +92,15 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
   useEffect(() => {
     if (isPending || !focusResultsAfterNavigation.current) return;
     focusResultsAfterNavigation.current = false;
+    if (picker.current) picker.current.open = false;
     document.getElementById("tsubo-compare-result-title")?.focus();
   }, [isPending, selectedTsubos]);
 
   const selectedCodes = selectedTsubos.map(point => point.code);
   const learningPair = getAtlasLearningPair(selectedCodes);
+  const pickerLabel = selectedCodes.length === 0 ? "比べるツボを選ぶ"
+    : selectedCodes.length === 1 ? "比べるツボを追加・変更"
+    : "比べるツボを変更";
 
   // 検索ヒットツボ一覧
   const searchResults = useMemo(() => {
@@ -132,7 +127,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
     if (targetReplaceIndex !== null && targetReplaceIndex < selectedCodes.length) {
       const updated = [...selectedCodes];
       updated[targetReplaceIndex] = tsubo.code;
-      changeSelection(updated);
+      changeSelection(updated, true);
       return;
     }
 
@@ -142,7 +137,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
     }
 
     // 空き枠がある場合はそのまま追加
-    changeSelection([...selectedCodes, tsubo.code]);
+    changeSelection([...selectedCodes, tsubo.code], selectedCodes.length > 0);
   };
 
   const beginReplacement = (index: number) => {
@@ -154,91 +149,94 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
   return (
     <>
       <div className="page-layout page-layout--continuation tsubo-compare-workspace">
-        <section className="tsubo-compare-picker print:hidden" aria-labelledby="tsubo-compare-picker-title">
-          <div className="tsubo-compare-picker-heading">
-            <h2 id="tsubo-compare-picker-title">比較するツボ</h2>
-            <p role="status">{isPending ? "比較を更新しています。" : `${selectedTsubos.length} / 3穴`}</p>
-          </div>
-
-          {targetReplaceIndex !== null && selectedTsubos[targetReplaceIndex] && (
-            <div className="tsubo-compare-replacement">
-              <p id="tsubo-compare-replacement-hint">{selectedTsubos[targetReplaceIndex].name}と入れ替えるツボを検索してください。</p>
-              <button type="button" onClick={() => setTargetReplaceIndex(null)}>キャンセル</button>
+        <details className="tsubo-compare-controls atlas-disclosure print:hidden" ref={picker} open={selectedTsubos.length < 2}>
+          <summary>{pickerLabel}</summary>
+          <section className="tsubo-compare-picker" aria-labelledby="tsubo-compare-picker-title">
+            <div className="tsubo-compare-picker-heading">
+              <h2 id="tsubo-compare-picker-title">比較するツボ</h2>
+              <p role="status">{isPending ? "比較を更新しています。" : `${selectedTsubos.length} / 3穴`}</p>
             </div>
-          )}
 
-          <div className="tsubo-compare-search">
-            <Search aria-hidden="true" size={18} />
-            <input
-              id="compare-search-input"
-              type="search"
-              autoComplete="off"
-              aria-label="比較するツボを検索"
-              aria-describedby={targetReplaceIndex === null ? undefined : "tsubo-compare-replacement-hint"}
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="例：合谷、ごうこく、LI4"
-            />
-          </div>
-          {searchQuery.trim() && searchResults.length === 0 && (
-            <div className="text-sm">
-              <p role="status">比較に追加できるツボの中に、一致するものがありません。名前、読み、経穴コードを変えて検索できます。</p>
-              <a href={`/tsubo?q=${encodeURIComponent(searchQuery.trim())}`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
-                全361穴の図鑑で探す
-              </a>
+            {targetReplaceIndex !== null && selectedTsubos[targetReplaceIndex] && (
+              <div className="tsubo-compare-replacement">
+                <p id="tsubo-compare-replacement-hint">{selectedTsubos[targetReplaceIndex].name}と入れ替えるツボを検索してください。</p>
+                <button type="button" onClick={() => setTargetReplaceIndex(null)}>キャンセル</button>
+              </div>
+            )}
+
+            <div className="tsubo-compare-search">
+              <Search aria-hidden="true" size={18} />
+              <input
+                id="compare-search-input"
+                type="search"
+                autoComplete="off"
+                aria-label="比較するツボを検索"
+                aria-describedby={targetReplaceIndex === null ? undefined : "tsubo-compare-replacement-hint"}
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="例：合谷、ごうこく、LI4"
+              />
             </div>
-          )}
+            {searchQuery.trim() && searchResults.length === 0 && (
+              <div className="text-sm">
+                <p role="status">比較に追加できるツボの中に、一致するものがありません。名前、読み、経穴コードを変えて検索できます。</p>
+                <a href={`/tsubo?q=${encodeURIComponent(searchQuery.trim())}`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+                  全361穴の図鑑で探す
+                </a>
+              </div>
+            )}
 
-          {searchResults.length > 0 && (
-            <div className="tsubo-compare-suggestions">
-              {searchResults.map(t => {
-                const isAlreadySelected = selectedCodes.includes(t.code);
-                return (
-                  <button
-                    type="button"
-                    key={t.id}
-                    onClick={() => handleSelectTsubo(t)}
-                    disabled={isPending || isAlreadySelected}
-                  >
-                    <span>
-                      <strong>{t.name}</strong>
-                      <span className="tsubo-compare-secondary">{t.code} / {t.meridianShort}</span>
-                    </span>
-                    {!isAlreadySelected && <Plus aria-hidden="true" size={16} />}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+            {searchResults.length > 0 && (
+              <div className="tsubo-compare-suggestions">
+                {searchResults.map(t => {
+                  const isAlreadySelected = selectedCodes.includes(t.code);
+                  return (
+                    <button
+                      type="button"
+                      key={t.id}
+                      onClick={() => handleSelectTsubo(t)}
+                      disabled={isPending || isAlreadySelected}
+                    >
+                      <span>
+                        <strong>{t.name}</strong>
+                        <span className="tsubo-compare-secondary">{t.code} / {t.meridianShort}</span>
+                      </span>
+                      {!isAlreadySelected && <Plus aria-hidden="true" size={16} />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
 
-          {selectedTsubos.length > 0 && (
-            <ul className="tsubo-compare-selection" aria-label="選んだツボ">
-              {selectedTsubos.map((point, index) => (
-                <li key={point.id} data-editing={targetReplaceIndex === index || undefined}>
-                  <button type="button" disabled={isPending} onClick={() => beginReplacement(index)} aria-label={`${point.name}を変更`} title={`${point.name}を変更`}>
-                    <strong>{point.name}</strong>
-                    <span>{point.code}</span>
-                    <Pencil aria-hidden="true" size={14} />
-                  </button>
-                  <button type="button" disabled={isPending} onClick={() => changeSelection(selectedCodes.filter(code => code !== point.code))} aria-label={`${point.name}を比較から外す`} title="比較から外す">
-                    <X aria-hidden="true" size={16} />
-                  </button>
-                </li>
+            {selectedTsubos.length > 0 && (
+              <ul className="tsubo-compare-selection" aria-label="選んだツボ">
+                {selectedTsubos.map((point, index) => (
+                  <li key={point.id} data-editing={targetReplaceIndex === index || undefined}>
+                    <button type="button" disabled={isPending} onClick={() => beginReplacement(index)} aria-label={`${point.name}を変更`} title={`${point.name}を変更`}>
+                      <strong>{point.name}</strong>
+                      <span>{point.code}</span>
+                      <Pencil aria-hidden="true" size={14} />
+                    </button>
+                    <button type="button" disabled={isPending} onClick={() => changeSelection(selectedCodes.filter(code => code !== point.code))} aria-label={`${point.name}を比較から外す`} title="比較から外す">
+                      <X aria-hidden="true" size={16} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <details className="tsubo-compare-presets atlas-disclosure">
+            <summary>比較例から選ぶ</summary>
+            <div className="tsubo-compare-preset-grid">
+              {PRESET_TSUBO_COMPARISONS.map(preset => (
+                <button type="button" key={preset.name} disabled={isPending} onClick={() => changeSelection(preset.tsuboCodes, true)}>
+                  <strong>{preset.name}</strong>
+                  <span>{preset.desc}</span>
+                </button>
               ))}
-            </ul>
-          )}
-        </section>
-
-        <details className="tsubo-compare-presets print:hidden">
-          <summary>比較例から選ぶ</summary>
-          <div className="tsubo-compare-preset-grid">
-            {PRESET_TSUBO_COMPARISONS.map(preset => (
-              <button type="button" key={preset.name} disabled={isPending} onClick={() => changeSelection(preset.tsuboCodes, true)}>
-                <strong>{preset.name}</strong>
-                <span>{preset.desc}</span>
-              </button>
-            ))}
-          </div>
+            </div>
+          </details>
         </details>
 
         {selectedTsubos.length === 0 ? (
@@ -246,42 +244,63 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
         ) : (
           <section aria-labelledby="tsubo-compare-result-title" aria-busy={isPending}>
             <div className="tsubo-compare-result-heading">
-              <h2 id="tsubo-compare-result-title" className="atlas-target" tabIndex={-1}>選んだツボの比較</h2>
-              <ComparePrintButton />
+              <h2 id="tsubo-compare-result-title" className="atlas-target" tabIndex={-1}>場所と目印</h2>
             </div>
-            <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">
-              図の丸印がツボの位置です。「図で場所を確認」で、目印を示した拡大図が開きます。
-            </p>
-            <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-result-title" aria-describedby="tsubo-compare-scroll-hint">
-              <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
-                <caption className="sr-only">場所と目印・注意事項・所属経絡・要穴・伝統的な背景・学習上の補足の比較</caption>
-                <thead role="rowgroup">
-                  <tr role="row">
-                    <th scope="col" role="columnheader">比較項目</th>
-                    {selectedTsubos.map(point => (
-                      <th scope="col" role="columnheader" key={point.id}>
-                        <strong className="tsubo-compare-column-point">{point.name}</strong>
-                        <span className="tsubo-compare-secondary">{point.code} · {point.kana}</span>
-                        <Link href={`/tsubo/${point.code.toLowerCase()}`} target="_blank" className="tsubo-compare-column-link" aria-label={`${point.name}の詳細を見る（新しいタブ）`} data-analytics-action="compare_atlas">詳細を見る ↗</Link>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody role="rowgroup">
-                  {COMPARISON_FIELDS.map(field => (
-                    <tr role="row" key={field.label} data-emphasis={field.emphasis}>
-                      <th scope="row" role="rowheader">{field.label}</th>
+            <p className="tsubo-compare-position-key">図の丸印がツボの位置です。</p>
+            <ul className="tsubo-compare-position-grid" data-points={selectedTsubos.length} role="list" aria-label="ツボの位置を見比べる">
+              {selectedTsubos.map(point => (
+                <li className="tsubo-compare-position" key={point.id}>
+                  <Link
+                    href={`/tsubo/${point.code.toLowerCase()}#acupoint-location`}
+                    prefetch={false}
+                    className="tsubo-compare-position-link"
+                    aria-label={`${point.name}の場所を見る`}
+                    data-analytics-action="compare_atlas"
+                  >
+                    <div className="tsubo-compare-position-title">
+                      <h3>{point.name}</h3>
+                      <span>{point.code}</span>
+                    </div>
+                    {point.locationFigure && <div className="tsubo-compare-location-figure">{point.locationFigure}</div>}
+                    <p>{point.locationSimple}</p>
+                    <span className="tsubo-compare-detail-link">場所を見る<ArrowRight aria-hidden="true" size={15} /></span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <details className="tsubo-compare-facts atlas-disclosure">
+              <summary id="tsubo-compare-facts-title">注意点・経絡などを比べる</summary>
+              <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">注意点・経絡・要穴の分類・伝統的な背景をツボごとに確認できます。</p>
+              <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-facts-title" aria-describedby="tsubo-compare-scroll-hint">
+                <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
+                  <caption className="sr-only">注意事項・所属経絡・要穴・伝統的な背景・学習上の補足の比較</caption>
+                  <thead role="rowgroup">
+                    <tr role="row">
+                      <th scope="col" role="columnheader">比較項目</th>
                       {selectedTsubos.map(point => (
-                        <td role="cell" key={point.id}>
-                          <strong className="tsubo-compare-row-point" aria-hidden="true">{point.name}</strong>
-                          <div>{field.content(point)}</div>
-                        </td>
+                        <th scope="col" role="columnheader" key={point.id}>
+                          <strong className="tsubo-compare-column-point">{point.name}</strong>
+                          <span className="tsubo-compare-secondary">{point.code} · {point.kana}</span>
+                        </th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody role="rowgroup">
+                    {COMPARISON_FIELDS.map(field => (
+                      <tr role="row" key={field.label} data-emphasis={field.emphasis}>
+                        <th scope="row" role="rowheader">{field.label}</th>
+                        {selectedTsubos.map(point => (
+                          <td role="cell" key={point.id}>
+                            <strong className="tsubo-compare-row-point" aria-hidden="true">{point.name}</strong>
+                            <div>{field.content(point)}</div>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
             {learningPair && (
               <div className="mt-4 print:hidden">
                 <AtlasLocationCheck
@@ -291,8 +310,16 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
                   options={selectedTsubos}
                   placement="atlas_comparison"
                 />
+                <details className="tsubo-compare-case atlas-disclosure">
+                  <summary>この組み合わせを模擬症例で学ぶ</summary>
+                  <p>{learningPair.casePrompt}</p>
+                  <Link href={`/cases/${learningPair.caseId}`} prefetch={false} className="tsubo-compare-detail-link" data-analytics-action="compare_case">
+                    {learningPair.caseLabel}
+                  </Link>
+                </details>
               </div>
             )}
+            <ComparePrintButton />
           </section>
         )}
       </div>
@@ -327,7 +354,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
                   onClick={() => {
                     const updated = [...selectedCodes];
                     updated[idx] = pendingSwapTsubo.code;
-                    changeSelection(updated);
+                    changeSelection(updated, true);
                   }}
                   className="w-full p-3.5 rounded-2xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] text-left flex items-center justify-between transition-all group"
                 >

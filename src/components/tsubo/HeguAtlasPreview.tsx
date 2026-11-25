@@ -3,7 +3,7 @@ import AcupointAnatomy from "@/components/tsubo/AcupointAnatomy";
 import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
-import AcupointReferences from "@/components/tsubo/AcupointReferences";
+import AcupointReferences, { AcupointPointBasics } from "@/components/tsubo/AcupointReferences";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
 import { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
@@ -32,10 +32,11 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} lead={HEGU_SEARCH_COPY.lead} hasAnatomyDiagram={!!point.crossSection} />
+      <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
 
       <AcupointTraditionalUses code={point.codeLower} />
 
-      <section id="acupoint-location" className="atlas-target">
+      <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
         <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
@@ -43,7 +44,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       </section>
 
       <div className="atlas-care-section">
-        <AcupointCautions initiallyOpen priority={<>
+        <AcupointCautions priority={<>
           <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
           <p>{heguAtlasReading.caution}</p>
         </>}>
@@ -68,7 +69,6 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <AcupointResearch point={point} />
         <AcupointReferences
           point={point}
-          meridianReading="てのようめいだいちょうけい"
           editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]}
           sources={heguSources}
           sourceNote={<p className="text-sm">頭や顔の不調との伝統的な関連は『針灸大成』四総穴歌と現行の経穴資料に基づきます。</p>}

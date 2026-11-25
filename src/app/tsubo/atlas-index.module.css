@@ -1,0 +1,135 @@
+.index {
+  max-width: 960px;
+}
+
+.index .header {
+  gap: .625rem;
+  min-width: 0;
+  padding: .5rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.header h1 {
+  font-size: clamp(1.5rem, 5.8vw, 2.35rem);
+}
+
+.header :global(.atlas-overview-art) {
+  width: 6rem;
+}
+
+.index :global(.dictionary-search-shortcuts) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 .85rem;
+  margin-top: .25rem;
+  border-top: 1px solid var(--atlas-line);
+}
+
+.index :global(.dictionary-search-shortcuts) a {
+  color: var(--atlas-muted);
+}
+
+.index :global(.dictionary-index-disclosure),
+.index :global(.dictionary-result-disclosure) {
+  min-width: 0;
+  border-block: 1px solid var(--atlas-line);
+}
+
+.index :global(.dictionary-index-disclosure) h2 {
+  display: flex;
+  align-items: center;
+  gap: .425rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.index :global(.dictionary-result-disclosure)[open] {
+  padding-bottom: .75rem;
+}
+
+.index :global(.dictionary-result-disclosure--active) {
+  padding: 0;
+  border: 0;
+}
+
+.index :global(.dictionary-result-disclosure--active) > summary {
+  display: none;
+}
+
+.index :global(.dictionary-result-action) {
+  display: inline-flex;
+  align-items: center;
+  gap: .275rem;
+  color: var(--atlas-accent);
+  font-size: .875rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.nearbyList {
+  display: grid;
+  gap: .5rem;
+  padding-bottom: .75rem;
+}
+
+.nearbyList > li {
+  min-width: 0;
+  padding: 0 .75rem .5rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .65rem;
+  background: var(--atlas-paper);
+}
+
+.nearbyRegion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: .35rem;
+  min-height: 2.75rem;
+  color: var(--atlas-accent);
+  font-size: .875rem;
+}
+
+.nearbyRegion:hover {
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.nearbyPoints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+}
+
+.anatomy,
+.learning {
+  display: grid;
+  gap: .75rem;
+  padding-bottom: .75rem;
+}
+
+.anatomy :global(.atlas-directory-anatomy) {
+  display: block;
+}
+
+.references > details + details {
+  border-top: 0;
+}
+
+@media (max-width: 359px) {
+  .index :global(.tsubo-filter-toggle) {
+    gap: .3rem;
+  }
+
+  .index :global(.tsubo-filter-toggle) > svg:first-child {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .nearbyList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

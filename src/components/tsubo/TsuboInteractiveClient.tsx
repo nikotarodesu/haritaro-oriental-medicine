@@ -17,8 +17,6 @@ import {
   Search, 
   ArrowRight, 
   RotateCcw, 
-  BookOpen, 
-  GitCompare, 
   LayoutGrid, 
   List, 
   ChevronLeft, 
@@ -26,8 +24,7 @@ import {
   X 
 } from "lucide-react";
 import BodyMapSvg from "@/components/tsubo/BodyMapSvg";
-import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
-import ClinicalPairsSection from "@/components/ClinicalPairsSection";
+import HashTargetDetails from "@/components/common/HashTargetDetails";
 import { getPointSearchTopic, normalizeSearchText } from "@/utils/search";
 import { prepareAcupointSearch, getAcupointMatchReason, matchesPrimaryJoint } from "@/utils/acupointSearch";
 import { getKeyPointFilterLabel, isAcupointInKeyPointType, KEY_POINT_FILTER_LABELS } from "@/data/tsubo/keyPointTypes";
@@ -44,11 +41,6 @@ const extraPointLookup = new Map(EXTRA_POINTS.flatMap(point =>
     .map(term => [normalizeSearchText(term).replace(/[-\s]/g, ""), point] as const),
 ));
 const EXAMPLE_SEARCH_TERMS = ["合谷", "手首", "ひざ"];
-const ATLAS_INDEX_LINKS = [
-  { href: "#illustrated-points", label: "部位別の索引" },
-  { href: "#tsubo-index", label: "経絡別の索引" },
-  { href: "#atlas-research-index", label: "研究から探す" },
-];
 const DEFAULT_SELECTION = {
   selectedBodyPart: "すべて",
   selectedMeridian: "すべて",
@@ -70,8 +62,7 @@ function TsuboUrlSync({ restore }: { restore: (query: string) => void | (() => v
   return null;
 }
 
-export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, nearbyComparisons }: {
-  relatedGuides?: ReactNode;
+export default function TsuboInteractiveClient({ featuredPoints, nearbyComparisons }: {
   featuredPoints?: ReactNode;
   nearbyComparisons?: ReactNode;
 } = {}) {
@@ -237,13 +228,19 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
   const extraPoint = extraPointLookup.get(searchTopic.replace(/[-\s]/g, ""));
   const hasSelectionFilters = selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
   const browsingWithoutFilters = !hasSearchQuery && !hasSelectionFilters;
+  const showResults = !browsingWithoutFilters || Boolean(selectedTsubo) || currentPage > 1 ||
+    sortOption !== DEFAULT_FILTERS.sortOption || viewMode !== DEFAULT_FILTERS.viewMode;
 
   return (
     <div className="tsubo-search-layout atlas-search-layout">
       <Suspense fallback={null}><TsuboUrlSync restore={restoreUrl} /></Suspense>
       <form action="/search" role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel" onSubmit={event => {
         event.preventDefault();
-        resultsRef.current?.focus();
+        const results = resultsRef.current;
+        if (!results) return;
+        const disclosure = results.closest("details");
+        if (disclosure) disclosure.open = true;
+        results.focus();
       }}>
         <label htmlFor="tsubo-search" className="atlas-search-label">
           ツボを検索
@@ -280,7 +277,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
           )}
         </div>
         <p id="tsubo-search-examples" className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          名前・読み方・部位・番号で探せます。
+          名前・読み方・部位・番号で、全{allPoints.length}穴から探せます。
         </p>
         {extraPoint && (
           <div className="rounded-lg border border-frame bg-panel-selected px-3">
@@ -292,12 +289,6 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
         <noscript><button type="submit" className="atlas-text-action">サイト内検索で調べる</button></noscript>
 
         <div className="tsubo-filter-toggles">
-          {nearbyComparisons && (
-            <a href="#nearby-comparisons" className="atlas-compare-shortcut">
-              <GitCompare aria-hidden="true" size={16} />近いツボを比べる
-            </a>
-          )}
-          <Link href="/symptoms" className="atlas-search-index-link">症状から探す</Link>
           <button
             type="button"
             onClick={() => setShowBodyMap(!showBodyMap)}
@@ -309,9 +300,13 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
             <span>部位から探す</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
           </button>
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
-          <Link href="/tsubo/compare" className="atlas-search-index-link">ツボを選んで比べる</Link>
-          <a href="#illustrated-points" className="atlas-search-index-link">一覧から探す</a>
         </div>
+        <nav aria-label="ほかの探し方と比較" className="dictionary-search-shortcuts">
+          <Link href="/symptoms" className="atlas-search-index-link">症状から探す</Link>
+          <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
+          {nearbyComparisons && <a href="#nearby-comparisons" className="atlas-search-index-link">近いツボを比べる</a>}
+          <Link href="/tsubo/compare" className="atlas-search-index-link">2つ選んで比べる</Link>
+        </nav>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
       </form>
 
@@ -393,6 +388,11 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
       {browsingWithoutFilters && <>{featuredPoints}{nearbyComparisons}</>}
 
       {/* 経穴一覧セクション */}
+      <HashTargetDetails
+        className={`atlas-disclosure dictionary-result-disclosure${showResults ? " dictionary-result-disclosure--active" : ""}`}
+        summary={`全${allPoints.length}穴の一覧`}
+        open={showResults || undefined}
+      >
       <section ref={resultsRef} id="tsubo-list" tabIndex={-1} aria-label="ツボの検索結果" className="atlas-target space-y-4">
         {/* 一覧上部コントロールバー */}
         <div className="tsubo-results-toolbar">
@@ -467,7 +467,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
               return (
                 <Link
                   key={point.id}
-                  href={`/tsubo/${point.codeLower}`}
+                  href={`/tsubo/${point.codeLower}#acupoint-location`}
                   prefetch={false}
                   id={`tsubo-card-${point.codeLower}`}
                   className="dictionary-result-card atlas-result-card"
@@ -483,7 +483,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
                       <span>{point.bodyPart} <span aria-hidden="true">·</span> {point.meridian}</span>
                       {matchReason && <span className="atlas-result-match">{matchReason}</span>}
                     </p>
-                    <ArrowRight aria-hidden="true" size={16} />
+                    <span className="dictionary-result-action">場所を見る<ArrowRight aria-hidden="true" size={15} /></span>
                   </div>
                 </Link>
               );
@@ -510,7 +510,7 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
                       {point.code}
                     </td>
                     <td className="p-3 font-semibold text-[#232826] dark:text-[#FAF8F5]">
-                      <Link href={`/tsubo/${point.codeLower}`} prefetch={false} className="hover:underline">
+                      <Link href={`/tsubo/${point.codeLower}#acupoint-location`} prefetch={false} className="hover:underline">
                         {point.name}
                       </Link>
                       <span className="text-sm font-normal text-[var(--text-secondary)] ml-1">({point.kana})</span>
@@ -520,11 +520,11 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
                     <td className="p-3 text-[#59615D] dark:text-[#A0B0BC] max-w-xs truncate">{point.locationSimple}</td>
                     <td className="p-3 text-right">
                       <Link
-                        href={`/tsubo/${point.codeLower}`}
+                        href={`/tsubo/${point.codeLower}#acupoint-location`}
                         prefetch={false}
                         className="font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline"
                       >
-                        詳細
+                        場所を見る
                       </Link>
                     </td>
                   </tr>
@@ -590,24 +590,9 @@ export default function TsuboInteractiveClient({ relatedGuides, featuredPoints, 
           </div>
         )}
       </section>
+      </HashTargetDetails>
 
       {!browsingWithoutFilters && nearbyComparisons}
-      <nav aria-label="ツボ図鑑の索引" className="atlas-directory-index-links">
-        {ATLAS_INDEX_LINKS.map(({ href, label }) => <a key={href} href={href} className="atlas-search-index-link">{label}</a>)}
-      </nav>
-      {relatedGuides}
-
-      <TsuboReviewEntry placement="dictionary" />
-      <nav className="dictionary-tools" aria-label="経穴の学習ツール">
-        <Link href="/tsubo/practice"><BookOpen aria-hidden="true" className="h-4 w-4" />今日の復習<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
-        <Link href="/kikei">奇経八脈<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
-      </nav>
-
-
-      {/* 関連する基礎解説・配穴案内 */}
-      <section className="space-y-4 pt-4 border-t border-[#F2ECE0] dark:border-[#22303D]">
-        <ClinicalPairsSection />
-      </section>
     </div>
   );
 }

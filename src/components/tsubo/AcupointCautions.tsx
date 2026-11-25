@@ -3,9 +3,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 
-export default function AcupointCautions({ priority, initiallyOpen, children }: {
+export default function AcupointCautions({ priority, children }: {
   priority?: ReactNode;
-  initiallyOpen?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -14,7 +13,6 @@ export default function AcupointCautions({ priority, initiallyOpen, children }: 
       <HashTargetDetails
         id="acupoint-cautions"
         className="atlas-cautions atlas-disclosure atlas-target"
-        open={initiallyOpen}
         summary={<><ShieldCheck aria-hidden="true" className="size-4 shrink-0" /><span id="acupoint-safety-warning">注意したいこと</span></>}
       >
         <div className="space-y-2 text-sm leading-relaxed">

@@ -16,9 +16,8 @@ export default function AcupointLocationComparison({ point, related, children }:
   if (!entries.length && !children) return null;
 
   return (
-    <section id="acupoint-compare" className="atlas-target" aria-labelledby="acupoint-compare-title">
+    <section id="acupoint-compare" tabIndex={-1} className="atlas-target" aria-labelledby="acupoint-compare-title">
       <h2 className="atlas-section-title" id="acupoint-compare-title">位置を見比べるツボ</h2>
-      {children}
       {entries.length > 0 && (
         <ul className="atlas-point-compare-grid" role="list">
           <li className="atlas-point-compare-card atlas-point-compare-current">
@@ -47,6 +46,7 @@ export default function AcupointLocationComparison({ point, related, children }:
           ))}
         </ul>
       )}
+      {children && <div className="atlas-point-compare-extras">{children}</div>}
     </section>
   );
 }

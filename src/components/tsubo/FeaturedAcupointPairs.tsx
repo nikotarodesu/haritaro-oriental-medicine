@@ -167,6 +167,7 @@ export default function FeaturedAcupointPairs({ pointCode, directory = false }: 
         id={FEATURED_ACUPOINT_PAIRS_ANCHOR}
         className="atlas-disclosure atlas-evidence-disclosure atlas-target"
         summary={<h2>{title}</h2>}
+        open
       >
         {groups}
       </HashTargetDetails>
