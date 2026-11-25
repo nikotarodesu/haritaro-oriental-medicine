@@ -91,11 +91,15 @@ for (const pathname of ['/tsubo/sp11','/tsubo/bl57']) {
 const { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } = load('src/data/tsubo/keyPointTypes');
 const { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } = load('src/data/tsubo/extraPoints');
 const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/tsubo/lu7', KEY_POINT_TYPES_GUIDE, '/symptoms/constipation-ibs', '/symptoms/headache-stiff-neck']);
+const pairRevised = new Set(['li4', 'li10', 'li11', 'st36', 'lr3', 'pc6', 'sp4'].map(code => `/tsubo/${code}`));
 for (const pathname of ['/updates', KEY_POINT_TYPES_GUIDE,
   ...[...CLASSIFIED_ACUPOINT_CODES, 'st35', 'st36', 'st38', 'st41'].map(code => `/tsubo/${code}`),
-].filter(pathname => !searchRevised.has(pathname))) assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
+].filter(pathname => !searchRevised.has(pathname) && !pairRevised.has(pathname))) assert.equal(dateAt(pathname), '2026-11-24', pathname + ' includes the atlas update');
 for (const pathname of searchRevised) {
   assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its search and navigation revisions');
+}
+for (const pathname of pairRevised) {
+  assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its new pairing guide');
 }
 for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.href)]) {
   assert.equal(dateAt(pathname), EXTRA_POINTS_REVISED_AT, pathname + ' has its own sitemap entry');

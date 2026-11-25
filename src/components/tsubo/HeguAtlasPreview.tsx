@@ -8,6 +8,7 @@ import AcupointLocationComparison from "@/components/tsubo/AcupointLocationCompa
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointUses from "@/components/tsubo/AcupointUses";
+import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
@@ -67,6 +68,8 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         code={point.codeLower}
         links={<AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />}
       />
+
+      <FeaturedAcupointPairs pointCode={point.codeLower} />
 
       <section>
         <h2 className={headingClass}>自分で押してみる</h2>

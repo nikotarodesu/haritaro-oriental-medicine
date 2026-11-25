@@ -28,7 +28,7 @@ export default function AcupointArticleHeader({ point, lead, hasAnatomyDiagram }
       <p className="atlas-point-meta">標準361経穴 <span aria-hidden="true">·</span> <a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
       <p className="atlas-point-lead">{lead}</p>
       <AcupointStudyLinks code={point.code} />
-      <AcupointSectionLinks hasAnatomyDiagram={hasAnatomyDiagram} />
+      <AcupointSectionLinks hasAnatomyDiagram={hasAnatomyDiagram} pointCode={point.codeLower} />
     </header>
   );
 }

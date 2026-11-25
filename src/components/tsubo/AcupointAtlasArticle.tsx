@@ -9,6 +9,7 @@ import AcupointLocationComparison from "./AcupointLocationComparison";
 import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointResearch from "./AcupointResearch";
 import AcupointUses from "./AcupointUses";
+import FeaturedAcupointPairs from "./FeaturedAcupointPairs";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
@@ -99,6 +100,8 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         context={{ title: contextTitle, paragraphs: article.traditional }}
         links={<AcupointReadingLinks code={point.codeLower} editorialLinks={article.symptomLinks} />}
       />
+
+      <FeaturedAcupointPairs pointCode={point.codeLower} />
 
       {!article.visualOnly && (
         <section>

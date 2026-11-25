@@ -22,6 +22,9 @@ export default function AcupointNameGuide({ code }: { code: string }) {
         </dl>
 
         <p>{name.reading}</p>
+        {(code === "li10" || code === "st36") && (
+          <a href="#featured-acupoint-pair-sanri" className="atlas-text-action">手三里と足三里の図を見比べる</a>
+        )}
 
         <div>
           <h3 className="atlas-name-characters-title">漢字の意味</h3>

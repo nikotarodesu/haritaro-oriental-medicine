@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { MERIDIANS, ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
-import { ArrowRight, BookOpen, FlaskConical, Layers, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
+import { ArrowRight, BookOpen, FlaskConical, GitMerge, Layers, ListFilter, MapPinned, Ruler, ShieldCheck } from "lucide-react";
 import AtlasOverviewArt from "@/components/tsubo/AtlasOverviewArt";
+import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import TsuboInteractiveClient from "@/components/tsubo/TsuboInteractiveClient";
 import { DICTIONARY_TAGLINE, SERIES } from "@/config/series";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLearning";
 import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_STUDIES } from "@/data/tsubo/atlas/evidence";
+import { FEATURED_ACUPOINT_PAIRS_ANCHOR } from "@/data/tsubo/atlas/featuredPairs";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
 import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
@@ -60,6 +62,9 @@ export default function TsuboPage() {
           <h1>{SERIES.dictionary.name}</h1>
           <p className="atlas-directory-tagline">{DICTIONARY_TAGLINE}</p>
           <p>{ALL_ACUPOINTS.length}のツボを探し、図で場所を確かめる。</p>
+          <a href={`#${FEATURED_ACUPOINT_PAIRS_ANCHOR}`} className="atlas-text-action mt-1">
+            <GitMerge size={17} aria-hidden="true" />ツボの組み合わせを見る
+          </a>
         </div>
         <AtlasOverviewArt />
       </header>
@@ -115,6 +120,8 @@ export default function TsuboPage() {
           </ul>
         </section>
       } />
+
+      <FeaturedAcupointPairs />
 
       <details className="atlas-disclosure atlas-region-index">
         <summary>ほかの代表的なツボ</summary>

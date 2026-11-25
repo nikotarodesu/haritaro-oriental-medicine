@@ -22,6 +22,7 @@ import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
+import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import HeguAtlasPreview, { heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
@@ -30,6 +31,7 @@ import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
 import { ACUPOINT_LOCATION_IMAGES } from "@/data/tsubo/atlas/locationImages";
 import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas/evidence";
+import { FEATURED_ACUPOINT_PAIRS_ANCHOR, getFeaturedPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { getAcupointName } from "@/data/tsubo/names";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
@@ -122,6 +124,10 @@ export default async function AcupointDetailPage({ params }: Props) {
 
   const isDetailed = isDetailedAcupoint(point.codeLower);
   const individualModel = Boolean(DETAILED_ACUPOINTS[point.codeLower]?.crossSection);
+  const featuredPairs = getFeaturedPairs(point.codeLower);
+  const otherTraditionalPairs = (point.goldenPairs ?? []).filter(({ partnerCode }) =>
+    !featuredPairs.some(({ pointIds }) => pointIds.includes(partnerCode.toLowerCase())),
+  );
 
   // 同経脈の経穴リスト（前後の経穴導線用）
   const meridianPoints = getMeridianPoints(point.meridianId);
@@ -433,7 +439,8 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
           <a href="#acupoint-cautions"><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意点</a>
           {nearby.length > 0 && <a href="#acupoint-compare"><GitCompare aria-hidden="true" className="h-4 w-4" />近くのツボ</a>}
-          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />研究・配穴</a>
+          {featuredPairs.length > 0 && <a href={`#${FEATURED_ACUPOINT_PAIRS_ANCHOR}`}>配穴</a>}
+          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />{featuredPairs.length > 0 ? "研究" : "研究・配穴"}</a>
           <a href="#acupoint-sources"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
         </nav>
 
@@ -534,12 +541,12 @@ export default async function AcupointDetailPage({ params }: Props) {
             </p>
           </div>
 
-          {/* 臨床ゴールデンペア（名配穴・相乗効果） */}
-          {point.goldenPairs && point.goldenPairs.length > 0 && (
+          {/* 図付きで紹介している組み合わせは、下の配穴欄に掲載する。 */}
+          {otherTraditionalPairs.length > 0 && (
             <details className="atlas-disclosure atlas-reading-details dictionary-golden-pairs">
               <summary>伝統的な配穴例</summary>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                {point.goldenPairs.map((pair, idx) => {
+                {otherTraditionalPairs.map((pair, idx) => {
                   const partner = getAcupointByCode(pair.partnerCode);
                   return (
                   <div
@@ -616,6 +623,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         </section>
 
+        <FeaturedAcupointPairs pointCode={point.codeLower} />
         <AcupointResearch point={point} />
         <AcupointNameGuide code={point.codeLower} />
 
