@@ -79,14 +79,13 @@ export function AcupointComparisonLink({ code }: { code: string }) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-frame bg-panel p-3 print:hidden">
       <p className="min-w-0 flex-1 basis-48 text-sm leading-relaxed">{pair.comparisonPrompt}</p>
-      <Link
+      <a
         href={atlasLearningPairHref(pair.codes)}
-        prefetch={false}
         className="page-secondary-action"
         data-analytics-action="atlas_compare"
       >
         {pair.comparisonLabel}
-      </Link>
+      </a>
     </div>
   );
 }

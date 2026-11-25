@@ -411,9 +411,9 @@ export default async function AcupointDetailPage({ params }: Props) {
 
 
               <div className="acupoint-utility-actions">
-                <Link href={`/tsubo/compare?a=${point.codeLower}`} className="acupoint-compare-action">
+                <a href={`/tsubo/compare?a=${point.codeLower}`} className="acupoint-compare-action">
                   <GitCompare aria-hidden="true" className="h-4 w-4" />比較
-                </Link>
+                </a>
                 <details className="acupoint-learning-actions">
                   <summary><BookOpen aria-hidden="true" className="h-4 w-4" />学習に使う</summary>
                   <div>

@@ -44,16 +44,15 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
         <PairPointLink point={second} />
       </div>
       <p className={styles.summary}>{pair.summary}</p>
-      <Link
+      <a
         className={styles.compare}
         href={atlasLearningPairHref(pair.pointIds)}
-        prefetch={false}
         aria-label={`${first.name}と${second.name}の位置を並べて見る`}
         data-analytics-action="atlas_compare"
       >
         <GitCompare size={17} aria-hidden="true" />
         位置を並べて見る
-      </Link>
+      </a>
       {pair.details.length > 0 && (
         <details className={`${styles.details} atlas-disclosure`}>
           <summary>古典・研究の詳細と出典</summary>

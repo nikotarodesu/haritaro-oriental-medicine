@@ -35,15 +35,14 @@ export default function AcupointLocationComparison({ point, related, children }:
               </h3>
               <p>{other.locationSimple}</p>
               {text && <p className="atlas-point-compare-relation">{text}</p>}
-              <Link
+              <a
                 className="atlas-point-compare-action"
                 href={`/tsubo/compare?a=${point.codeLower}&b=${other.codeLower}`}
-                prefetch={false}
                 aria-label={`${point.name}と${other.name}を比べる`}
                 data-analytics-action="atlas_compare"
               >
                 <GitCompare aria-hidden="true" size={15} />並べて見る
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
