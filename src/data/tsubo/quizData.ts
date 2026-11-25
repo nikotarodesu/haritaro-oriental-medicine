@@ -186,7 +186,7 @@ export function generateQuestionsForPoints(
     // ========== 1. 部位・取穴 ➔ 経穴名 ==========
     if (targetSkill === "location_to_name") {
       const cleanLoc = cleanLocationPrompt(pt);
-      const prompt = `【部位・取穴法】\n${cleanLoc}\n\n上記の部位・骨性目印に位置する経穴はどれか？`;
+      const prompt = `次の位置の説明に当てはまるツボはどれですか？\n\n${cleanLoc}`;
 
       const distractors = pickIntelligentDistractors(pt, allMaster, itemSeed);
 
@@ -216,7 +216,7 @@ export function generateQuestionsForPoints(
 
     // ========== 2. 臨床刺鍼手技・安全深度 ==========
     else if (targetSkill === "puncture_method") {
-      const prompt = `経穴「${pt.name}（${pt.code}）」の刺鍼計画を立てる際、安全上適切な確認はどれか？`;
+      const prompt = `「${pt.name}（${pt.code}）」に鍼を刺すか検討する前に、安全のため何を確認しますか？`;
       const options = [
         { id: "correct", text: "局所解剖、体格・体位、刺入方向、禁忌を確認し、必要に応じて刺鍼を保留する" },
         { id: "dist_0", text: "骨度分寸による取穴位置の寸数を、そのまま刺鍼深度に使う" },
@@ -232,7 +232,7 @@ export function generateQuestionsForPoints(
         continue;
       } else {
         const correctAttr = pt.fiveElementsCategory;
-        const prompt = `経穴「${pt.name}（${pt.code} / ${pt.meridian}）」の五輸穴分類および五行属性として正しいものはどれか？`;
+        const prompt = `五輸穴には井・滎・兪・経・合の5つがあり、それぞれを五行の木・火・土・金・水と結びつけて覚えます。「${pt.name}（${pt.code}・${pt.meridian}）」はどれに当たりますか？`;
 
         const allAttrs = [
           "井木穴", "滎火穴", "輸土穴", "経金穴", "合水穴",
@@ -278,7 +278,7 @@ export function generateQuestionsForPoints(
       if (!partnerPt) continue;
       const knownPartners = new Set((pt.goldenPairs || []).map(pair => pair.partnerCode.toUpperCase()));
 
-      const prompt = `本サイトに登録した経穴「${pt.name}（${pt.code}）」の伝統的な配穴例で、組み合わせる経穴はどれか？`;
+      const prompt = `この教材に載せた伝統的な配穴の例で、「${pt.name}（${pt.code}）」と組み合わせるツボはどれですか？`;
 
       // 誤答穴（遠隔や全く無関係な部位のツボをシャッフル）
       const distractors = seededShuffle(
@@ -316,7 +316,7 @@ export function generateQuestionsForPoints(
 
     // ========== 5. 所属経脈当て ==========
     else if (targetSkill === "meridian_of_point") {
-      const prompt = `経穴「${pt.name}（${pt.code}）」が所属する経脈はどれか？`;
+      const prompt = `経脈は、ツボが並ぶ道筋です。「${pt.name}（${pt.code}）」はどの経脈に属しますか？`;
       const correctMeridian = pt.meridian;
       const otherMeridians = MERIDIANS.filter((m) => m.name !== correctMeridian);
       const distractorMeridians = seededShuffle(otherMeridians, `${itemSeed}_mer`).slice(0, 3);
@@ -343,7 +343,7 @@ export function generateQuestionsForPoints(
     else if (targetSkill === "category_of_point") {
       if (pt.categories.length === 0) continue;
       const primaryCategory = pt.categories[0];
-      const prompt = `経穴「${pt.name}（${pt.code}）」が該当する要穴分類として正しいものはどれか？`;
+      const prompt = `要穴は、伝統医学でツボを役割などで分けるときに使う呼び名です。「${pt.name}（${pt.code}）」が当てはまる分類はどれですか？`;
 
       const allCategories = [
         "原穴", "絡穴", "郄穴", "募穴", "背部兪穴",

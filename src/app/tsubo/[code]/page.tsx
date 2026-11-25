@@ -487,9 +487,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           )}
         </section>
 
-        <AcupointCautions>
-          {isNeedleBan && <p><strong>古典に刺鍼を禁じる記載がある部位です。</strong> 施術については、はり師・きゅう師に相談してください。</p>}
-          {isMoxaBan && <p><strong>古典にお灸を禁じたり、注意を求めたりする記載があります。</strong> 熱傷などのおそれがあるため、自己判断でお灸をしないでください。</p>}
+        <AcupointCautions priority={<>
           {isPregnancyBan && !caution.includes("妊娠") && (
             <p>妊娠中は部位を問わず強い刺激を避け、施術を受ける前に担当の医療機関に相談してください。</p>
           )}
@@ -497,6 +495,9 @@ export default async function AcupointDetailPage({ params }: Props) {
             <p><strong>胸郭周囲では鍼で肺などが傷つくおそれがあります。</strong> 施術後に強い息苦しさが出たら、すぐ119番へ連絡してください。胸の痛みや息苦しさが出た場合は、すぐに医療機関を受診してください。</p>
           )}
           <p>{caution}</p>
+        </>}>
+          {isNeedleBan && <p><strong>古典に刺鍼を禁じる記載がある部位です。</strong> 施術については、はり師・きゅう師に相談してください。</p>}
+          {isMoxaBan && <p><strong>古典にお灸を禁じたり、注意を求めたりする記載があります。</strong> 熱傷などのおそれがあるため、自己判断でお灸をしないでください。</p>}
           <p>押したときの痛みや響きだけでツボの位置を判断しないでください。</p>
           <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
         </AcupointCautions>

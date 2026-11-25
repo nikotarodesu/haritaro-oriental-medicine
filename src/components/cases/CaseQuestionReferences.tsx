@@ -5,7 +5,7 @@ import type { CaseFourExaminations, CasePatientProfile } from "@/types/clinicalC
 
 const references = [
   { id: "history", label: "症状の経過を見返す" },
-  { id: "findings", label: "四診の所見を見返す" },
+  { id: "findings", label: "診察の記録を見返す" },
 ] as const;
 
 export function CaseHistoryContent({ history, labelledBy }: {
@@ -55,11 +55,11 @@ export default function CaseQuestionReferences({ patient, examinations }: {
         )}
         {open === "findings" && (
           <dl className="space-y-2">
-            <div><dt className="font-semibold">望診</dt><dd>{examinations.inspection}</dd></div>
-            <div><dt className="font-semibold">舌の色・舌苔・形</dt><dd>{[tongueDiagnosis.body, tongueDiagnosis.coating, tongueDiagnosis.shape, tongueDiagnosis.sublingualVeins].filter(Boolean).join("、")}</dd></div>
-            <div><dt className="font-semibold">聞診</dt><dd>{examinations.auscultationAndOlfaction}</dd></div>
-            <div><dt className="font-semibold">問診</dt>{examinations.inquiry.map(({ question, answer }) => <dd key={question}>{question} {answer}</dd>)}</div>
-            <div><dt className="font-semibold">切診</dt><dd>脈 {palpation.pulse}</dd><dd>お腹 {palpation.abdomen}</dd>{palpation.acupointReaction && <dd>経穴の反応 {palpation.acupointReaction}</dd>}</div>
+            <div><dt className="font-semibold">見た様子（望診）</dt><dd>{examinations.inspection}</dd></div>
+            <div><dt className="font-semibold">舌の色・形・舌苔（表面の付着物）</dt><dd>{[tongueDiagnosis.body, tongueDiagnosis.shape, tongueDiagnosis.coating, tongueDiagnosis.sublingualVeins].filter(Boolean).join("、")}</dd></div>
+            <div><dt className="font-semibold">声やにおい（聞診）</dt><dd>{examinations.auscultationAndOlfaction}</dd></div>
+            <div><dt className="font-semibold">本人から聞いたこと（問診）</dt>{examinations.inquiry.map(({ question, answer }) => <dd key={question}>{question} {answer}</dd>)}</div>
+            <div><dt className="font-semibold">触れて分かったこと（切診）</dt><dd>脈 {palpation.pulse}</dd><dd>お腹 {palpation.abdomen}</dd>{palpation.acupointReaction && <dd>ツボの反応 {palpation.acupointReaction}</dd>}</div>
           </dl>
         )}
       </div>

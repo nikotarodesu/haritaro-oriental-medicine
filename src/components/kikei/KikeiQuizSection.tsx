@@ -27,7 +27,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
     return [
       {
         id: "q1",
-        question: `【通穴の特定】${vessel.name}に通ずる八脈交会穴（主穴）として正しい経穴はどれか？`,
+        question: `八脈交会穴のうち、${vessel.name}と結びつけて覚えるツボ（通穴）はどれですか？`,
         options: shuffleArray([
           { text: `${vessel.masterPoint.name}（${vessel.masterPoint.meridian}）`, isCorrect: true },
           { text: `${vessel.couplePoint.name}（${vessel.couplePoint.meridian}）`, isCorrect: false },
@@ -38,7 +38,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
       },
       {
         id: "q2",
-        question: `【配穴ペアの特定】${vessel.name}の通穴（${vessel.masterPoint.name}）と対をなす交会配穴（${vessel.pairName}）はどれか？`,
+        question: `${vessel.name}の通穴は${vessel.masterPoint.name}です。伝統的な使い方では、どのツボと組にしますか？`,
         options: shuffleArray([
           { text: `${vessel.couplePoint.name}（${vessel.couplePoint.meridian}）`, isCorrect: true },
           { text: "足三里（足陽明胃経）", isCorrect: false },
@@ -49,7 +49,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
       },
       {
         id: "q3",
-        question: `【主治病証の鑑別】${vessel.name}の臨床適応・主治病証として最も特徴的なものはどれか？`,
+        question: `伝統医学の資料では、${vessel.name}をどのような症状や体の状態と結びつけて説明しますか？`,
         options: shuffleArray([
           { text: vessel.indications[0] || "特有の主治病証", isCorrect: true },
           { text: "外感風寒による初期の一過性表寒証のみ", isCorrect: false },
@@ -99,13 +99,14 @@ export default function KikeiQuizSection({ vessel }: Props) {
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#B86924]" />
           <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-            {vessel.name} 八脈交会穴 臨床演習チェック
+            {vessel.name}の確認問題
           </h3>
         </div>
         <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]">
           全 {questions.length} 問
         </span>
       </div>
+      <p className="text-sm ui-muted">奇経は、経絡を補う八つの道筋です。八脈交会穴は、それぞれの道筋に結びつけて覚える八つのツボです。</p>
 
       {!isFinished ? (
         <div className="space-y-4 pt-1">

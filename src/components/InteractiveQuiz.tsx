@@ -447,7 +447,7 @@ export const InteractiveQuiz: React.FC<InteractiveQuizProps> = ({ quiz, nextLect
                 </span>
               )}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">この{totalQuestions}問は講義の基本事項を確かめる練習です。間違えた問題は本文に戻り、時間を置いてもう一度確かめましょう。</p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">講義「{quiz.lectureTitle}」で扱った内容を確認します。選択肢を選ぶと、その場で理由を読めます。</p>
           </div>
 
           {/* 右上コントローラー（シャッフル切替・サウンド切替・ステータス） */}

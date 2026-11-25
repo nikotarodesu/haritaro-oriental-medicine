@@ -86,7 +86,7 @@ for (const clinicalCase of CLINICAL_CASES) {
   assert(html.includes('href="#case-reasoning"') && html.includes('id="case-reasoning"'), clinicalCase.id);
   assert(html.includes('aria-label="表示する所見"') && html.includes('aria-pressed="true"'), clinicalCase.id);
   assert(html.includes('id="case-history"'), clinicalCase.id + ': stable link to symptom history');
-  for (const label of ['症状の経過を見返す', '四診の所見を見返す']) {
+  for (const label of ['症状の経過を見返す', '診察の記録を見返す']) {
     assert.equal(html.split(label).length - 1, clinicalCase.reasoningSteps.length, clinicalCase.id + ': references are available at every question');
   }
   assert(!html.includes('class="case-observation-links"'), clinicalCase.id + ': reveal the evidence links with the explanation');

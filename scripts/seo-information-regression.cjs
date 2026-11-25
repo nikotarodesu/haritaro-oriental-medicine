@@ -62,6 +62,10 @@ assert.deepEqual(Object.keys(ATLAS_POINT_MARKERS).sort(), [...new Set([...Object
   'Every illustrated index link must have one complete diagram set');
 assert.deepEqual(['li4', ...Object.keys(ATLAS_ARTICLES)].sort(), Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort(),
   'Every standard point has a full atlas article, including the dedicated LI4 page');
+for (const [code, article] of Object.entries(ATLAS_ARTICLES)) {
+  const folded = [...article.cautions, ...(article.visualOnly ? article.selfCare : [])].join(' ');
+  assert(!/119番|救急要請/.test(folded), code + ' emergency instructions must appear in the visible warning');
+}
 const standardPointCodes = Array.from(ACUPOINTS_MASTER, point => point.codeLower).sort();
 assert.deepEqual(Object.keys(whoAtlasPages).sort(), standardPointCodes, 'Every WHO point has an exact PDF page');
 assert.deepEqual(Object.keys(whoLocations).sort(), standardPointCodes, 'Every WHO point has a Japanese location summary');
@@ -329,7 +333,7 @@ for (const [code, foot] of Object.entries(footLandmarks)) {
   assert.equal(marker.footCode, code);
   assert(article.sources[0].url.endsWith('#page=' + foot.pdfPage), code);
   assert(article.relatedPoints.every(point => getAcupointByCode(point.code)), code);
-  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
+  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
   assert(body.length >= 700 && body.length <= 900, code + ' article length');
 }
 assert(footLandmarks.sp2.x > 240 && footLandmarks.sp3.x < 240, 'SP2 and SP3 sit on opposite sides of the great toe joint');
@@ -395,7 +399,7 @@ for (const [code, point] of Object.entries(legLandmarks)) {
   assert.equal(marker.y, point.y, code);
   assert(article.sources[0].url.endsWith('#page=' + point.pdfPage), code);
   assert(article.relatedPoints.every(point => getAcupointByCode(point.code)), code);
-  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
+  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
   assert(body.length >= 700 && body.length <= 900, code + ' article length');
 }
 assert.equal(legLandmarks.ki1.y, (soleEndpoints.heel.y - soleEndpoints.web.y) / 3 + soleEndpoints.web.y);
@@ -448,7 +452,7 @@ for (const [code, part, number, position, pdfPage] of digitLocations) {
   assert(article.sources.some(source => source.url.endsWith('#page=' + pdfPage)), code);
   assert.equal(article.illustration.region, part === 'hand' ? 'finger' : 'toe', code);
   for (const related of article.relatedPoints) assert(getAcupointByCode(related.code), code);
-  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, ...article.expert, ...article.relatedPoints.map(p => p.text)].join('');
+  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(p => p.text)].join('');
   assert(body.length >= 700 && body.length <= 900, code + ' article length');
 }
 for (const [code, distance, page] of [['st37', 6, 64], ['st38', 8, 65], ['st39', 9, 65]]) {

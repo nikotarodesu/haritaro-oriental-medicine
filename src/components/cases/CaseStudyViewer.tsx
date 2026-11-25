@@ -149,24 +149,27 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       <header className="reader-header">
         <p className="text-sm font-semibold text-accent">模擬症例 {String(clinicalCase.caseNumber).padStart(2, "0")} · {clinicalCase.category} · {clinicalCase.difficulty}</p>
         <h1 className="reader-title">{clinicalCase.title}</h1>
+        <p className="text-sm ui-muted">架空の相談を読み、本人が困っていることと、東洋医学でどう考えるかを確かめます。</p>
         <p className="reader-lead">{clinicalCase.subTitle}</p>
-        <p className="text-sm ui-muted">学習用の架空症例です。</p>
       </header>
       <nav aria-label="症例の進め方">
         <ol className="case-reading-path">
           <li><a href="#case-patient"><UserIcon aria-hidden="true" /><span>基本情報を読む</span></a></li>
-          <li><a href="#case-examination"><Stethoscope aria-hidden="true" /><span>四診を確認</span></a></li>
+          <li><a href="#case-examination"><Stethoscope aria-hidden="true" /><span>診察の記録を読む</span></a></li>
           <li><a href={`#${CASE_REASONING_ANCHOR}`}><Activity aria-hidden="true" /><span>問題に答える</span></a></li>
         </ol>
       </nav>
 
-      <MedicalSafetyNotice title="演習を始める前に" message={CLINICAL_CASE_SCOPE} />
+      <details className="page-help text-sm leading-relaxed">
+        <summary>この演習で扱う範囲</summary>
+        <p>{CLINICAL_CASE_SCOPE}</p>
+      </details>
       {CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id] && <MedicalSafetyNotice title="この症例の受診・安全上の注意" {...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id]} />}
 
       {/* ステップ 1: 患者基本情報 ＆ 主訴・現病歴 */}
       <section id="case-patient" tabIndex={-1} aria-labelledby="case-patient-title" className="case-section">
         <h2 id="case-patient-title" className="reader-section-title flex items-center gap-2">
-          <UserIcon aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />症例の基本情報と主訴
+          <UserIcon aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />基本情報と本人の訴え
         </h2>
 
         {/* 患者属性テーブル */}
@@ -180,7 +183,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
             <span className="font-bold text-ink">{clinicalCase.patient.occupation}</span>
           </div>
           <div className="col-span-2">
-            <span className="text-muted block">既往歴</span>
+            <span className="text-muted block">これまでの病気やけが（既往歴）</span>
             <span className="font-bold text-ink">{clinicalCase.patient.pastHistory.join("、")}</span>
           </div>
         </div>
@@ -209,8 +212,9 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       {/* ステップ 2: 四診情報（望・聞・問・切） */}
       <section id="case-examination" tabIndex={-1} aria-labelledby="case-examination-title" className="case-section">
         <h2 id="case-examination-title" className="reader-section-title flex items-center gap-2">
-          <Stethoscope aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />四診の所見
+          <Stethoscope aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />診察の記録（四診）
         </h2>
+        <p className="text-sm ui-muted">四診は、見た様子、声やにおい、本人から聞いた話、脈やお腹に触れて分かったことを整理する方法です。</p>
 
         {/* 四診タブナビゲーション */}
         <div role="group" aria-label="表示する所見" className="case-examination-options">
@@ -316,7 +320,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       {/* ステップ 3: 臨床推論ステップ（演習クイズ） */}
       <section id={CASE_REASONING_ANCHOR} tabIndex={-1} aria-labelledby="case-reasoning-title" className="case-section">
         <h2 id="case-reasoning-title" className="reader-section-title flex items-center gap-2">
-          <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />{retry ? "症例の復習" : "臨床推論の演習"}
+          <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />{retry ? "症例の復習" : "症例を読んで判断する"}
         </h2>
 
         {ready && !retry && (
@@ -346,10 +350,10 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                   </h3>
                 </div>
 
+                <CaseQuestionReferences patient={clinicalCase.patient} examinations={clinicalCase.examinations} />
                 <p className="text-base leading-[1.8] text-ink">
                   {step.question}
                 </p>
-                <CaseQuestionReferences patient={clinicalCase.patient} examinations={clinicalCase.examinations} />
 
                 <div className="space-y-2 pt-1">
                   {step.options.map((opt) => {

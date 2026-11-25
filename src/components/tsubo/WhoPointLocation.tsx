@@ -21,6 +21,7 @@ export default function WhoPointLocation({ code, pointName }: { code: string; po
   return (
     <section id="acupoint-who-location" className="atlas-who-location cun-guide-target">
       <h3>WHO標準の位置 <span>日本語要約</span></h3>
+      {usedUnits.has("寸") && <p className="text-sm">ここでの「寸」は、骨の端やしわの間を等分して数える単位です。</p>}
       <p>{location}</p>
       <WhoMeasurementFigures measures={measures} pointName={pointName} />
       {note && <p className="atlas-who-note">{note}</p>}

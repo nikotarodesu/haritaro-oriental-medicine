@@ -26,7 +26,8 @@ const setup: Record<LegView, string> = {
 const gentle = "自分で触れるときは、指の腹をそっと添え、位置が分かったら離します。指先や硬い道具で一点を押し込む必要はありません。冷えが気になるときは靴下やひざ掛けで脚全体を覆えます。足を支えられない姿勢になる場合は、図で位置を確認するだけで十分です。";
 const posteriorCare = "ひざ裏やふくらはぎは力を抜いた状態で見比べ、触れる場合は手のひらを軽く当てる程度にします。位置を確かめようとして、指で深く押したり、筋肉をつまんだりしません。体をひねらないと届かないときは、図で確認するだけで構いません。";
 const workCaution = "傷や腫れ、熱っぽさのある場所は押さないでください。もし痛みやしびれが出たら手を離します。転倒などのあとに強く痛む、腫れが目立つ、足に体重をかけられない場合は、ツボ探しを中断し、医療機関に相談してください。";
-const calfCaution = "片脚だけが急に腫れて痛む、熱をもつといった場合は、もんだり押したりせず早めに受診してください。急な息苦しさや胸の痛みを伴うときは、すぐに119番へ連絡してください。皮膚に傷がある、触れるだけでつらい場合も、刺激を控えます。";
+const calfWarning = "片脚だけが急に腫れて痛む、熱をもつといった場合は、もんだり押したりせず早めに受診してください。急な息苦しさや胸の痛みを伴うときは、すぐに119番へ連絡してください。";
+const calfCaution = "皮膚に傷がある、触れるだけでつらい場合は刺激を控えます。";
 const who = "https://iris.who.int/server/api/core/bitstreams/d98c1c98-3fbf-4e4e-8c9a-1bbe72ccd00e/content";
 const genericSources = [
   { name: "Memorial Sloan Kettering Cancer Center の指圧の案内", url: "https://www.mskcc.org/cancer-care/patient-education/acupressure-pain-and-headaches", scope: "強く押さないことや皮膚の傷を避けることについての一般的な注意。" },
@@ -59,7 +60,7 @@ function article(code: LegCode, copy: ArticleCopy): AcupointAtlasArticle {
     selfCare: [view === "posterior" || code === "ki9" ? posteriorCare : gentle],
     cautions: [calf ? calfCaution : workCaution],
     expert: ["WHO標準では" + copy.expert + ("cun" in point ? units : "")],
-    safetyWarning: copy.warning,
+    safetyWarning: [copy.warning, calf ? calfWarning : undefined].filter(Boolean).join(" ") || undefined,
     relatedPoints: copy.links,
     symptomLinks: [{ href: view === "knee" || popliteal ? "/symptoms/knee-joint-pain" : "/symptoms", label: view === "knee" || popliteal ? "ひざの痛み・受診の目安" : "気になる症状から受診の目安を探す" }],
     sources: [

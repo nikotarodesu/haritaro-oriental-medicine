@@ -858,13 +858,16 @@
 .atlas-entry .atlas-location-notes { gap: .75rem; }
 .atlas-entry .atlas-location-notes > .atlas-who-location { margin-top: 0; }
 .atlas-cautions {
-  padding: clamp(.875rem, 3vw, 1.25rem);
-  border-inline-start: 3px solid var(--notice-line);
-  border-radius: .25rem .75rem .75rem .25rem;
-  background: var(--notice-bg);
-  color: var(--notice-ink);
+  padding-inline: .625rem;
+  border-block: 1px solid var(--atlas-line);
 }
-.atlas-cautions > h2 { color: inherit; }
+.atlas-cautions[open] { padding-bottom: .375rem; }
+.atlas-caution-priority {
+  padding-inline-start: .625rem;
+  border-inline-start: 2px solid var(--notice-line);
+  font-size: .875rem;
+  line-height: 1.7;
+}
 .atlas-point-compare-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

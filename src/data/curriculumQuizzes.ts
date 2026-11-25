@@ -3622,7 +3622,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     },
     {
       "id": "lecture-practice-12-q2",
-      "question": "「直後は軽いが、二日後には戻る」という別の架空例です。七つのパターンのうち、直接該当するものはどれですか？",
+      "question": "施術の直後は症状が軽く、二日後には元に戻ったという架空の記録です。どんな経過に当てはまりますか？",
       "options": [
         "情報が食い違い観察条件が不明",
         "初回改善したが持続しない",
@@ -3634,7 +3634,7 @@ const EXISTING_CURRICULUM_QUIZZES: Record<string, LessonQuizGroup> = {
     },
     {
       "id": "lecture-practice-12-q3",
-      "question": "振り返りメモ「新しい経過が初期の見方に合わず、仮説と計画を改めた」は、六つの観点のどれを直接示しますか？",
+      "question": "症例の振り返りに「新しく分かった経過が最初の見立てと合わず、説明と計画を改めた」と書きました。この記録は何を示していますか？",
       "options": [
         "自己修正",
         "患者共有",

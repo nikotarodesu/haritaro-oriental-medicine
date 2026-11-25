@@ -227,6 +227,7 @@ export default async function ReadingLecturePage({ params }: Props) {
               <span className="lecture-check-count">{questions.length}問</span>
               <ChevronDown aria-hidden="true" />
             </summary>
+            <p className="text-sm ui-muted">講義「{unit.title}」の確認問題です。答えを選ぶと解説が表示されます。</p>
             <ReadingUnitCheck key={unit.slug} unitId={unit.slug} questions={questions} />
           </details>
           <ContentNavigationLink href="/learn/review#learning-review" placement="reading_unit_review" className="ui-text-link inline-flex min-h-11 items-center">

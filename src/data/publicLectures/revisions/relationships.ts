@@ -72,7 +72,7 @@ export const relationshipRevisions = {
     ],
     questions: [
       {
-        question: "土の行の「唇」は、どの列で探しますか？",
+        question: "五行と体の関係をまとめた表で、「土」の行には「唇」が載っています。「唇」はどの項目の列にありますか？",
         choices: ["五体", "五華", "五志"],
         answer: 1,
         explanation: "唇は外から見える特徴なので五華です。同じ土の行でも、口は開竅・五官の列にあります。",

@@ -97,6 +97,11 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     : "このツボは左右に一つずつあります。図は片側だけを描いているので、反対側では同じ骨やしわを反対向きにたどります。";
   const meridianStart = Math.max(1, point.meridianOrder - 2);
   const meridianEnd = Math.min(graph.length, meridianStart + 3);
+  const warnings = [
+    care.emergency,
+    hasHeartCaution ? heartWarning : undefined,
+    point.codeLower === "gb21" ? "妊娠中は肩井への強い刺激を控え、施術については担当の産科へ相談してください。" : undefined,
+  ].filter(Boolean);
 
   return {
     titleTopic: "場所と図での見つけ方・注意点",
@@ -104,7 +109,7 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     meridianReading: meridianReadings[point.meridianId],
     regionLabel: view.label,
     lead: `${nameWithCode}の位置は、${profile.location}です。拡大図では、位置を決める骨や筋、しわなどに番号を付けています。`,
-    safetyWarning: hasHeartCaution ? heartWarning : point.codeLower === "gb21" ? "妊娠中は肩井への強い刺激を控え、施術については担当の産科へ相談してください。" : undefined,
+    safetyWarning: warnings.join(" ") || undefined,
     location: [profile.guide, view.read],
     traditionalTitle: "経絡の順番と近くのツボ",
     traditional: [orderText, compareText],

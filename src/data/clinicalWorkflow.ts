@@ -150,4 +150,4 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
   { slug: 'fatigue', title: '疲労・倦怠感', summary: '疲れが出る時間帯、休んだ後の変化、できなくなった日常動作を聞き、受診や検査の結果も確認します。', questions: ['いつから疲れが続き、何時ごろ強まりますか。動いたときと休んだ後、どんなことに困るかを聞きます。','眠り、食欲、便通は変わりましたか。息切れ、動悸、体重の変化も確認します。','これまでの病気や服薬、受診や検査の結果を聞きます。冷えやほてりの有無も尋ねます。'], review: ['同じ買い物や家事での疲れ方と、休んで戻るまでの時間','睡眠と食欲の変化、受診の結果、施術後に困った反応'], patternIds: ['spleen-qi','spleen-yang','damp','yin'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['fatigue','terminology'] },
 ];
 
-export const CLINICAL_INFORMATION_SCOPE = 'この教材では、選んだ所見を、掲載している証の説明と比べます。候補の表示から、病気の有無や治療の効果は分かりません。表示されなかった証も、除外できたことにはなりません。';
+export const CLINICAL_INFORMATION_SCOPE = '診察で確かめたことを「所見」、症状や所見から東洋医学で考える体の状態を「証」と呼びます。この教材では、選んだ所見を証の説明と比べます。候補の表示から、病気の有無や治療の効果は分かりません。表示されなかった証も、除外できたことにはなりません。';

@@ -283,7 +283,7 @@ const CASE_MODELS: ClinicalCase[] = [
       {
         stepNumber: 3,
         stepTitle: "寒と瘀血を考えたときの配穴例",
-        question: "伝統的な治法「温経散寒・活血化瘀」に沿って、この症例で挙げる三つのツボはどれですか。",
+                question: "月経時の痛みと冷えを考える例です。冷えを和らげ、血の滞りに働きかけると考える伝統的な方針「温経散寒・活血化瘀」に沿う三つのツボはどれですか。",
         options: [
           { id: "opt-1", label: "三陰交 (SP6) ＋ 関元 (CV4) ＋ 血海 (SP10)", isCorrect: true, feedback: "関元は温補、血海は活血化瘀の考え方から選び、肝・脾・腎の交会穴である三陰交を合わせます。月経痛に対する効果を読むには、条件のそろった比較試験が必要です。" },
           { id: "opt-2", label: "合谷 (LI4) ＋ 曲池 (LI11)", isCorrect: false, feedback: "合谷と曲池は手の陽明大腸経の組です。この問題では冷えと瘀血の両方を考えた配穴を探します。" },
@@ -816,7 +816,7 @@ const CASE_MODELS: ClinicalCase[] = [
           {
                 stepNumber: 2,
                 stepTitle: "休日と外出前の違いを比べる",
-                question: "脾虚湿盛と肝脾不和を見比べます。この症例で肝脾不和も候補に入れる理由はどれですか。",
+                question: "試験や外出前におなかが痛む相談です。東洋医学でいう脾虚湿盛と肝脾不和を比べるとき、肝脾不和も考える手がかりはどれですか。",
                 options: [
                       {
                             id: "opt-1",
@@ -1096,7 +1096,7 @@ const CASE_MODELS: ClinicalCase[] = [
           {
                 stepNumber: 2,
                 stepTitle: "痰濁中阻を考える記録を選ぶ",
-                question: "この症例の記録にあり、痰濁中阻を候補にする理由になるのはどの組み合わせですか。",
+                question: "体が浮くようなめまいを訴えた人の記録を読みます。東洋医学で痰濁中阻を考える手がかりになるのは、どの組み合わせですか。",
                 options: [
                       {
                             id: "opt-1",
@@ -1985,7 +1985,7 @@ const CASE_MODELS: ClinicalCase[] = [
           {
                 stepNumber: 2,
                 stepTitle: "血虚と皮膚の乾燥を照らす",
-                question: "この症例のように乾燥とかゆみがあり、血が肌を養うという伝統的な考え方から読む場合、候補になる証はどれですか。",
+                question: "肌の乾燥とかゆみが続く相談です。東洋医学で「血が肌を養う」と考えるとき、候補になる体の状態（証）はどれですか。",
                 options: [
                       {
                             id: "opt-1",
@@ -2232,7 +2232,7 @@ const CASE_MODELS: ClinicalCase[] = [
           {
                 stepNumber: 2,
                 stepTitle: "目がかすむ時刻と一緒に出る所見を読む",
-                question: "この症例で、画面作業の後にかすみ目が強まることを示す記録はどれですか。",
+                question: "目の疲れとかすみを訴えた人の記録で、画面作業とかすみの変化の関係が分かるのはどれですか。",
                 options: [
                       {
                             id: "opt-1",
@@ -2850,7 +2850,7 @@ export const CLINICAL_CASES: ClinicalCase[] = CASE_MODELS.map(clinicalCase => ({
   reasoningSteps: [{
     stepNumber: 1,
     stepTitle: "最初に行う安全確認",
-    question: "この相談で証を考える前に、何を確認しますか。",
+    question: `「${clinicalCase.patient.chiefComplaint}」という相談です。症状や診察の手がかりから、東洋医学で考える体の状態を「証」と呼びます。証を考える前に、何を確認しますか。`,
     options: [
       { id: "safety-1", label: "症状の始まり方と新しい変化を聞き、受診を急ぐ所見がないかを確かめる。", isCorrect: true, feedback: CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id].message },
       { id: "safety-2", label: "舌や脈から証を選び、その結果で受診が必要かを決める。", isCorrect: false, feedback: "舌や脈から考える伝統医学の候補とは別に、症状が急に出たか、ほかの異常がないかを確かめます。" },

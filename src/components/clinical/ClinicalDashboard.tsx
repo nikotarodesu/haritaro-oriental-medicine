@@ -8,6 +8,7 @@ export default function ClinicalDashboard() {
     <section id="chief-complaints" tabIndex={-1} className="clinical-section" aria-labelledby="clinical-lookup-heading">
       <div className="clinical-section-heading">
         <h2 id="clinical-lookup-heading">主訴別ガイド</h2>
+        <p className="text-sm ui-muted">主訴とは、本人が相談したい症状のことです。</p>
       </div>
       <div className="clinical-complaint-grid">
         {CLINICAL_COMPLAINTS.map(item => (

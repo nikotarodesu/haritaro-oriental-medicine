@@ -63,13 +63,18 @@ import { getPracticeContinuation, practiceDateLabel } from '@/data/tsubo/continu
 import { trackEvent } from '@/utils/analytics';
 
 const PRACTICE_SKILLS = [
-  { id: "mixed", label: "総合MIX特訓", desc: "全種別からランダム" },
-  { id: "location_to_name", label: "部位・取穴法", desc: "骨などの目印から経穴を選ぶ" },
-  { id: "puncture_method", label: "施術前の安全確認", desc: "解剖・体格・禁忌の確認原則" },
-  { id: "five_elements_shu", label: "五輸穴・五行", desc: "井滎輸経合・木火土金水" },
-  { id: "golden_pairs", label: "伝統名配穴", desc: "登録された配穴例" },
-  { id: "category_of_point", label: "要穴分類", desc: "原絡郄募兪穴の暗記" },
+  { id: "mixed", label: "いろいろな問題", desc: "種類を混ぜて出題" },
+  { id: "location_to_name", label: "ツボの位置", desc: "骨やしわの目印からツボを選ぶ" },
+  { id: "puncture_method", label: "施術前の安全確認", desc: "鍼を使う前に、体のつくりや避ける条件を確認" },
+  { id: "five_elements_shu", label: "五輸穴・五行", desc: "ツボの5つの分類と、木・火・土・金・水の対応を確認" },
+  { id: "golden_pairs", label: "ツボの組み合わせ", desc: "伝統的なツボの組み合わせを確認" },
+  { id: "category_of_point", label: "ツボの分類（要穴）", desc: "原穴や郄穴など、ツボが属する分類を確認" },
 ] as const;
+
+const practiceSkillLabels: Partial<Record<StudySkillType, string>> = {
+  ...Object.fromEntries(PRACTICE_SKILLS.map(({ id, label }) => [id, label])),
+  meridian_of_point: "ツボが属する経脈",
+};
 
 export default function PracticeClient() {
   const { ready } = useLearningSync();
@@ -663,15 +668,7 @@ function PracticePageContent() {
                         第 {idx + 1} 問 / {totalQ}
                       </span>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF3EF] dark:bg-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E]">
-                        {q.skill === "puncture_method"
-                          ? "刺鍼の安全確認"
-                          : q.skill === "five_elements_shu"
-                          ? "五輸穴・五行"
-                          : q.skill === "golden_pairs"
-                          ? "伝統名配穴"
-                          : q.skill === "category_of_point"
-                          ? "要穴分類"
-                          : "部位・取穴法"}
+                        {practiceSkillLabels[q.skill] ?? "ツボの確認"}
                       </span>
                     </div>
                     <span className="text-[11px]">{q.meridianName}</span>
@@ -770,15 +767,7 @@ function PracticePageContent() {
                   {currentQ.meridianName}
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF3EF] dark:bg-[#1E3D34] text-[#1E3D34] dark:text-[#74BA9E]">
-                  {currentQ.skill === "puncture_method"
-                    ? "刺鍼の安全確認"
-                    : currentQ.skill === "five_elements_shu"
-                    ? "五輸穴・五行"
-                    : currentQ.skill === "golden_pairs"
-                    ? "伝統名配穴"
-                    : currentQ.skill === "category_of_point"
-                    ? "要穴分類"
-                    : "部位・取穴法"}
+                  {practiceSkillLabels[currentQ.skill] ?? "ツボの確認"}
                 </span>
               </div>
               <p className="text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] font-medium leading-relaxed whitespace-pre-line">
@@ -1127,8 +1116,8 @@ function PracticePageContent() {
               onClick={() => startCourseSession("golden_pairs")}
               className="p-4 rounded-2xl bg-white dark:bg-[#17212A] border border-[#E5DEC9] dark:border-[#2A3B4A] hover:border-[#1E3D34] text-left transition-all space-y-1"
             >
-              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">伝統名配穴ペア特訓</strong>
-              <p className="text-[11px] text-[#737C77]">四関などの伝統的な配穴例</p>
+              <strong className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] block">ツボの組み合わせを練習</strong>
+              <p className="text-[11px] text-[#737C77]">四関など、伝統的なツボの組み合わせを確認</p>
             </button>
 
 

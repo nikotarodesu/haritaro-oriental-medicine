@@ -51,9 +51,12 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         </AcupointAtlasDiagrams>
       </section>
 
-      <AcupointCautions>
-        <p><strong>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</strong> 頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
-        <p>{heguAtlasReading.caution} 傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
+      <AcupointCautions priority={<>
+        <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
+        <p>{heguAtlasReading.caution}</p>
+      </>}>
+        <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
+        <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
         <p>手を温めるときは、カイロを肌に直接当てたり、同じ場所を長時間温めたりすることは避けてください。</p>
         <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
       </AcupointCautions>

@@ -71,7 +71,7 @@ export default async function ExtraPointPage({ params }: Props) {
           <h1>{point.name}<small>{point.kana}</small></h1>
           <span className={styles.code}>{point.code}</span>
         </div>
-        <p>奇穴の図鑑 <span aria-hidden="true">·</span> {point.bodyPart} <span aria-hidden="true">·</span> ピンイン <span lang="zh-Latn">{point.pinyin}</span></p>
+        <p>奇穴（きけつ）の図鑑 <span aria-hidden="true">·</span> {point.bodyPart} <span aria-hidden="true">·</span> 中国語の発音（ピンイン） <span lang="zh-Latn">{point.pinyin}</span></p>
         <p>
           {point.classification ?? `WHOの名称案では奇穴${point.code}として収録されています。`}{" "}
           <a href={namingSource.href} className="atlas-source-link">WHOの名称資料（PDF）</a>
@@ -119,7 +119,7 @@ export default async function ExtraPointPage({ params }: Props) {
       )}
 
       <section className={styles.section} aria-labelledby="extra-point-nearby-heading">
-        <h2 id="extra-point-nearby-heading" className={styles.sectionTitle}>近くにある経穴</h2>
+        <h2 id="extra-point-nearby-heading" className={styles.sectionTitle}>近くにあるツボ</h2>
         <ul className={styles.nearby}>
           {point.nearby.map(nearby => (
             <li key={nearby.code}>

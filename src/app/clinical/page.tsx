@@ -42,8 +42,8 @@ const checks = [
 ] as const;
 
 const exercises = [
-  { ...ALL_NAV_ITEMS.cases, label: '症例演習', description: '主訴・経過・四診を読み、見立ての根拠を答える' },
-  { ...ALL_NAV_ITEMS.simulator, label: '見立ての練習', description: '所見と証の候補を比べ、合う点と食い違う点を考える' },
+  { ...ALL_NAV_ITEMS.cases, label: '症例演習', description: '本人の訴えと診察で分かったことから、どう考えたかを答える' },
+  { ...ALL_NAV_ITEMS.simulator, label: '見立ての練習', description: '症状や診察の記録を読み、東洋医学で考えられる体の状態を比べる' },
   { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボを組み合わせ、選んだ理由を書く' },
 ];
 

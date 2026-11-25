@@ -63,8 +63,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </PointAtlasDiagrams>
       </section>
 
-      <AcupointCautions>
-        {article.safetyWarning && <p className="font-semibold">{article.safetyWarning}</p>}
+      <AcupointCautions priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
         <Paragraphs paragraphs={article.cautions} />
         {article.visualOnly && <Paragraphs paragraphs={article.selfCare} />}
         {hasIndividualAnatomy && (

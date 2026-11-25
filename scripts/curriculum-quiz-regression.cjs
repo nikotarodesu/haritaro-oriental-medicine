@@ -318,7 +318,7 @@ check('every published lecture grades real option clicks for perfect and incorre
       assert.equal(completion[0].data.score, correct ? group.questions.length : 0);
       assert.equal(completion[0].data.passed, correct);
       assert.equal(client.completed.length, correct ? 1 : 0, group.lectureId + ': failed attempts cannot grant lecture completion');
-      assert(text(client.tree()).includes(`この${group.questions.length}問は講義の基本事項を確かめる練習です`));
+  assert(text(client.tree()).includes(`講義「${group.lectureTitle}」で扱った内容を確認します`));
     }
   }
 });
