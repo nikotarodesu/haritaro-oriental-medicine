@@ -9,6 +9,74 @@
   margin-block-end: -.5rem;
 }
 
+.filter,
+.directoryIndex {
+  padding: .55rem .9rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .75rem;
+  background: var(--atlas-paper);
+}
+
+.filter {
+  display: grid;
+  gap: .35rem;
+  padding-block: .75rem;
+}
+
+.filter label {
+  color: var(--atlas-accent);
+  font-weight: 700;
+}
+
+.filterControls {
+  display: flex;
+  gap: .5rem;
+}
+
+.filterControls > div {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.filterControls svg {
+  position: absolute;
+  inset-inline-start: .75rem;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  color: var(--atlas-muted);
+  pointer-events: none;
+}
+
+.filterControls input,
+.filterControls button {
+  min-height: 2.75rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .5rem;
+}
+
+.filterControls input {
+  width: 100%;
+  padding-inline: 2.35rem .65rem;
+  background: var(--bg-washi);
+}
+
+.filterControls button {
+  flex-shrink: 0;
+  padding-inline: .65rem;
+  color: var(--atlas-accent);
+  font-weight: 600;
+}
+
+.filter p {
+  color: var(--atlas-muted);
+  font-size: .875rem;
+}
+
+@media (scripting: none) {
+  .filter { display: none; }
+}
+
 .directory {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));

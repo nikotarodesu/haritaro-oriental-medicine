@@ -121,4 +121,103 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
       },
     ],
   },
+  {
+    id: "chize-quchi",
+    pointIds: ["lu5", "li11"],
+    name: "尺沢と曲池",
+    kind: "classic",
+    summary: "ひじの前にある尺沢と、外側にある曲池をあわせます。古典では、ひじが痛くて動かしにくいときに使うと記されています。",
+    evidenceSummary: "ひじの外側の痛みを扱った試験で両方が使われました。比べたのは別の鍼の手法を加えるかどうかで、尺沢と曲池だけの効果は分かりません。",
+    details: [
+      {
+        label: "古典での使われ方",
+        text: "『鍼灸大成』の「玉龍賦」では、ひじのこわばりと痛みに対して尺沢と曲池を組み合わせています。",
+        sources: [jadeDragon],
+      },
+      {
+        label: "研究で調べたこと",
+        text: "上腕骨外側上顆炎の38人の試験では、両群とも尺沢・曲池・手三里などへの鍼を受け、一方の群に火鍼を追加しました。",
+        sources: [
+          { label: "Wu ほか · Medicine（2019）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6709153/" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "weizhong-chengshan",
+    pointIds: ["bl40", "bl57"],
+    name: "委中と承山",
+    kind: "classic",
+    summary: "ひざ裏の中央にある委中と、ふくらはぎの後ろにある承山をあわせます。古典では、どちらも腰痛に用いるツボとして記されています。",
+    evidenceSummary: "腰部脊柱管狭窄症の試験で、二穴を含む鍼は偽鍼より日常生活の困難さの改善が1.3点大きく、臨床的に意味のある差の目安（2〜3点）を下回りました。",
+    details: [
+      {
+        label: "古典での使われ方",
+        text: "『鍼灸大成』の「馬丹陽天星十二穴治雑病歌」は「委中配承山」と記し、委中と承山それぞれの項に腰痛を挙げています。",
+        sources: [
+          { label: "『鍼灸大成』巻三「馬丹陽天星十二穴治雑病歌」", url: "https://www.shidianguji.com/zh/book/NA06097/chapter/1m7cs6kkiv2g4" },
+        ],
+      },
+      {
+        label: "研究で調べたこと",
+        text: "腰部脊柱管狭窄症によって歩くと脚の痛みなどが出る196人の試験です。委中と承山を含む同じ5種類のツボを使う鍼と偽鍼を、6週後の日常生活の困難さ（0〜24点）で比べました。委中と承山だけの効果は分かりません。",
+        sources: [
+          { label: "Zhu ほか · Annals of Internal Medicine（2024）", url: "https://pubmed.ncbi.nlm.nih.gov/38950397/" },
+          { label: "試験で使用したツボ（ClinicalTrials.gov）", url: "https://clinicaltrials.gov/study/NCT03784729" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "hegu-sanjian",
+    pointIds: ["li4", "li3"],
+    name: "合谷と三間",
+    kind: "classic",
+    summary: "手の甲にある合谷と、人差し指の付け根近くにある三間です。古典では頭痛や歯の痛みに二穴をあわせています。",
+    evidenceSummary: "合谷と三間を併用したときに頭痛や歯の痛みが和らぐかは、確認した資料からは分かりません。",
+    details: [
+      {
+        label: "古典での使われ方",
+        text: "『鍼灸大成』の「雑病十一穴歌」は、頭痛と歯の痛みを挙げた直後に「合谷三間両穴尋」と記しています。どちらも手の陽明大腸経のツボです。",
+        sources: [
+          { label: "『鍼灸大成』巻三「雑病十一穴歌」", url: "https://www.shidianguji.com/zh/book/AMNL004702/chapter/1mbacb0noufxk" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "cuanzhu-touwei",
+    pointIds: ["bl2", "st8"],
+    name: "攅竹と頭維",
+    kind: "classic",
+    summary: "眉頭にある攅竹と、額の角の生え際近くにある頭維です。古典では頭痛や目の痛みにあわせて使います。",
+    evidenceSummary: "頭痛や目の痛みがこの二穴の併用で和らぐかは、確認した資料からは分かりません。",
+    details: [
+      {
+        label: "古典での使われ方",
+        text: "『鍼灸大成』の「玉龍賦」は、目の痛みと頭痛に二穴を挙げています。『医宗金鑑』にも、頭維に攅竹を加える記述があります。",
+        sources: [
+          jadeDragon,
+          { label: "『医宗金鑑』「頭維穴」", url: "https://ctext.org/wiki.pl?chapter=836451&if=en&remap=gb" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "taichong-guangming",
+    pointIds: ["lr3", "gb37"],
+    name: "太衝と光明",
+    kind: "classic",
+    summary: "足の甲にある太衝と、すねの外側にある光明です。肝経の原穴と胆経の絡穴をあわせる「原絡配穴」の例です。",
+    evidenceSummary: "古典の記述は、経絡の関係からツボを選ぶ考え方を示しています。肝臓や胆のうの病気への効果は、この記述からは分かりません。",
+    details: [
+      {
+        label: "古典での使われ方",
+        text: "『鍼灸大成』の「肝主胆客」では、肝経を主にみるときは肝経の原穴である太衝を選び、対になる胆経から絡穴の光明を加えると記しています。",
+        sources: [
+          { label: "『鍼灸大成』巻七「肝主胆客」", url: "https://www.theqi.com/cmed/oldbook/accup/chap7.html" },
+        ],
+      },
+    ],
+  },
 ];

@@ -61,4 +61,84 @@ export const featuredAdditionalPairs: readonly FeaturedPair[] = [
       },
     ],
   },
+  {
+    id: "shenshu-qihaishu",
+    pointIds: ["bl23", "bl24"],
+    name: "腎兪と気海兪",
+    kind: "observational",
+    summary: "韓国7施設の痛みの初診記録423件のうち、83件で一緒に選ばれました。主に腰痛の診療で使われていました。",
+    evidenceSummary: "一緒に使われた回数を調べた研究です。腰痛がどの程度変わったかは分かりません。",
+    details: [
+      {
+        label: "診療での使われ方",
+        text: "2022年9月から2023年5月までに、腰痛やひざの痛みなどで受診した人の初診記録を調べています。同じ受診でこの二穴が選ばれた件数で、ほかのツボも使われた可能性があります。腰痛がどの程度改善したかは、この調査では分かりません。",
+        sources: [{ label: "Yoon ほか · Medicine（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13593149/" }],
+      },
+    ],
+  },
+  {
+    id: "hegu-zhongwan",
+    pointIds: ["li4", "cv12"],
+    name: "合谷と中脘",
+    kind: "observational",
+    summary: "手の甲の合谷と、みぞおちとへその間にある中脘です。韓国7施設の痛みの初診記録423件のうち、71件で一緒に選ばれました。",
+    evidenceSummary: "診療録で確認したのは併用された回数です。痛みの変化は評価していません。",
+    details: [
+      {
+        label: "診療での使われ方",
+        text: "片頭痛、腰痛、過敏性腸症候群など、複数の症状を含む診療録全体での件数です。二穴だけを使った人数や、症状がどの程度改善したかを示す数字ではありません。",
+        sources: [{ label: "Yoon ほか · Medicine（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13593149/" }],
+      },
+    ],
+  },
+  {
+    id: "hegu-neiguan",
+    pointIds: ["li4", "pc6"],
+    name: "合谷と内関",
+    kind: "research",
+    summary: "婦人科の腹腔鏡手術後の吐き気を調べた試験で、合谷と内関に皮膚の上から電気刺激を加えました。",
+    evidenceSummary: "120人を解析した試験で、手術前後に複数回刺激を加えた群は、通電しない群より術後0〜2時間と4〜12時間の吐き気が少なくなりました。",
+    details: [
+      {
+        label: "研究で分かったこと",
+        text: "吐き気を抑える薬を全群に用いたうえで、合谷と内関に電気刺激を複数回加える群、1回加える群、同じ場所に電極を貼って通電しない群を比較しました。術後12〜48時間の吐き気や嘔吐に明確な群間差はありませんでした。日常の吐き気や指圧は調べていません。",
+        sources: [{ label: "Jin ほか · BMC Complementary Medicine and Therapies（2025）", url: "https://link.springer.com/article/10.1186/s12906-025-04847-5" }],
+      },
+    ],
+  },
+  {
+    id: "quchi-shangjuxu",
+    pointIds: ["li11", "st37"],
+    name: "曲池と上巨虚",
+    kind: "research",
+    summary: "ひじの曲池と、すねの上巨虚です。機能性便秘の人を対象に、二穴への電気鍼と内服薬が比較されました。",
+    evidenceSummary: "190人の試験で、自然に排便できた回数が試験の改善基準に達した割合に、電気鍼と内服薬で明確な差はありませんでした。",
+    details: [
+      {
+        label: "研究で分かったこと",
+        text: "曲池と上巨虚を使う電気鍼を、刺激の強さが異なる2群に分け、内服薬のモサプリドを使う群と比較しました。主に評価したのは、自然な排便が週3回以上あり、かつ試験前より週1回以上増えた週が、4週間中3週間以上あった人の割合です。偽鍼を受ける群はなく、電気鍼と内服薬の効果が同等かどうかも調べていません。",
+        sources: [{ label: "Wu ほか · Evidence-Based Complementary and Alternative Medicine（2017）", url: "https://onlinelibrary.wiley.com/doi/10.1155/2017/1428943" }],
+      },
+    ],
+  },
+  {
+    id: "hegu-quchi",
+    pointIds: ["li4", "li11"],
+    name: "合谷と曲池",
+    kind: "research",
+    summary: "手の甲の合谷とひじの曲池は、どちらも手の陽明大腸経に属します。骨髄検査を受ける人の痛みを調べた試験で使われました。",
+    evidenceSummary: "50人の試験で、局所麻酔に皮膚の上からの電気刺激を加えた群は、通電しない群より検査時の痛みの点数が低くなりました。",
+    details: [
+      {
+        label: "骨髄検査の痛みを調べた試験",
+        text: "骨髄穿刺や骨髄生検を受ける人を、合谷と曲池に貼った電極から通電する群と、同じ場所に電極を貼って通電しない群に分けました。両群とも局所麻酔を受けました。検査時の痛みを比べた結果で、慢性痛や鍼を刺す施術の効果は調べていません。",
+        sources: [{ label: "Shokrani ほか · Advanced Biomedical Research（2014）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4063102/" }],
+      },
+      {
+        label: "二穴を使う場合と単独で使う場合の比較",
+        text: "22人が参加した別の鍼の研究では、押されたときに痛みを感じ始める強さを施術の前後で測りました。合谷に曲池を加えたときに、この指標の変化がより大きくなるとは確認できませんでした。",
+        sources: [{ label: "Li ほか · Complementary Therapies in Medicine（2008）", url: "https://pubmed.ncbi.nlm.nih.gov/19186343/" }],
+      },
+    ],
+  },
 ];

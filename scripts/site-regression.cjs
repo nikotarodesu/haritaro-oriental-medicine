@@ -85,9 +85,7 @@ const revisedLecturePaths = {
   '/learn/lectures/reading-evidence': '2026-11-25',
 };
 for (const unit of readingUnits) assert.equal(dateAt(unit.href), revisedLecturePaths[unit.href] ?? READING_LECTURES_REVISED_AT, unit.href);
-for (const pathname of ['/tsubo/sp11','/tsubo/bl57']) {
-  assert.equal(dateAt(pathname), PUBLIC_VISUALS_REVISED_AT, pathname + ' shows the shared acupoint release date');
-}
+assert.equal(dateAt('/tsubo/sp11'), PUBLIC_VISUALS_REVISED_AT, 'An unchanged acupoint keeps the shared release date');
 const { CLASSIFIED_ACUPOINT_CODES, KEY_POINT_TYPES_GUIDE } = load('src/data/tsubo/keyPointTypes');
 const { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } = load('src/data/tsubo/extraPoints');
 const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/tsubo/lu7', KEY_POINT_TYPES_GUIDE, '/symptoms/constipation-ibs', '/symptoms/headache-stiff-neck']);

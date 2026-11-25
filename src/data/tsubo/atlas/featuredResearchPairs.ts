@@ -87,4 +87,72 @@ export const featuredResearchPairs: readonly FeaturedPair[] = [
       },
     ],
   },
+  {
+    id: "neiguan-zusanli",
+    pointIds: ["pc6", "st36"],
+    name: "内関と足三里",
+    kind: "research",
+    summary: "腹腔鏡手術後の吐き気や嘔吐を調べた試験で、左右の内関と足三里を皮膚の上から電気で刺激しました。",
+    evidenceSummary: "術後24時間以内に吐き気・えずき・嘔吐のいずれかが出た人は、電気刺激を受けた群で29.4％、同じ場所に電極を貼って電気を流さなかった群で34.2％でした。",
+    details: [
+      {
+        label: "手術後の吐き気と嘔吐をどう比べたか",
+        text: "術後に吐き気や嘔吐が起きやすい1,655人を12の病院で無作為に分け、全員のデータを解析しました。両群で吐き気を予防する薬を使い、電極から電気を流すかどうかを比べました。参加者の約97％は女性で、内関だけ、足三里だけを刺激した場合は調べていません。",
+        sources: [
+          { label: "Gao ほか · Frontiers in Medicine（2022）", url: "https://www.frontiersin.org/journals/medicine/articles/10.3389/fmed.2022.766244/full" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "tianshu-zusanli",
+    pointIds: ["st25", "st36"],
+    name: "天枢と足三里",
+    kind: "research",
+    summary: "下痢型の過敏性腸症候群を対象にした試験で、左右の天枢と足三里に灸を行いました。",
+    evidenceSummary: "6週間のうち半分を超える週で腹痛などが十分に和らいだと答えた人は、灸の群で76.9％、同じ場所を弱く温めた群で42.3％でした。",
+    details: [
+      {
+        label: "腹痛などの改善をどう確かめたか",
+        text: "104人を無作為に分け、両群とも同じ経穴を使って温め方を変えました。腹痛や腹部の不快感が十分に和らいだかを毎週たずねました。標準治療や一穴だけを使う方法との比較はありません。",
+        sources: [
+          { label: "Bao ほか · Therapeutic Advances in Gastroenterology（2022）", url: "https://journals.sagepub.com/doi/10.1177/17562848221075131" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "fengchi-baihui",
+    pointIds: ["gb20", "gv20"],
+    name: "風池と百会",
+    kind: "research",
+    summary: "前兆のない片頭痛を調べた試験で、左右の風池と頭頂の百会を、風府・太陽・合谷とあわせて使いました。",
+    evidenceSummary: "4週間で、片頭痛があった日数は、鍼の群で偽鍼の群より推定で1日多く減りました。",
+    details: [
+      {
+        label: "片頭痛があった日数をどう比べたか",
+        text: "120人を無作為に分け、風池と百会を含む8か所への鍼と、経穴から外れた8か所への浅い鍼を比べました。減った日数の中央値は両群とも3日で、推定した群間差の95％信頼区間は0〜2日でした。風池と百会だけを使った場合の効果は分かりません。",
+        sources: [
+          { label: "Zhang ほか · JAMA Network Open（2026）", url: "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2844379" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "zusanli-yanglingquan",
+    pointIds: ["st36", "gb34"],
+    name: "足三里と陽陵泉",
+    kind: "research",
+    summary: "変形性膝関節症の痛みや動きにくさを調べた試験で、足三里と陽陵泉を含む8種類の経穴を使いました。",
+    evidenceSummary: "6週後、膝の痛み・こわばり・動作を合わせた0〜240点の指標は、電気鍼の群で約65点、皮膚を刺さない偽鍼の群で約25点改善しました。",
+    details: [
+      {
+        label: "膝の痛みや動きにくさをどう比べたか",
+        text: "6施設で480人を無作為に分け、同じ経穴への電気鍼と、皮膚を刺さない偽鍼を比べました。偽鍼の群でも機器は同じ設定で作動させました。膝の症状を表す指標（WOMAC）の改善幅は、調整後の群間差で40.56点でした。足三里と陽陵泉だけを使った場合の効果や、軟骨の変化を長期に抑えられるかは分かりません。",
+        sources: [
+          { label: "Hang ほか · eClinicalMedicine（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13223986/" },
+        ],
+      },
+    ],
+  },
 ];
