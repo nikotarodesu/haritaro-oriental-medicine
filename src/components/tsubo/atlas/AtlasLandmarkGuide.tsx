@@ -41,12 +41,13 @@ export default function AtlasLandmarkGuide({ code, children }: {
   children: ReactNode;
 }) {
   const id = useId();
-  const descriptions = { all: "「目印→ツボ」を選ぶと、どこを目印にして、どちら側にツボがあるかを矢印で確認できます。", ...guidance[code] };
+  const descriptions = { all: "「目印→ツボ」を選ぶと、図に矢印が出ます。", ...guidance[code] };
 
   return (
     <div className={styles.guide} data-atlas-landmark-guide="">
+      <div id={`${id}-diagram`}>{children}</div>
       <fieldset className={styles.controls}>
-        <legend>ツボの探し方</legend>
+        <legend className="sr-only">ツボの探し方</legend>
         <div className={styles.choices}>
           {choices.map(({ value, label }) => (
             <label key={value}>
@@ -71,7 +72,6 @@ export default function AtlasLandmarkGuide({ code, children }: {
           ))}
         </div>
       </fieldset>
-      <div id={`${id}-diagram`}>{children}</div>
     </div>
   );
 }

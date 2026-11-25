@@ -1,15 +1,14 @@
-import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "./AcupointAnatomy";
 import RegionalPointAnatomy from "./RegionalPointAnatomy";
-import { AcupointComparisonLink, AcupointReadingLinks } from "./AcupointArticleLinks";
-import AcupointArticleHeader, { AcupointPointDetails } from "./AcupointArticleHeader";
+import { AcupointComparisonLink } from "./AcupointArticleLinks";
+import AcupointArticleHeader from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
-import AcupointNameGuide from "./AcupointNameGuide";
+import AcupointReferences from "./AcupointReferences";
 import AcupointResearch from "./AcupointResearch";
 import AcupointSelfCare from "./AcupointSelfCare";
-import AcupointUses, { AcupointTraditionalUses } from "./AcupointUses";
+import { AcupointTraditionalUses } from "./AcupointUses";
 import FeaturedAcupointPairs from "./FeaturedAcupointPairs";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
@@ -23,7 +22,6 @@ import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
 
 const headingClass = "atlas-section-title";
-const linkClass = "font-semibold underline underline-offset-4";
 
 function Paragraphs({ paragraphs }: { paragraphs: readonly string[] }) {
   return (
@@ -41,7 +39,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   individualModel: boolean;
 }) {
   const { traditionalTitle } = article;
-  const contextTitle = traditionalTitle && traditionalTitle !== "伝統的な使われ方" ? traditionalTitle : "補足を読む";
+  const contextTitle = traditionalTitle && traditionalTitle !== "伝統的な使われ方" ? traditionalTitle : "使われ方の補足";
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
@@ -57,19 +55,25 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <h2 className={headingClass}>場所と見つけ方</h2>
         <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
-          <AcupointPointDetails point={point} meridianReading={article.meridianReading} />
+          {!hasIndividualAnatomy && article.expert.length > 0 && (
+            <div className="atlas-location-expert">
+              <h3>位置図の補足</h3>
+              <Paragraphs paragraphs={article.expert} />
+            </div>
+          )}
         </PointAtlasDiagrams>
       </section>
 
-      <AcupointCautions initiallyOpen={Boolean(ATLAS_SELF_CARE[point.codeLower]?.length)} priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
-        <Paragraphs paragraphs={article.cautions} />
-        {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
-        {hasIndividualAnatomy && (
-          <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
-        )}
-      </AcupointCautions>
-
-      <AcupointSelfCare code={point.codeLower} />
+      <div className="atlas-care-section">
+        <AcupointCautions initiallyOpen={Boolean(ATLAS_SELF_CARE[point.codeLower]?.length)} priority={article.safetyWarning && <p>{article.safetyWarning}</p>}>
+          <Paragraphs paragraphs={article.cautions} />
+          {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
+          {hasIndividualAnatomy && (
+            <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
+          )}
+        </AcupointCautions>
+        <AcupointSelfCare code={point.codeLower} />
+      </div>
 
       {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
       {regionalSection && (
@@ -96,33 +100,11 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <AcupointComparisonLink code={point.code} />
       </AcupointLocationComparison>
 
-      <AcupointUses
-        code={point.codeLower}
-        context={{ title: contextTitle, paragraphs: article.traditional }}
-        links={<AcupointReadingLinks code={point.codeLower} editorialLinks={article.symptomLinks} />}
-      />
-
-      <FeaturedAcupointPairs pointCode={point.codeLower} />
-
-      <AcupointResearch point={point} />
-      <AcupointNameGuide code={point.codeLower} />
-
-      {!hasIndividualAnatomy && article.expert.length > 0 && (
-        <details className="atlas-disclosure atlas-reading-details">
-          <summary>位置図の補足</summary>
-          <Paragraphs paragraphs={article.expert} />
-        </details>
-      )}
-
-      <section id="acupoint-sources" className="atlas-target">
-        <h2 className={headingClass}>出典</h2>
-        <ul className="list-disc space-y-2 pl-5 text-sm leading-6">
-          {article.sources.map(({ name, url, scope }) => (
-            <li key={url}>{scope}{" "}<a href={url} className={linkClass}>{name}</a></li>
-          ))}
-        </ul>
-      </section>
-      <AuthorSupervisorCard pointLocationChecked />
+      <div className="atlas-secondary-sections">
+        <FeaturedAcupointPairs pointCode={point.codeLower} />
+        <AcupointResearch point={point} context={{ title: contextTitle, paragraphs: article.traditional }} />
+        <AcupointReferences point={point} meridianReading={article.meridianReading} editorialLinks={article.symptomLinks} sources={article.sources} />
+      </div>
       <ContentEndAd key={point.code} />
     </article>
   );

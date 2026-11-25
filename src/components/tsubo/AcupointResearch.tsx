@@ -5,6 +5,7 @@ import { getAcupointByCode } from "@/data/tsubo";
 import { EXTRA_POINTS } from "@/data/tsubo/extraPoints";
 import { getAcupointStudies, getClassicalCombinations, getStudyPointRole, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
+import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
 import type { AcupointDetail } from "@/data/tsubo/types";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
@@ -103,7 +104,10 @@ function AtlasStudyList({ studies, code }: { studies: readonly AtlasStudy[]; cod
   );
 }
 
-export default function AcupointResearch({ point }: { point: AcupointDetail }) {
+export default function AcupointResearch({ point, context }: {
+  point: AcupointDetail;
+  context?: { title: string; paragraphs: readonly string[] };
+}) {
   const studies = getAcupointStudies(point.codeLower);
   const firstStudies = studies.slice(0, 3);
   const remainingStudies = studies.slice(firstStudies.length);
@@ -118,8 +122,9 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
   return (
     <HashTargetDetails
       key={point.codeLower}
+      id={TRADITIONAL_POINT_USES[point.codeLower] ? "acupoint-study-overview" : "acupoint-traditional"}
       analytics={studies.length ? { kind: "research", studyIds: studies.map(study => study.id) } : undefined}
-      className="atlas-disclosure atlas-evidence-disclosure"
+      className="atlas-disclosure atlas-evidence-disclosure atlas-target"
       summary={<h2 id="acupoint-research-title"><BookOpen size={17} aria-hidden="true" />研究と古典の配穴</h2>}
     >
     <section id="acupoint-research" className="atlas-evidence atlas-target" aria-labelledby="acupoint-research-title">
@@ -183,6 +188,12 @@ export default function AcupointResearch({ point }: { point: AcupointDetail }) {
             </ul>
           </div>
         </details>
+      )}
+      {context && context.paragraphs.length > 0 && (
+        <div className="atlas-study-details">
+          <h3 className="font-semibold">{context.title}</h3>
+          {context.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+        </div>
       )}
       <Link href="/editorial-policy" className="atlas-source-link atlas-evidence-policy"><BookOpen size={15} aria-hidden="true" />研究の掲載・監修について</Link>
     </section>

@@ -1,14 +1,12 @@
-import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "@/components/tsubo/AcupointAnatomy";
-import { AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
-import AcupointArticleHeader, { AcupointPointDetails } from "@/components/tsubo/AcupointArticleHeader";
+import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
-import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
+import AcupointReferences from "@/components/tsubo/AcupointReferences";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
-import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
+import { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
@@ -22,7 +20,6 @@ export const heguAtlasReading = {
 };
 
 const headingClass = "atlas-section-title";
-const linkClass = "font-semibold underline underline-offset-4";
 
 export const heguSources = [
   { name: "WHO標準経穴部位（2008年、2009年改訂再版、p.35ほか）", url: "https://iris.who.int/server/api/core/bitstreams/d98c1c98-3fbf-4e4e-8c9a-1bbe72ccd00e/content#page=44", scope: "標準部位と経絡上の順序" },
@@ -42,21 +39,21 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <h2 className={headingClass}>場所と見つけ方</h2>
         <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
-          <AcupointPointDetails point={point} meridianReading="てのようめいだいちょうけい" />
         </AcupointAtlasDiagrams>
       </section>
 
-      <AcupointCautions initiallyOpen priority={<>
-        <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
-        <p>{heguAtlasReading.caution}</p>
-      </>}>
-        <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
-        <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
-        <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
-        <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
-      </AcupointCautions>
-
-      <AcupointSelfCare code={point.codeLower} />
+      <div className="atlas-care-section">
+        <AcupointCautions initiallyOpen priority={<>
+          <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
+          <p>{heguAtlasReading.caution}</p>
+        </>}>
+          <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
+          <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
+          <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
+          <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
+        </AcupointCautions>
+        <AcupointSelfCare code={point.codeLower} />
+      </div>
 
       <AcupointAnatomy point={point} />
 
@@ -66,26 +63,17 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         { code: "LR3", text: "手の甲と足の甲で、目印になる骨が違います。" },
       ]} />
 
-      <AcupointUses
-        code={point.codeLower}
-        links={<AcupointReadingLinks code={point.codeLower} editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]} />}
-      />
-
-      <FeaturedAcupointPairs pointCode={point.codeLower} />
-
-      <AcupointResearch point={point} />
-      <AcupointNameGuide code={point.codeLower} />
-
-      <section id="acupoint-sources" className="atlas-target">
-        <h2 className={headingClass}>出典</h2>
-        <p className="mb-3 text-sm">頭や顔の不調との伝統的な関連は『針灸大成』四総穴歌と現行の経穴資料に基づきます。</p>
-        <ul className="list-disc space-y-2 pl-5 text-sm leading-6">
-          {heguSources.map(({ name, url, scope }) => (
-            <li key={url}>{scope}。 <a href={url} className={linkClass}>{name}</a></li>
-          ))}
-        </ul>
-      </section>
-      <AuthorSupervisorCard pointLocationChecked />
+      <div className="atlas-secondary-sections">
+        <FeaturedAcupointPairs pointCode={point.codeLower} />
+        <AcupointResearch point={point} />
+        <AcupointReferences
+          point={point}
+          meridianReading="てのようめいだいちょうけい"
+          editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]}
+          sources={heguSources}
+          sourceNote={<p className="text-sm">頭や顔の不調との伝統的な関連は『針灸大成』四総穴歌と現行の経穴資料に基づきます。</p>}
+        />
+      </div>
       <ContentEndAd key={point.code} />
     </article>
   );

@@ -1,13 +1,11 @@
-import type { ReactNode } from "react";
 import { BookOpen, ChevronRight, FlaskConical } from "lucide-react";
-import { ATLAS_STUDIES, getAcupointStudies, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
+import { ATLAS_STUDIES, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 
 const extraStudyIds: Readonly<Partial<Record<string, readonly string[]>>> = {
   "ex-hn3": ["chronic-insomnia", "seasonal-allergic-rhinitis"],
   "ex-hn5": ["migraine-manual-acupuncture"],
 };
-const studyPreviewCount = 2;
 
 export function AcupointTraditionalUses({ code }: { code: string }) {
   const traditional = TRADITIONAL_POINT_USES[code];
@@ -25,15 +23,9 @@ export function AcupointTraditionalUses({ code }: { code: string }) {
   );
 }
 
-export default function AcupointUses({ code, context, links }: {
-  code: string;
-  context?: { title: string; paragraphs: readonly string[] };
-  links?: ReactNode;
-}) {
-  const extraIds = extraStudyIds[code];
-  const studies = extraIds
-    ? ATLAS_STUDIES.filter(study => extraIds.includes(study.id))
-    : getAcupointStudies(code);
+export default function AcupointUses({ code }: { code: string }) {
+  const extraIds = extraStudyIds[code] ?? [];
+  const studies = ATLAS_STUDIES.filter(study => extraIds.includes(study.id));
 
   return (
     <section id={TRADITIONAL_POINT_USES[code] ? "acupoint-study-overview" : "acupoint-traditional"} className="atlas-target atlas-point-uses" aria-labelledby="atlas-use-research-title">
@@ -41,9 +33,9 @@ export default function AcupointUses({ code, context, links }: {
         <h2 id="atlas-use-research-title" className="atlas-section-title"><FlaskConical size={19} aria-hidden="true" />研究で調べたこと</h2>
         {studies.length > 0 ? (
           <ul className="atlas-use-studies">
-            {studies.slice(0, studyPreviewCount).map(study => (
+            {studies.map(study => (
               <li key={study.id}>
-                <a href={extraIds ? `/tsubo/${study.points[0]}#${study.id}` : `#${study.id}`}>
+                <a href={`/tsubo/${study.points[0]}#${study.id}`}>
                   <span><small>{getStudyScopeLabel(study, code)}</small><strong>{study.topic}</strong></span>
                   <ChevronRight size={16} aria-hidden="true" />
                 </a>
@@ -53,27 +45,10 @@ export default function AcupointUses({ code, context, links }: {
         ) : (
           <p className="atlas-use-status">人を対象とした研究は掲載していません。</p>
         )}
-        {!extraIds && studies.length > 0 && (
-          <a className="atlas-text-action atlas-use-source" href="#acupoint-research">掲載研究をすべて見る（{studies.length}件）</a>
-        )}
         {studies.some(study => study.kind === "combination") && (
           <p className="atlas-use-status">複数のツボを使った試験の結果は、比較された組み合わせと施術条件の範囲で読みます。</p>
         )}
       </div>
-      {context && context.paragraphs.length > 0 && (
-        <details className="atlas-disclosure atlas-use-context">
-          <summary>{context.title}</summary>
-          <div className="space-y-2 pb-3">
-            {context.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-          </div>
-        </details>
-      )}
-      {links && (
-        <details className="atlas-disclosure atlas-use-context">
-          <summary>症状ガイドと学習リンク</summary>
-          {links}
-        </details>
-      )}
     </section>
   );
 }

@@ -6,11 +6,9 @@ import { getAcupointGuideLinks } from "@/utils/symptomGuides";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
 import { getAcupointKeyPointTypes, KEY_POINT_TYPES_GUIDE, type AcupointKeyPointType } from "@/data/tsubo/keyPointTypes";
 import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
-import { FEATURED_ACUPOINT_PAIRS_ANCHOR, getFeaturedPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { readingPartHref } from "@/data/publicLectures/readingUnitCatalog";
 import { ATLAS_STUDY_ROUTES, atlasStudyExercise } from "@/data/tsubo/atlas/studyRoutes";
 import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
-import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import { caseQuestionAnchor } from "@/utils/caseStudyNavigation";
 
 const sectionLinks = [
@@ -18,7 +16,6 @@ const sectionLinks = [
   { href: "#acupoint-cautions", label: "注意点" },
   { href: "#acupoint-self-care", label: "セルフケア" },
   { href: "#acupoint-anatomy", label: "断面図" },
-  { href: "#acupoint-compare", label: "近くのツボ" },
 ];
 const linkClass = "inline-flex min-h-11 items-center font-semibold underline underline-offset-4";
 const diagnosisPointPaths = new Set(
@@ -29,20 +26,14 @@ export function AcupointSectionLinks({ hasAnatomyDiagram, pointCode }: {
   hasAnatomyDiagram: boolean;
   pointCode?: string;
 }) {
-  const traditional = pointCode && TRADITIONAL_POINT_USES[pointCode];
   const hasSelfCare = Boolean(pointCode && ATLAS_SELF_CARE[pointCode]?.length);
   return (
     <nav aria-label="このツボのページ内を移動" className="atlas-section-nav">
-      {traditional && <a href="#acupoint-traditional" className={linkClass}>使われ方</a>}
       {sectionLinks.filter(({ href }) =>
         (hasAnatomyDiagram || href !== "#acupoint-anatomy") && (hasSelfCare || href !== "#acupoint-self-care")
       ).map(({ href, label }) => (
-        <a key={href} href={href} className={linkClass}>{label}</a>
+        <a key={href} href={href}>{label}</a>
       ))}
-      <a href={traditional ? "#acupoint-study-overview" : "#acupoint-traditional"} className={linkClass}>研究</a>
-      {pointCode && getFeaturedPairs(pointCode).length > 0 && (
-        <a href={`#${FEATURED_ACUPOINT_PAIRS_ANCHOR}`} className={linkClass}>配穴</a>
-      )}
     </nav>
   );
 }

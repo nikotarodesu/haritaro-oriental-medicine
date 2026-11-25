@@ -5,15 +5,9 @@
 
 .controls {
   min-width: 0;
+  max-width: 28rem;
   padding-inline: 0;
-  margin-bottom: .625rem;
-}
-
-.controls legend {
-  margin-bottom: .375rem;
-  font-size: .875rem;
-  font-weight: 700;
-  color: var(--atlas-ink);
+  margin: .625rem auto 0;
 }
 
 .choices {

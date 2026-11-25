@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
 import type { AcupointDetail } from "@/data/tsubo/types";
-import { AcupointKeyPointLinks, AcupointSectionLinks, AcupointStudyLinks } from "./AcupointArticleLinks";
+import { AcupointSectionLinks } from "./AcupointArticleLinks";
 
 export default function AcupointArticleHeader({ point, lead, hasAnatomyDiagram }: {
   point: AcupointDetail;
@@ -25,27 +24,9 @@ export default function AcupointArticleHeader({ point, lead, hasAnatomyDiagram }
         <span className="atlas-code">{point.code}</span>
       </div>
       {/* Native fragment navigation opens the index's enclosing disclosure. */}
-      <p className="atlas-point-meta">標準361経穴（ツボ） <span aria-hidden="true">·</span> <a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
+      <p className="atlas-point-meta"><a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
       <p className="atlas-point-lead">{lead}</p>
-      <AcupointStudyLinks code={point.code} />
       <AcupointSectionLinks hasAnatomyDiagram={hasAnatomyDiagram} pointCode={point.codeLower} />
     </header>
-  );
-}
-
-export function AcupointPointDetails({ point, meridianReading }: {
-  point: AcupointDetail;
-  meridianReading: string;
-}) {
-  return (
-    <details className="atlas-disclosure atlas-point-details">
-      <summary>基本情報・別名</summary>
-      <dl>
-        <div><dt>経絡（ツボをつなぐ道筋）</dt><dd>{point.meridian}（{meridianReading}）</dd></div>
-        <div><dt>検索で使えるコード表記</dt><dd>{point.code}・{point.code.replace(/^(\D+)(\d+)$/, "$1-$2")}</dd></div>
-        {point.aliases?.length ? <div><dt>別名・表記</dt><dd>{point.aliases.join("、")}</dd></div> : null}
-        <AcupointKeyPointLinks types={getAcupointKeyPointTypes(point.codeLower)} />
-      </dl>
-    </details>
   );
 }

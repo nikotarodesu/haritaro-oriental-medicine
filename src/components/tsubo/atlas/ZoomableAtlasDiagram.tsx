@@ -17,7 +17,7 @@ export default function ZoomableAtlasDiagram({ label, children }: {
           aria-expanded={enlarged}
           aria-controls={id}
           onClick={() => setEnlarged((current) => !current)}
-          className="min-h-11 rounded-lg border border-field bg-panel px-3 text-sm font-semibold text-accent hover:bg-panel-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          className="atlas-zoom-toggle min-h-11 rounded-lg border border-field bg-panel px-3 text-sm font-semibold text-accent hover:bg-panel-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           {enlarged ? "元の大きさに戻す" : "図を拡大する"}
         </button>
