@@ -31,6 +31,28 @@
   color: var(--atlas-muted);
 }
 
+.index :global(.dictionary-index-links) {
+  min-width: 0;
+  padding-inline: .5rem;
+  border-block: 1px solid var(--atlas-line);
+}
+
+.index :global(.dictionary-index-links) nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  padding-block-end: .5rem;
+}
+
+@media (max-width: 399px) {
+  .index :global(.dictionary-search-shortcuts),
+  .index :global(.dictionary-index-links) nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 .5rem;
+  }
+}
+
 .index :global(.dictionary-index-disclosure),
 .index :global(.dictionary-result-disclosure) {
   min-width: 0;

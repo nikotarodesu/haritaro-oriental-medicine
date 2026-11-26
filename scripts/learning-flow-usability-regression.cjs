@@ -71,11 +71,16 @@ function readerHost() {
     '@/components/curriculum/PublicLectureIndex': PublicIndex,
     '@/components/curriculum/PublicReadingStart': ReadingStart,
   })[id]).default;
-  const { readingUnits } = load('src/data/publicLectures/readingUnits');
+  const { getLectureIndexGroups, readingUnits } = load('src/data/publicLectures/readingUnits');
   const hub = flatten(Hub());
   const courseIndex = hub.find(node => node.props?.id === 'learn-courses-heading');
   assert(courseIndex && courseIndex.type === 'section');
   assert(flatten(courseIndex).some(node => node.type === PublicIndex && node.props.series === 'reading'));
+  const LectureIndex = component('src/components/curriculum/PublicLectureIndex.tsx').default;
+  const [firstPracticeGroup, ...otherPracticeGroups] = getLectureIndexGroups('practice');
+  const withoutCourse = flatten(LectureIndex({ series: 'practice', excludeHrefs: firstPracticeGroup.entries.map(({ href }) => href) }));
+  assert(!withoutCourse.some(node => node.props?.id === 'chapter-' + firstPracticeGroup.id), 'Do not show an empty lecture chapter');
+  assert.equal(withoutCourse.filter(node => node.type === Link).length, otherPracticeGroups.reduce((count, group) => count + group.entries.length, 0));
   const courseList = hub.find(node => node.props?.id === LEARNING_COURSES_HREF.split('#')[1]);
   assert(courseList && courseList !== courseIndex, 'Courses and full lectures have distinct destinations');
   for (const course of LEARNING_COURSES) {

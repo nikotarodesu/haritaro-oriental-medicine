@@ -76,7 +76,8 @@ function dictionary(params = '') {
   } }, { filename });
   let tree;
   const nearbyComparisons = React.createElement('section', { id: 'nearby-comparisons' });
-  function render() { cursor = 0; tree = exported.default({ nearbyComparisons }); return tree; }
+  const indexLinks = React.createElement('nav', { 'aria-label': 'ツボ図鑑の索引' }, React.createElement('a', { href: '/symptoms' }, '症状別ガイド'));
+  function render() { cursor = 0; tree = exported.default({ nearbyComparisons, indexLinks }); return tree; }
   function restore() {
     nodes(tree).find(node => typeof node.props?.restore === 'function').props.restore(location.searchParams.toString());
     render();
@@ -92,6 +93,7 @@ function dictionary(params = '') {
     url: () => location.href,
     hasSearchForm: () => nodes(tree).some(node => node.type === 'form' && node.props.action === '/search'),
     searchLinks: () => nodes(nodes(tree).find(node => node.type === 'form')).filter(node => node.type === 'a').map(node => node.props.href),
+    indexLinks: () => nodes(nodes(tree).find(node => node.props?.['aria-label'] === 'ツボ図鑑の索引')).filter(node => node.type === 'a').map(node => node.props.href),
     comparisonFollowsResults() {
       const elements = nodes(tree);
       assert.equal(elements.filter(node => node.props?.id === 'nearby-comparisons').length, 1);
@@ -104,7 +106,8 @@ function dictionary(params = '') {
 const initial = dictionary();
 assert.equal(initial.resultCodes().length, 24, 'The initial card list renders independently of the URL observer');
 assert(initial.hasSearchForm(), 'Native search remains available before JavaScript starts');
-for (const href of ['#nearby-comparisons', '/symptoms', '/tsubo/compare?empty=1']) assert(initial.searchLinks().includes(href), href);
+for (const href of ['#nearby-comparisons', '/tsubo/compare?empty=1']) assert(initial.searchLinks().includes(href), href);
+assert(initial.indexLinks().includes('/symptoms') && !initial.searchLinks().includes('/symptoms'), 'Symptom guides have one entry in the secondary index navigation');
 assert(!initial.comparisonFollowsResults(), 'The comparison index is near the search form while browsing');
 const firstPoint = points.find(point => point.code === initial.resultCodes()[0]);
 const firstStop = firstPoint.locationSimple.indexOf('。');

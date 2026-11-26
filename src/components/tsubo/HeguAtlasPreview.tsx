@@ -34,9 +34,6 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       <aside className="atlas-caution-priority">
         <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
       </aside>
-      <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
-
-      <AcupointTraditionalUses code={point.codeLower} />
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
@@ -66,7 +63,9 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         { code: "LR3", text: "手の甲と足の甲で、目印になる骨が違います。" },
       ]} />
 
+      <AcupointTraditionalUses code={point.codeLower} />
       <div className="atlas-secondary-sections">
+        <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
         <FeaturedAcupointPairs pointCode={point.codeLower} />
         <AcupointResearch point={point} />
         <AcupointReferences

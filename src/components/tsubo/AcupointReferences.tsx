@@ -11,7 +11,7 @@ export function AcupointPointBasics({ point, meridianReading }: {
   meridianReading: string;
 }) {
   return (
-    <HashTargetDetails className="atlas-disclosure atlas-reference-row atlas-point-basics" summary="基本情報・名前の由来">
+    <HashTargetDetails className="atlas-disclosure atlas-reference-row" summary="基本情報・名前の由来">
       <div className="atlas-reference-content">
         <dl className="atlas-point-details">
           <div><dt>経絡（ツボをつなぐ道筋）</dt><dd>{point.meridian}（{meridianReading}）</dd></div>

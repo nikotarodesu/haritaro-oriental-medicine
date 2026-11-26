@@ -103,6 +103,7 @@ async function main() {
   assert.equal(route.dynamicParams, false, 'Unknown slugs do not produce extra guide URLs');
   assert.equal(JSON.stringify(route.generateStaticParams()), JSON.stringify(SYMPTOMS.map(guide => ({ slug: guide.id }))), 'Every guide has a build-time route');
   const indexHtml = renderToStaticMarkup(index.default());
+  assert(indexHtml.includes('href="/tsubo#tsubo-search"'), 'Finding a point by name leads directly to the dictionary search input');
   const indexSchema = helpers.getSymptomsIndexJsonLd(index.metadata.title, index.metadata.description);
   assert.equal(indexSchema['@graph'][1].itemListElement.length, SYMPTOMS.length, 'Index schema lists every guide');
   assert(indexHtml.indexOf('id="symptom-guides"') < indexHtml.indexOf('このガイドで確認できること'), 'Usage scope follows the index');
@@ -187,11 +188,11 @@ async function main() {
     assert(safety && html.includes(safety.message), `${guide.id}: safety message appears before any interaction`);
     const guideOrder = [safety.message, '受診時に伝えることへ', 'id="recording"', 'id="daily-life"', 'id="traditional"', 'id="acupoints"'].map(marker => html.indexOf(marker));
     assert(guideOrder.every((position, index) => position >= 0 && (index === 0 || position > guideOrder[index - 1])), `${guide.id}: triage and recording precede daily advice and study examples`);
-    assert(html.includes('東洋医学の教材で扱うツボの例です。'), `${guide.id}: the point list states its purpose before readers choose a point`);
+    assert(html.includes('id="guide-points-heading" class="atlas-section-title">教材に出てくるツボ') && html.includes('図鑑で位置と安全上の注意を確認できます。'), `${guide.id}: readers see the educational context and can find safety information before choosing a point`);
     assert(html.includes(`aria-current="page">${guide.title}</span>`), `${guide.id}: breadcrumb identifies the current guide`);
     const recording = html.slice(html.indexOf('id="recording"'), html.indexOf('id="daily-life"'));
     checkRecordingFigure(recording, guide.id, SYMPTOM_RECORDING_EXAMPLES[guide.id]);
-    assert(html.includes('href="#recording"'), `${guide.id}: the recording section is linked from the table of contents`);
+    assert.equal((html.match(/href="#recording"/g) ?? []).length, 1, `${guide.id}: the recording section has one link in the table of contents`);
     for (const study of getSymptomStudies(guide.id)) {
       assert(html.includes(study.result) && html.includes(study.limits), `${guide.id}: evidence appears alongside its limits`);
       assert(study.sources.every(source => schema['@graph'][0].citation.includes(source.url)), `${guide.id}: cited clinical studies are in the page schema`);

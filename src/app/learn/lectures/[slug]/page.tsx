@@ -32,18 +32,18 @@ import { originalLectureHref } from "@/utils/curriculumLegacyPaths";
 import { CASE_COURSE_REVIEW_LECTURE_ID, CASE_COURSE_REVIEW_SECTION, CASE_REVIEW_LECTURE_ID } from "@/utils/caseStudyNavigation";
 import styles from "./lecture-reading.module.css";
 
-const practiceByUnit: Readonly<Partial<Record<string, { href: string; label: string; headerLabel: string }>>> = {
+const practiceByUnit: Readonly<Partial<Record<string, { href: string; label: string }>>> = {
   "meridians-and-points": {
-    href: "/tsubo#nearby-comparisons", label: "近いツボの位置を図で見比べる", headerLabel: "近いツボを図で比べる",
+    href: "/tsubo#nearby-comparisons", label: "近いツボの位置を図で見比べる",
   },
   "qi-blood-and-patterns": {
-    href: "/cases/case-02-fatigue-spleen-deficiency", label: "疲労の模擬症例で所見を読む", headerLabel: "この講義を症例で試す",
+    href: "/cases/case-02-fatigue-spleen-deficiency", label: "疲労の模擬症例で所見を読む",
   },
   "assessment-basics": {
-    href: "/cases/case-01-headache-liver-fire", label: "頭痛の模擬症例で四診と根拠を確かめる", headerLabel: "この講義を症例で試す",
+    href: "/cases/case-01-headache-liver-fire", label: "頭痛の模擬症例で四診と根拠を確かめる",
   },
   "principles-and-goals": {
-    href: "/practice/haiketsu", label: "配穴の練習でツボを選んだ理由を書く", headerLabel: "配穴を練習する",
+    href: "/practice/haiketsu", label: "配穴の練習でツボを選んだ理由を書く",
   },
 };
 
@@ -159,28 +159,20 @@ export default async function ReadingLecturePage({ params }: Props) {
           </p>
         </div>
         <h1 className="reader-title">{unit.title}</h1>
-        {practice && (
-          <ContentNavigationLink href={practice.href} placement="reading_unit_practice" className={`page-secondary-action ${styles.practiceLink} print:hidden`}>
-            {practice.headerLabel}<ArrowRight size={16} aria-hidden="true" />
-          </ContentNavigationLink>
-        )}
         <div className="lecture-unit-opening">
           {unit.opening.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
         </div>
       </header>
 
       <div className={styles.readingTools}>
-        <ReadingContents label="講義の目次" headings={[
-          ...unit.parts.map(part => {
-            const diagram = getPublicLectureDiagram(part.lectureId);
-            return {
-              id: part.anchor,
-              label: part.label,
-              diagram: diagram ? { id: `${part.anchor}-diagram`, label: diagram.title } : undefined,
-            };
-          }),
-          { id: "lecture-review", label: "要点まとめ" },
-        ]} />
+        <ReadingContents label="講義の目次" headings={unit.parts.map(part => {
+          const diagram = getPublicLectureDiagram(part.lectureId);
+          return {
+            id: part.anchor,
+            label: part.label,
+            diagram: diagram ? { id: `${part.anchor}-diagram`, label: diagram.title } : undefined,
+          };
+        })} />
         <a href="#lecture-review" className={styles.reviewLink}>
           <ListChecks aria-hidden="true" /> 要点と確認問題 <ArrowDown aria-hidden="true" />
         </a>

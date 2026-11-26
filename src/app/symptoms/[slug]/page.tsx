@@ -65,7 +65,6 @@ export default async function SymptomGuidePage({ params }: Props) {
   const recordingExample = SYMPTOM_RECORDING_EXAMPLES[guide.id];
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
   const sections = [
-    { id: 'recording', label: '受診時に伝えること' },
     { id: 'daily-life', label: '日常の工夫' },
     { id: 'traditional', label: '東洋医学で学ぶ例' },
     { id: 'acupoints', label: '教材に出てくるツボ' },
@@ -90,15 +89,15 @@ export default async function SymptomGuidePage({ params }: Props) {
         {safety && <p>{safety.message}</p>}
         {content.safetyNote && <p>{content.safetyNote}</p>}
       </section>
-      <a href="#recording" className="atlas-text-action"><ClipboardList size={17} aria-hidden="true" />受診時に伝えることへ<ArrowDown size={14} aria-hidden="true" /></a>
       <nav aria-labelledby="symptoms-contents-heading" className="symptoms-contents">
         <h2 id="symptoms-contents-heading">目次</h2>
         <ul className="atlas-section-nav">
+          <li className="symptoms-contents-primary"><a href="#recording"><ClipboardList size={17} aria-hidden="true" /><span>受診時に伝えることへ</span><ArrowDown size={14} aria-hidden="true" /></a></li>
           {sections.map(({ id, label }) => <li key={id}><a href={`#${id}`}>{label}<ArrowDown size={14} aria-hidden="true" /></a></li>)}
         </ul>
       </nav>
-      <section id="recording" className={sectionClass}>
-        <h2 className="atlas-section-title">受診時に伝えること</h2>
+      <section id="recording" tabIndex={-1} className={sectionClass} aria-labelledby="symptom-recording-heading">
+        <h2 id="symptom-recording-heading" className="atlas-section-title">受診時に伝えること</h2>
         {slug === 'lower-back-pain-sciatica' ? <BackPainAreaComparison /> : recordingExample && (
           <SymptomRecordingFigure diagram={recordingExample} />
         )}
@@ -126,7 +125,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <section id="acupoints" className="atlas-guide-points atlas-target" aria-labelledby="guide-points-heading">
         <div className="atlas-guide-points-heading">
           <h2 id="guide-points-heading" className="atlas-section-title">教材に出てくるツボ</h2>
-          <p>東洋医学の教材で扱うツボの例です。図鑑で位置と注意点を確認できます。</p>
+          <p>図鑑で位置と安全上の注意を確認できます。</p>
         </div>
         <ul className="atlas-related-points">{acupoints.map(point => (
           <li key={point.codeLower}>

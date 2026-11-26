@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowDown, ArrowRight, Droplets, LibraryBig, List, Network, Scale } from "lucide-react";
-import PublicLearningPath from "@/components/curriculum/PublicLearningPath";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PublicReadingStart from "@/components/curriculum/PublicReadingStart";
 import PageIntro from "@/components/design/PageIntro";
@@ -63,14 +62,18 @@ export default function LearnGuidePage() {
         </nav>
       </div>
 
-      <PublicLearningPath />
-
-      <div className={styles.diagramExample}>
-        <StudyDiagram id="learn-yin-yang-example" diagram={foundationDiagrams["lecture-yinyang-2"]} />
-        <Link href={readingPartHref("lecture-yinyang-2")} className="ui-text-link">
-          講義で陰陽の比べ方を読む<ArrowRight aria-hidden="true" />
-        </Link>
-      </div>
+      <section id="learn-courses-heading" aria-labelledby="reading-topics" className={styles.contents}>
+        <h2 id="reading-topics" className="reader-section-title"><span id="learning-path-title" className={styles.contentsAnchor} aria-hidden="true" />講義の目次</h2>
+        <div className={styles.lectureOverview}>
+          <PublicLectureIndex series="reading" openFirstChapter />
+          <div className={styles.diagramExample}>
+            <StudyDiagram id="learn-yin-yang-example" diagram={foundationDiagrams["lecture-yinyang-2"]} />
+            <Link href={readingPartHref("lecture-yinyang-2")} className="ui-text-link">
+              講義で陰陽の比べ方を読む<ArrowRight aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       <section aria-labelledby="oriental-reading" className="space-y-4">
         <h2 id="oriental-reading" className="reader-section-title">図解記事</h2>
@@ -96,11 +99,6 @@ export default function LearnGuidePage() {
           <Link href="/articles" className="ui-text-link">図解記事を一覧で見る<ArrowRight aria-hidden="true" /></Link>
           <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title}<ArrowRight aria-hidden="true" /></Link>
         </div>
-      </section>
-
-      <section id="learn-courses-heading" aria-labelledby="reading-topics" className="space-y-4">
-        <h2 id="reading-topics" className="reader-section-title">講義の目次</h2>
-        <PublicLectureIndex series="reading" />
       </section>
 
       <section id={LEARNING_COURSES_SECTION_ID} aria-labelledby="learning-course-title" className="scroll-mt-28 space-y-3">

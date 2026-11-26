@@ -103,13 +103,6 @@ export default async function ArticleDetailPage({ params }: Props) {
     return [{ article: next, reason: item.reason }];
   }).slice(0, 3);
   const relatedArticles = nextArticles.filter(({ article: related }) => related !== previousArticle && related !== nextArticle);
-  const firstRelated = relatedArticles[0] ?? nextArticles[0];
-  const relatedReading = firstRelated ? {
-    href: `/articles/${firstRelated.article.id}`,
-    title: firstRelated.article.title,
-    description: firstRelated.reason,
-    meta: `読了約 ${firstRelated.article.readTime}`,
-  } : undefined;
   const blocks = parseMarkdownBlocks(article.contentMarkdown);
   const headings = blocks.flatMap((block, index) =>
     block.type === "h2" ? [{ label: block.content.replaceAll("**", ""), id: "article-heading-" + index }] : []);
@@ -265,7 +258,6 @@ export default async function ArticleDetailPage({ params }: Props) {
             idPrefix="article-heading"
             resolvedReferences={resolvedReferences}
             readingInserts={readingInserts}
-            relatedReading={relatedReading}
             conceptArt={articleInsert}
           />
           </div>

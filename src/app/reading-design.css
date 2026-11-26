@@ -120,6 +120,10 @@
   overflow-wrap: anywhere;
 }
 
+.reader-contents li > .lecture-index-link {
+  text-decoration: none;
+}
+
 .reader-contents li > .reader-contents-diagram {
   gap: .5rem;
   padding-inline-start: .9rem;
@@ -496,118 +500,6 @@
   font-size: .9375rem;
   font-weight: 400;
   line-height: 1.7;
-}
-
-.learning-path {
-  padding-top: clamp(.85rem, 2.5vw, 1.4rem);
-  border-top: 1px solid var(--border-subtle);
-}
-
-.learning-path-stops {
-  position: relative;
-  display: grid;
-  gap: .2rem;
-  margin-top: .5rem;
-}
-
-.learning-path-stops::before {
-  position: absolute;
-  inset-block: 2rem;
-  inset-inline-start: 1.9rem;
-  border-inline-start: 1px solid var(--border-washi);
-  content: "";
-}
-
-.learning-path-stop {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  grid-template-areas: "art label arrow";
-  align-items: center;
-  gap: .65rem;
-  height: 100%;
-  padding: .35rem .45rem;
-  border-radius: var(--radius-control);
-  color: var(--text-sumi);
-}
-
-.learning-path-stop:hover {
-  background: var(--accent-soft);
-}
-
-.learning-path-art {
-  grid-area: art;
-  display: grid;
-  place-items: center;
-  width: 2.9rem;
-  height: 2.9rem;
-  border: 1px solid var(--border-washi);
-  border-radius: 50%;
-  background: var(--bg-washi);
-  color: var(--accent-readable);
-}
-
-.learning-path-art svg {
-  width: 100%;
-  height: auto;
-}
-
-.learning-path-label {
-  grid-area: label;
-  display: grid;
-  gap: .14rem;
-  min-width: 0;
-  line-height: 1.55;
-}
-
-.learning-path-label strong {
-  font-family: var(--font-serif);
-  font-size: 1rem;
-  font-weight: 600;
-  text-wrap: balance;
-}
-
-.learning-path-label > span {
-  color: var(--text-secondary);
-  font-size: .875rem;
-}
-
-.learning-path-arrow {
-  grid-area: arrow;
-  color: var(--accent-readable);
-}
-
-@media (min-width: 58rem) {
-  .learning-path-stops {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: .4rem;
-    margin-top: .75rem;
-  }
-
-  .learning-path-stops::before {
-    inset: 2.65rem 10% auto;
-    border-inline-start: 0;
-    border-top: 1px solid var(--border-washi);
-  }
-
-  .learning-path-stop {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-rows: auto 1fr;
-    grid-template-areas: "art art" "label arrow";
-    align-items: start;
-    gap: .65rem .3rem;
-    padding: .55rem;
-  }
-
-  .learning-path-art {
-    justify-self: center;
-    width: 4.2rem;
-    height: 4.2rem;
-  }
-
-  .learning-path-arrow {
-    margin-top: .2rem;
-  }
 }
 
 .reader-section-title {

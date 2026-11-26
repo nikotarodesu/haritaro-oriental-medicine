@@ -295,6 +295,24 @@
 .platform-index li a > strong { font-family: var(--font-serif); font-size: clamp(1rem, 2vw, 1.3rem); }
 .platform-index li a > svg { color: var(--accent-readable); }
 
+@media (max-width: 39.999rem) {
+  .platform-index ul { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--border-washi); }
+  .platform-index li a {
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    grid-template-areas: "art location arrow" "art name arrow";
+    gap: 0 .85rem;
+    padding: .55rem .25rem;
+    border: 0;
+    border-bottom: 1px solid var(--border-washi);
+    border-radius: 0;
+    background: transparent;
+  }
+  .platform-point-art { grid-area: art; height: 3.75rem; }
+  .platform-point-location { grid-area: location; align-self: end; margin: 0; }
+  .platform-index li a > strong { grid-area: name; align-self: start; }
+  .platform-index li a > svg { grid-area: arrow; }
+}
+
 @media (min-width: 40rem) {
   .platform-series-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .platform-series-card p { margin-inline-start: 0; }

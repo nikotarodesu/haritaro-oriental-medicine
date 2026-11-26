@@ -39,7 +39,6 @@ function component(file, exportName = 'default') {
     '@/components/design/PageIntro': ({ title, children }) => React.createElement('header', null, title, children),
     '@/components/design/PageArtwork': () => null,
     '@/components/MedicalSafetyNotice': () => null,
-    '@/components/cases/CaseStudyResume': () => null,
     '@/components/clinical/ClinicalToolBridge': () => null,
     '@/components/learning/PrescriptionScoringGuide': () => null,
     '@/components/learning/ContentNavigationLink': ({ href, children }) => React.createElement('a', { href }, children),
@@ -56,6 +55,7 @@ function component(file, exportName = 'default') {
       if (id === 'next/navigation') return { useSearchParams: () => new URLSearchParams(caseCatalogSearch) };
       if (id === '@/components/cases/CaseCatalog') return { __esModule: true, default: component('src/components/cases/CaseCatalog.tsx') };
       if (id === '@/components/cases/CaseCourseComparison') return { __esModule: true, default: component('src/components/cases/CaseCourseComparison.tsx') };
+      if (id === '@/components/cases/CaseStudyResume') return { __esModule: true, default: component('src/components/cases/CaseStudyResume.tsx') };
       if (id === '@/utils/analytics') return { trackEvent() {} };
       if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: learningValues, status: 'local', setEntry() {} }) };
       if (id === './CaseStudyReview') return { __esModule: true, default: component('src/components/cases/CaseStudyReview.tsx') };
@@ -72,6 +72,9 @@ function component(file, exportName = 'default') {
 
 const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
 assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
+assert.match(casesIndex, /<header[^>]*>.*?頭痛の模擬症例を読む.*?<\/header>/);
+assert.equal(casesIndex.split('20件の症例').length - 1, 1, 'The catalog displays the count with the active filters');
+assert.doesNotMatch(casesIndex, />症例を読む(?:\s|<)/, 'Catalog cards use their unique titles as link names');
 assert.match(casesIndex, /href="#case-comparison"/);
 assert.match(casesIndex, /id="case-comparison"[^>]*>.*<table/);
 const painChart = casesIndex.match(/<table id="case-pain-course".*?<\/table>/s)?.[0];
@@ -121,7 +124,7 @@ for (const clinicalCase of CLINICAL_CASES) {
   }
   assert(!html.includes('class="case-observation-links"'), clinicalCase.id + ': reveal the evidence links with the explanation');
   assert(!html.includes('data-case-observation-figure'), clinicalCase.id + ': keep the observation-to-pattern figure behind the explanation');
-  assert(!html.includes('この症例に出てくるツボの位置と注意点'), clinicalCase.id + ': reveal the point links with the explanation');
+  assert(!html.includes('class="clinical-role-figure"'), clinicalCase.id + ': reveal the point links with the explanation');
   const history = clinicalCase.patient.historyOfPresentIllness;
   const historyHtml = html.match(/<section id="case-history"[^>]*>(.*?)<\/section>/)?.[1];
   assert(historyHtml && typeof history !== 'string');
@@ -200,6 +203,9 @@ for (const [study, steps, answeredAt] of [
 }
 const resume = renderToStaticMarkup(React.createElement(component('src/components/cases/CaseStudyResume.tsx'), { studies: CASE_STUDY_DESCRIPTORS }));
 assert(resume.includes('href="/cases/' + latestCase.id + '#case-question-3"'), 'Resume opens the first unanswered question in the latest unfinished case');
+const resumedIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
+assert.match(resumedIndex, /<header[^>]*>.*?続きから解く.*?<\/header>/);
+assert(!resumedIndex.includes('頭痛の模擬症例を読む'), 'The resume action replaces the introductory action');
 learningValues = {};
 assert.equal(getCaseStudyUsingAcupoint('pc6')?.id, 'case-05-insomnia-heart-kidney');
 assert.equal(getCaseStudyUsingAcupoint('LI4')?.id, 'case-11-cervicobrachial-syndrome');
@@ -230,6 +236,8 @@ const prescription = renderToStaticMarkup(React.createElement(component('src/app
 assert(prescription.includes('id="haiketsu-palette"') && prescription.includes('例として2穴を選択済み（合谷・太衝）'));
 assert(prescription.includes('最初から選ぶ'));
 assert(prescription.includes('href="#haiketsu-review"') && prescription.includes('id="haiketsu-review"'));
+assert.equal(prescription.split('href="#haiketsu-review"').length - 1, 1);
+assert(!prescription.includes('class="clinical-role-points"'), 'The role figure shows counts while the selected list shows point names');
 assert(!prescription.includes('readOnly'), 'Both writing controls accept input');
 assert(prescription.includes('id="haiketsu-title"') && prescription.includes('id="haiketsu-rationale"'));
 for (const preset of OVERDOSE_PRESETS) assert(prescription.includes(preset.name), preset.id);

@@ -61,6 +61,7 @@ async function checkClinical(page) {
   await page.getByRole('link', { name: '最初の設問へ', exact: true }).waitFor();
   await page.getByRole('heading', { name: '相談から7日後まで追う：頭痛の架空症例', exact: true }).waitFor();
   for (const href of clinicalLinks) assert.equal(await page.locator('main a[href="' + href + '"]').count(), 1, href);
+  assert.equal(await page.locator('main a[href="/symptoms"]').count(), 1, 'One general-audience entry appears in the clinical hub');
   await noRetiredEntry(page);
   const fits = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
   assert(fits, 'Clinical landing page overflows at ' + page.viewportSize().width + 'px');
@@ -89,9 +90,15 @@ async function checkGuideAndPractice(page) {
   }
   await page.getByRole('link', { name: '振り返りへ', exact: true }).click();
   await page.waitForURL(`**/cases/case-01-headache-liver-fire#${CASE_REVIEW_ANCHOR}`);
+  await page.getByRole('button', { name: '解答と配穴例を見る', exact: true }).click();
+  const explanation = page.locator('#case-explanation');
+  await explanation.waitFor();
+  assert.equal(await explanation.locator('a[href^="/simulator"]').count(), 1);
+  assert((await explanation.locator('.clinical-role-figure a[href^="/tsubo/"]').count()) > 0);
+  assert.equal(await page.locator('.case-practice a[href="/cases"]').count(), 1);
 
   await open(page, '/cases');
-  await page.getByRole('link', { name: 'こめかみが強く痛み、目が赤くなる 症例を読む', exact: true }).waitFor();
+  await page.getByRole('link', { name: 'こめかみが強く痛み、目が赤くなる', exact: true }).waitFor();
   const catalogSafety = page.getByRole('complementary', { name: '症例演習の注意' });
   assert.equal(await catalogSafety.locator('details').evaluate(details => details.open), false, 'Case catalog safety details start folded');
   await catalogSafety.getByRole('link', { name: '受診の目安と鍼灸の安全性' }).waitFor();
@@ -117,6 +124,8 @@ async function checkGuideAndPractice(page) {
   await reset.click();
   await page.getByText('選択中 0 / 8穴', { exact: true }).waitFor();
   assert.equal(await selectedPoints.count(), 0);
+  assert.equal(await page.getByRole('heading', { name: '選んだツボを見直すポイント' }).count(), 0);
+  assert.equal(await page.locator('main a[href="#haiketsu-review"]').count(), 1);
   assert.equal(await page.getByRole('textbox', { name: 'この組み合わせの名前' }).inputValue(), '');
   await palette.getByRole('button', { name: /^合谷/ }).click();
   await page.getByText('選択中 1 / 8穴', { exact: true }).waitFor();
@@ -136,10 +145,16 @@ async function checkGuideAndPractice(page) {
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1));
 
   await open(page, '/diagnosis');
+  await page.waitForLoadState('load');
   await page.getByRole('button', { name: '回答に関連する分類を見る' }).click();
+  await page.getByRole('heading', { name: '選んだ項目はありません', exact: true }).waitFor();
   await page.getByText('病気の診断や治療・施術の判断には使えません。', { exact: true }).waitFor();
 
   await open(page, '/clinical/symptoms/headache');
+  const lectureLinks = page.getByRole('navigation', { name: '候補に関連する講義' }).getByRole('link');
+  const lectureHrefs = await lectureLinks.evaluateAll(links => links.map(link => link.getAttribute('href')));
+  assert.equal(lectureHrefs.length, 3);
+  assert.equal(new Set(lectureHrefs).size, lectureHrefs.length);
   await page.getByRole('link', { name: 'この症状の受診の目安を読む（一般向け）' }).click();
   await page.waitForURL('**/symptoms/headache-stiff-neck#safety');
   await page.getByRole('heading', { name: '受診の目安', exact: true }).waitFor();
@@ -150,6 +165,8 @@ async function checkContinuousCase(page) {
   const stages = await page.locator('#headache-course a[href^="/curriculum/lecture-practice-"]')
     .evaluateAll(links => links.map(link => link.getAttribute('href')));
   assert.equal(stages.length, 7, 'The continuous exercise links to its introduction and six stages');
+  for (const href of stages) assert.equal(await page.locator('main a[href="' + href + '"]').count(), 1, href);
+  assert.equal(await page.locator('main a[href="/curriculum/lecture-practice-3"]').count(), 1, 'Supplementary lectures remain listed');
   for (const route of stages) {
     await open(page, route);
     const exercises = page.locator('details#lecture-supplements');

@@ -1,6 +1,5 @@
 import { permanentRedirect, notFound } from "next/navigation";
 import { ARTICLES } from "@/data/articleData";
-import { ARTICLE_READING_GUIDES } from "@/data/articleReadingGuides";
 import ArticlesListClient from "@/components/articles/ArticlesListClient";
 import { SITE_NAME } from "@/config/seo";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
@@ -28,7 +27,6 @@ export default async function ArticlesPage({ searchParams }: Props) {
   const articles = ARTICLES.map(({ id, title, subtitle, category, readTime, summary, tags, author, contentMarkdown }) => ({
     id, title, subtitle, category, readTime, summary, tags,
     authorName: author.name,
-    hasFigures: (ARTICLE_READING_GUIDES[id]?.inserts.length || 0) > 0,
     readingRevision: articleReadingRevision(contentMarkdown),
     readingHeadingIds: parseMarkdownBlocks(contentMarkdown).flatMap((block, index) => block.type === "h2" ? [`article-heading-${index}`] : []),
   }));

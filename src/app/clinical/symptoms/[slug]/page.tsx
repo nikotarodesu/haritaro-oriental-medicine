@@ -12,6 +12,13 @@ import { readingPartHref } from '@/data/publicLectures/readingUnitCatalog';
 import { SYMPTOM_LEARNING_RESOURCES } from '@/utils/symptomGuides';
 import { ArrowLeft, ArrowRight, ClipboardList, GitCompareArrows, NotebookPen, RefreshCw } from 'lucide-react';
 
+const guideSections = [
+  { href: '#questions', label: '問診の項目', Icon: ClipboardList },
+  { href: '#patterns', label: '候補を比べる', Icon: GitCompareArrows },
+  { href: '#record', label: '配穴の理由', Icon: NotebookPen },
+  { href: '#review', label: '次回の確認', Icon: RefreshCw },
+];
+
 export function generateStaticParams() { return CLINICAL_COMPLAINTS.map(item => ({ slug: item.slug })); }
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -30,17 +37,49 @@ export default async function Page({ params }: Props) {
   const researchLink = slug === 'back' ? SYMPTOM_RESEARCH_LINKS['lower-back-pain-sciatica']
     : slug === 'headache' ? SYMPTOM_RESEARCH_LINKS['headache-stiff-neck'] : undefined;
   const publicGuide = Object.entries(SYMPTOM_LEARNING_RESOURCES).find(([, guide]) => guide.clinicalSlug === slug);
+  const patterns = item.patternIds.map(id => CLINICAL_PATTERNS.find(candidate => candidate.id === id)!);
+  const patternLectures = new Map<string, string[]>();
+  for (const pattern of patterns) {
+    const href = readingPartHref(pattern.lectureId);
+    const names = patternLectures.get(href) ?? [];
+    names.push(pattern.name);
+    patternLectures.set(href, names);
+  }
   return <article className="page-layout page-layout--reading space-y-7">
     <Link className="inline-flex min-h-11 items-center gap-2 text-sm page-muted" href="/clinical"><ArrowLeft aria-hidden="true" className="h-4 w-4" />臨床演習に戻る</Link>
     <PageIntro compact art="care" eyebrow="鍼灸学生・鍼灸師向けの臨床演習ガイド" title={`${item.title}の問診・再評価`} description={item.summary} />
     <p><Link href={publicGuide ? `/symptoms/${publicGuide[0]}#safety` : '/symptoms'} className="ui-text-link inline-flex min-h-11 items-center">
       {publicGuide ? 'この症状の受診の目安を読む（一般向け）' : '症状から受診の目安を探す（一般向け）'}
     </Link></p>
-    <nav aria-label="ガイドの項目" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {([{ href: '#questions', label: '問診の項目', Icon: ClipboardList }, { href: '#patterns', label: '候補を比べる', Icon: GitCompareArrows }, { href: '#record', label: '配穴の理由', Icon: NotebookPen }, { href: '#review', label: '次回の確認', Icon: RefreshCw }]).map(({ href, label, Icon }, index) => <a href={href} key={href} className="page-link-card page-link-card--stack !gap-2 !p-4"><Icon aria-hidden="true" /><span className="text-sm font-semibold"><span className="mr-2 page-muted">0{index + 1}</span>{label}</span></a>)}
+    <nav aria-label="ガイドの項目" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {guideSections.map(({ href, label, Icon }) => (
+        <a href={href} key={href} className="flex min-h-11 min-w-0 items-center gap-2 rounded-lg border border-frame bg-panel px-3 py-2 text-sm font-semibold text-accent hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2">
+          <Icon aria-hidden="true" className="h-4 w-4 shrink-0" />
+          <span>{label}</span>
+        </a>
+      ))}
     </nav>
     <section id="questions" className="page-section space-y-3"><h2 className="page-section-heading">1. 問診で聞くこと</h2><ul className="list-disc space-y-3 pl-5">{item.questions.map(question => <li key={question}>{question}</li>)}</ul><p className="text-sm leading-relaxed">受診を急ぐ症状があるときは、施術より先に医療機関での評価を優先します。以前の病気、服薬、受診の結果も確認します。</p><Link href="/safety" className="ui-text-link">受診の目安を読む</Link></section>
-    <section id="patterns" className="page-section space-y-3"><h2 className="page-section-heading">2. 伝統医学の候補を比べる</h2><p className="text-sm">東洋医学では、症状や診察で分かったことから考える体の状態を「証」と呼びます。候補ごとに、当てはまること、食い違うこと、まだ確かめていないことを書きます。</p><div className="page-link-grid">{item.patternIds.map(id => { const pattern = CLINICAL_PATTERNS.find(candidate => candidate.id === id)!; return <section className="page-link-card page-link-card--stack !gap-2" key={id}><h3>{pattern.name}</h3><p>{item.patternExamples?.[id] ?? pattern.distinguish}</p><p>施術の考え方（治法）の例 {pattern.principle}</p><Link className="inline-flex min-h-11 items-center gap-2 text-sm underline" href={readingPartHref(pattern.lectureId)}>この証が出てくる講義へ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link></section>; })}</div></section>
+    <section id="patterns" className="page-section space-y-3">
+      <h2 className="page-section-heading">2. 伝統医学の候補を比べる</h2>
+      <p className="text-sm">東洋医学では、症状や診察で分かったことから考える体の状態を「証」と呼びます。候補ごとに、当てはまること、食い違うこと、まだ確かめていないことを書きます。</p>
+      <div className="page-link-grid">
+        {patterns.map(pattern => (
+          <section className="page-link-card page-link-card--stack !gap-2" key={pattern.id}>
+            <h3>{pattern.name}</h3>
+            <p>{item.patternExamples?.[pattern.id] ?? pattern.distinguish}</p>
+            <p>施術の考え方（治法）の例 {pattern.principle}</p>
+          </section>
+        ))}
+      </div>
+      <nav aria-label="候補に関連する講義" className="flex flex-wrap gap-x-4 border-t border-divider pt-1">
+        {[...patternLectures].map(([href, names]) => (
+          <Link key={href} href={href} className="ui-text-link inline-flex min-h-11 min-w-0 items-center gap-2 text-sm">
+            {names.join('・')}の講義へ<ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+          </Link>
+        ))}
+      </nav>
+    </section>
     <section id="record" className="page-section space-y-3"><h2 className="page-section-heading">3. ツボを組み合わせる理由を残す</h2><p className="leading-relaxed">{item.recordPrompt}</p><Link className="page-secondary-action" href="/tsubo">候補にしたツボの位置と分類を調べる<ArrowRight aria-hidden="true" /></Link></section>
     <section id="review" className="page-section space-y-3">
       <h2 className="page-section-heading">4. 次回の問診で比べること</h2>

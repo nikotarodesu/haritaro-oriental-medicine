@@ -132,6 +132,16 @@
   flex-shrink: 0;
 }
 
+.symptoms-contents-primary {
+  grid-column: 1 / -1;
+  margin-block-start: .4rem;
+  border-block-end: 1px solid var(--atlas-line);
+}
+
+.symptoms-contents-primary a > span {
+  flex: 1;
+}
+
 .symptoms-guide .atlas-section-title {
   color: var(--atlas-accent);
 }

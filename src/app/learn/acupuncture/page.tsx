@@ -197,8 +197,8 @@ export default function AcupunctureGuidePage() {
       </GuideChapter>
 
       <GuideChapter chapter={chapters.visit}>
-        <section id="visit" className="acupuncture-guide-section" aria-labelledby="acupuncture-visit-title">
-          <h3 id="acupuncture-visit-title">相談から施術後の振り返りまで</h3>
+        <section id="visit" className="acupuncture-guide-section" aria-labelledby="acupuncture-visit-steps-title">
+          <h3 id="acupuncture-visit-steps-title">相談から施術後の振り返りまで</h3>
           <p>たとえば「肩が痛い」なら、「上着に腕を通すと痛む」「いつから続いている」まで伝えると、体の確認や施術後の比較に役立ちます。 <SourceLink id="who-practice">施術と同意の基準</SourceLink></p>
           <ol className="acupuncture-visit-flow" role="list">
             {visitSteps.map(({ title, icon: Icon, text }) => (

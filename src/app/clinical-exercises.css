@@ -76,6 +76,7 @@
 .clinical-exercise-simulator button,
 .clinical-exercise-simulator a { min-height: 2.75rem; }
 .clinical-exercise-simulator a { align-content: center; }
+.clinical-case-catalog .clinical-case-catalog-card { gap: .5rem; padding: clamp(.75rem, 2vw, 1.125rem); }
 .clinical-haiketsu-selected-list { border-bottom: 1px solid var(--exercise-line); }
 .clinical-haiketsu-selected { border-top: 1px solid var(--exercise-line); padding: 1rem 0; }
 .clinical-haiketsu-grid { display: grid; gap: 1rem; align-items: start; }
@@ -142,6 +143,8 @@
   overflow-wrap: anywhere;
   font-weight: 600;
 }
+.case-practice .clinical-role-points > li:has(> a) { padding: 0; }
+.case-practice .clinical-role-points a { overflow-wrap: anywhere; }
 .clinical-revision-figure {
   display: grid;
   gap: .75rem;

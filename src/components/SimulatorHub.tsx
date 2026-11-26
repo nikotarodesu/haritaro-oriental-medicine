@@ -8,16 +8,15 @@ import ProgressiveCaseTraining from "@/components/learning/ProgressiveCaseTraini
 import ThreeStageSimulator from "@/components/ThreeStageSimulator";
 import ClinicalRevisionTraining from "@/components/clinical/ClinicalRevisionTraining";
 import ClinicalComparisonExamples from "@/components/learning/ClinicalComparisonExamples";
-import type { ArticlePreview } from "@/data/articleData";
 
 const TRAINING_TABS = [
   { id: "case-training", label: "6段階の症例演習", description: "3例を順に考える" },
   { id: "condition-training", label: "条件選択", description: "条件を変えて比べる" },
-  { id: "revision-training", label: "見立て修正", description: "新しい所見から最初の見立てを見直す" },
+  { id: "revision-training", label: "見立て修正", description: "新しい所見から考え直す" },
 ] as const;
 type TrainingTab = typeof TRAINING_TABS[number]["id"];
 
-export default function SimulatorHub({ relatedArticles }: { relatedArticles: ArticlePreview[] }) {
+export default function SimulatorHub({ relatedArticles }: { relatedArticles: readonly { href: string; title: string }[] }) {
   const [activeTraining, setActiveTraining] = useState<TrainingTab>("case-training");
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const comparisonRef = useRef<HTMLDetailsElement | null>(null);
@@ -58,46 +57,41 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
 
   return (
     <div className="clinical-exercises space-y-8 sm:space-y-10">
-      <PageIntro compact title="弁証演習" art="practice" description="架空の症例を読む、条件を変えて候補を比べる、新しい所見から見立てを見直す。取り組みたい演習を選べます。" />
-      <details className="page-help">
-        <summary>演習で確認できること</summary>
-        <p className="text-sm sm:text-base text-muted leading-relaxed">
-          八綱、気血水、臓腑経絡の条件を選ぶと、条件に応じた候補と配穴の学習例が表示されます。四診の所見を加えて、候補に合わない点や、次に確認したいことを考えます。
-        </p>
+      <PageIntro compact title="弁証演習" art="practice" description="架空の症例や四診の所見を使って、見立ての考え方を練習します。" />
 
-      </details>
-
-      <div className="clinical-training-switcher" role="tablist" aria-label="演習の種類">
-        {TRAINING_TABS.map((tab, index) => (
-          <button key={tab.id} ref={element => { tabRefs.current[index] = element; }} type="button"
-            id={tab.id + "-tab"} role="tab" aria-selected={activeTraining === tab.id}
-            aria-controls={tab.id + "-panel"} tabIndex={activeTraining === tab.id ? 0 : -1}
-            onClick={() => selectTraining(index)}
-            onKeyDown={event => {
-              const next = event.key === "ArrowRight" ? (index + 1) % TRAINING_TABS.length
-                : event.key === "ArrowLeft" ? (index + TRAINING_TABS.length - 1) % TRAINING_TABS.length
-                : event.key === "Home" ? 0 : event.key === "End" ? TRAINING_TABS.length - 1 : null;
-              if (next === null) return;
-              event.preventDefault();
-              selectTraining(next, true);
-            }}>
-            <span>{tab.label}</span><small>{tab.description}</small>
-          </button>
-        ))}
+      <div className="space-y-3">
+        <div className="clinical-training-switcher" role="tablist" aria-label="演習の種類">
+          {TRAINING_TABS.map((tab, index) => (
+            <button key={tab.id} ref={element => { tabRefs.current[index] = element; }} type="button"
+              id={tab.id + "-tab"} role="tab" aria-selected={activeTraining === tab.id}
+              aria-controls={tab.id + "-panel"} tabIndex={activeTraining === tab.id ? 0 : -1}
+              onClick={() => selectTraining(index)}
+              onKeyDown={event => {
+                const next = event.key === "ArrowRight" ? (index + 1) % TRAINING_TABS.length
+                  : event.key === "ArrowLeft" ? (index + TRAINING_TABS.length - 1) % TRAINING_TABS.length
+                  : event.key === "Home" ? 0 : event.key === "End" ? TRAINING_TABS.length - 1 : null;
+                if (next === null) return;
+                event.preventDefault();
+                selectTraining(next, true);
+              }}>
+              <span>{tab.label}</span><small>{tab.description}</small>
+            </button>
+          ))}
+        </div>
+        <section id="case-training-panel" role="tabpanel" aria-labelledby="case-training-tab" hidden={activeTraining !== "case-training"} tabIndex={0} className="clinical-training-panel">
+          <ProgressiveCaseTraining />
+        </section>
+        <section id="condition-training-panel" role="tabpanel" aria-labelledby="condition-training-tab" hidden={activeTraining !== "condition-training"} tabIndex={0} className="clinical-training-panel">
+          <div id="condition-training" className="scroll-mt-28"><ThreeStageSimulator /></div>
+          <details ref={comparisonRef} id="comparison-examples" className="clinical-comparison-disclosure">
+            <summary>似た証の違いを3例で見る</summary>
+            <ClinicalComparisonExamples />
+          </details>
+        </section>
+        <section id="revision-training-panel" role="tabpanel" aria-labelledby="revision-training-tab" hidden={activeTraining !== "revision-training"} tabIndex={0} className="clinical-training-panel">
+          <ClinicalRevisionTraining />
+        </section>
       </div>
-      <section id="case-training-panel" role="tabpanel" aria-labelledby="case-training-tab" hidden={activeTraining !== "case-training"} tabIndex={0} className="clinical-training-panel">
-        <ProgressiveCaseTraining />
-      </section>
-      <section id="condition-training-panel" role="tabpanel" aria-labelledby="condition-training-tab" hidden={activeTraining !== "condition-training"} tabIndex={0} className="clinical-training-panel">
-        <div id="condition-training" className="scroll-mt-28"><ThreeStageSimulator /></div>
-        <details ref={comparisonRef} id="comparison-examples" className="clinical-comparison-disclosure">
-          <summary>似た証の違いを3例で見る</summary>
-          <ClinicalComparisonExamples />
-        </details>
-      </section>
-      <section id="revision-training-panel" role="tabpanel" aria-labelledby="revision-training-tab" hidden={activeTraining !== "revision-training"} tabIndex={0} className="clinical-training-panel">
-        <ClinicalRevisionTraining />
-      </section>
 
       <section aria-labelledby="simulator-research-heading" className="border-t border-[var(--border-washi)] pt-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -111,15 +105,15 @@ export default function SimulatorHub({ relatedArticles }: { relatedArticles: Art
           </div>
 
           <nav aria-label="伝統理論と研究の関連記事" className="flex flex-wrap items-center gap-x-5 gap-y-1 shrink-0 sm:max-w-sm">
-            {relatedArticles.map(article => (
+            {relatedArticles.map(({ href, title }) => (
               <Link
-                key={article.id}
-                href={`/articles/${article.id}`}
+                key={href}
+                href={href}
                 className="inline-flex min-h-11 max-w-full items-center gap-1.5 text-left text-sm text-accent underline underline-offset-4"
               >
-                <BookOpen className="w-3.5 h-3.5 shrink-0" />
-                <span>{article.title}</span>
-                <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+                <BookOpen aria-hidden="true" className="w-3.5 h-3.5 shrink-0" />
+                <span>{title}</span>
+                <ArrowRight aria-hidden="true" className="w-3.5 h-3.5 shrink-0" />
               </Link>
             ))}
           </nav>

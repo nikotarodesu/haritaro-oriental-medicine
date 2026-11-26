@@ -18,8 +18,7 @@ import {
   Stethoscope, 
   Activity, 
   User as UserIcon,
-  Layers,
-  RotateCcw
+  Layers
 } from "lucide-react";
 import type { CaseReasoningStep, ClinicalCase } from "@/types/clinicalCase";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
@@ -457,28 +456,11 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       {/* ステップ 4 & 5: 確定弁証・治法・処方配穴 ＆ 専門解説 */}
       {showExplanation && (
         <section id="case-explanation" aria-labelledby="case-explanation-title" className="case-section">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-divider pb-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-warm" />
-              <h2 id="case-explanation-title" className="reader-section-title">
-                教材上の証と配穴例
-              </h2>
-            </div>
-
-            {/* シミュレーターで動的検証ボタン */}
-            {(() => {
-              const simPreset = getCaseSimulatorPreset(clinicalCase.id);
-              if (!simPreset) return null;
-              return (
-                <Link
-                  href={buildSimulatorUrlFromCase(simPreset)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-panel-selected hover:bg-panel-muted text-accent border border-frame transition-all shadow-xs group"
-                >
-                  <FlaskConical className="w-3.5 h-3.5 text-warm" />
-                  <span>この症例の条件で弁証を練習する</span>
-                </Link>
-              );
-            })()}
+          <div className="flex items-center gap-2 border-b border-divider pb-3">
+            <Sparkles aria-hidden="true" className="h-5 w-5 shrink-0 text-warm" />
+            <h2 id="case-explanation-title" className="reader-section-title">
+              教材上の証と配穴例
+            </h2>
           </div>
 
           {/* 確定診断要約テーブル */}
@@ -512,7 +494,22 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
               <div>
                 <dt className="clinical-role-heading">中心に選ぶツボ</dt>
                 <dd className="clinical-role-description">主穴</dd>
-                <dd><ul className="clinical-role-points">{clinicalCase.correctDiagnosis.primaryPoints.map(point => <li key={point}>{point}</li>)}</ul></dd>
+                <dd>
+                  <ul className="clinical-role-points">
+                    {clinicalCase.correctDiagnosis.primaryPoints.map(point => {
+                      const code = point.match(/\(([A-Za-z0-9]+)\)/)?.[1].toLowerCase();
+                      return (
+                        <li key={point}>
+                          {code ? (
+                            <Link href={`/tsubo/${code}`} className="ui-text-link inline-flex min-h-11 items-center gap-1 px-2" aria-label={`${point}の位置と注意点`}>
+                              {point}<ChevronRight aria-hidden="true" className="h-3 w-3 shrink-0" />
+                            </Link>
+                          ) : point}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </dd>
               </div>
               <div data-role="branch">
                 <dt className="clinical-role-heading">追加するツボ</dt>
@@ -599,7 +596,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-warm" />
                 <h4 className="font-bold text-sm text-ink">
-                  条件を変えて比べる・別の教材を読む
+                  次の学習
                 </h4>
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -626,19 +623,6 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                 })()}
 
                 <Link
-                  href="/cases"
-                  className="p-3.5 rounded-xl bg-panel border border-frame hover:border-accent text-left space-y-1 group transition-all block"
-                >
-                  <div className="flex items-center justify-between text-xs font-bold text-accent">
-                    <span>別の模擬症例を選ぶ</span>
-                    <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
-                  </div>
-                  <p className="text-xs text-muted">
-                    {CLINICAL_CASES.length}例から、症状や難易度を見て選べます。
-                  </p>
-                </Link>
-
-                <Link
                   href="/curriculum"
                   className="p-3.5 rounded-xl bg-panel border border-frame hover:border-accent text-left space-y-1 group transition-all block"
                 >
@@ -657,38 +641,11 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         </section>
       )}
 
-      {showExplanation && <div className="case-section">
-        <div className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-wider">
-          <Layers className="w-4 h-4" />
-          <span>この症例に出てくるツボの位置と注意点</span>
-        </div>
-
-        <div className="space-y-2.5 pt-2 border-t border-divider">
-          <div className="flex flex-wrap gap-2">
-            {clinicalCase.correctDiagnosis.primaryPoints.map((pt) => {
-              const codeMatch = pt.match(/\(([A-Za-z0-9]+)\)/);
-              const code = codeMatch ? codeMatch[1].toLowerCase() : null;
-              if (!code) return <span key={pt} className="text-xs px-2.5 py-1 rounded-lg bg-page text-muted">{pt}</span>;
-              return (
-                <Link
-                  key={pt}
-                  href={`/tsubo/${code}`}
-                  className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-frame bg-panel px-3 py-1.5 text-sm font-semibold text-accent hover:border-accent"
-                >
-                  <span>{pt}</span>
-                  <ChevronRight className="w-3 h-3 text-[#8C9690]" />
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </div>}
-
       {/* フッターナビゲーション */}
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-divider pt-4">
         <Link
           href="/cases"
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-muted hover:text-[#1E3D34]"
+          className="ui-text-link inline-flex min-h-11 items-center text-sm font-semibold"
         >
           <span>模擬症例を一覧で見る</span>
         </Link>

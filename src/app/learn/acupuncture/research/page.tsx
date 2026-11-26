@@ -51,6 +51,7 @@ export default function AcupunctureResearchIndexPage() {
           {ACUPUNCTURE_RESEARCH_TOPICS.map(topic => (
             <li key={topic.id}><a href={`#${topic.id}`}>{topic.title}<ArrowDown size={14} aria-hidden="true" /></a></li>
           ))}
+          <li><a href="#guide-research-title">症状ガイドの研究<ArrowDown size={14} aria-hidden="true" /></a></li>
         </ul>
       </nav>
       <div className={styles.topicGroups}>
@@ -80,7 +81,7 @@ export default function AcupunctureResearchIndexPage() {
         })}
       </div>
       <section className="page-section border-t border-divider pt-5" aria-labelledby="guide-research-title">
-        <h2 id="guide-research-title" className="page-section-heading">症状ガイドに掲載している研究</h2>
+        <h2 id="guide-research-title" className={`page-section-heading ${styles.guideStudyHeading}`}>症状ガイドの研究</h2>
         <ul className="grid gap-2 sm:grid-cols-2">
           {guideStudies.map(guide => (
             <li key={guide.href}><Link href={guide.href} className="page-secondary-action">{guide.label}<ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" /></Link></li>

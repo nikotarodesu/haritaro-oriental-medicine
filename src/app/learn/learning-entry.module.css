@@ -28,20 +28,33 @@
   color: var(--learn-ink);
 }
 
-.entry > :global(.learning-path) {
-  padding: clamp(.875rem, 3vw, 1.45rem);
-  border: 1px solid var(--border-washi);
-  border-radius: var(--radius-card);
-  background: var(--bg-card);
+.contents {
+  display: grid;
+  gap: .75rem;
 }
 
-.entry :global(.learning-path-stop):hover {
-  background: var(--tokiwa-light);
+.contents,
+.contentsAnchor,
+.contents :global([id^="chapter-"]),
+.contents > h2 {
+  scroll-margin-block-start: calc(var(--site-header-height, 60px) + 1rem);
 }
 
-.entry :global(.learning-path-art) {
-  background: var(--tokiwa-light);
-  color: var(--learn-ink);
+.contentsAnchor {
+  display: block;
+}
+
+.lectureOverview {
+  display: grid;
+  align-items: start;
+  gap: 1rem;
+}
+
+@media (min-width: 60rem) {
+  .lectureOverview {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+  }
 }
 
 .diagramExample {

@@ -24,7 +24,7 @@ const groupedCaseNumbers = new Set(symptomGroups.flatMap(group => group.caseNumb
 
 function CaseGrid({ entries }: { entries: readonly CatalogEntry[] }) {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
       {entries.map(({ caseNumber, card }) => <Fragment key={caseNumber}>{card}</Fragment>)}
     </div>
   );

@@ -73,12 +73,14 @@ export default function SimulatorPage() {
       </nav>
 
       {/* シミュレーター統合ハブ */}
-      <SimulatorHub relatedArticles={getArticlePreviews([
-        "science-of-yinyang-gogyo",
-        "science-of-kampo-network-pharmacology",
-        "science-of-qi-blood-fluid",
-      ])} />
-      <Link href={PATTERN_AGREEMENT_HREF} className="page-secondary-action">同じ所見を読んで見立てが分かれたら？</Link>
+      <SimulatorHub relatedArticles={[
+        ...getArticlePreviews([
+          "science-of-yinyang-gogyo",
+          "science-of-kampo-network-pharmacology",
+          "science-of-qi-blood-fluid",
+        ]).map(({ id, title: articleTitle }) => ({ href: `/articles/${id}`, title: articleTitle })),
+        { href: PATTERN_AGREEMENT_HREF, title: "同じ所見を読んで見立てが分かれたら？" },
+      ]} />
     </div>
   );
 }

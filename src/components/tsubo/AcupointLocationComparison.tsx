@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, GitCompare, MapPin } from "lucide-react";
+import { ArrowUp, ArrowUpRight, GitCompare } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { atlasLocationWithoutUnitNote } from "@/data/tsubo/friendlyLocations";
 import type { AcupointMaster } from "@/data/tsubo/types";
@@ -18,14 +18,12 @@ export default function AcupointLocationComparison({ point, related, children }:
 
   return (
     <section id="acupoint-compare" tabIndex={-1} className="atlas-target" aria-labelledby="acupoint-compare-title">
-      <h2 className="atlas-section-title" id="acupoint-compare-title">位置を見比べるツボ</h2>
+      <div className="atlas-point-compare-heading">
+        <h2 className="atlas-section-title" id="acupoint-compare-title">位置を見比べるツボ</h2>
+        {entries.length > 0 && <a href="#acupoint-location" className="atlas-text-action"><ArrowUp aria-hidden="true" size={15} />{point.name}の位置図に戻る</a>}
+      </div>
       {entries.length > 0 && (
         <ul className="atlas-point-compare-grid" role="list">
-          <li className="atlas-point-compare-card atlas-point-compare-current">
-            <p className="atlas-point-compare-label"><MapPin aria-hidden="true" size={16} />このページのツボ</p>
-            <h3>{point.name} <span>{point.code}</span></h3>
-            <a href="#acupoint-location" className="atlas-source-link">位置図を見る</a>
-          </li>
           {entries.map(({ other, text }) => (
             <li key={other.codeLower} className="atlas-point-compare-card">
               <h3>

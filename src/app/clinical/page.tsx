@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, Clock3, GitCompareArrows, GraduationCap, Heart, Info, MessageCircle, ShieldCheck, Stethoscope } from 'lucide-react';
+import { ArrowRight, BookOpen, Clock3, GitCompareArrows, GraduationCap, Info, MessageCircle, ShieldCheck, Stethoscope } from 'lucide-react';
 import { PAGE_REVISIONS } from '@/config/contentUpdates';
 import { ALL_NAV_ITEMS } from '@/config/navigationItems';
 import { KNEE_RESEARCH_HREF, PATTERN_AGREEMENT_HREF } from '@/config/acupunctureLearning';
@@ -53,6 +53,7 @@ const casePreview = [
   { label: '四診の所見', text: '目が充血し、脈は張りがあって速い。', icon: Stethoscope },
 ] as const;
 
+const headacheCourseIntroHref = '/curriculum/lecture-practice-1';
 const headacheCourseStages = [
   { href: '/curriculum/lecture-practice-2', label: '相談と安全確認' },
   { href: '/curriculum/lecture-practice-4', label: '問診と弁証' },
@@ -61,6 +62,7 @@ const headacheCourseStages = [
   { href: '/curriculum/lecture-practice-9', label: '施術直後の反応' },
   { href: '/curriculum/lecture-practice-10', label: '7日後の再評価' },
 ];
+const headacheCourseHrefs = [headacheCourseIntroHref, ...headacheCourseStages.map(({ href }) => href)];
 
 const researchExercises = [
   { href: PATTERN_AGREEMENT_HREF, label: '同じ症例で弁証が分かれる理由を考える', icon: GitCompareArrows },
@@ -96,7 +98,7 @@ export default function ClinicalLandingPage() {
       <header className={styles.hero}>
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
-          <p>鍼灸学生・鍼灸師向けの教材です。初めての方は、短い頭痛の模擬症例を読み、最初の設問で考え方を確かめられます。</p>
+          <p>鍼灸学生・鍼灸師向けの教材です。本人の訴えと四診の所見から、見立てや配穴を考えます。</p>
           <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" fallback={firstCaseHref && (
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 print:hidden">
               <Link href={firstCaseHref} className="page-primary-action">
@@ -129,7 +131,7 @@ export default function ClinicalLandingPage() {
             <h2 id="headache-course-heading" className={styles.sectionTitle}>相談から7日後まで追う：頭痛の架空症例</h2>
             <p>夕方の頭痛で仕事や家事に支障が出ている43歳の女性の事例です。6段階の記録を読み、痛みと普段の生活の変化を考えます。</p>
           </div>
-          <Link href="/curriculum/lecture-practice-1" className="page-secondary-action">
+          <Link href={headacheCourseIntroHref} className="page-secondary-action">
             連続演習の進め方を読む<ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
@@ -147,7 +149,7 @@ export default function ClinicalLandingPage() {
       </section>
 
       <section id="tools" tabIndex={-1} className={styles.section} aria-labelledby="clinical-practice-heading">
-        <h2 id="clinical-practice-heading" className={styles.sectionTitle}>症例・配穴の演習</h2>
+        <h2 id="clinical-practice-heading" className={styles.sectionTitle}>症例・弁証・配穴の演習</h2>
         <ul className={styles.exerciseGrid}>
           {exercises.map(({ icon: Icon, ...tool }) => (
             <li key={tool.href}>
@@ -205,7 +207,7 @@ export default function ClinicalLandingPage() {
 
         <section className={styles.reading} aria-labelledby="practice-reading">
           <h2 id="practice-reading" className={styles.sectionTitle}>問診・四診・配穴の講義</h2>
-          <PublicLectureIndex series="practice" />
+          <PublicLectureIndex series="practice" excludeHrefs={headacheCourseHrefs} />
         </section>
       </div>
       <section aria-labelledby="clinical-help-heading" className="clinical-help">
@@ -216,7 +218,7 @@ export default function ClinicalLandingPage() {
         </details>
       </section>
       <LearningCredits revisedAt={revisedAt} />
-      <nav aria-label="関連する案内" className="clinical-related-links"><Link href="/learn"><GraduationCap aria-hidden="true" />はり太郎の東洋医学</Link><Link href="/symptoms"><Heart aria-hidden="true" />一般向けの症状別ガイド</Link></nav>
+      <nav aria-label="関連する案内" className="clinical-related-links"><Link href="/learn"><GraduationCap aria-hidden="true" />はり太郎の東洋医学</Link></nav>
     </div>
   );
 }

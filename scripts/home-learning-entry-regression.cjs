@@ -109,16 +109,20 @@ for (const unit of readingUnits) {
     assert.equal(readingLinkHref('/curriculum/' + part.lectureId, unit.href), '#' + part.anchor);
   }
 }
-const learningMap = reading.match(/<nav[^>]*aria-labelledby="learning-path-title"[^>]*>(.*?)<\/nav>/)?.[1];
-assert(learningMap, 'The ordered study map renders on the public reading hub');
-const mapLinks = Array.from(learningMap.matchAll(/href="(\/learn\/lectures\/[^"]+)"/g), match => match[1]);
-assert.equal(mapLinks.length, 5);
-let lastMapStop = -1;
-for (const href of mapLinks) {
-  const stop = readingChapters.findIndex(chapter => chapter.entries[0].href === href);
-  assert(stop > lastMapStop, href + ' starts a reading chapter in the index order');
-  lastMapStop = stop;
-}
+const contentsStart = reading.indexOf('<section id="learn-courses-heading"');
+const contentsEnd = reading.indexOf('id="oriental-reading"', contentsStart);
+assert(contentsStart >= 0 && contentsEnd > contentsStart, 'Lecture contents are the first group after the introduction');
+const contents = reading.slice(contentsStart, contentsEnd);
+assert.equal((reading.match(/id="learn-courses-heading"/g) || []).length, 1, 'The hub has one lecture index');
+assert(reading.includes('href="#learn-courses-heading"'), 'The introduction links to the index');
+assert(contents.includes('id="learning-path-title"') && contents.includes('id="reading-topics"'), 'Existing lecture index bookmarks reach the same section');
+assert(contents.includes('id="learn-yin-yang-example"'), 'The illustrated example remains with the lecture index');
+const chapterAnchors = Array.from(contents.matchAll(/<section id="chapter-([^"]+)"/g), match => match[1]);
+assert.equal(chapterAnchors.join('|'), readingChapters.map(chapter => chapter.id).join('|'), 'All chapter anchors remain in the published order');
+const contentsLinks = Array.from(contents.matchAll(/href="(\/learn\/lectures\/[a-z0-9-]+)"/g), match => match[1]);
+assert.equal(contentsLinks.join('|'), readingOrder.join('|'), 'The index links to all 16 lectures once in reading order');
+assert(contents.includes('<section id="chapter-intro"><details class="reader-contents" open="">'), 'The first chapter shows its lectures before interaction');
+assert.equal((contents.match(/<details[^>]*\sopen=""/g) || []).length, 1, 'Other chapters can be opened when needed');
 assert(!reading.includes('学習履歴を確認中') && !reading.includes('href="/notes"'));
 const essentials = renderToStaticMarkup(React.createElement(load('src/app/learn/essentials/page').default));
 const essentialTopics = [...essentials.matchAll(/<article[^>]*class="essentials-topic"[^>]*>/g)];
@@ -133,4 +137,4 @@ for (const [, href] of deepLinks) assert(partHrefs.has(href), href + ' is a real
 assert.equal((essentials.match(/class="essentials-example"/g) || []).length, 12);
 assert.equal((essentials.match(/<details class="essentials-diagram">/g) || []).length, 12);
 assert.equal((essentials.match(/data-study-diagram="/g) || []).length, 12);
-console.log(`Passed: three public series, study map, 12 examples, diagrams and section links, and ${readingOrder.length} consolidated lectures in index order.`);
+console.log(`Passed: three public series, the single reading index and legacy bookmarks, 12 examples, diagrams and section links, and ${readingOrder.length} consolidated lectures in index order.`);

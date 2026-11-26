@@ -57,6 +57,19 @@ export default function TsuboPage() {
       <Link href={ACUPUNCTURE_GUIDE.href} className="atlas-text-action"><BookOpen size={17} aria-hidden="true" />{ACUPUNCTURE_GUIDE.label}</Link>
     </nav>
   );
+  const indexLinks = (
+    <details className="atlas-disclosure dictionary-index-links">
+      <summary>索引・症状から探す</summary>
+      <nav aria-label="ツボ図鑑の索引">
+        <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
+        <a href="#tsubo-index" className="atlas-search-index-link">経絡別の索引</a>
+        <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
+        <Link href="/symptoms" className="atlas-search-index-link">症状別ガイド</Link>
+        <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
+        <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
+      </nav>
+    </details>
+  );
 
   return (
     <div className={`page-layout atlas-page atlas-directory ${styles.index}`}>
@@ -72,7 +85,7 @@ export default function TsuboPage() {
         <AtlasOverviewArt />
       </header>
 
-      <TsuboInteractiveClient featuredPoints={
+      <TsuboInteractiveClient indexLinks={indexLinks} featuredPoints={
         <nav aria-label="代表的なツボ" className="atlas-directory-featured">
           <h2>代表的なツボ</h2>
           <ul>
@@ -160,14 +173,6 @@ export default function TsuboPage() {
         </ul>
       </details>
 
-      <nav aria-label="ツボ図鑑の索引" className="atlas-directory-index-links">
-        <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
-        <a href="#tsubo-index" className="atlas-search-index-link">経絡別の索引</a>
-        <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
-        <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
-        <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
-      </nav>
-
       <HashTargetDetails id="atlas-research-index" className="atlas-disclosure atlas-target dictionary-index-disclosure" summary={<h2 id="atlas-research-index-title"><FlaskConical size={17} aria-hidden="true" />研究から探す</h2>}>
         <div className={styles.learning}>
         <Link href={ACUPUNCTURE_RESEARCH.href} className="atlas-text-action">鍼灸の研究を読む</Link>
@@ -238,7 +243,6 @@ export default function TsuboPage() {
           <PublicLectureIndex series="dictionary" />
           <TsuboReviewEntry placement="dictionary" />
           <nav className="dictionary-tools" aria-label="経穴の学習ツール">
-            <Link href="/tsubo/practice"><BookOpen aria-hidden="true" size={16} />今日の復習<ArrowRight aria-hidden="true" size={16} /></Link>
             <Link href="/kikei">奇経八脈<ArrowRight aria-hidden="true" size={16} /></Link>
           </nav>
           <ClinicalPairsSection />

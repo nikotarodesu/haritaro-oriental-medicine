@@ -51,9 +51,6 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} />
       {article.safetyWarning && <aside className="atlas-caution-priority"><p>{article.safetyWarning}</p></aside>}
-      <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
-
-      <AcupointTraditionalUses code={point.codeLower} />
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>
@@ -115,7 +112,9 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <AcupointComparisonLink code={point.code} />
       </AcupointLocationComparison>
 
+      <AcupointTraditionalUses code={point.codeLower} />
       <div className="atlas-secondary-sections">
+        <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
         <FeaturedAcupointPairs pointCode={point.codeLower} />
         <AcupointResearch point={point} context={{ title: contextTitle, paragraphs: article.traditional }} />
         <AcupointReferences point={point} editorialLinks={article.symptomLinks} sources={article.sources} />
