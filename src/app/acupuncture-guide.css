@@ -204,6 +204,8 @@
 .acupuncture-visit-flow svg, .acupuncture-history-card > svg { color: var(--guide-green); }
 .acupuncture-visit-flow p { grid-column: 2; font-size: .925rem; }
 
+.acupuncture-research-intro { display: grid; gap: .7rem; }
+.acupuncture-research-intro > p { max-width: 72ch; }
 .acupuncture-mechanisms { display: grid; min-width: 0; border: 1px solid var(--border-washi); border-radius: .8rem; background: var(--bg-card); }
 .acupuncture-mechanisms > div { display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: start; align-items: start; gap: .25rem .65rem; padding: .8rem .9rem; }
 .acupuncture-mechanisms > div + div { border-block-start: 1px solid var(--border-subtle); }
@@ -212,6 +214,9 @@
 .acupuncture-mechanisms p { font-size: .925rem; }
 .acupuncture-mechanisms a { justify-self: start; }
 
+.acupuncture-evidence-check dl { display: grid; column-gap: 1rem; margin-block-start: .35rem; }
+.acupuncture-evidence-check dl > div { padding-block: .45rem; border-block-start: 1px solid var(--border-subtle); font-size: .925rem; }
+.acupuncture-evidence-check dt { color: var(--guide-green); }
 .acupuncture-study-feature { display: grid; gap: .75rem; min-width: 0; padding: clamp(.75rem, 2.4vw, 1.25rem); border: 1px solid var(--border-washi); border-radius: .8rem; background: var(--bg-card); }
 .acupuncture-study-feature h4 { color: var(--guide-green); font-size: clamp(1.06rem, 2.5vw, 1.25rem); }
 .acupuncture-study-feature > .ui-text-link { justify-self: start; }
@@ -226,12 +231,13 @@
 .acupuncture-study-chart li > strong { font-variant-numeric: tabular-nums; text-align: end; }
 .acupuncture-study-reading { display: grid; gap: .65rem; min-width: 0; }
 .acupuncture-study-reading dt { color: var(--guide-green); font-size: .85rem; }
-.acupuncture-evidence-block { display: grid; gap: .55rem; min-width: 0; }
 .acupuncture-research-list { display: grid; column-gap: 1.2rem; }
 .acupuncture-study { display: grid; align-content: start; gap: .55rem; min-width: 0; padding-block: .75rem; border-block-start: 1px solid var(--border-washi); font-size: .94rem; }
-.acupuncture-study h5 { font-size: 1rem; font-weight: 700; line-height: 1.55; text-wrap: balance; }
+.acupuncture-study h4 { font-size: 1rem; text-wrap: balance; }
 .acupuncture-study > p, .acupuncture-study-reading > div:last-child dd { color: var(--text-secondary); }
 .acupuncture-study .acupuncture-inline-links { line-height: 1.55; row-gap: .45rem; }
+.acupuncture-research-related { display: grid; gap: .35rem; padding-block-start: .75rem; border-block-start: 1px solid var(--border-washi); }
+.acupuncture-research-related ul { display: grid; column-gap: 1rem; }
 .acupuncture-trial { display: grid; gap: .8rem; min-width: 0; padding: clamp(.75rem, 2.5vw, 1.25rem); border: 1px solid var(--border-washi); border-radius: .85rem; background: var(--bg-card); }
 .acupuncture-trial-example { color: var(--text-secondary); font-size: .925rem; }
 .acupuncture-trial-options { min-width: 0; margin: 0; padding: 0; border: 0; }
@@ -328,6 +334,7 @@
   .acupuncture-mechanisms > div { grid-template-columns: minmax(0, 1fr); gap: .45rem; }
   .acupuncture-mechanisms > div + div { border-block-start: 0; border-inline-start: 1px solid var(--border-subtle); }
   .acupuncture-mechanisms :is(p, a) { grid-column: auto; }
+  .acupuncture-evidence-check dl, .acupuncture-research-related ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .acupuncture-detail-grid, .acupuncture-safety-grid, .acupuncture-visit-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .acupuncture-visit-flow li:nth-child(2) { border-block-start: 0; }
   .acupuncture-points-layout { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
@@ -347,6 +354,7 @@
 
 @media (min-width: 900px) {
   .acupuncture-research-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .acupuncture-sources { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.35rem; }
   .acupuncture-visit-flow { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .acupuncture-visit-flow { column-gap: 0; }
   .acupuncture-visit-flow li { grid-template-columns: minmax(0, 1fr); gap: .45rem; padding-inline: .75rem; }

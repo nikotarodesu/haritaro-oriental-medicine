@@ -22,7 +22,6 @@ import {
   RotateCcw
 } from "lucide-react";
 import type { CaseObservationTarget, CaseReasoningStep, ClinicalCase } from "@/types/clinicalCase";
-import MedicalSafetyNotice from "@/components/MedicalSafetyNotice";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
 import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
 import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
@@ -43,6 +42,13 @@ const examinationOptions = [
   { id: "inquiry", label: "問診", cue: "本人の話", icon: MessageCircle },
   { id: "palpation", label: "切診", cue: "脈やお腹", icon: Hand },
 ] as const;
+
+const CASE_SAFETY_ANCHOR = "case-safety";
+
+function openCaseSafety() {
+  const safety = document.getElementById(CASE_SAFETY_ANCHOR);
+  if (safety instanceof HTMLDetailsElement) safety.open = true;
+}
 
 function observationHref(target: CaseObservationTarget) {
   switch (target) {
@@ -76,6 +82,16 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   const retryStep = retry?.stepNumber;
   const history = clinicalCase.patient.historyOfPresentIllness;
   const observations = clinicalCase.clinicalExplanation.observations;
+  const safety = CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id];
+
+  useEffect(() => {
+    function openLinkedSafety() {
+      if (window.location.hash === `#${CASE_SAFETY_ANCHOR}`) openCaseSafety();
+    }
+    openLinkedSafety();
+    window.addEventListener("hashchange", openLinkedSafety);
+    return () => window.removeEventListener("hashchange", openLinkedSafety);
+  }, [clinicalCase.id]);
 
   useEffect(() => {
     if (!ready) return;
@@ -167,13 +183,27 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         </ol>
       </nav>
 
-      <details className="page-help text-sm leading-relaxed">
-        <summary>この演習で扱う範囲</summary>
-        <p>{CLINICAL_CASE_SCOPE}</p>
-      </details>
-      <div id="case-safety" tabIndex={-1} className="scroll-mt-3">
-        <MedicalSafetyNotice title="この症例の受診・安全上の注意" {...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id]} />
-      </div>
+      <aside aria-label="症例演習の注意" className="rounded-xl border border-frame bg-panel px-3 text-sm sm:px-4">
+        <div className="flex flex-wrap items-center justify-between gap-x-4">
+          <p className="py-2 font-medium">架空の症例です。受診を急ぐ所見を先に確認します。</p>
+          <Link href="/safety" className="ui-text-link inline-flex min-h-11 items-center">受診の目安と鍼灸の安全性</Link>
+        </div>
+        <details id={CASE_SAFETY_ANCHOR} tabIndex={-1} className="scroll-mt-3 border-t border-divider">
+          <summary className="min-h-11 cursor-pointer content-center py-2 font-semibold">この症例の受診・安全上の注意</summary>
+          <div className="space-y-3 pb-3 leading-relaxed">
+            <p>{safety.message}</p>
+            <ul className="list-disc space-y-1 pl-5">
+              {safety.sources.map(source => (
+                <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" className="underline">{source.title}</a>（{source.section}）</li>
+              ))}
+            </ul>
+            <div className="border-t border-divider pt-3 text-muted">
+              <p className="font-semibold text-ink">この演習で扱う範囲</p>
+              <p>{CLINICAL_CASE_SCOPE}</p>
+            </div>
+          </div>
+        </details>
+      </aside>
 
       {/* ステップ 1: 患者基本情報 ＆ 主訴・現病歴 */}
       <section id="case-patient" tabIndex={-1} aria-labelledby="case-patient-title" className="case-section">
@@ -331,7 +361,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <h2 id="case-reasoning-title" className="reader-section-title flex items-center gap-2">
           <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />{retry ? "症例の復習" : "症例を読んで判断する"}
         </h2>
-        <p><a href="#case-safety" className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を読む</a></p>
+        <p><a href={`#${CASE_SAFETY_ANCHOR}`} onClick={openCaseSafety} className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を読む</a></p>
 
         {ready && !retry && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
@@ -573,7 +603,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
               <p className="text-sm sm:text-base text-amber-900/90 dark:text-amber-200/90 leading-relaxed">
                 前回の記録と比べ、症状の続き方や新しく出た変化を確かめます。読んだ注意を、次に聞くことに結びつけてください。
               </p>
-              <a href="#case-safety" className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を見返す</a>
+              <a href={`#${CASE_SAFETY_ANCHOR}`} onClick={openCaseSafety} className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を見返す</a>
             </div>
 
             {clinicalCase.clinicalExplanation.classicCitation && (

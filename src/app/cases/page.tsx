@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
-import { AlertCircle, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { CASE_STUDY_DESCRIPTORS } from "@/data/cases/caseStudyCatalog";
 import { collectionPageJsonLd } from "@/config/seo";
@@ -30,6 +30,19 @@ export default function CasesIndexPage() {
           <a href="#case-catalog" className="page-secondary-action">模擬症例を一覧で見る</a>
         </div>
       </PageIntro>
+
+      <aside aria-label="症例演習の注意" className="rounded-xl border border-frame bg-panel px-3 text-sm sm:px-4">
+        <div className="flex flex-wrap items-center justify-between gap-x-4">
+          <p className="py-2 font-medium">すべて学習用の架空症例です。</p>
+          <Link href="/safety" className="ui-text-link inline-flex min-h-11 items-center">受診の目安と鍼灸の安全性</Link>
+        </div>
+        <details className="border-t border-divider">
+          <summary className="min-h-11 cursor-pointer content-center py-2 font-semibold focus-visible:outline-2 focus-visible:outline-offset-2">症例演習で扱う範囲</summary>
+          <p className="pb-3 leading-relaxed text-muted">
+            全{totalCaseCount}例は東洋医学の考え方を学ぶための架空症例です。実際の診断や施術については、担当する医療従事者の指導に従ってください。
+          </p>
+        </details>
+      </aside>
 
       <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} />
 
@@ -78,18 +91,6 @@ export default function CasesIndexPage() {
           ),
         }))} />
 
-        {/* 症例演習に関する留意事項・免責 */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-panel border border-frame flex items-start gap-3 text-xs text-muted">
-          <AlertCircle className="w-4 h-4 text-warm shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <p className="font-bold text-ink">
-              症例演習で扱う範囲
-            </p>
-            <p className="leading-relaxed">
-              全{totalCaseCount}例は東洋医学の考え方を学ぶための架空症例です。実際の診断や施術については、担当する医療従事者の指導に従ってください。
-            </p>
-          </div>
-        </div>
       </section>
 
       <CaseCourseComparison />

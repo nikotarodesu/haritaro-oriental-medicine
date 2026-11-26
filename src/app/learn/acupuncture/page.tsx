@@ -232,9 +232,20 @@ export default function AcupunctureGuidePage() {
       </GuideChapter>
 
       <GuideChapter chapter={chapters.research}>
+        <div className="acupuncture-research-intro">
+          <p>鍼の研究を読むときは、何を測り、どの組と比べたかを確かめます。鍼を受けたときの体の反応と、日常生活での変化では、測る方法が違います。</p>
+          <nav aria-label="研究の読み方の目次" className="acupuncture-chapter-nav">
+            <ul role="list">
+              <li><a href="#mechanisms">体の反応 <ArrowDown size={15} aria-hidden="true" /></a></li>
+              <li><a href="#evidence">腰痛の試験 <ArrowDown size={15} aria-hidden="true" /></a></li>
+              <li><a href="#combinations">ツボの組み合わせ <ArrowDown size={15} aria-hidden="true" /></a></li>
+              <li><a href="#study-examples">ほかの研究 <ArrowDown size={15} aria-hidden="true" /></a></li>
+            </ul>
+          </nav>
+        </div>
+
         <section id="mechanisms" className="acupuncture-guide-section" aria-labelledby="acupuncture-mechanisms-title">
-          <h3 id="acupuncture-mechanisms-title">鍼を受けた体の反応は、どう調べる？</h3>
-          <p>鍼の周りで起きたこと、神経系の変化、生活で感じる変化は、測る方法が違います。</p>
+          <h3 id="acupuncture-mechanisms-title">鍼の研究で何を測る？</h3>
           <div className="acupuncture-mechanisms">
             <div>
               <Layers3 size={26} strokeWidth={1.5} aria-hidden="true" />
@@ -251,17 +262,24 @@ export default function AcupunctureGuidePage() {
             <div>
               <ChartLine size={26} strokeWidth={1.5} aria-hidden="true" />
               <h4>日常生活での変化</h4>
-              <p>患者が感じる痛みや動きやすさは臨床試験で比べます。慢性腰痛の試験では、日常の動作にどのくらい困っているかを質問票で調べました。</p>
+              <p>臨床試験では、質問票などを使って、患者が感じる痛みや動きやすさの変化を比べます。</p>
               <a href={`#${backPainStudy.id}`} className="acupuncture-source-marker">慢性腰痛の試験を見る</a>
             </div>
           </div>
           <p>組織や画像の変化は仕組みを考える手がかりです。その変化が日常生活の改善とどう結びつくかは、別に確かめる必要があります。</p>
-          <Link href="/articles/science-of-acupuncture-neuroscience" className="ui-text-link">鍼灸の作用機序の研究を読む <ArrowRight size={16} aria-hidden="true" /></Link>
         </section>
 
         <section id="evidence" className="acupuncture-guide-section" aria-labelledby="acupuncture-evidence-title">
-          <h3 id="acupuncture-evidence-title">効果について調べるときの見方</h3>
-          <p>下の腰痛研究では、鍼を受けた人が何を受けた人と比べられたか、歩く・服を着るといった動作の困りごとがどう変わったかを見ます。</p>
+          <h3 id="acupuncture-evidence-title">腰痛の試験で結果を読む</h3>
+          <section className="acupuncture-evidence-check" aria-labelledby="acupuncture-evidence-questions-title">
+            <h4 id="acupuncture-evidence-questions-title">研究を読むときの4つの質問</h4>
+            <dl>
+              <div><dt>誰を調べた？</dt><dd>腰痛が長く続く人か、最近腰痛が出た人か。</dd></div>
+              <div><dt>何を受けた？</dt><dd>鍼・灸・ツボ押しのどれか。ツボは一つか、組み合わせか。薬も使ったか。</dd></div>
+              <div><dt>何と比べた？</dt><dd>普段の治療か、鍼をまねた方法か。</dd></div>
+              <div><dt>いつ、何を測った？</dt><dd>直後か、数週間後か。痛みや動きやすさ、施術後の不調を調べたか。</dd></div>
+            </dl>
+          </section>
           <article id={backPainStudy.id} className="acupuncture-study-feature" aria-labelledby={`${backPainStudy.id}-title`}>
             <h4 id={`${backPainStudy.id}-title`}>{backPainStudy.title}</h4>
             <p>{backPainStudy.context}</p>
@@ -269,7 +287,7 @@ export default function AcupunctureGuidePage() {
               <figure className="acupuncture-study-chart">
                 <figcaption>
                   <strong>8週間後までに下がった点数（各組の平均）</strong>
-                  <p>歩く、服を着るなどの日常の困りごとは0〜23点で、少ないほど低い点数です。棒は、試験を始める前より何点下がったかを示します。</p>
+                  <p>歩く、服を着るなどの動作でどれくらい困るかを質問票で調べました。0〜23点で、点数が低いほど困りごとが少ないことを示します。棒の長さは、試験前からの点数の減り幅です。</p>
                 </figcaption>
                 <ul role="list">
                   {backPainStudy.outcomes.map(({ label, change }) => (
@@ -285,57 +303,57 @@ export default function AcupunctureGuidePage() {
                 </ul>
                 <div className="acupuncture-study-chart-axis" aria-hidden="true"><span><span>0</span><span>5点</span></span></div>
               </figure>
-              <div className="acupuncture-study-reading">
-                <p>{backPainStudy.result}</p>
-                <p>{backPainStudy.limit} <a href="#combinations" className="acupuncture-source-marker">ツボの組み合わせを比べる図へ</a></p>
-              </div>
+              <dl className="acupuncture-study-reading">
+                <div><dt>結果</dt><dd>{backPainStudy.result}</dd></div>
+                <div><dt>読むときの注意</dt><dd>{backPainStudy.limit} <a href="#combinations" className="acupuncture-source-marker">ツボの組み合わせを比べる図へ</a></dd></div>
+              </dl>
             </div>
             <div className="acupuncture-inline-links gap-y-2">
               <a href={backPainStudy.href} className="ui-text-link">{backPainStudy.source}</a>
               <Link href={acupunctureResearchHref("low-back-pain-sciatica")} className="ui-text-link">腰痛と坐骨神経痛の試験を読み比べる <ArrowRight size={16} aria-hidden="true" /></Link>
             </div>
           </article>
-
-          <p className="acupuncture-evidence-block">
-            <Link href="/learn/lectures/reading-evidence" className="ui-text-link">講義で、測った結果と研究者の考えを読み分ける <ArrowRight size={16} aria-hidden="true" /></Link>
-          </p>
-
-          <section className="acupuncture-evidence-block" aria-labelledby="acupuncture-more-studies-title">
-            <h4 id="acupuncture-more-studies-title">ほかの研究では、何を比べた？</h4>
-            <div className="acupuncture-research-list">
-              {ACUPUNCTURE_STUDY_EXAMPLES.map(study => (
-                <article key={study.id} id={`example-${study.id}`} className="acupuncture-study" aria-labelledby={`example-${study.id}-title`}>
-                  <h5 id={`example-${study.id}-title`}>{study.title}</h5>
-                  <p>{study.context}</p>
-                  <dl className="acupuncture-study-reading">
-                    <div><dt>結果</dt><dd>{study.result}</dd></div>
-                    <div><dt>読むときの注意</dt><dd>{study.limit}</dd></div>
-                  </dl>
-                  {"numbers" in study && (
-                    <details className="acupuncture-detail">
-                      <summary>数字で見る</summary>
-                      <p>{study.numbers}</p>
-                    </details>
-                  )}
-                  <div className="acupuncture-inline-links">
-                    <a href={study.href} className="ui-text-link">{study.source}</a>
-                    {"pointHref" in study && <Link href={study.pointHref} className="ui-text-link">{study.pointLabel} <ArrowRight size={16} aria-hidden="true" /></Link>}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-          <div className="acupuncture-inline-links gap-y-2">
-            <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title} <ArrowRight size={16} aria-hidden="true" /></Link>
-            <Link href={AROMATASE_JOINT_PAIN_RESEARCH_HREF} className="ui-text-link">乳がん治療中の関節痛を52週まで調べた試験 <ArrowRight size={16} aria-hidden="true" /></Link>
-          </div>
         </section>
 
         <section id="combinations" className="acupuncture-guide-section" aria-labelledby="acupuncture-combinations-title">
-          <h3 id="acupuncture-combinations-title">ツボを一つ足した効果は、どう確かめる？</h3>
-          <p>ツボBを足した違いを知るには、ほかの治療をそろえて、Bを足した組と足さなかった組を比べます。別のツボAを使う場合も同じように比べると、組み合わせによってBを足した差が変わるかを調べられます。</p>
+          <h3 id="acupuncture-combinations-title">ツボを足した効果を比べる</h3>
           <AcupunctureTrialComparison />
           <p>片方のツボを足した効果が、もう片方を使うかどうかで変わることを「相互作用」と呼びます。実際の論文では、比べた組でほかの条件がそろっているか、差の見積もりにどのくらい幅があるかも確かめます。 <SourceLink id="factorial">4組で比べる試験の報告指針</SourceLink></p>
+        </section>
+
+        <section id="study-examples" className="acupuncture-guide-section" aria-labelledby="acupuncture-more-studies-title">
+          <h3 id="acupuncture-more-studies-title">ほかの研究では何を比べた？</h3>
+          <div className="acupuncture-research-list">
+            {ACUPUNCTURE_STUDY_EXAMPLES.map(study => (
+              <article key={study.id} id={`example-${study.id}`} className="acupuncture-study" aria-labelledby={`example-${study.id}-title`}>
+                <h4 id={`example-${study.id}-title`}>{study.title}</h4>
+                <p>{study.context}</p>
+                <dl className="acupuncture-study-reading">
+                  <div><dt>結果</dt><dd>{study.result}</dd></div>
+                  <div><dt>読むときの注意</dt><dd>{study.limit}</dd></div>
+                </dl>
+                {"numbers" in study && (
+                  <details className="acupuncture-detail">
+                    <summary>数字で見る</summary>
+                    <p>{study.numbers}</p>
+                  </details>
+                )}
+                <div className="acupuncture-inline-links">
+                  <a href={study.href} className="ui-text-link">{study.source}</a>
+                  {"pointHref" in study && <Link href={study.pointHref} className="ui-text-link">{study.pointLabel} <ArrowRight size={16} aria-hidden="true" /></Link>}
+                </div>
+              </article>
+            ))}
+          </div>
+          <section className="acupuncture-research-related" aria-labelledby="acupuncture-related-research-title">
+            <h4 id="acupuncture-related-research-title">関連する講義・記事</h4>
+            <ul role="list">
+              <li><Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title} <ArrowRight size={16} aria-hidden="true" /></Link></li>
+              <li><Link href="/learn/lectures/reading-evidence" className="ui-text-link">講義で研究の読み方を学ぶ <ArrowRight size={16} aria-hidden="true" /></Link></li>
+              <li><Link href="/articles/science-of-acupuncture-neuroscience" className="ui-text-link">鍼を受けた体の反応を調べた研究 <ArrowRight size={16} aria-hidden="true" /></Link></li>
+              <li><Link href={AROMATASE_JOINT_PAIN_RESEARCH_HREF} className="ui-text-link">乳がん治療中の関節痛を52週まで調べた試験 <ArrowRight size={16} aria-hidden="true" /></Link></li>
+            </ul>
+          </section>
         </section>
       </GuideChapter>
 

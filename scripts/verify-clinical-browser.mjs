@@ -75,8 +75,12 @@ async function checkGuideAndPractice(page) {
     return heading && header && heading.top >= header.bottom && heading.bottom <= window.innerHeight;
   });
   await page.getByText('頭痛と目の充血があるとき、最初に何を聞きますか。', { exact: true }).waitFor();
+  const safety = page.locator('details#case-safety');
+  assert.equal(await safety.evaluate(details => details.open), false, 'Case safety details start folded when opening a question');
+  await page.getByRole('complementary', { name: '症例演習の注意' }).getByRole('link', { name: '受診の目安と鍼灸の安全性' }).waitFor();
   await page.getByRole('link', { name: 'この症例の受診・安全上の注意を読む', exact: true }).click();
   await page.waitForURL('**/cases/case-01-headache-liver-fire#case-safety');
+  await page.locator('details#case-safety[open]').waitFor();
 
   await page.getByRole('link', { name: '問題に答える', exact: true }).click();
   for (const step of introductoryCase.reasoningSteps) {
@@ -88,6 +92,12 @@ async function checkGuideAndPractice(page) {
 
   await open(page, '/cases');
   await page.getByRole('link', { name: 'こめかみが強く痛み、目が赤くなる 症例を読む', exact: true }).waitFor();
+  const catalogSafety = page.getByRole('complementary', { name: '症例演習の注意' });
+  assert.equal(await catalogSafety.locator('details').evaluate(details => details.open), false, 'Case catalog safety details start folded');
+  await catalogSafety.getByRole('link', { name: '受診の目安と鍼灸の安全性' }).waitFor();
+
+  await open(page, '/cases/case-01-headache-liver-fire#case-safety');
+  await page.locator('details#case-safety[open]').waitFor();
 
   await open(page, '/symptoms/headache-stiff-neck');
   await page.getByRole('link', { name: '受診時に伝えることへ', exact: true }).click();
@@ -135,6 +145,45 @@ async function checkGuideAndPractice(page) {
   await page.getByRole('heading', { name: '受診の目安', exact: true }).waitFor();
 }
 
+async function checkContinuousCase(page) {
+  await open(page, '/clinical');
+  const stages = await page.locator('#headache-course a[href^="/curriculum/lecture-practice-"]')
+    .evaluateAll(links => links.map(link => link.getAttribute('href')));
+  assert.equal(stages.length, 7, 'The continuous exercise links to its introduction and six stages');
+  for (const route of stages) {
+    await open(page, route);
+    const exercises = page.locator('details#lecture-supplements');
+    assert.equal(await exercises.evaluate(details => details.open), true, route + ' questions start open');
+    const firstQuestion = exercises.locator('#lecture-quiz .quiz-question').first();
+    await firstQuestion.waitFor();
+    assert.equal(await firstQuestion.locator('[data-quiz-option-label]').count(), 3, route + ' has three answer choices');
+    assert.equal(await firstQuestion.locator('[role="status"]').textContent(), '', route + ' starts without an answer');
+  }
+  await page.locator('#lecture-quiz .quiz-question [data-quiz-option-label]').first().click();
+  await page.waitForFunction(() => /^第1問、(?:正解|不正解)/.test(document.querySelector('#lecture-quiz .quiz-question [role="status"]')?.textContent ?? ''));
+
+  await open(page, '/learn/lectures/yin-yang-basics');
+  assert.equal(await page.locator('details#lecture-check').evaluate(details => details.open), true, 'The public lecture confirmation questions also start open');
+}
+
+async function checkAcupunctureResearch(page) {
+  await open(page, '/learn/acupuncture');
+  await page.getByRole('navigation', { name: '鍼灸入門の目次' }).getByRole('link', { name: '研究の読み方' }).click();
+  await page.waitForURL('**/learn/acupuncture#acupuncture-research');
+  const sections = ['mechanisms', 'evidence', 'combinations', 'study-examples'];
+  const research = page.getByRole('navigation', { name: '研究の読み方の目次' });
+  const links = research.getByRole('link');
+  assert.deepEqual(await links.evaluateAll(items => items.map(item => item.hash)), sections.map(id => '#' + id));
+  for (const [index, id] of sections.entries()) {
+    await links.nth(index).click();
+    await page.waitForURL('**/learn/acupuncture#' + id);
+    await page.locator('#' + id + ' h3').waitFor();
+  }
+  await page.locator('#combinations').getByRole('radio', { name: 'AにBを足す', exact: true }).check();
+  await page.locator('#combinations').getByText('＋3点', { exact: true }).waitFor();
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1));
+}
+
 try {
   const desktop = await trackedPage(1440, 'light');
   await open(desktop, '/clinical');
@@ -150,6 +199,8 @@ try {
   const mobile = await trackedPage(390, 'dark');
   await open(mobile, '/clinical');
   await checkGuideAndPractice(mobile);
+  await checkContinuousCase(mobile);
+  await checkAcupunctureResearch(mobile);
   await mobile.evaluate(({ draftStorage, savedStorage }) => {
     for (const [key, value] of Object.entries(draftStorage)) sessionStorage.setItem(key, value);
     for (const [key, value] of Object.entries(savedStorage)) localStorage.setItem(key, value);
@@ -191,7 +242,7 @@ try {
     assert.doesNotMatch(await response.text(), /\/clinical\/workspace\b|#pattern-exercise\b/);
   }
   assert.deepEqual(errors, []);
-  console.log('Clinical browser checks passed: desktop and mobile landing, temporary bookmark redirect, updated navigation and search, six guides, available exercises, and byte-for-byte retention of synthetic drafts and saved records.');
+  console.log('Clinical browser checks passed: desktop and mobile landing, initial questions and grading for the continuous case, the acupuncture research contents, temporary bookmark redirect, updated navigation and search, six guides, available exercises, and byte-for-byte retention of synthetic drafts and saved records.');
 } finally {
   await browser.close();
 }
