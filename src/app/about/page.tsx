@@ -23,10 +23,10 @@ export default function AboutPage() {
   const [comparisonArticle] = getArticlePreviews(["east-west-integrative-unified-theory"]);
   return (
     <div className="about-page page-layout space-y-8 sm:space-y-12">
-      <PageIntro title="はり太郎について" description="ツボ図鑑・東洋医学・臨床演習の運営者と編集方針をご紹介します。" art="about">
+      <PageIntro title="はり太郎について" description="誰が、どんな資料をもとに教材を作っているかを紹介します。" art="about">
         <div className="page-actions">
           <Link href="/learn" className="page-primary-action"><BookOpen size={18} aria-hidden="true" />学び方を選ぶ<ArrowRight size={18} aria-hidden="true" /></Link>
-          <a href="#about-operator" className="page-secondary-action">運営者について</a>
+          <a href="#about-operator" className="page-secondary-action">執筆・運営者</a>
         </div>
       </PageIntro>
 
@@ -49,7 +49,7 @@ export default function AboutPage() {
               <ShieldCheck className="w-4 h-4" />
             </span>
             <h2 id="about-operator" className="scroll-mt-28 text-lg sm:text-2xl font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-              執筆・運営者について
+              執筆・運営者
             </h2>
           </div>
 
@@ -192,7 +192,7 @@ export default function AboutPage() {
             <span>医療情報に関する免責事項</span>
           </div>
           <p className="leading-relaxed">
-            ツボや日々の過ごし方、気血水 体質チェックは東洋医学を学ぶための教材です。症状の診断や治療については、医師や鍼灸師に相談してください。
+            ツボや日々の過ごし方、気血水の体質チェック（学習用）は東洋医学を学ぶための教材です。症状の診断や治療については、医師や鍼灸師に相談してください。
           </p>
           <p className="leading-relaxed">
             突然の激しい痛みや意識の異常があるときは、すぐに119番へ連絡してください。体調が急に悪化したときや、妊娠中に重い症状が出たときは、ツボを押す前に医療機関を受診してください。

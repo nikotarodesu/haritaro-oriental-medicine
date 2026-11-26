@@ -133,6 +133,7 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
       return 60;
     }
     if (item.type === "article" && index.exactTerms.includes(context.query.normalized)) return 99;
+    if (item.type === "tool" && index.exactTerms.includes(context.query.normalized)) return 99;
     if (isSymptomQuery && item.type === "symptom") return 99;
     if (item.type === "glossary" && index.exactTerms.includes(context.query.normalized)) return 98;
     if (isSymptomQuery) {

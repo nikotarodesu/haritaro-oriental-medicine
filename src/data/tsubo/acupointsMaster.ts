@@ -477,7 +477,7 @@ export const ACUPOINTS_MASTER: AcupointMaster[] = [
     "meridianOrder": 4,
     "bodyPart": "手・腕",
     "bodyRegionDetail": "手・腕・大腸経部",
-    "locationSimple": "手の甲で、人差し指につながる骨の長さの中央から少し親指側。",
+    "locationSimple": "手の甲で、人差し指につながる骨の真ん中より、少し親指側。",
     "locationDetail": "手背、第2中手骨中点の橈側（親指側）。",
     "locationSource": "WHO Standard Acupuncture Point Locations in the Western Pacific Region",
     "indications": [

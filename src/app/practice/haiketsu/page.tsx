@@ -20,15 +20,20 @@ import {
 import PrescriptionScoringGuide from "@/components/learning/PrescriptionScoringGuide";
 
 const allPoints = Object.values(ACUPOINT_ROLES);
+const INITIAL_EXAMPLE_POINT_IDS = ["taishou", "gokoku"];
+const INITIAL_EXAMPLE_TITLE = "合谷と太衝の配穴例";
+const INITIAL_EXAMPLE_REASON = "合谷と太衝を組み合わせた教材例です。伝統的な分類と、各穴を選ぶ理由を確認します。";
 
 export default function HaiketsuPracticePage() {
 
-  const [selectedPointIds, setSelectedPointIds] = useState<string[]>(["taishou", "gokoku"]); // 初期: 四関穴
-  const [prescriptionTitle, setPrescriptionTitle] = useState("合谷と太衝の配穴例");
-  const [rationaleText, setRationaleText] = useState("合谷と太衝を組み合わせた教材例です。伝統的な分類と、各穴を選ぶ理由を確認します。");
+  const [selectedPointIds, setSelectedPointIds] = useState(INITIAL_EXAMPLE_POINT_IDS);
+  const [initialExample, setInitialExample] = useState(true);
+  const [prescriptionTitle, setPrescriptionTitle] = useState(INITIAL_EXAMPLE_TITLE);
+  const [rationaleText, setRationaleText] = useState(INITIAL_EXAMPLE_REASON);
   const selectIncomingPoint = useCallback((id: string) => {
     const point = ACUPOINT_ROLES[id];
     if (!point) return;
+    setInitialExample(false);
     setSelectedPointIds([point.id]);
     setPrescriptionTitle(`${point.name}から配穴を考える`);
     setRationaleText(`【教材の経穴説明】${point.name}：${point.specificRole} / ${point.energyLabel}`);
@@ -56,12 +61,21 @@ export default function HaiketsuPracticePage() {
       }
       setSelectedPointIds([...selectedPointIds, id]);
     }
+    setInitialExample(false);
   };
+
+  function startFromScratch() {
+    setSelectedPointIds([]);
+    setInitialExample(false);
+    setPrescriptionTitle(previous => previous === INITIAL_EXAMPLE_TITLE ? "" : previous);
+    setRationaleText(previous => previous === INITIAL_EXAMPLE_REASON ? "" : previous);
+  }
 
   // 教材例の読み込み
   const handleLoadPreset = (presetId: string) => {
     const p = OVERDOSE_PRESETS.find(caseItem => caseItem.id === presetId);
     if (p) {
+      setInitialExample(false);
       setSelectedPointIds(p.initialPointIds);
       setPrescriptionTitle(p.name);
       setRationaleText(`【症候】${p.symptomSummary}\n【課題】${p.mistakePattern}`);
@@ -72,7 +86,8 @@ export default function HaiketsuPracticePage() {
     <div className="clinical-exercises clinical-haiketsu min-h-screen">
       <Suspense fallback={null}><IncomingAcupoint onSelect={selectIncomingPoint} /></Suspense>
       <div className="page-layout page-layout--intro">
-        <PageIntro compact eyebrow="基本の32穴から選ぶ" title="配穴演習" art="points" description="ツボを組み合わせ、教材上の役割を見比べます。組み合わせた理由も自分の言葉で書けます。">
+        <PageIntro compact eyebrow="基本の32穴から選ぶ" title="配穴を練習する" art="points" description="ツボを組み合わせ、教材上の役割を見比べます。組み合わせた理由も自分の言葉で書けます。">
+          <p className="mb-3 text-sm leading-relaxed text-muted">鍼灸学生・鍼灸師向けの学習用教材です。選んだツボや分類は、病気の診断や治療・施術の判断には使えません。</p>
           <nav className="reader-navigation mt-4" aria-label="配穴演習の進め方">
             <a href="#haiketsu-palette" className="page-primary-action">経穴を選ぶ</a>
             <a href="#haiketsu-review" className="page-secondary-action">配穴を確認する</a>
@@ -82,7 +97,7 @@ export default function HaiketsuPracticePage() {
 
       <div className="page-layout page-layout--continuation space-y-5">
         <details className="reader-contents">
-          <summary>教材例から始める<ChevronDown aria-hidden="true" /></summary>
+          <summary>教材の例から始める<ChevronDown aria-hidden="true" /></summary>
           <div className="grid gap-2 px-3 pb-3 sm:grid-cols-2">
             {OVERDOSE_PRESETS.map(preset => (
               <button
@@ -101,8 +116,11 @@ export default function HaiketsuPracticePage() {
           <section id="haiketsu-palette" tabIndex={-1} aria-labelledby="haiketsu-palette-title" className="clinical-exercise-surface clinical-haiketsu-palette min-w-0 space-y-3">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
               <h2 id="haiketsu-palette-title" className="reader-section-title">経穴を選ぶ</h2>
-              <p role="status" className="text-sm text-muted">選択中 {selectedPointIds.length} / 8穴</p>
+              <p id="haiketsu-selection-status" role="status" className="text-sm text-muted">
+                {initialExample ? `例として${selectedPointIds.length}穴を選択済み（合谷・太衝）` : `選択中 ${selectedPointIds.length} / 8穴`}
+              </p>
             </div>
+            <button type="button" className="ui-text-link min-h-11 text-sm" onClick={startFromScratch} aria-describedby="haiketsu-selection-status">最初から選ぶ</button>
             <div role="region" aria-label="経穴一覧" tabIndex={0} className="clinical-haiketsu-point-list grid gap-1.5 pe-1">
               {allPoints.map(point => {
                 const isSelected = selectedPointIds.includes(point.id);
@@ -164,7 +182,7 @@ export default function HaiketsuPracticePage() {
               </figure>
 
               <div className="space-y-2">
-                <h3 className="font-semibold text-ink">選んだツボで見直せる項目</h3>
+                <h3 className="font-semibold text-ink">選んだツボを見直すポイント</h3>
                 {analysis.totalCount > 0 && analysis.alerts.length === 0 && (
                   <p className="text-sm text-muted">各穴を選んだ理由を、主訴や治法と結びつけて書いてみましょう。</p>
                 )}

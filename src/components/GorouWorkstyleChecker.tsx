@@ -140,6 +140,7 @@ export default function GorouWorkstyleChecker() {
         <>
           <section aria-labelledby="gorou-rest-heading" className="space-y-4">
             <h2 id="gorou-rest-heading" tabIndex={-1} className="text-balance font-serif text-xl font-bold leading-relaxed sm:text-2xl">選んだ動作の五労と休憩の例</h2>
+            <p className="text-sm leading-relaxed text-muted">選んだ動作を、五労の分類と照らし合わせます。病気の診断や治療・施術の判断には使えません。</p>
             <div className="grid gap-4 lg:grid-cols-2">
               {selected.map(id => {
                 const item = GOROU_DEFS[id];

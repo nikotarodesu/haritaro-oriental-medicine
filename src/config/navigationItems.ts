@@ -48,19 +48,19 @@ export interface NavItemDefinition {
 
 export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   clinical: {
-    id: "clinical", label: "臨床演習", shortLabel: "臨床", description: "症例・配穴の演習と主訴別ガイド", icon: ClipboardPenLine, href: "/clinical",
+    id: "clinical", label: "臨床演習", shortLabel: "臨床", description: "模擬症例・配穴の練習と臨床演習ガイド", icon: ClipboardPenLine, href: "/clinical",
   },
   clinical_guides: {
-    id: "clinical_guides", label: "主訴別ガイド", shortLabel: "主訴", description: "主訴ごとに確認したい項目を調べる", icon: BookOpen, href: "/clinical#chief-complaints",
+    id: "clinical_guides", label: "臨床演習ガイド", shortLabel: "演習ガイド", description: "症状別に、学習用の問診・観察項目を確認する", icon: BookOpen, href: "/clinical#chief-complaints",
   },
   tsubo_compare: {
-    id: "tsubo_compare", label: "経穴比較", shortLabel: "経穴比較", description: "経穴の位置・特徴・注意事項を並べる", icon: GitCompare, href: "/tsubo/compare",
+    id: "tsubo_compare", label: "ツボを比べる", shortLabel: "ツボ比較", description: "ツボの位置・目印・注意点を並べて見る", icon: GitCompare, href: "/tsubo/compare",
   },
   home: {
     id: "home",
     label: "ホーム",
     shortLabel: "ホーム",
-    description: "トップページ・2つの入口",
+    description: "ツボ図鑑・講義・臨床演習の入口",
     icon: Home,
     href: "/",
   },
@@ -82,9 +82,9 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   kokushi: {
     id: "kokushi",
-    label: "講義の復習",
+    label: "確認問題と復習",
     shortLabel: "復習",
-    description: "講義の回答履歴から復習する",
+    description: "講義・図鑑・模擬症例の問題に取り組む",
     icon: Award,
     href: "/learn/review",
   },
@@ -98,18 +98,18 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   search: {
     id: "search",
-    label: "横断検索",
+    label: "サイト内検索",
     shortLabel: "検索",
-    description: "経穴・症状・用語・講義の横断検索",
+    description: "ツボ・症状・用語・講義から探す",
     icon: Search,
     href: "#search",
     isAction: true,
   },
   diagnosis: {
     id: "diagnosis",
-    label: "気血水 体質チェック",
+    label: "気血水の体質チェック（学習用）",
     shortLabel: "気血水",
-    description: "体質傾向（気虚・気滞・血虚・瘀血等）の整理",
+    description: "気虚・気滞など、東洋医学の分類を学ぶ",
     icon: Sparkles,
     href: "/diagnosis",
   },
@@ -123,9 +123,9 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   simulator: {
     id: "simulator",
-    label: "弁証の練習",
+    label: "弁証（所見から見立てる）",
     shortLabel: "弁証",
-    description: "八綱・気血水・臓腑の鑑別推論",
+    description: "所見をもとに八綱・気血水・臓腑の候補を比べる",
     icon: Layers,
     href: "/simulator",
   },
@@ -139,7 +139,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   haiketsu: {
     id: "haiketsu",
-    label: "配穴の練習",
+    label: "配穴を練習する",
     shortLabel: "配穴",
     description: "ツボの組み合わせと選んだ理由を書く",
     icon: SlidersHorizontal,
@@ -147,7 +147,7 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   cases: {
     id: "cases",
-    label: "症例を選ぶ",
+    label: "模擬症例を一覧で見る",
     shortLabel: "症例",
     description: "模擬症例の所見を読み、判断の理由を考える",
     icon: BookOpen,
@@ -163,9 +163,9 @@ export const ALL_NAV_ITEMS: Record<NavItemId, NavItemDefinition> = {
   },
   symptoms: {
     id: "symptoms",
-    label: "症状から探す",
+    label: "症状別ガイド（一般向け）",
     shortLabel: "症状",
-    description: "症状ガイドと受診の目安",
+    description: "一般向けの症状別ガイド。受診の目安と記録例",
     icon: HeartPulse,
     href: "/symptoms",
   },

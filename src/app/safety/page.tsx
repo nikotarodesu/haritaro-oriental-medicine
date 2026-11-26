@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function SafetyPage() {
   return <div className="page-layout page-layout--reading space-y-8 leading-relaxed">
-    <PageIntro eyebrow="安心して学ぶために" title="受診の目安と鍼灸の安全性" art="care" compact />
+    <PageIntro title="受診の目安と鍼灸の安全性" description="急な症状で受診を急ぐときの目安と、鍼灸を受ける前後に確かめることを案内します。" art="care" compact />
     <section id="emergency" className="space-y-3 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950 dark:border-red-900 dark:bg-red-950/30 dark:text-red-100">
       <h2 className="flex items-center gap-2 text-xl font-bold"><Phone size={21} className="shrink-0" aria-hidden="true" />突然の強い症状は119番へ</h2>
       <p>次のような症状があるときは、すぐに119番へ連絡してください。</p>
@@ -33,7 +33,8 @@ export default function SafetyPage() {
     <p>症状が続く、悪化する、普段と違うと感じるときは医療機関に相談してください。体質チェックや弁証で、病気の有無や緊急性を判断することはできません。</p>
     <nav aria-label="安全性の確認項目" className="page-actions">
       <a href="#procedure" className="page-secondary-action"><ShieldCheck size={18} aria-hidden="true" />施術の前後に確認すること</a>
-      <a href="#learning-scope" className="page-secondary-action"><BookOpen size={18} aria-hidden="true" />教材の確認範囲</a>
+      <Link href="/symptoms" className="page-secondary-action">症状から受診の目安を探す（一般向け）</Link>
+      <a href="#learning-scope" className="page-secondary-action"><BookOpen size={18} aria-hidden="true" />教材で確認できる範囲</a>
     </nav>
     <section className="space-y-3"><h2 className="text-xl font-bold">腰痛と新たな排尿・感覚の異常</h2>
       <p>強い腰痛や脚へ広がる痛みに、新たな尿の出にくさ・失禁、排便や性機能の変化、会陰部のしびれが伴う場合は、馬尾症候群などの緊急評価が必要です。鍼灸を試すために待たず、すぐに医療機関を受診してください。これらの症状だけで診断は確定せず、症状がないことだけで完全に除外もできません。</p>
@@ -74,7 +75,7 @@ export default function SafetyPage() {
     </section>
     <section id="learning-scope" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">教材で確認できる範囲</h2>
       <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
-      <p><Link href="/curriculum/lecture-treatment-9#lecture-section-4" className="ui-text-link">施術後の胸痛と息苦しさを題材にした演習</Link></p>
+      <p><Link href="/curriculum/lecture-treatment-9#lecture-section-4" className="ui-text-link">施術後の胸痛と息苦しさを題材にした演習（鍼灸学生・鍼灸師向け）</Link></p>
       <p>古典の禁穴・補瀉・陰陽の説明は伝統医学の学習内容です。現代の臓器損傷リスクや治療効果の証明としては扱いません。模式図も、個人の画像検査や刺入計画を代替しません。</p>
       <p className="text-sm">原典を確認した日：{MEDICAL_SAFETY_CHECKED_AT}。このページでは、受診の目安と鍼灸の安全性を上記の資料から確認しています。</p>
       <Link href="/editorial-policy" className="underline">医学記述・出典の確認状況</Link>

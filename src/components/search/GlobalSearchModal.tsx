@@ -435,6 +435,7 @@ export default function GlobalSearchModal({
                         </span>
                       </div>
 
+                      {item.context && <span className="block text-sm text-[var(--text-secondary)]">{item.context}</span>}
                       {item.subtitle && (
                         <p className="break-words text-sm leading-relaxed text-[var(--text-secondary)]">
                           {item.subtitle}

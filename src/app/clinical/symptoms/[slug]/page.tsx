@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = CLINICAL_COMPLAINTS.find(complaint => complaint.slug === slug);
   if (!item) return { title: '主訴別ガイドが見つかりません' };
   const path = `/clinical/symptoms/${slug}`;
-  const title = seriesPageTitle(`${item.title}｜鍼灸師向けの問診・配穴ガイド`, "practice");
+  const title = seriesPageTitle(`${item.title}の問診・再評価｜臨床演習ガイド`, "practice");
   const description = `鍼灸師・学習者向けの臨床演習ガイドです。${item.summary} 問診、配穴の理由、次回に確かめる項目をまとめています。`;
   return { title, description, alternates: { canonical: path }, ...pageSocialMetadata(title, description, path) };
 }
@@ -31,8 +31,10 @@ export default async function Page({ params }: Props) {
   const publicGuide = Object.entries(SYMPTOM_LEARNING_RESOURCES).find(([, guide]) => guide.clinicalSlug === slug);
   return <article className="page-layout page-layout--reading space-y-7">
     <Link className="inline-flex min-h-11 items-center gap-2 text-sm page-muted" href="/clinical"><ArrowLeft aria-hidden="true" className="h-4 w-4" />臨床演習に戻る</Link>
-    <PageIntro compact art="care" eyebrow="鍼灸師・学習者向けの臨床演習ガイド" title={item.title} description={item.summary} />
-    {publicGuide && <p><Link href={`/symptoms/${publicGuide[0]}#safety`} className="ui-text-link">一般向けの受診の目安を読む</Link></p>}
+    <PageIntro compact art="care" eyebrow="鍼灸学生・鍼灸師向けの臨床演習ガイド" title={`${item.title}の問診・再評価`} description={item.summary} />
+    <p><Link href={publicGuide ? `/symptoms/${publicGuide[0]}#safety` : '/symptoms'} className="ui-text-link inline-flex min-h-11 items-center">
+      {publicGuide ? 'この症状の受診の目安を読む（一般向け）' : '症状から受診の目安を探す（一般向け）'}
+    </Link></p>
     <nav aria-label="ガイドの項目" className="grid grid-cols-2 gap-3 sm:grid-cols-4">
       {([{ href: '#questions', label: '問診の項目', Icon: ClipboardList }, { href: '#patterns', label: '候補を比べる', Icon: GitCompareArrows }, { href: '#record', label: '配穴の理由', Icon: NotebookPen }, { href: '#review', label: '次回の確認', Icon: RefreshCw }]).map(({ href, label, Icon }, index) => <a href={href} key={href} className="page-link-card page-link-card--stack !gap-2 !p-4"><Icon aria-hidden="true" /><span className="text-sm font-semibold"><span className="mr-2 page-muted">0{index + 1}</span>{label}</span></a>)}
     </nav>

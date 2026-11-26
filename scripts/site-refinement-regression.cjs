@@ -189,7 +189,8 @@ for (const vessel of KIKEI_VESSELS) {
 }
 
 const prescription = renderToStaticMarkup(React.createElement(component('src/app/practice/haiketsu/page.tsx')));
-assert(prescription.includes('id="haiketsu-palette"') && prescription.includes('8穴'));
+assert(prescription.includes('id="haiketsu-palette"') && prescription.includes('例として2穴を選択済み（合谷・太衝）'));
+assert(prescription.includes('最初から選ぶ'));
 assert(prescription.includes('href="#haiketsu-review"') && prescription.includes('id="haiketsu-review"'));
 assert(!prescription.includes('readOnly'), 'Both writing controls accept input');
 assert(prescription.includes('id="haiketsu-title"') && prescription.includes('id="haiketsu-rationale"'));

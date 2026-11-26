@@ -45,7 +45,7 @@ export default function LearnGuidePage() {
       <div className="learning-guide-intro">
         <PageIntro title={heading} description={introduction} art="study">
           <a href="#learn-courses-heading" className="ui-text-link mt-1 inline-flex min-h-11 items-center">
-            講義の目次<ArrowDown size={16} aria-hidden="true" />
+            講義の目次へ<ArrowDown size={16} aria-hidden="true" />
           </a>
         </PageIntro>
         <nav aria-label="学び方を選ぶ" className={`learning-options ${styles.options}`}>
@@ -68,7 +68,7 @@ export default function LearnGuidePage() {
       <div className={styles.diagramExample}>
         <StudyDiagram id="learn-yin-yang-example" diagram={foundationDiagrams["lecture-yinyang-2"]} />
         <Link href={readingPartHref("lecture-yinyang-2")} className="ui-text-link">
-          陰陽の講義で、比べ方を読む<ArrowRight aria-hidden="true" />
+          講義で陰陽の比べ方を読む<ArrowRight aria-hidden="true" />
         </Link>
       </div>
 
@@ -93,7 +93,7 @@ export default function LearnGuidePage() {
           })}
         </ul>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
-          <Link href="/articles" className="ui-text-link">図解記事の一覧<ArrowRight aria-hidden="true" /></Link>
+          <Link href="/articles" className="ui-text-link">図解記事を一覧で見る<ArrowRight aria-hidden="true" /></Link>
           <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title}<ArrowRight aria-hidden="true" /></Link>
         </div>
       </section>
@@ -124,7 +124,7 @@ export default function LearnGuidePage() {
         </nav>
 
         <nav aria-label="東洋医学を詳しく調べる" className="flex flex-wrap gap-x-6 gap-y-2">
-          <Link href="/diagnosis" className="ui-text-link">気血水 体質チェック</Link>
+          <Link href="/diagnosis" className="ui-text-link">気血水の体質チェック（学習用）</Link>
           <Link href="/glossary" className="ui-text-link">用語集</Link>
           <Link href="/library" className="ui-text-link">古典・論文</Link>
           <Link href="/editorial-policy" className="ui-text-link">出典と確認範囲</Link>

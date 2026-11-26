@@ -274,7 +274,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             label="記事"
             previous={previousArticle && { href: `/articles/${previousArticle.id}`, title: previousArticle.title }}
             next={nextArticle && { href: `/articles/${nextArticle.id}`, title: nextArticle.title }}
-            index={{ href: "/articles", title: "図解記事の一覧" }}
+            index={{ href: "/articles", title: "図解記事を一覧で見る" }}
           />
 
           {relatedArticles.length > 0 && <section aria-labelledby="article-related-title" className="space-y-4 border-t border-divider pt-6">

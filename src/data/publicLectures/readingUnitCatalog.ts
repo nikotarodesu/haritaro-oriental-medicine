@@ -27,7 +27,7 @@ const units: readonly UnitDefinition[] = [
   },
   {
     slug: "yin-yang-basics", chapter: "yin-yang", title: "陰陽とは？ 比べ方と変わり方",
-    description: "同じ40℃のお湯が、相手によって温かい側にも冷たい側にもなることを図で見ます。ほてりと冷えが出る時間帯の違いも比べます。",
+    description: "同じ40℃のお湯も、氷水と比べれば温かく、熱湯と比べれば冷たくなります。湯の温度や、ほてりと冷えが出る時間帯を図で比べます。",
     opening: [
       "陰陽の見方では、何と何を、どんな基準で比べるかを最初に決めます。身近な場面から、比べる基準や時間が変わると読み方がどう変わるかを見ます。",
     ],
@@ -83,7 +83,7 @@ const units: readonly UnitDefinition[] = [
     featuredDiagrams: ["lecture-lifedynamics-3", "lecture-lifedynamics-4"],
   },
   {
-    slug: "triple-burner-and-movement", chapter: "vital-function", title: "三焦と、体の中を巡る津液",
+    slug: "triple-burner-and-movement", chapter: "vital-function", title: "三焦と体の中を巡る津液",
     description: "汁物を飲む例で、三焦の上・中・下にどんな働きを当てるかを見ます。図では、気や津液が上がる、下がる、出入りするときの向きを確かめます。",
     opening: [
       "汁物を飲んだあと、取り込んだ水分を体に配り、不要なものを外に出します。東洋医学では、三焦（さんしょう）という言葉を使って、こうした働きを体の上・中・下に分けて説明します。",

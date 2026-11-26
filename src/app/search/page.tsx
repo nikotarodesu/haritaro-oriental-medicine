@@ -38,12 +38,12 @@ const bodyIndex = SEARCH_CATALOG.flatMap(item => {
 function findResults(query: string) {
   if (!query) return [];
   const context = preparePurposeSearchQuery(query);
-  const primary = rankPurposeSearchResults(index, context).map(({ item }) => item);
-  const seen = new Set(primary.map(item => item.url));
+  const primary = rankPurposeSearchResults(index, context);
+  const seen = new Set(primary.map(({ item }) => item.url));
   const matches = bodyIndex.filter(({ item, text }) =>
     !seen.has(item.url) && context.query.tokens.every(token => text.includes(token)),
   );
-  return [...primary, ...matches.map(({ item }) => item)];
+  return [...primary, ...matches.map(({ item }) => ({ item, hint: "本文に一致" }))];
 }
 
 export default async function SearchPage({ searchParams }: {
@@ -64,17 +64,21 @@ export default async function SearchPage({ searchParams }: {
     <div className="page-layout platform-results">
       <h1 className="font-serif text-3xl font-bold">サイト内検索</h1>
       <PlatformSearchForm key={query} query={query} />
+      {!query && <p className="ui-muted" role="status">検索語を入力してください。</p>}
       {query && <section className="space-y-4" aria-labelledby="search-results-title">
-        <h2 id="search-results-title" className="text-lg font-bold">「{query}」の検索結果 <span className="ui-muted">{results.length}件</span></h2>
+        <h2 id="search-results-title" className="text-lg font-bold">「{query}」の検索結果</h2>
+        <p className="ui-muted" role="status" aria-live="polite" aria-atomic="true">{results.length === 0 ? "該当する結果はありません（0件）。" : `${results.length}件見つかりました。`}</p>
         {dictionaryHref && <Link href={dictionaryHref} className="page-secondary-action">この検索語でツボ図鑑を絞り込む</Link>}
         {results.length === 0 ? <p className="ui-muted">ツボは名前（合谷）、読み方（ごうこく）、経穴コード（LI4）で検索できます。症状は「肩こり」のように短く入力するか、<Link href="/symptoms" className="ui-text-link">症状別ガイド</Link>から探してください。</p> : (
           <ul className="platform-result-list">
-            {results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(item => (
+            {results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map(({ item, hint }) => (
               <li key={item.id}>
                 <Link href={item.url} className="ui-card platform-result" prefetch={false}>
                   <span className="platform-result-badge">{item.badge}</span>
                   <strong>{item.title}</strong>
-                  {item.subtitle && <span className="ui-muted">{item.subtitle}</span>}
+                  {item.context && <span className="ui-muted text-sm">{item.context}</span>}
+                  {item.subtitle && <span className="leading-relaxed">{item.subtitle}</span>}
+                  {hint && <span className="ui-muted text-sm">{hint}</span>}
                 </Link>
               </li>
             ))}

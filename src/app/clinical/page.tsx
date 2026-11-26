@@ -36,21 +36,21 @@ const checks = [
   {
     kind: 'constitution',
     href: ALL_NAV_ITEMS.diagnosis.href,
-    label: '気血水 体質チェック',
+    label: '気血水の体質チェック（学習用）',
     description: '12問の回答から、気虚・気滞・血虚などの伝統的な分類を学びます。',
   },
 ] as const;
 
 const exercises = [
-  { ...ALL_NAV_ITEMS.cases, label: '20の模擬症例', description: '症状から症例を探し、本人の訴えや経過をもとに考える' },
-  { ...ALL_NAV_ITEMS.simulator, label: '弁証演習', description: '3例を6段階で検討する、条件を変える、見立てを見直す' },
-  { ...ALL_NAV_ITEMS.haiketsu, label: '配穴演習', description: 'ツボを組み合わせ、選んだ理由を書く' },
+  { ...ALL_NAV_ITEMS.cases, label: '模擬症例を一覧で見る', description: `${CASE_STUDY_DESCRIPTORS.length}例から、訴えや難易度を見て選べます。` },
+  { ...ALL_NAV_ITEMS.simulator, label: '弁証（所見から見立てる）', description: '3つの模擬症例を6段階で検討します。条件を変え、見立てを見直します。' },
+  { ...ALL_NAV_ITEMS.haiketsu, label: '配穴を練習する', description: 'ツボを組み合わせ、選んだ理由を書きます。' },
 ];
 
 const casePreview = [
   { label: '本人の訴え', text: '「こめかみがズキズキする」', icon: MessageCircle },
   { label: '症状の経過', text: '1か月前から繰り返し、仕事が忙しい日に強くなる。', icon: Clock3 },
-  { label: '四診の所見', text: '目に充血があり、脈は張りがあって速い。', icon: Stethoscope },
+  { label: '四診の所見', text: '目が充血し、脈は張りがあって速い。', icon: Stethoscope },
 ] as const;
 
 const headacheCourseStages = [
@@ -96,17 +96,18 @@ export default function ClinicalLandingPage() {
       <header className={styles.hero}>
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
-          <p>架空の症例を読み、どの所見をもとに見立てやツボを選ぶか考えます。</p>
+          <p>鍼灸学生・鍼灸師向けの教材です。初めての方は、短い頭痛の模擬症例を読み、最初の設問で考え方を確かめられます。</p>
           <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" fallback={firstCaseHref && (
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 print:hidden">
-              <Link href={firstCaseHref} className="page-secondary-action">
-                最初の模擬症例を読む<ArrowRight size={16} aria-hidden="true" />
+              <Link href={firstCaseHref} className="page-primary-action">
+                頭痛の模擬症例を読む<ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link href={`${firstCaseHref}#${CASE_REASONING_ANCHOR}`} scroll={false} className="ui-text-link inline-flex min-h-11 items-center">
-                最初の症例の問題に進む
+                最初の設問へ
               </Link>
             </div>
           )} />
+          <Link href="/symptoms" className="ui-text-link mt-2 inline-flex min-h-11 items-center text-sm">症状から受診の目安を探す（一般向け）</Link>
         </div>
         <figure className={styles.casePreview}>
           <figcaption>短い症例演習の例</figcaption>
@@ -124,11 +125,12 @@ export default function ClinicalLandingPage() {
       <section id="headache-course" className={styles.caseCourse} aria-labelledby="headache-course-heading">
         <div className={styles.caseCourseIntro}>
           <div>
-            <h2 id="headache-course-heading" className={styles.sectionTitle}>頭痛の症例を相談から7日後まで追う</h2>
-            <p>夕方の頭痛で仕事や家事に支障が出ている43歳の女性の架空症例です。記録を順に読み、痛みと普段の生活がどう変わったかを考えます。</p>
+            <p className="text-sm font-semibold">連続演習</p>
+            <h2 id="headache-course-heading" className={styles.sectionTitle}>相談から7日後まで追う：頭痛の架空症例</h2>
+            <p>夕方の頭痛で仕事や家事に支障が出ている43歳の女性の事例です。6段階の記録を読み、痛みと普段の生活の変化を考えます。</p>
           </div>
-          <Link href="/curriculum/lecture-practice-1" className="page-primary-action">
-            演習の進め方を読む<ArrowRight size={16} aria-hidden="true" />
+          <Link href="/curriculum/lecture-practice-1" className="page-secondary-action">
+            連続演習の進め方を読む<ArrowRight size={16} aria-hidden="true" />
           </Link>
         </div>
         <ol className={styles.caseCourseStages} role="list">
@@ -147,9 +149,9 @@ export default function ClinicalLandingPage() {
       <section id="tools" tabIndex={-1} className={styles.section} aria-labelledby="clinical-practice-heading">
         <h2 id="clinical-practice-heading" className={styles.sectionTitle}>症例・配穴の演習</h2>
         <ul className={styles.exerciseGrid}>
-          {exercises.map(({ icon: Icon, ...tool }, index) => (
+          {exercises.map(({ icon: Icon, ...tool }) => (
             <li key={tool.href}>
-              <Link href={tool.href} className={index === 0 ? `${styles.exerciseCard} ${styles.primaryExercise}` : styles.exerciseCard}>
+              <Link href={tool.href} className={styles.exerciseCard}>
                 <span className={styles.exerciseIcon}><Icon aria-hidden="true" /></span>
                 <div className={styles.cardCopy}>
                   <h3>{tool.label}</h3>
@@ -164,6 +166,10 @@ export default function ClinicalLandingPage() {
 
       <section id="quick-checks" tabIndex={-1} className={styles.section} aria-labelledby="clinical-checks-heading">
         <h2 id="clinical-checks-heading" className={styles.sectionTitle}>生活・体調のチェック</h2>
+        <p className={styles.checkNote}>
+          <Info aria-hidden="true" />
+          <span>チェック結果は東洋医学を学ぶための目安です。病気の診断や施術の判断には使えません。</span>
+        </p>
         <ul className={styles.checkGrid}>
           {checks.map(check => (
             <li key={check.kind}>
@@ -177,10 +183,6 @@ export default function ClinicalLandingPage() {
             </li>
           ))}
         </ul>
-        <p className={styles.checkNote}>
-          <Info aria-hidden="true" />
-          <span>チェック結果は東洋医学を学ぶための目安です。実際の診断や施術の判断には使えません。</span>
-        </p>
       </section>
 
       <ClinicalDashboard />
@@ -214,7 +216,7 @@ export default function ClinicalLandingPage() {
         </details>
       </section>
       <LearningCredits revisedAt={revisedAt} />
-      <nav aria-label="関連する案内" className="clinical-related-links"><Link href="/learn"><GraduationCap aria-hidden="true" />はり太郎の東洋医学</Link><Link href="/symptoms"><Heart aria-hidden="true" />ツボ図鑑の症状ガイド</Link></nav>
+      <nav aria-label="関連する案内" className="clinical-related-links"><Link href="/learn"><GraduationCap aria-hidden="true" />はり太郎の東洋医学</Link><Link href="/symptoms"><Heart aria-hidden="true" />一般向けの症状別ガイド</Link></nav>
     </div>
   );
 }

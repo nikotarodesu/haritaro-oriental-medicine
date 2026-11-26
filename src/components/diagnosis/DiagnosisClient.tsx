@@ -84,6 +84,8 @@ const SELF_CHECK_QUESTION_TEXT: Readonly<Record<number, string>> = {
   11: "夕方になると足がむくんだ",
   12: "寒さが気になる日が続いた",
 };
+const SELF_CHECK_LABEL = "気血水の体質チェック（学習用）";
+const SELF_CHECK_RESULT_SCOPE = "病気の診断や治療・施術の判断には使えません。";
 
 // 該当項目なしの場合は健康や体質を推定せず、分類を保留する。
 const NEUTRAL_RESULT: DiagnosisResultType = {
@@ -107,8 +109,8 @@ const NEUTRAL_RESULT: DiagnosisResultType = {
 
 function selfCheckShareLabel(result: DiagnosisResultType) {
   return result.type === "neutral"
-    ? "気血水 体質チェックで、東洋医学の6つの分類を学べます。"
-    : `気血水 体質チェックで、選んだ項目と伝統医学の分類「${result.name}」の関係を読みました（学習用）。`;
+    ? `${SELF_CHECK_LABEL}で、東洋医学の6つの分類を学べます。`
+    : `${SELF_CHECK_LABEL}で、選んだ項目と伝統医学の分類「${result.name}」の関係を読みました。`;
 }
 
 type QuestionStatus = "unconfirmed" | "applicable" | "not_applicable" | "unknown";
@@ -409,7 +411,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
   return (
     <div className="page-layout space-y-6">
       <PageIntro compact art="care"
-        title={activeTab === "self" ? "気血水 体質チェック" : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
+        title={activeTab === "self" ? SELF_CHECK_LABEL : activeTab === "clinical" ? "対面問診メモ" : "五労チェッカー"}
         description={activeTab === "self" ? "直近1〜2週間を振り返る12問で、気虚・気滞・血虚・瘀血・水滞・陽虚の6つの伝統的な分類を学びます。" : activeTab === "clinical" ? "会話に出た話題から、自由な順番で。回答とメモを手元に残し、聞き漏れを確認できます。" : "見る・横になる・座る・立つ・歩くのうち、長く続けることが多い動作を選び、『素問』の五労の記述と休憩や動き方の例を確認できます。"}
       >
         {activeTab === "clinical" && <a href="#clinical-interview-board" className="mt-3 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[#1E3D34] px-5 py-3 text-sm font-bold text-white dark:bg-[#74BA9E] dark:text-[#121920]">問診票へ<ArrowRight className="h-4 w-4" aria-hidden="true" /></a>}
@@ -420,10 +422,11 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           ? "五労は生活動作を振り返るための伝統的な分類です。臓器の状態や病気の有無を調べる検査ではありません。"
           : DIAGNOSIS_GUIDANCE_SCOPE}
       />
+      <Link href="/symptoms" className="ui-text-link inline-flex min-h-11 items-center">症状から受診の目安を探す（一般向け）</Link>
       <nav aria-label="東洋医学の学習用チェック" className="grid gap-2 sm:grid-cols-2">
         <Link href="/diagnosis" scroll={false} aria-current={activeTab === "self" ? "page" : undefined} className={checkLinkClass}>
           <Stethoscope className="size-4 shrink-0" aria-hidden="true" />
-          気血水 体質チェック
+          {SELF_CHECK_LABEL}
         </Link>
         <Link href="/diagnosis?tab=gorou" scroll={false} aria-current={activeTab === "gorou" ? "page" : undefined} className={checkLinkClass}>
           <Activity className="size-4 shrink-0" aria-hidden="true" />
@@ -510,6 +513,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
             <section ref={selfResult ? undefined : resultRef} className="rounded-xl border border-frame bg-panel p-5 space-y-3" aria-labelledby="self-check-tie-heading">
               <h2 id="self-check-tie-heading" className="text-xl font-bold">同じ数の項目を選んだ分類</h2>
               <p>以下の分類はそれぞれ{selfMatches.count}項目でした。読みたい分類を選んでください。</p>
+              {!selfResult && <p className="text-sm text-muted">{SELF_CHECK_RESULT_SCOPE}</p>}
               <ul className="flex flex-wrap gap-2">
                 {selfMatches.results.map(result => (
                   <li key={result.type}>
@@ -542,9 +546,9 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                       （{selfResult.reading}）
                     </span>}
                   </h2>
-                  {selfResult.type !== "neutral" && <p className="text-xs text-[#737C77] dark:text-[#8899A6] max-w-xl mx-auto pt-1 leading-relaxed">
-                    選んだ項目と伝統医学の分類との対応です。病気の診断や施術を決めるためには使えません。
-                  </p>}
+                  <p className="text-sm text-muted max-w-xl mx-auto pt-1 leading-relaxed">
+                    {selfResult.type !== "neutral" && "選んだ項目と伝統医学の分類との対応です。"}{SELF_CHECK_RESULT_SCOPE}
+                  </p>
                   <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] max-w-lg mx-auto pt-2">
                     {selfResult.summary}
                   </p>

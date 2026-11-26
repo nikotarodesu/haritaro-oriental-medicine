@@ -155,7 +155,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   return (
     <div className="case-practice space-y-5 sm:space-y-8">
       <header className="reader-header">
-        <p className="text-sm font-semibold text-accent">模擬症例 {String(clinicalCase.caseNumber).padStart(2, "0")} · {clinicalCase.category} · {clinicalCase.difficulty}</p>
+        <p className="text-sm font-semibold text-accent">模擬症例 {String(clinicalCase.caseNumber).padStart(2, "0")} · 難易度 {clinicalCase.difficulty}</p>
         <h1 className="reader-title">{clinicalCase.title}</h1>
         <p className="reader-lead">{clinicalCase.subTitle}</p>
       </header>
@@ -171,7 +171,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <summary>この演習で扱う範囲</summary>
         <p>{CLINICAL_CASE_SCOPE}</p>
       </details>
-      <div id="case-safety" className="scroll-mt-28">
+      <div id="case-safety" tabIndex={-1} className="scroll-mt-3">
         <MedicalSafetyNotice title="この症例の受診・安全上の注意" {...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id]} />
       </div>
 
@@ -331,6 +331,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         <h2 id="case-reasoning-title" className="reader-section-title flex items-center gap-2">
           <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />{retry ? "症例の復習" : "症例を読んで判断する"}
         </h2>
+        <p><a href="#case-safety" className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を読む</a></p>
 
         {ready && !retry && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
@@ -408,9 +409,6 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                     );
                   })}
                 </div>
-                {step.stepNumber === 1 && selected && (
-                  <a href="#case-safety" className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を読む</a>
-                )}
                 {retry && <Link href={PRACTICE_REVIEW_HREF} className="ui-text-link inline-flex min-h-11 items-center">復習一覧に戻る</Link>}
               </div>
             );
@@ -627,7 +625,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                     <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-45 transition-transform" />
                   </div>
                   <p className="text-xs text-muted">
-                    主訴別に20症例を掲載しています。
+                    {CLINICAL_CASES.length}例から、症状や難易度を見て選べます。
                   </p>
                 </Link>
 
@@ -683,7 +681,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
           href="/cases"
           className="inline-flex items-center gap-1.5 text-xs font-bold text-muted hover:text-[#1E3D34]"
         >
-          <span>← 症例演習一覧へ</span>
+          <span>模擬症例を一覧で見る</span>
         </Link>
         {(() => {
           const currentIdx = CLINICAL_CASES.findIndex((c) => c.id === clinicalCase.id);

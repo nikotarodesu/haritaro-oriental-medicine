@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useId, useState } from "react";
+import { type ReactNode, useId, useRef, useState } from "react";
 
 export default function ZoomableAtlasDiagram({ label, pointName, children }: {
   label: string;
@@ -8,6 +8,7 @@ export default function ZoomableAtlasDiagram({ label, pointName, children }: {
   children: ReactNode;
 }) {
   const id = useId();
+  const toggle = useRef<HTMLButtonElement>(null);
   const [enlarged, setEnlarged] = useState(false);
 
   return (
@@ -15,6 +16,7 @@ export default function ZoomableAtlasDiagram({ label, pointName, children }: {
       <div className={`flex flex-wrap items-center gap-x-3 ${pointName ? "justify-start" : "justify-between"}`}>
         <button
           type="button"
+          ref={toggle}
           aria-expanded={enlarged}
           aria-controls={id}
           onClick={() => setEnlarged((current) => !current)}
@@ -31,6 +33,13 @@ export default function ZoomableAtlasDiagram({ label, pointName, children }: {
         tabIndex={enlarged ? 0 : undefined}
         aria-label={enlarged ? `${label}（拡大表示）` : undefined}
         aria-describedby={enlarged ? `${id}-hint` : undefined}
+        onKeyDown={event => {
+          if (enlarged && event.key === "Escape") {
+            event.stopPropagation();
+            setEnlarged(false);
+            toggle.current?.focus();
+          }
+        }}
         className={enlarged ? "overflow-x-auto overscroll-x-contain focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&>svg]:h-auto [&>svg]:max-h-none [&>svg]:w-[620px] [&>svg]:max-w-none" : undefined}
       >
         {children}

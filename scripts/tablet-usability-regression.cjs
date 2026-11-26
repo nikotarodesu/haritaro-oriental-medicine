@@ -389,6 +389,7 @@ async function checkComparisonHeader() {
     },
     '@/data/tsubo/atlas/articles': { ATLAS_ARTICLES: Object.fromEntries(TSUBOS.map(point => [point.id, { traditional: [''], cautions: [''] }])) },
     '@/data/tsubo/atlas/evidence': { getAcupointStudies: () => [] },
+    '@/data/tsubo/atlas/featuredPairs': { ACUPOINT_PAIRS_PATH: '/tsubo/pairs', featuredPairAnchor: id => 'featured-acupoint-pair-' + id, featuredPairs: [{ id: 'four-gates' }] },
     '@/data/tsubo/friendlyLocations': atlasLocations,
     '@/data/tsubo/atlas/traditionalUses': { TRADITIONAL_POINT_USES: {} },
     '@/data/tsubo/atlas/markers': { ATLAS_POINT_MARKERS: {} },
@@ -396,10 +397,11 @@ async function checkComparisonHeader() {
     './compare-flow.css': {},
     './selection': comparisonSelection,
   });
-  for (const params of [{}, { a: 'lr3', b: 'li4' }, { a: 'lr3' }, { a: 'li4', b: 'lr3', c: 'st36' }]) {
+  for (const params of [{}, { a: 'lr3', b: 'li4' }, { a: 'lr3' }, { a: 'li4', b: 'lr3', c: 'st36' }, { a: 'li4', b: 'lr3', from: 'pairs', pair: 'four-gates' }]) {
     const tree = await page.render({ searchParams: Promise.resolve(params) });
     const header = nodes(tree).find(node => node.type === 'header');
     assert.equal(nodes(header).filter(node => node.type === DictionaryReturnLink).length, 1, 'Comparison header offers a single return to the dictionary');
+    assert.equal(nodes(header).some(node => node.props?.href === '/tsubo/pairs?return=1#featured-acupoint-pair-four-gates'), params.from === 'pairs', 'Only pair-directory visits receive a return link');
     const links = nodes(header).filter(node => node.props?.['data-analytics-action'] === 'compare_case');
     assert.equal(links.length, 0, 'Case links follow the diagrams rather than appearing in the heading');
   }

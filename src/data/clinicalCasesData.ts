@@ -2534,7 +2534,7 @@ const CASE_MODELS: ClinicalCase[] = [
   },
 ];
 
-export const CLINICAL_CASE_SCOPE = "20例とも架空の症例です。まず受診を急ぐ所見がないかを確かめ、その後に伝統医学の候補を比べます。舌や脈、証名だけで病気の有無は判断できません。配穴や方剤は、治法を読むための例です。診断の精度や治療の効果を調べた資料ではなく、専門家による監修は完了していません。";
+export const CLINICAL_CASE_SCOPE = "すべて架空の症例です。まず受診を急ぐ所見がないかを確かめ、その後に伝統医学の候補を比べます。舌や脈、証名だけで病気の有無は判断できません。配穴や方剤は、治法を読むための例です。診断の精度や治療の効果を調べた資料ではなく、専門家による監修は完了していません。";
 
 interface CaseSafetyGuidance { message: string; sources: { title: string; url: string; section: string }[]; }
 export const CLINICAL_CASE_SAFETY_GUIDANCE: Record<string, CaseSafetyGuidance> = {

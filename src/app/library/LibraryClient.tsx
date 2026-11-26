@@ -87,7 +87,6 @@ export default function LibraryClient() {
               <input
                 id="library-search"
                 type="search"
-                aria-label="文献・古典・症例を検索"
                 aria-describedby="library-search-hint"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
@@ -124,8 +123,7 @@ export default function LibraryClient() {
         </div>
 
         <div className="library-result-summary">
-          <h2 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">検索結果</h2>
-          <p role="status" aria-atomic="true" className="text-sm text-[#59615D] dark:text-[#A0B0BC]"><span className="sr-only">表示中：</span>{visibleResultCount}件</p>
+          <h2 aria-live="polite" aria-atomic="true" className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">検索結果：{visibleResultCount}件</h2>
           <details className="reference-disclosure library-source-disclosure">
             <summary>出典・確認範囲</summary>
             <div className="reference-disclosure-body">

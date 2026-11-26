@@ -18,10 +18,11 @@ import { atlasPairPracticeReview } from "@/data/tsubo/atlas/practiceReviews";
 import AtlasLocationCheck from "@/components/tsubo/atlas/AtlasLocationCheck";
 import type { Tsubo } from "@/types/oriental";
 import { PRESET_TSUBO_COMPARISONS } from "./presets";
-import { comparisonSelectionHref } from "./selection";
+import { comparisonSelectionHref, type ComparisonPairOrigin } from "./selection";
 
 export type ComparisonChoice = Pick<Tsubo, "id" | "code" | "name" | "kana" | "romaji" | "meridian" | "meridianShort">;
 export type ComparisonPoint = ComparisonChoice & Pick<Tsubo, "bodyPart" | "locationSimple"> & {
+  figureRegion?: string;
   category: readonly string[];
   traditional?: string;
   caution: string;
@@ -32,6 +33,7 @@ export type ComparisonPoint = ComparisonChoice & Pick<Tsubo, "bodyPart" | "locat
 type CompareProps = {
   choices: readonly ComparisonChoice[];
   selectedTsubos: readonly ComparisonPoint[];
+  origin?: ComparisonPairOrigin;
 };
 
 const COMPARISON_FIELDS = [
@@ -76,7 +78,7 @@ const COMPARISON_FIELDS = [
   },
 ];
 
-export default function CompareClient({ choices, selectedTsubos }: CompareProps) {
+export default function CompareClient({ choices, selectedTsubos, origin }: CompareProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const focusResultsAfterNavigation = useRef(false);
@@ -113,7 +115,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
     setPendingSwapTsubo(null);
     setSearchQuery("");
     focusResultsAfterNavigation.current = focusResults;
-    startTransition(() => router.replace(comparisonSelectionHref(codes), { scroll: false }));
+    startTransition(() => router.replace(comparisonSelectionHref(codes, origin), { scroll: false }));
   };
 
   // ツボの追加・入れ替えハンドラー
@@ -256,7 +258,7 @@ export default function CompareClient({ choices, selectedTsubos }: CompareProps)
                     data-analytics-action="compare_atlas"
                   >
                     <div className="tsubo-compare-position-title">
-                      <h3>{point.name}</h3>
+                      <h3>{point.name} <small>（{point.figureRegion ?? point.bodyPart}）</small></h3>
                       <span>{point.code}</span>
                     </div>
                     {point.locationFigure && <div className="tsubo-compare-location-figure">{point.locationFigure}</div>}

@@ -13,11 +13,11 @@ import { PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
 const SERIES_ACTIONS = {
-  "/tsubo": { label: "ツボを調べる", analytics: "home_atlas", art: "points", links: [SERIES.dictionary.links[1], ACUPUNCTURE_GUIDE] },
-  "/learn": { label: "講義一覧を見る", analytics: "home_reading", art: "study", links: [SERIES.reading.links[0]] },
-  "/clinical": { label: "臨床演習を選ぶ", analytics: "home_clinical", art: "practice", links: SERIES.practice.links },
+  "/tsubo": { label: "ツボを調べる", description: "位置と目印を図で確認", analytics: "home_atlas", art: "points" },
+  "/learn": { label: "講義を読む", description: "陰陽などの基本から", analytics: "home_reading", art: "study" },
+  "/clinical": { label: "症例で練習する", description: "架空の相談で考える", analytics: "home_clinical", art: "practice" },
 } satisfies Record<(typeof SERIES_ENTRIES)[number]["href"], {
-  label: string; analytics: string; art: PageArtKind; links: ReadonlyArray<{ href: string; label: string }>;
+  label: string; description: string; analytics: string; art: PageArtKind;
 }>;
 const POINTS = [
   { code: "st36", label: "足三里", location: "ひざの下", art: pointThumbnail("st36", "足三里", LowerLegRegion) },
@@ -49,42 +49,43 @@ export default function HomePage() {
             </div>
             <PlatformSearchForm placeholder="合谷、肩こり、陰陽" />
           </div>
-          <Link href="/tsubo/li4" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">
+          <nav className="platform-series" aria-labelledby="platform-series-title">
+            <h2 id="platform-series-title" className="sr-only">目的から探す</h2>
+            <ul className="platform-series-grid">
+              {SERIES_ENTRIES.map(({ href }) => {
+                const { label, description, analytics, art } = SERIES_ACTIONS[href];
+                return (
+                  <li key={href} className="platform-series-card">
+                    <h3>
+                      <Link href={href} className="platform-series-action" data-analytics-action={analytics}>
+                        <span className="platform-series-icon" aria-hidden="true"><PageSymbol kind={art} /></span>
+                        <span className="platform-series-label">{label}</span>
+                        <ArrowRight aria-hidden="true" />
+                      </Link>
+                    </h3>
+                    <p>{description}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+          <div className="platform-home-resources">
+            <Link href="/symptoms" className="ui-text-link">症状から受診の目安を探す <ArrowRight size={16} aria-hidden="true" /></Link>
+            <Link href={ACUPUNCTURE_GUIDE.href} className="ui-text-link">{ACUPUNCTURE_GUIDE.label}</Link>
+          </div>
+          <Link href="/tsubo/li4#acupoint-location" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">
             <span className="platform-feature-art"><HeguHandDiagram thumbnail /></span>
             <span className="platform-feature-copy">
               <span className="platform-feature-meta"><span>LI4</span> 手の甲</span>
               <strong id="platform-feature-name" className="platform-feature-name">合谷<span>ごうこく</span></strong>
-              <span id="platform-feature-action" className="platform-feature-link">場所と注意点 <ArrowRight aria-hidden="true" /></span>
+              <span id="platform-feature-action" className="platform-feature-link">位置図を見る <ArrowRight aria-hidden="true" /></span>
             </span>
           </Link>
         </div>
       </section>
 
-      <section className="platform-container platform-series" aria-labelledby="platform-series-title">
-        <h2 id="platform-series-title">目的から探す</h2>
-        <ul className="platform-series-grid">
-          {SERIES_ENTRIES.map(series => {
-            const action = SERIES_ACTIONS[series.href];
-            return (
-              <li key={series.href} className="platform-series-card">
-                <h3>
-                  <Link href={series.href} className="platform-series-action" data-analytics-action={action.analytics} title={series.name}>
-                    <span className="platform-series-icon"><PageSymbol kind={action.art} /></span>
-                    <span className="platform-series-label">{action.label}</span>
-                    <ArrowRight aria-hidden="true" />
-                  </Link>
-                </h3>
-                <div className="platform-topic-links">
-                  {action.links.map(({ href, label }) => <Link key={href} href={href} className="ui-text-link">{label}</Link>)}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
       <section className="platform-container platform-index" aria-labelledby="platform-index-title">
-        <h2 id="platform-index-title">図で見る、身近なツボ</h2>
+        <h2 id="platform-index-title">身近なツボを図で見る</h2>
         <ul>
           {POINTS.map(point => (
             <li key={point.code}>

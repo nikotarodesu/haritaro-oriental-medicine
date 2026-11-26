@@ -27,7 +27,15 @@ export function getPointSearchTopic(normalizedQuery: string): string {
   return normalizePointCode(question.replace(POINT_QUESTION_END, "").trim() || normalizedQuery);
 }
 
-export interface SearchableItem { title: string; subtitle?: string; tags?: string[]; exactCode?: string; exactTerms?: string[] }
+export interface SearchableItem {
+  title: string;
+  subtitle?: string;
+  context?: string;
+  tags?: string[];
+  exactCode?: string;
+  exactTerms?: string[];
+  relatedQueryNote?: { term: string; text: string };
+}
 export type SearchItemType = 'article' | 'acupoint' | 'lecture' | 'case' | 'tool' | 'glossary' | 'kokushi' | 'classic' | 'paper' | 'symptom';
 export type SearchCategory = 'all' | 'article' | 'acupoint' | 'lecture' | 'kokushi' | 'case' | 'library' | 'glossary' | 'symptom' | 'tool';
 export const SEARCH_CATEGORIES: ReadonlyArray<{ id: SearchCategory; label: string }> = [
@@ -65,19 +73,20 @@ export function matchesSearchText(query: string, fields: string[]): boolean {
   return tokens.every(token => text.includes(token));
 }
 export function prepareSearchItem<T extends SearchableItem>(item: T) {
-  return { item, title: normalizeSearchText(item.title), subtitle: normalizeSearchText(item.subtitle || ''),
+  return { item, title: normalizeSearchText(item.title), subtitle: normalizeSearchText([item.context, item.subtitle].filter(Boolean).join(' ')),
     tags: (item.tags || []).map(normalizeSearchText), code: normalizeSearchText(item.exactCode || ''),
     exactTerms: (item.exactTerms || []).map(normalizeSearchText) };
 }
 export function scoreSearchItem(index: ReturnType<typeof prepareSearchItem>, query: string | ReturnType<typeof prepareSearchQuery>): number {
   const { normalized, tokens } = typeof query === 'string' ? prepareSearchQuery(query) : query;
   if (!normalized) return 0;
-  let score = index.code === normalized ? 150 : 0;
+  const exactTerm = index.exactTerms.includes(normalized);
+  let score = index.code === normalized ? 150 : exactTerm ? 125 : 0;
   for (const token of tokens) {
     const titleScore = index.title === token ? 120 : index.title.startsWith(token) ? 90 : index.title.includes(token) ? 60 : 0;
     const tagScore = index.tags.some(tag => tag === token) ? 45 : index.tags.some(tag => tag.includes(token)) ? 25 : 0;
     const subtitleScore = index.subtitle.includes(token) ? 20 : 0;
-    if (!(titleScore || tagScore || subtitleScore || index.code === token)) return 0;
+    if (!(titleScore || tagScore || subtitleScore || index.code === token || exactTerm)) return 0;
     score += titleScore + tagScore + subtitleScore;
   }
   return score;
@@ -87,6 +96,11 @@ export function scoreSearchItem(index: ReturnType<typeof prepareSearchItem>, que
 export function searchMatchHint(index: ReturnType<typeof prepareSearchItem>, query: ReturnType<typeof prepareSearchQuery>): string | null {
   if (!query.tokens.length) return null;
   if (index.code && index.code === query.normalized) return '経穴コードが一致';
+  const note = index.item.relatedQueryNote;
+  if (note && query.tokens.includes(normalizeSearchText(note.term))) return note.text;
+  if (index.exactTerms.includes(query.normalized) && !index.title.includes(query.normalized)) {
+    return '名前・読み方・別名に一致';
+  }
   if (query.tokens.some(token => !index.title.includes(token) && !index.subtitle.includes(token))) return '関連語に一致';
   return null;
 }

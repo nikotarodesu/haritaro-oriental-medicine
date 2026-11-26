@@ -26,6 +26,7 @@ export default function AcupointArticleHeader({ point }: {
       {/* Native fragment navigation opens the index's enclosing disclosure. */}
       <p className="atlas-point-meta"><a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
       <p className="atlas-point-lead">{atlasLocationWithoutUnitNote(point.locationSimple)}</p>
+      <a href="#acupoint-location" className="atlas-text-action">位置図へ</a>
     </header>
   );
 }

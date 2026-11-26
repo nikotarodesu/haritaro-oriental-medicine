@@ -108,10 +108,15 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
   const dueCount = due.length + overduePractice.length;
   const weakCount = weak.length + weakPractice.length;
   const firstPractice = !lastVisitedLectureId && !session && !hasCaseHistory && !practice.length
-    && !quizHistory.length && !Object.keys(quizResults).length && !Object.values(completedLectures).some(Boolean);
-  const reviewHeading = firstPractice ? '確認問題' : '今日の復習';
+    && !quizHistory.length && !revisedQuestionCount && !Object.keys(quizResults).length && !Object.values(completedLectures).some(Boolean);
+  const reviewHeading = firstPractice ? '確認問題' : dueCount ? '今日の復習' : weakCount ? '間違えた問題を見直す' : '次に解く問題';
   const dailyLabel = dueCount ? `今日の復習：${dueCount}問`
     : firstPractice ? '最初の確認問題を解く' : '未回答の確認問題を解く';
+  const reviewDescription = firstPractice
+    ? '回答履歴はまだありません。まずは講義の確認問題を解いてみましょう。'
+    : dueCount ? '復習日を迎えた問題から解き直せます。'
+    : weakCount ? '間違えた問題は、復習日を待たずに解き直せます。'
+    : '復習日を迎えた問題はありません。';
   const q = queue[index];
   const readingUnitHref = q?.href.startsWith('/learn/lectures/') ? q.href.split('#', 1)[0] : undefined;
 
@@ -233,24 +238,27 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
   };
   const similar = q && !session?.returnTo && lectureQuestions.find(other => other.id !== q.id && other.lectureId === q.lectureId);
   const questionsForFilter = practiceFilter === 'weak' ? weak : due.slice(0, 10);
+  const mainAction = 'min-h-11 rounded-xl bg-[#1E3D34] p-3 text-left text-white';
+  const secondaryAction = 'min-h-11 rounded-xl bg-white p-3 text-left text-[#1E3D34] dark:bg-[#17212A] dark:text-[#83BEA8]';
   const reviewControls = <>
+      {!compact && !session && <p className="text-sm leading-relaxed ui-muted">{reviewDescription}</p>}
       <div className={`grid grid-cols-1 ${compact ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-3 text-sm`}>
-        {dueCount > 0 || unlearned.length > 0 ? (
-          <button type="button" onClick={startDailyReview} className="min-h-11 rounded-xl bg-[#1E3D34] text-white p-3 text-left">
-            {dailyLabel}{dueCount > 0 && <><br /><span className="text-xs">予定日が来た問題を確認</span></>}
-          </button>
-        ) : <p className="p-3 ui-muted">今日の復習はありません。</p>}
+        {dueCount > 0 && <button type="button" onClick={startDailyReview} className={mainAction}>{dailyLabel}</button>}
+        {weakCount > 0 && <button type="button" onClick={startWeakReview} className={dueCount ? secondaryAction : mainAction}>間違えた問題：{weakCount}問</button>}
+        {dueCount === 0 && unlearned.length > 0 && (
+          <button type="button" onClick={startDailyReview} className={weakCount ? secondaryAction : mainAction}>{dailyLabel}</button>
+        )}
+        {compact && dueCount === 0 && weakCount === 0 && unlearned.length === 0 && <p className="p-3 ui-muted">復習日を迎えた問題はありません。</p>}
         {!compact && (
           <Link href={lastVisitedLectureId ? `/curriculum/${lastVisitedLectureId}` : '/learn/lectures/getting-started'} className="inline-flex min-h-11 items-center rounded-xl bg-white dark:bg-[#17212A] p-3 text-[#1E3D34] dark:text-[#83BEA8]">
-            {lastVisitedLectureId ? '前回の続き' : '第1講を読む'}
+            {lastVisitedLectureId ? '前回の講義を読む' : '第1講を読む'}
           </Link>
         )}
-        {weakCount > 0 && <button type="button" onClick={startWeakReview} className="min-h-11 rounded-xl bg-white dark:bg-[#17212A] p-3 text-left text-[#1E3D34] dark:text-[#83BEA8]">苦手分野：{weakCount}問<br /><span className="text-xs">{practiceQuestions ? '間違えた問題を解き直す' : '講義と経穴の確認問題を復習'}</span></button>}
       </div>
   </>;
   const reviewSupport = <div className="review-support space-y-3">
-      {isMounted && quizHistory.length > 0 && <details className="review-support-detail"><summary>最近の回答・復習履歴（保存済み {quizHistory.length}件）</summary><ol className="space-y-2">{quizHistory.slice(-10).reverse().map((record, i) => <li key={`${record.questionId}-${record.answeredAt}-${i}`} className="border-t pt-2"><Link href={record.practiceHref ? restoreLegacyExerciseHref(record.practiceHref) : `/curriculum/${record.lectureId}`} className="underline">{record.lectureTitle}</Link>：{record.isCorrect ? '正解' : '要復習'}<br/><time dateTime={record.answeredAt} className="text-xs">{new Date(record.answeredAt).toLocaleString('ja-JP')}</time></li>)}</ol><p className="text-xs mt-2">回答履歴は残し、現在の出題内容と一致する記録を復習予定に使用します。</p></details>}
-      <details className="review-support-detail"><summary>復習のしくみ</summary><p className="pb-3 leading-relaxed">正解を別の日に確認できた回数に応じ、1・3・7・14・30日後に復習します。同日の再挑戦は練習として記録し、復習間隔を延ばしません。保存・同期の状態は上の表示で確認できます。</p></details>
+      {isMounted && quizHistory.length > 0 && <details className="review-support-detail"><summary>最近の回答・復習履歴（{quizHistory.length}件）</summary><ol className="space-y-2">{quizHistory.slice(-10).reverse().map((record, i) => <li key={`${record.questionId}-${record.answeredAt}-${i}`} className="border-t pt-2"><Link href={record.practiceHref ? restoreLegacyExerciseHref(record.practiceHref) : `/curriculum/${record.lectureId}`} className="underline">{record.lectureTitle}</Link>：{record.isCorrect ? '正解' : '要復習'}<br/><time dateTime={record.answeredAt} className="text-xs">{new Date(record.answeredAt).toLocaleString('ja-JP')}</time></li>)}</ol><p className="text-xs mt-2">現在の出題内容と一致する回答を復習予定に使用します。</p></details>}
+      <details className="review-support-detail"><summary>復習のしくみ</summary><p className="pb-3 leading-relaxed">正解を別の日に確認できた回数に応じ、1・3・7・14・30日後に復習します。同日の再挑戦は練習として記録し、復習間隔を延ばしません。学習履歴の保存状況は、この画面で確認できます。</p></details>
       {showCaseReview ? <>
         <Link href="/simulator#case-training" className="inline-block min-h-11 content-center text-sm font-semibold underline text-[#1E3D34] dark:text-[#83BEA8]">症例で判断の根拠を練習する →</Link>
         <LearningFocusReview onStart={start} />
@@ -285,14 +293,14 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
         </section>
       )}
       {showSyncAttention && <LearningSyncStatus compact />}
-      {isMounted && revisedQuestionCount > 0 && <p className="text-xs font-semibold text-[#B86924] dark:text-[#E6C387]">{revisedQuestionCount}問に旧形式・改訂前の回答があります。旧回答を採点に使わず、再確認の対象にしています。</p>}
+      {isMounted && revisedQuestionCount > 0 && <p className="text-sm font-semibold text-[#835019] dark:text-[#E6C387]">更新前に答えた問題が{revisedQuestionCount}問あります。以前の回答は採点に含めません。新しい問題で確認してください。</p>}
       {review.status === 'restored' && session && <p role="status" className="text-sm font-semibold">中断した復習を再開しました（{index + 1} / {queue.length}問）。選択と回答結果を引き継いでいます。</p>}
       {review.status === 'returned' && session && <p role="status" className="text-sm font-semibold">元の復習に戻りました。回答と出題順を引き継いでいます。</p>}
-      {(review.status === 'invalid' || review.status === 'different') && <p role="status" className="text-sm">中断した復習は終了・期限切れ・教材の改訂などで再開できません。保存済みの回答履歴は残っています。</p>}
+      {(review.status === 'invalid' || review.status === 'different') && <p role="status" className="text-sm">中断した復習は終了・期限切れ・教材の改訂などで再開できません。{quizHistory.length > 0 && '表示できる回答は「最近の回答・復習履歴」で確認できます。'}</p>}
       {!storageAvailable && session && <p role="status" className="text-sm">このブラウザでは復習の途中状態を一時保存できません。ページを移動すると、このセットの途中状態を引き継げない場合があります。</p>}
-      {review.status === 'complete' && <p role="status" className="text-sm font-bold">今回の復習が完了しました。次の予定日にもう一度確認しましょう。</p>}
+      {review.status === 'complete' && <p role="status" className="text-sm font-bold">今回の復習が完了しました。{syncStatus === 'local' && '次の予定日にもう一度確認しましょう。'}</p>}
       {q && session && <div id="learning-review-practice" tabIndex={-1} aria-label="現在の復習問題" className="review-question scroll-mt-28 rounded-xl bg-white dark:bg-[#17212A] p-4 space-y-3 text-base text-[#232826] dark:text-[#FAF8F5]">
-        {session.returnTo && <div className="rounded-lg border border-[#C5DED4] p-3 text-sm space-y-2"><p>類題を確認中です。元の復習（{session.returnTo.index + 1} / {session.returnTo.questions.length}問目）の回答と出題順は保存しています。</p><button type="button" className="min-h-11 underline underline-offset-4" onClick={returnToOriginal}>元の復習に戻る</button></div>}
+        {session.returnTo && <div className="rounded-lg border border-[#C5DED4] p-3 text-sm space-y-2"><p>類題を確認中です。この画面から元の復習（{session.returnTo.index + 1} / {session.returnTo.questions.length}問目）に戻ると、回答と出題順を引き継げます。</p><button type="button" className="min-h-11 underline underline-offset-4" onClick={returnToOriginal}>元の復習に戻る</button></div>}
         <p className="text-xs">{index + 1} / {queue.length} ｜ {q.chapterTitle}</p>
         <h3 className="font-bold whitespace-pre-line">{q.question}</h3>
         <div className="space-y-2">{shuffledIndices(q.options.length, `${sessionSeed}-${q.id}`).map((original, display) => <button key={original} type="button" disabled={submitted} aria-pressed={choice === original} onClick={() => choose(original)} className={`quiz-option min-h-11 block w-full rounded-lg border p-3 text-left ${choice === original ? 'border-[#1E3D34] bg-[#EBF3EF] dark:bg-[#182823]' : 'border-[#E8E1D1] dark:border-[#263542]'}`}>
@@ -301,7 +309,7 @@ function ReviewWorkspace({ owner, compact, readingQuestions, practiceQuestions }
         {!submitted ? <button type="button" onClick={answer} disabled={choice === null} className="rounded-lg bg-[#1E3D34] text-white px-4 py-2 disabled:opacity-40">回答を確定</button> : <div className="space-y-3">
           <p role="status" className="quiz-result font-bold">{choice === q.correctIndex ? '正解です。' : '不正解です。解説で確認しましょう。'}</p>
           <h4 className="quiz-explanation-title font-bold">解説</h4><p className="quiz-explanation-body whitespace-pre-line">{q.explanation}</p>
-          <p className="text-xs">次回復習：{quizResults[q.id]?.nextReviewDate}</p>
+          {syncStatus === 'local' && quizResults[q.id]?.nextReviewDate && <p className="text-xs">次回復習：{quizResults[q.id].nextReviewDate}</p>}
           <div className="flex flex-wrap gap-3 text-sm">
             <Link className="underline" href={readingUnitHref ? q.href : `/curriculum/${q.lectureId}?review=${encodeURIComponent(q.id)}&reviewSession=${session.id}#review-question-card`}>要点と関連講義を読む</Link>
             {similar && <button type="button" className="underline" onClick={() => openSimilar(similar)}>同じテーマの類題で確認</button>}

@@ -173,7 +173,7 @@ const clinicalMenuNode = nodes(byId(menu.SITE_MENU_ID)).find(node => node.type?.
 assert(clinicalMenuNode);
 const clinicalTree = clinicalMenuNode.type(clinicalMenuNode.props);
 const primary = nodes(clinicalTree).filter(node => node.type?.name === 'HeaderLinks')[0];
-assert.equal(JSON.stringify(primary.props.links.map(item => item.label)), '["主訴別ガイド","経穴比較"]');
+assert.equal(JSON.stringify(primary.props.links.map(item => item.label)), '["臨床演習ガイド","ツボを比べる"]');
 assert.equal(JSON.stringify(primary.props.links.map(item => item.href)), '["/clinical#chief-complaints","/tsubo/compare"]');
 assert(!menuDestinations.some(href => ['/clinical/workspace', '/notes', '/pricing', '/auth/login'].some(path => href.startsWith(path))), 'Paused and retired features stay out of the menu');
 const primaryRows = nodes(primary.type(primary.props)).filter(node => node.type === Link);

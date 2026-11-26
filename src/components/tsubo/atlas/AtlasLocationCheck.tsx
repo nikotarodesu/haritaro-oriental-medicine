@@ -49,9 +49,9 @@ export default function AtlasLocationCheck({ question, reviewQuestion, options, 
         ))}
       </div>
       <p role="status" className="text-sm leading-relaxed text-accent">
-        {selected === null ? null : selected === question.answerCode
+        {selected === null ? ready ? "未回答" : "確認問題の準備中です。" : selected === question.answerCode
           ? `正解。${question.explanation}`
-          : "もう一度、位置の目印を確かめてみましょう。"}
+          : `不正解。${question.retryHint ?? "図で場所を確かめて、もう一度選んでみましょう。"}`}
       </p>
       {answer && (answer.retry || answer.code !== question.answerCode) && (
         <Link href={PRACTICE_REVIEW_HREF} className="ui-text-link inline-flex min-h-11 items-center">

@@ -8,11 +8,12 @@ import type { AcupointMaster } from "@/data/tsubo/types";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { atlasLocationWithoutUnitNote } from "@/data/tsubo/friendlyLocations";
 import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
+import { ACUPOINT_PAIRS_PATH, featuredPairAnchor, featuredPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import type { Metadata } from "next";
 import CompareClient, { type ComparisonChoice, type ComparisonPoint } from "./CompareClient";
-import { resolveComparisonCodes, type ComparisonSearchParams } from "./selection";
+import { comparisonPairOrigin, resolveComparisonCodes, type ComparisonSearchParams } from "./selection";
 import "./compare-flow.css";
 
 const title = seriesPageTitle("経穴比較ツール｜ツボの位置・経絡・注意点", "dictionary");
@@ -43,6 +44,7 @@ function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
     : marker && <PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />;
   return {
     id: legacyId, code, name, kana, romaji, meridian, meridianShort, bodyPart,
+    figureRegion: code === "LI4" ? "手の甲" : code === "LR3" ? "足の甲" : bodyPart,
     locationSimple: atlasLocationWithoutUnitNote(locationSimple),
     traditional: TRADITIONAL_POINT_USES[codeLower]?.labels.join("、"),
     caution,
@@ -53,7 +55,10 @@ function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
 }
 
 export default async function TsuboComparePage({ searchParams }: { searchParams: Promise<ComparisonSearchParams> }) {
-  const selectedCodes = resolveComparisonCodes(await searchParams, comparisonChoices);
+  const params = await searchParams;
+  const selectedCodes = resolveComparisonCodes(params, comparisonChoices);
+  const requestedOrigin = comparisonPairOrigin(params);
+  const origin = requestedOrigin && featuredPairs.some(pair => pair.id === requestedOrigin.pairId) ? requestedOrigin : undefined;
   const selectedTsubos = selectedCodes.flatMap(code => {
     const point = pointsByCode.get(code);
     return point ? [getComparisonPoint(point)] : [];
@@ -65,11 +70,12 @@ export default async function TsuboComparePage({ searchParams }: { searchParams:
         <header className="tsubo-compare-header">
           <nav aria-label="図鑑への移動" className="atlas-breadcrumb print:hidden">
             <AtlasDictionaryReturnLink className="tsubo-compare-return" />
+            {origin && <a href={`${ACUPOINT_PAIRS_PATH}?return=1#${featuredPairAnchor(origin.pairId)}`} className="atlas-source-link inline-flex min-h-11 items-center">組み合わせ一覧へ</a>}
           </nav>
           <h1>ツボを比べる</h1>
         </header>
       </div>
-      <CompareClient choices={comparisonChoices} selectedTsubos={selectedTsubos} />
+      <CompareClient choices={comparisonChoices} selectedTsubos={selectedTsubos} origin={origin} />
     </div>
   );
 }

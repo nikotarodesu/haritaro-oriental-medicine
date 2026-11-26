@@ -1,6 +1,7 @@
 import { normalizeSearchText } from "@/utils/search";
 
 export type ComparisonSearchParams = Record<string, string | string[] | undefined>;
+export type ComparisonPairOrigin = { pairId: string };
 
 const DEFAULT_COMPARISON_CODES = ["LI4", "LR3"];
 const SELECTION_KEYS = ["a", "b", "c"] as const;
@@ -26,12 +27,22 @@ export function resolveComparisonCodes(
   return resolved.size ? [...resolved] : [...DEFAULT_COMPARISON_CODES];
 }
 
-export function comparisonSelectionHref(codes: readonly string[]) {
+export function comparisonPairOrigin(params: ComparisonSearchParams): ComparisonPairOrigin | undefined {
+  const pairId = first(params.pair);
+  if (first(params.from) !== "pairs" || !pairId || !/^[a-z\d-]+$/u.test(pairId)) return undefined;
+  return { pairId };
+}
+
+export function comparisonSelectionHref(codes: readonly string[], origin?: ComparisonPairOrigin) {
   const params = new URLSearchParams();
   if (!codes.length) params.set("empty", "1");
   for (const [index, key] of SELECTION_KEYS.entries()) {
     const code = codes[index];
     if (code) params.set(key, code.toLowerCase());
+  }
+  if (origin) {
+    params.set("from", "pairs");
+    params.set("pair", origin.pairId);
   }
   return `/tsubo/compare?${params.toString()}`;
 }

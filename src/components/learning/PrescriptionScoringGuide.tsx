@@ -1,7 +1,7 @@
 export default function PrescriptionScoringGuide() {
   return (
     <div className="space-y-3 text-sm leading-relaxed text-[#59615D] dark:text-[#A0B0BC]">
-      <p>見直す項目は、穴数と教材上の役割から表示します。治療効果、安全性、適切な穴数を判断するためには使えません。</p>
+      <p>見直す項目は、穴数と教材上の役割から表示します。病気の診断や治療・施術の判断には使えません。治療効果、安全性、適切な穴数も判断できません。</p>
       <details className="rounded-xl border border-[#D9E3DD] p-4 dark:border-[#2A3B4A]">
         <summary className="min-h-11 cursor-pointer content-center font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">見直す項目の表示条件</summary>
         <ul className="mt-3 list-disc space-y-2 pl-5">

@@ -253,11 +253,6 @@
   min-height: 5.15rem;
 }
 
-.primaryExercise {
-  border-color: color-mix(in srgb, var(--tokiwa-green) 38%, var(--border-washi));
-  background: var(--tokiwa-light);
-}
-
 .cardArrow {
   width: 1rem;
   height: 1rem;
@@ -299,7 +294,7 @@
   display: flex;
   align-items: start;
   gap: .45rem;
-  margin-top: .75rem;
+  margin-bottom: .75rem;
   color: var(--text-secondary);
   font-size: .875rem;
   line-height: 1.7;
@@ -322,10 +317,6 @@
   border-radius: .625rem;
   background: var(--tokiwa-light);
   color: var(--clinical-ink);
-}
-
-.primaryExercise .exerciseIcon {
-  background: var(--bg-card);
 }
 
 .exerciseIcon svg {

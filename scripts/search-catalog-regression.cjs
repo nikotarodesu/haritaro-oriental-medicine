@@ -22,7 +22,20 @@ const generated = fs.readFileSync(path.join(root, 'src/data/searchCatalog.ts'), 
 assert.equal(generated, generateSearchCatalog(), 'Content edits must regenerate the browser metadata');
 assert.equal(new Set(SEARCH_CATALOG.map(item => item.id)).size, SEARCH_CATALOG.length, 'Search IDs are unique');
 const byId = new Map(SEARCH_CATALOG.map(item => [item.id, item]));
+const { prepareSearchItem } = load('src/utils/search');
+const { preparePurposeSearchQuery, rankPurposeSearchResults } = load('src/utils/searchPurpose');
+const ranked = query => rankPurposeSearchResults(SEARCH_CATALOG.map(prepareSearchItem), preparePurposeSearchQuery(query));
 assert.equal(byId.get('tool-tsubo-pairs')?.url, '/tsubo/pairs', 'The pair directory is searchable');
+const fourGates = ranked('四関穴');
+assert.equal(fourGates[0].item.url, '/tsubo/pairs');
+assert(fourGates.some(result => result.item.url === '/tsubo/li4'));
+assert(fourGates.some(result => result.item.url === '/tsubo/lr3'));
+assert.match(fourGates.find(result => result.item.id === 'classic-classic-reisu-01').hint, /原文の「四関」と、後世の合谷・太衝/);
+assert.match(byId.get('tsubo-li4').context, /手の陽明大腸経・手・腕/);
+assert.match(byId.get('tsubo-li4').subtitle, /^手の甲で、/);
+for (const query of ['合谷', 'LI4', 'LI-4', ' 合谷 ']) assert.equal(ranked(query)[0].item.url, '/tsubo/li4', query);
+for (const query of ['列缺', '列欠']) assert.equal(ranked(query)[0].item.url, '/tsubo/lu7', query);
+assert.equal(ranked('頭痛')[0].item.url, ranked('ずつう')[0].item.url);
 assert.equal(NEARBY_COMPARISON_LINKS.length, 8);
 assert.equal(byId.get('atlas-comparison-medial-knee')?.url, '/tsubo/sp10#acupoint-nearby');
 for (const comparison of NEARBY_COMPARISON_LINKS) {
@@ -67,13 +80,14 @@ const types = ['article', 'acupoint', 'lecture', 'case', 'tool', 'glossary', 'cl
 for (const type of types) assert(SEARCH_CATALOG.some(item => item.type === type), `${type}: search category retained`);
 assert.deepEqual([...new Set(SEARCH_CATALOG.map(item => item.type))].sort(), [...types].sort(), 'Exactly nine public search types remain');
 
-const allowedKeys = new Set(['id', 'type', 'title', 'subtitle', 'badge', 'url', 'tags', 'exactCode', 'exactTerms', 'searchRole', 'reviewStatus', 'comparisonCodes']);
+const allowedKeys = new Set(['id', 'type', 'title', 'subtitle', 'context', 'relatedQueryNote', 'badge', 'url', 'tags', 'exactCode', 'exactTerms', 'searchRole', 'reviewStatus', 'comparisonCodes']);
 const textValues = [];
 for (const item of SEARCH_CATALOG) {
   for (const [key, value] of Object.entries(item)) {
     assert(allowedKeys.has(key), `Do not send source bodies, patient records or answers: ${item.id}.${key}`);
     if (typeof value === 'string') textValues.push(value);
     else if (Array.isArray(value)) for (const text of value) { assert.equal(typeof text, 'string'); textValues.push(text); }
+    else if (key === 'relatedQueryNote') textValues.push(value.term, value.text);
   }
 }
 const searchableText = textValues.join('\n');

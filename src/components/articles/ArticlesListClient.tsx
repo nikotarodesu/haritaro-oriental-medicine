@@ -68,7 +68,7 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <h2 id="article-search-title" className="font-serif text-lg font-bold text-ink">読みたい記事を探す</h2>
           <div className="w-full sm:max-w-sm">
-            <label htmlFor="article-search" className="mb-1 block text-sm font-semibold text-ink">記事・キーワード検索</label>
+            <label htmlFor="article-search" className="mb-1 block text-sm font-semibold text-ink">記事をキーワードで絞る</label>
             <div className="relative">
               <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
               <input id="article-search" type="text" inputMode="search" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="記事・キーワード" aria-describedby="article-search-hint" className="min-h-11 w-full rounded-lg border border-field bg-page py-2 pl-10 pr-12 text-base placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />
@@ -85,7 +85,9 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
       <section aria-labelledby="article-results-title" className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 id="article-results-title" className="font-serif text-lg font-bold text-ink">{hasFilters ? "条件に合う記事" : "すべての記事"}</h2>
-          <p role="status" className="text-sm text-muted">{filteredArticles.length}件／全{articles.length}件</p>
+          <p role="status" aria-atomic="true" className="text-sm text-muted">
+            {hasFilters ? `全${articles.length}件中${filteredArticles.length}件` : `全${articles.length}件`}
+          </p>
           {hasFilters && <button type="button" onClick={resetFilters} className="ui-text-link text-sm">条件を解除</button>}
         </div>
         {filteredArticles.length === 0 ? <div className="mx-auto max-w-xl space-y-4 rounded-xl border border-frame bg-panel px-5 py-8 text-center">
@@ -93,11 +95,11 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
           <h3 className="font-serif text-lg font-bold text-ink">該当する記事が見つかりませんでした</h3>
           <p className="text-sm leading-relaxed text-muted">検索キーワードまたはカテゴリの選択を変更してお試しください。</p>
           <button type="button" onClick={resetFilters} className="page-primary-action">すべての記事を表示する</button>
-        </div> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{filteredArticles.map(article => <Link key={article.id} href={`/articles/${article.id}`} onClick={() => trackEvent("context_link_click", { placement: "article_list", article_id: article.id })} className="article-cover-card group flex flex-col gap-3 rounded-2xl border border-frame bg-panel p-5 hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+        </div> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{filteredArticles.map(article => <Link key={article.id} href={`/articles/${article.id}`} aria-labelledby={`article-list-${article.id} article-action-${article.id}`} onClick={() => trackEvent("context_link_click", { placement: "article_list", article_id: article.id })} className="article-cover-card group flex flex-col gap-3 rounded-2xl border border-frame p-5 hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
           <ArticleCover articleId={article.id} />
           <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted"><span className="font-semibold text-accent">{CATEGORY_LABELS[article.category] || article.category}</span><span className="inline-flex items-center gap-1"><Clock aria-hidden="true" className="h-4 w-4" />約 {article.readTime}</span></div>
-          <div className="space-y-2"><h3 className="font-serif text-lg leading-[1.5] font-semibold group-hover:text-accent">{article.title}</h3><p className="text-sm leading-[1.7] text-muted max-sm:hidden sm:line-clamp-2">{article.summary}</p></div>
-          <div className="mt-auto space-y-2 border-t border-[#F2ECE0] pt-3 dark:border-[#22303D]"><span className="flex min-h-11 items-center justify-between gap-2 text-sm font-semibold text-accent"><span>{article.hasFigures ? "図解と本文を読む" : "記事を読む"}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span></div>
+          <div className="space-y-2"><h3 id={`article-list-${article.id}`} className="text-lg leading-[1.5] font-semibold group-hover:text-accent">{article.title}</h3><p className="text-sm leading-[1.7] text-muted line-clamp-2">{article.summary}</p></div>
+          <span className="mt-auto flex min-h-11 items-center justify-between gap-2 border-t border-frame pt-2 text-sm font-semibold text-accent"><span id={`article-action-${article.id}`}>{article.hasFigures ? "図解と本文を読む" : "本文を読む"}</span><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" /></span>
         </Link>)}</div>}
       </section>
       <Link href="/learn#learn-courses-heading" className="ui-text-link">講義の目次へ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>

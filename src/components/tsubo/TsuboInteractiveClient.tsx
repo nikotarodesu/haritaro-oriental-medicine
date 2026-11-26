@@ -267,7 +267,13 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
 
   const hasSearchQuery = searchQuery.trim().length > 0;
   const extraPoint = extraPointLookup.get(searchTopic.replace(/[-\s]/g, ""));
-  const hasSelectionFilters = selectedBodyPart !== "すべて" || selectedMeridian !== "すべて" || selectedCategory !== "すべて" || onlyPublished;
+  const selectedFilters = [
+    selectedBodyPart !== "すべて" && selectedBodyPart,
+    selectedMeridian !== "すべて" && selectedMeridian,
+    selectedCategory !== "すべて" && selectedCategory,
+    onlyPublished && "主要経穴のみ",
+  ].filter(Boolean);
+  const hasSelectionFilters = selectedFilters.length > 0;
   const browsingWithoutFilters = !hasSearchQuery && !hasSelectionFilters;
   const showResults = !browsingWithoutFilters || Boolean(selectedTsubo) || currentPage > 1 ||
     sortOption !== DEFAULT_FILTERS.sortOption || viewMode !== DEFAULT_FILTERS.viewMode;
@@ -318,7 +324,7 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
           )}
         </div>
         <p id="tsubo-search-examples" className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-          名前・読み方・部位・番号で、全{allPoints.length}穴から探せます。
+          全{allPoints.length}穴を、名前・読み方・部位・番号で探せます。
         </p>
         {extraPoint && (
           <div className="rounded-lg border border-frame bg-panel-selected px-3">
@@ -338,17 +344,20 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
             className="tsubo-filter-toggle"
           >
             <Compass aria-hidden="true" className="h-4 w-4" />
-            <span>部位から探す</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
+            <span>部位で絞り込む</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" />
           </button>
-          <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
+          <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件{hasSelectionFilters && `（${selectedFilters.length}件）`}</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
+          {hasSelectionFilters && <button type="button" className="tsubo-filter-toggle" onClick={resetSelectionFilters}>条件を解除</button>}
         </div>
         <nav aria-label="ほかの探し方と比較" className="dictionary-search-shortcuts">
-          <Link href="/symptoms" className="atlas-search-index-link">症状から探す</Link>
+          <a href="#tsubo-list" className="atlas-search-index-link">{browsingWithoutFilters ? `全${allPoints.length}穴を見る` : "絞り込み結果を見る"}</a>
           <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
           {nearbyComparisons && <a href="#nearby-comparisons" className="atlas-search-index-link">近いツボを比べる</a>}
           <Link href="/tsubo/compare?empty=1" className="atlas-search-index-link">ツボを選んで比べる</Link>
+          <Link href="/tsubo/pairs" className="atlas-search-index-link">ツボの組み合わせを見る</Link>
+          <Link href="/symptoms" className="atlas-search-index-link">症状別ガイド（一般向け）</Link>
         </nav>
-        {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{[selectedBodyPart !== 'すべて' && selectedBodyPart, selectedMeridian !== 'すべて' && selectedMeridian, selectedCategory !== 'すべて' && selectedCategory, onlyPublished && '主要経穴のみ'].filter(Boolean).join('・')}</p>}
+        {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{selectedFilters.join("・")}</p>}
       </form>
 
       <section id="tsubo-body-filter" hidden={!showBodyMap}>
@@ -431,7 +440,7 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
       {/* 経穴一覧セクション */}
       <HashTargetDetails
         className={`atlas-disclosure dictionary-result-disclosure${showResults ? " dictionary-result-disclosure--active" : ""}`}
-        summary={`全${allPoints.length}穴の一覧`}
+        summary={browsingWithoutFilters ? `全${allPoints.length}穴の一覧` : "絞り込み結果"}
         open={showResults || undefined}
       >
       <section ref={resultsRef} id="tsubo-list" tabIndex={-1} aria-label="ツボの検索結果" className="atlas-target space-y-4">

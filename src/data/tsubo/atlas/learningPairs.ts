@@ -19,6 +19,7 @@ export const ATLAS_LEARNING_PAIRS: readonly AtlasLearningPair[] = [
       prompt: "手の甲で、人差し指につながる骨が目印になるのはどちらですか？",
       answerCode: "LI4",
       explanation: "合谷は手の甲、太衝は足の甲にあります。",
+      retryHint: "手の甲の図で、人差し指につながる骨を見てみましょう。",
     },
     caseId: "case-01-headache-liver-fire",
     caseLabel: "頭痛の模擬症例を解く",

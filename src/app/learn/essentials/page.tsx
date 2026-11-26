@@ -8,8 +8,9 @@ import type { LectureDiagram } from "@/data/publicLectures/diagrams/types";
 import { readingPartHref, readingUnits } from "@/data/publicLectures/readingUnits";
 
 const path = "/learn/essentials";
-const title = seriesPageTitle("東洋医学の要点", "reading");
-const description = "陰陽、気・血・津液、経絡などの基本を、短い答えと具体例で説明します。各項目の図と関連する講義も開けます。";
+const heading = "東洋医学の要点";
+const title = seriesPageTitle(heading, "reading");
+const description = "陰陽、気・血・津液、経絡などの基本を、身近な例と図で確かめられます。";
 
 export const metadata: Metadata = {
   title,
@@ -207,7 +208,7 @@ export default function EssentialsPage() {
     <div className="page-layout essentials-page">
       <div className="learning-guide-intro">
         <Link href="/learn" className="reader-back"><ArrowLeft aria-hidden="true" />はり太郎の東洋医学</Link>
-        <PageIntro title={title} description={description} />
+        <PageIntro title={heading} description={description} />
         <nav className="essentials-index" aria-label="要点のテーマ">
           {groups.map(group => (
             <a key={group.id} href={`#${group.id}`} className="page-secondary-action">{group.title}<ArrowDown size={16} aria-hidden="true" /></a>
@@ -226,11 +227,11 @@ export default function EssentialsPage() {
                 <p className="essentials-example"><strong>身近な例</strong> {topic.example}</p>
                 <div className="essentials-actions">
                   <details className="essentials-diagram">
-                    <summary aria-label={`${topic.term}の図を見る`}>図を見る<ChevronDown aria-hidden="true" size={16} /></summary>
+                    <summary>{topic.term}を図で確認<ChevronDown aria-hidden="true" size={16} /></summary>
                     <StudyDiagram id={`essential-${topic.lectureId}`} diagram={topic.diagram} />
                   </details>
-                  <Link href={readingPartHref(topic.lectureId)} prefetch={false} className="ui-text-link" aria-label={`${topic.term}の講義を読む`}>
-                    講義を読む<ArrowRight aria-hidden="true" />
+                  <Link href={readingPartHref(topic.lectureId)} prefetch={false} className="ui-text-link">
+                    講義で「{topic.term}」を読む<ArrowRight aria-hidden="true" />
                   </Link>
                 </div>
               </article>

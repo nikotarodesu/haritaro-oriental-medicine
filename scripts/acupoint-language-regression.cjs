@@ -146,7 +146,7 @@ for (const point of points.ALL_ACUPOINTS) {
   assert.equal(point.locationSimple, publicLocation, `${point.code}: dictionary view uses the same atlas location`);
   assert.equal(detail.procedureReviewStatus, 'pending_expert_review');
 }
-assert.match(friendly.getAtlasLocationSimple('li4'), /人差し指につながる骨の長さの中央から少し親指側/);
+assert.match(friendly.getAtlasLocationSimple('li4'), /人差し指につながる骨の真ん中より、少し親指側/);
 assert.match(friendly.getAtlasLocationSimple('pc6'), /手首のしわ.*ひじまでの長さの6分の1/);
 assert.match(friendly.getAtlasLocationSimple('st36'), /結ぶ線上で、ひざ側から3寸/);
 assert.match(friendly.getAtlasLocationSimple('st37'), /結ぶ線上で、ひざ側から6寸/);

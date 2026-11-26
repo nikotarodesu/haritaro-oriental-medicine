@@ -65,10 +65,10 @@ export default async function SymptomGuidePage({ params }: Props) {
   const recordingExample = SYMPTOM_RECORDING_EXAMPLES[guide.id];
   const relatedGuides = SYMPTOMS.filter(item => item.id !== guide.id && item.category === guide.category);
   const sections = [
-    { id: 'acupoints', label: '関連するツボ' },
     { id: 'recording', label: '受診時に伝えること' },
     { id: 'daily-life', label: '日常の工夫' },
-    { id: 'traditional', label: '東洋医学の見方' },
+    { id: 'traditional', label: '東洋医学で学ぶ例' },
+    { id: 'acupoints', label: '教材に出てくるツボ' },
     ...(hasResearch ? [{ id: 'guide-studies', label: 'ツボを使った研究' }] : []),
     { id: 'learning', label: '関連記事・教材' },
     { id: 'sources', label: '出典と確認範囲' },
@@ -79,7 +79,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomGuideJsonLd(guide)).replace(/</g, '\\u003c') }} />
       <header className="atlas-guide-heading">
         <div>
-          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.title}</span></nav>
+          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">一般向けの症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.title}</span></nav>
           <h1>{guide.title}</h1>
           <p>{content.summary}</p>
         </div>
@@ -90,15 +90,42 @@ export default async function SymptomGuidePage({ params }: Props) {
         {safety && <p>{safety.message}</p>}
         {content.safetyNote && <p>{content.safetyNote}</p>}
       </section>
+      <a href="#recording" className="atlas-text-action"><ClipboardList size={17} aria-hidden="true" />受診時に伝えることへ<ArrowDown size={14} aria-hidden="true" /></a>
       <nav aria-labelledby="symptoms-contents-heading" className="symptoms-contents">
         <h2 id="symptoms-contents-heading">目次</h2>
         <ul className="atlas-section-nav">
           {sections.map(({ id, label }) => <li key={id}><a href={`#${id}`}>{label}<ArrowDown size={14} aria-hidden="true" /></a></li>)}
         </ul>
       </nav>
+      <section id="recording" className={sectionClass}>
+        <h2 className="atlas-section-title">受診時に伝えること</h2>
+        {slug === 'lower-back-pain-sciatica' ? <BackPainAreaComparison /> : recordingExample && (
+          <StudyDiagram id="recording-example" diagram={recordingExample} />
+        )}
+        <div className="atlas-observations">
+          <h3><ClipboardList size={20} aria-hidden="true" />書いておくと伝えやすいこと</h3>
+          <ul>{content.observations.map(item => <li key={item}>{item}</li>)}</ul>
+        </div>
+      </section>
+      <section id="daily-life" className={sectionClass}>
+        <h2 className="atlas-section-title">日常の工夫</h2>
+        <div className="symptoms-daily-grid">
+          {content.dailyLife.map(({ title, body }) => (
+            <div key={title} className="symptoms-daily-card">
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section id="traditional" className={sectionClass}>
+        <h2 className="atlas-section-title">東洋医学で学ぶ例</h2>
+        {content.traditional.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+        {resources?.perspectiveCaseId && <SymptomPerspective caseId={resources.perspectiveCaseId} />}
+      </section>
       <section id="acupoints" className="atlas-guide-points atlas-target" aria-labelledby="guide-points-heading">
         <div className="atlas-guide-points-heading">
-          <h2 id="guide-points-heading" className="atlas-section-title">関連するツボ</h2>
+          <h2 id="guide-points-heading" className="atlas-section-title">教材に出てくるツボ</h2>
           <p>東洋医学の教材で扱うツボの例です。図鑑で位置と注意点を確認できます。</p>
         </div>
         <ul className="atlas-related-points">{acupoints.map(point => (
@@ -127,32 +154,6 @@ export default async function SymptomGuidePage({ params }: Props) {
           </p>
         )}
       </section>
-      <section id="recording" className={sectionClass}>
-        <h2 className="atlas-section-title">受診時に伝えること</h2>
-        {slug === 'lower-back-pain-sciatica' ? <BackPainAreaComparison /> : recordingExample && (
-          <StudyDiagram id="recording-example" diagram={recordingExample} />
-        )}
-        <div className="atlas-observations">
-          <h3><ClipboardList size={20} aria-hidden="true" />書いておくと伝えやすいこと</h3>
-          <ul>{content.observations.map(item => <li key={item}>{item}</li>)}</ul>
-        </div>
-      </section>
-      <section id="daily-life" className={sectionClass}>
-        <h2 className="atlas-section-title">日常の工夫</h2>
-        <div className="symptoms-daily-grid">
-          {content.dailyLife.map(({ title, body }) => (
-            <div key={title} className="symptoms-daily-card">
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-      <section id="traditional" className={sectionClass}>
-        <h2 className="atlas-section-title">東洋医学の見方</h2>
-        {content.traditional.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-        {resources?.perspectiveCaseId && <SymptomPerspective caseId={resources.perspectiveCaseId} />}
-      </section>
       {hasResearch && <section id="guide-studies" className={sectionClass}>
         <h2 className="atlas-section-title">ツボを使った研究</h2>
         {researchNote && <article className="atlas-study-card">
@@ -176,11 +177,11 @@ export default async function SymptomGuidePage({ params }: Props) {
           {lectureId && lecture && <li><Link href={`/curriculum/${lectureId}`} className={linkClass}>{lecture.title}</Link></li>}
           {article && <li><Link href={`/articles/${article.id}`} className={linkClass}>{article.title}</Link></li>}
           {clinicalCase && <li><Link href={`/cases/${clinicalCase.id}`} className={linkClass}>{clinicalCase.title}（架空症例）</Link><p className="text-sm">症例の答えを自分の症状の診断や施術の指示に置き換えないでください。</p></li>}
-          {resources?.clinicalSlug && <li><Link href={`/clinical/symptoms/${resources.clinicalSlug}`} className={linkClass}>問診と再評価を考える臨床演習ガイド（鍼灸師・学習者向け）</Link></li>}
-          <li><Link href="/diagnosis" className={linkClass}>気血水 体質チェック</Link><p className="text-sm">気虚・気滞など6つの伝統的な分類を、12の質問で学べます。</p></li>
+          {resources?.clinicalSlug && <li><Link href={`/clinical/symptoms/${resources.clinicalSlug}`} className={linkClass}>{guide.title}の問診・再評価を学ぶ（鍼灸学生・鍼灸師向け）</Link></li>}
+          <li><Link href="/diagnosis" className={linkClass}>気血水の体質チェック（学習用）</Link><p className="text-sm">12の質問で、気虚・気滞など東洋医学の分類を学べます。病気の診断や施術の判断には使えません。</p></li>
         </ul>
         {relatedGuides.length > 0 && <div className="space-y-2 border-t border-[#D6DED7] pt-4 dark:border-[#34483C]"><h3 className="text-lg font-bold">同じ分野のガイド</h3><ul className="space-y-1">{relatedGuides.map(item => <li key={item.id}><Link href={symptomGuidePath(item)} className={linkClass}>{item.title}</Link></li>)}</ul></div>}
-        <Link href="/symptoms" className={linkClass}>症状別ガイドの一覧へ</Link>
+        <Link href="/symptoms" className={linkClass}>一般向けの症状別ガイド一覧へ</Link>
       </section>
       <section id="sources" className={sectionClass}>
         <h2 className="atlas-section-title">出典と確認範囲</h2>

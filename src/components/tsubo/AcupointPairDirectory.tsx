@@ -1,8 +1,9 @@
 "use client";
 
-import { Fragment, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, Search } from "lucide-react";
+import { createContext, Fragment, useContext, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { ArrowRight, GitCompare, Search } from "lucide-react";
 import { normalizeSearchText } from "@/utils/search";
+import { comparisonSelectionHref } from "@/app/tsubo/compare/selection";
 import styles from "./FeaturedAcupointPairs.module.css";
 
 type DirectoryEntry = {
@@ -19,11 +20,64 @@ export type AcupointPairDirectorySection = {
   entries: readonly DirectoryEntry[];
 };
 
+const PairDirectoryContext = createContext(false);
+const queryKey = "haritaro-atlas-pair-filter";
+
+function subscribeToHistory(listener: () => void) {
+  window.addEventListener("popstate", listener);
+  return () => window.removeEventListener("popstate", listener);
+}
+
+function restoreQuery() {
+  const historyValue = window.history.state?.[queryKey];
+  if (typeof historyValue === "string") return historyValue;
+  if (new URLSearchParams(window.location.search).get("return") !== "1") return "";
+  try {
+    return window.sessionStorage.getItem(queryKey) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+export function PairComparisonLink({ pairId, codes, label }: {
+  pairId: string;
+  codes: readonly string[];
+  label: string;
+}) {
+  const inDirectory = useContext(PairDirectoryContext);
+  const origin = inDirectory ? { pairId } : undefined;
+  return (
+    <a className={styles.compare} href={comparisonSelectionHref(codes, origin)} aria-label={label} data-analytics-action="atlas_compare">
+      <GitCompare size={17} aria-hidden="true" />
+      位置を並べて見る
+    </a>
+  );
+}
+
 export default function AcupointPairDirectory({ sections }: {
   sections: readonly AcupointPairDirectorySection[];
 }) {
-  const [query, setQuery] = useState("");
+  const restoredQuery = useSyncExternalStore(subscribeToHistory, restoreQuery, () => "");
+  const [draft, setDraft] = useState<string | null>(null);
+  const query = draft ?? restoredQuery;
   const searchInput = useRef<HTMLInputElement>(null);
+  function updateQuery(value: string) {
+    setDraft(value);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("return");
+    if (url.hash.startsWith("#featured-acupoint-pair-")) url.hash = "";
+    try {
+      window.history.replaceState({ ...window.history.state, [queryKey]: value }, "", url);
+    } catch {
+      // The current filter still works if the browser blocks History API writes.
+    }
+    try {
+      if (value) window.sessionStorage.setItem(queryKey, value);
+      else window.sessionStorage.removeItem(queryKey);
+    } catch {
+      // Filtering and browser back remain available through the history entry.
+    }
+  }
   const terms = normalizeSearchText(query).split(/[\s+,、・]+/u).filter(Boolean);
   const filteredSections = sections.map(section => ({
     ...section,
@@ -34,7 +88,7 @@ export default function AcupointPairDirectory({ sections }: {
   const count = filteredSections.reduce((total, section) => total + section.entries.length, 0);
 
   return (
-    <>
+    <PairDirectoryContext.Provider value>
       <div className={styles.filter} role="search" aria-label="配穴一覧の絞り込み">
         <label htmlFor="acupoint-pair-query">ツボ名・症状で絞り込む</label>
         <div className={styles.filterControls}>
@@ -45,19 +99,20 @@ export default function AcupointPairDirectory({ sections }: {
               ref={searchInput}
               type="search"
               value={query}
-              onChange={event => setQuery(event.target.value)}
-              placeholder="例：足三里、腰痛、ST36"
+              onChange={event => updateQuery(event.target.value)}
+              placeholder="例：四関穴、腰痛、ST36"
               autoComplete="off"
+              maxLength={100}
             />
           </div>
           {query && (
             <button type="button" onClick={() => {
-              setQuery("");
+              updateQuery("");
               searchInput.current?.focus();
-            }}>クリア</button>
+            }}>絞り込みを解除</button>
           )}
         </div>
-        <p role="status">{terms.length ? `${count}組が見つかりました` : `全${count}組`}</p>
+        <p role="status">{terms.length ? `該当：${count}組` : `全${count}組`}</p>
       </div>
 
       {count > 0 && (
@@ -84,6 +139,6 @@ export default function AcupointPairDirectory({ sections }: {
           </div>
         </section>
       ))}
-    </>
+    </PairDirectoryContext.Provider>
   );
 }

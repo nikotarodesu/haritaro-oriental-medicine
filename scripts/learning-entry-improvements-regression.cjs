@@ -30,12 +30,15 @@ const { getPrescriptionCountLabel } = load('src/utils/prescriptionScorePresentat
 for (const [count, expected] of [[0, '未選択'], [1, '穴数による減点なし'], [4, '穴数による減点なし'], [5, '穴数による減点：15点'], [6, '穴数による減点：15点'], [7, '穴数による減点：30点']]) assert.equal(getPrescriptionCountLabel(count), expected);
 if (process.argv.includes('--build-output')) {
   const html = route => fs.readFileSync(path.join(root, '.next/server/app', `${route}.html`), 'utf8').replace(/<!--[\s\S]*?-->/g, '');
-  for (const [slug, minutes] of Object.entries(totals)) assert(html(`learn/courses/${slug}`).includes(`読む目安：約${minutes}分`), `${slug} served estimate matches selected steps`);
+  for (const [slug, minutes] of Object.entries(totals)) {
+    assert(html(`learn/courses/${slug}`).includes(`読む目安は約${minutes}分です`), `${slug} served estimate matches selected steps`);
+  }
   assert(html('index').includes('action="/search"'), 'The homepage provides cross-series search');
-  assert(html('learn').includes('href="/curriculum/lecture-intro-1"'), 'The reading home links directly to the canonical introduction');
+  assert(html('learn').includes('href="/learn/lectures/getting-started"'), 'The reading home links directly to the canonical introduction');
   assert(html('learn/courses/pathomechanism-foundations').includes('id="concept-comparison"'));
   const score = html('practice/haiketsu');
-  assert(score.includes('選んだツボで見直せる項目') && score.includes('見直す項目の表示条件'));
+  assert(score.includes('選んだツボを見直すポイント') && score.includes('見直す項目の表示条件'));
+  assert(score.includes('例として2穴を選択済み（合谷・太衝）') && score.includes('最初から選ぶ'));
   assert(!score.includes('穴数による減点') && !score.includes('点数を引き'));
   assert(!score.includes('黄金比（2〜4穴）') && !score.includes('理想は40〜60%') && !score.includes('相殺のない秀逸な最小構成'));
   console.log('Built HTML passed: all 11 reading totals, both direct entries, shared-case comparison, and ungraded prescription review.');

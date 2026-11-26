@@ -19,6 +19,7 @@ export type FeaturedPair = {
   kind: "name" | "research" | "classic" | "observational";
   summary: string;
   evidenceSummary: string;
+  evidenceHighlights?: readonly FeaturedPairDetail[];
   details: readonly FeaturedPairDetail[];
 };
 
@@ -69,19 +70,40 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
     pointIds: ["li4", "lr3"],
     name: "合谷と太衝（四関穴）",
     kind: "research",
-    summary: "左右の合谷と太衝を合わせて「四関穴」と呼びます。韓国の痛みの外来診療録423例では、94例で一緒に使われました。",
-    evidenceSummary: "伝統医学で「肝陽上亢」とされた片頭痛の試験では、電気鍼の群で内服薬の群より発作日数が少なくなりました。各ツボを単独で使う群はありませんでした。",
+    summary: "左右の合谷と太衝を合わせて「四関穴」と呼びます。",
+    evidenceSummary: "診療録での使用例と、肝陽上亢型の片頭痛を対象にした臨床試験があります。",
+    evidenceHighlights: [
+      {
+        label: "診療録での使用例",
+        text: "韓国の韓医学診療所7か所の外来診療録423例を振り返って調べた研究では、94例で合谷と太衝が一緒に使われていました。",
+        sources: [
+          { label: "Yoon ほか（2026）・診療録の研究", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13593149/" },
+        ],
+      },
+      {
+        label: "臨床試験の比較",
+        text: "伝統医学で「肝陽上亢」と分類された片頭痛の患者110人を、四関穴への電気鍼を受ける群と、フルナリジンを内服する群に分けました。電気鍼の群では治療後と1・3・6か月後に、内服薬の群より痛みの点数が低く、発作日数が少なかったと報告されました。",
+        sources: [
+          { label: "Cai ほか（2022）・片頭痛の比較試験", url: "https://pubmed.ncbi.nlm.nih.gov/35543939/" },
+        ],
+      },
+      {
+        label: "この研究では分からないこと",
+        text: "診療録の件数は、併用された回数です。臨床試験からは、各穴を単独で使った場合、指圧をした場合、別のタイプの片頭痛での効果は分かりません。",
+        sources: [],
+      },
+    ],
     details: [
       {
-        label: "診療での使われ方",
-        text: "韓国の外来で痛みの診療を受けた423人の診療録を調べた研究では、合谷と太衝が最も多く一緒に選ばれた二穴でした（94例）。",
+        label: "診療録を集めた時期",
+        text: "2022年9月から2023年5月までの診療録です。腰痛、片頭痛、ひざの痛みなど、複数の症状で受診した人の記録を集めています。",
         sources: [
           { label: "Yoon ほか · Medicine（2026）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13593149/" },
         ],
       },
       {
-        label: "研究で分かったこと",
-        text: "四関穴への電気鍼を受けた群は、フルナリジンを内服した群より、治療後の追跡で痛みの点数も低かったと報告されました。合谷だけ、太衝だけを使った場合と比べていないため、併用で効果が増すかは分かりません。",
+        label: "臨床試験の人数",
+        text: "参加者は二群に55人ずつ無作為に割り付けられ、各群で2人が途中で参加をやめました。",
         sources: [
           { label: "Cai ほか · 中国鍼灸（2022）", url: "https://pubmed.ncbi.nlm.nih.gov/35543939/" },
         ],

@@ -57,6 +57,7 @@ export type AtlasLocationQuestion = {
   prompt: string;
   answerCode: string;
   explanation: string;
+  retryHint?: string;
 };
 
 export type StudySource = { label: string; url: string };

@@ -2,13 +2,15 @@ import Link from "next/link";
 import { SITE_NAME } from "@/config/seo";
 import { SERIES } from "@/config/series";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
+import { ALL_NAV_ITEMS } from "@/config/navigationItems";
 import { ChevronDown } from "lucide-react";
 import BrandLogo from "@/components/brand/BrandLogo";
 
 const groups = [
-  { title: "学ぶ", links: [[ACUPUNCTURE_GUIDE.href, "はじめての鍼灸"], ["/articles", "解説記事"], ["/learn/review", "講義の復習"], ["/glossary", "用語集"], ["/library", "古典・論文"]] },
-  { title: "演習", links: [["/diagnosis", "気血水 体質チェック"], ["/diagnosis?tab=gorou", "五労チェック"], ["/cases", "症例演習"], ["/simulator", "弁証演習"], ["/practice/haiketsu", "配穴演習"]] },
-  { title: "運営・出典", links: [["/about", "運営者について"], ["/editorial-policy", "出典・専門確認の状況"], ["/safety", "受診の目安・安全性"], ["/updates", "更新情報"], ["/contact", "お問い合わせ"]] },
+  { title: "図鑑で調べる", links: [[ALL_NAV_ITEMS.tsubo_compare.href, ALL_NAV_ITEMS.tsubo_compare.label], ["/tsubo/pairs", "ツボの組み合わせを見る"]] },
+  { title: "学ぶ", links: [[ACUPUNCTURE_GUIDE.href, ACUPUNCTURE_GUIDE.label], ["/articles", "解説記事"], [ALL_NAV_ITEMS.kokushi.href, ALL_NAV_ITEMS.kokushi.label], ["/glossary", "用語集"], ["/library", "古典・論文"]] },
+  { title: "演習", links: [ALL_NAV_ITEMS.diagnosis, ALL_NAV_ITEMS.gorou, ALL_NAV_ITEMS.cases, ALL_NAV_ITEMS.simulator, ALL_NAV_ITEMS.haiketsu].map(({ href, label }) => [href, label]) },
+  { title: "運営・出典", links: [["/about", "執筆・運営者"], ["/editorial-policy", "出典・専門確認の状況"], ["/safety", "受診の目安・安全性"], ["/updates", "更新情報"], ["/contact", "お問い合わせ"]] },
 ];
 
 export default function Footer() {
@@ -18,7 +20,7 @@ export default function Footer() {
         <Link href="/" aria-label={SITE_NAME} className="site-footer-brand"><BrandLogo symbolClassName="h-8 w-8" wordmarkClassName="font-serif text-lg font-bold" /></Link>
         <nav aria-label="主な入口" className="site-footer-primary">
           {Object.values(SERIES).map(series => <Link key={series.href} href={series.href}>{series.shortName}</Link>)}
-          <Link href="/symptoms">症状別ガイド</Link>
+          <Link href={ALL_NAV_ITEMS.symptoms.href}>{ALL_NAV_ITEMS.symptoms.label}</Link>
         </nav>
         <div className="site-footer-groups site-footer-groups--compact">
           {groups.map(group => <details key={group.title} className="site-footer-disclosure">

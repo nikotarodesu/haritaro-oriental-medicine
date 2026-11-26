@@ -5,8 +5,8 @@ const { createDataLoader } = require('./data-loader.cjs');
 const load = createDataLoader();
 const points = load('src/data/tsubo/index');
 const li4 = points.getAcupointDetail('li4');
-assert.match(li4.locationSimple, /中央/);
-assert.match(points.getAcupointByCode('li4').locationSimple, /中央/);
+assert.match(li4.locationSimple, /人差し指につながる骨の(?:中央|真ん中).*親指側/);
+assert.match(points.getAcupointByCode('li4').locationSimple, /人差し指につながる骨の(?:中央|真ん中).*親指側/);
 assert.match(li4.locationDetail, /第2中手骨中点/);
 assert.equal(
   points.ALL_ACUPOINTS.filter(point => point.categories.some(category => category.startsWith('四総穴'))).map(point => point.code).sort().join(','),

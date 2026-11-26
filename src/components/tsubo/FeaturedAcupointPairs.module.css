@@ -152,6 +152,16 @@
   line-height: 1.5;
 }
 
+.featuredCard {
+  border-color: var(--atlas-accent);
+}
+
+.featuredCard dd > a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.75rem;
+}
+
 .points {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

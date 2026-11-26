@@ -103,7 +103,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "合谷",
     "code": "LI4",
     "meridianShort": "大腸経",
-    "locationSimple": "手の甲で、人差し指につながる骨の長さの中央から少し親指側。"
+    "locationSimple": "手の甲で、人差し指につながる骨の真ん中より、少し親指側。"
   },
   {
     "id": "li5",

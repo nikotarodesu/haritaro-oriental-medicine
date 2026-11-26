@@ -60,6 +60,7 @@
   align-items: start;
   gap: .65rem;
   height: 100%;
+  background: transparent;
 }
 
 .articleIcon {

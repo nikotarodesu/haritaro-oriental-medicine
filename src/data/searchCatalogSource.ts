@@ -23,6 +23,7 @@ import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 import { NEARBY_COMPARISON_LINKS } from "@/data/tsubo/atlas/nearbyComparisonLinks";
 import { ATLAS_LEARNING_PAIRS, atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
 import { ACUPOINT_PAIRS_PATH } from "@/data/tsubo/atlas/featuredPairs";
+import { atlasLocationWithoutUnitNote } from "@/data/tsubo/friendlyLocations";
 
 const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
 const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
@@ -45,15 +46,16 @@ const progressiveCaseDescriptions: Readonly<Record<string, string>> = {
 const STATIC_TOOLS: SearchResultItem[] = [
   { id: "tool-learning-essentials", type: "tool", title: "東洋医学の要点", subtitle: "陰陽・気血津液・経絡などの基本を一問ずつ確認する", badge: "学習ガイド", url: "/learn/essentials", tags: ["東洋医学", "要点", "まとめ", "基礎", "陰陽", "気血津液", "経絡"] },
   { id: 'clinical-home', type: 'tool', title: '臨床演習', subtitle: '体質チェック、模擬症例、主訴別の確認ガイドを選ぶ', badge: '臨床', url: '/clinical', tags: ['主訴','問診','臨床','鍼灸師'] },
-  ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}｜鍼灸師の確認ガイド`, subtitle: item.summary, badge: '臨床演習ガイド', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価'] })),
+  ...CLINICAL_COMPLAINTS.map(item => ({ id: `clinical-${item.slug}`, type: 'tool' as const, searchRole: 'professional-guide' as const, title: `${item.title}の問診・再評価`, subtitle: item.summary, badge: '臨床演習ガイド', url: `/clinical/symptoms/${item.slug}`, tags: [item.title,'主訴','問診','四診','再評価','鍼灸師の確認ガイド'] })),
   {
     id: "tool-kokushi",
     type: "tool",
     title: TOOL_CATALOG.kokushi.title,
     subtitle: TOOL_CATALOG.kokushi.description,
-    badge: "講義の復習",
+    badge: "学習ツール",
     url: "/learn/review",
-    tags: ["復習", "講義", "確認問題", "間隔復習", "回答履歴"],
+    exactTerms: ["確認問題と復習", "講義の復習"],
+    tags: ["復習", "講義", "確認問題", "間隔復習", "回答履歴", "講義の復習"],
   },
   {
     id: "tool-simulator",
@@ -103,20 +105,21 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-tsubo-compare",
     type: "tool",
-    title: "経穴比較ツール",
-    subtitle: "似た主治や近接する経穴（合谷と太衝、足三里と三陰交など）を並べて比較",
+    title: "ツボを比べる",
+    subtitle: "合谷と太衝、足三里と三陰交などの位置と目印を並べて比べます。",
     badge: "学習ツール",
     url: "/tsubo/compare",
-    tags: ["比較", "鑑別", "経穴", "ツボ比較"],
+    exactTerms: ["ツボを比べる", "経穴比較", "経穴比較ツール"],
+    tags: ["比較", "鑑別", "経穴", "ツボ比較", "経穴比較"],
   },
   {
     id: "tool-tsubo-pairs",
     type: "tool",
     title: "ツボの組み合わせ（配穴）",
-    subtitle: "古典や臨床試験に出てくるツボを図で見比べ、使われ方と研究結果を読む",
+    subtitle: "四関穴など、一緒に使われたツボの位置を図で比べ、古典の記述や研究結果を読みます。",
     badge: "ツボ図鑑",
     url: ACUPOINT_PAIRS_PATH,
-    exactTerms: ["ツボの組み合わせ", "配穴の一覧", "ツボの併用"],
+    exactTerms: ["四関穴", "ツボの組み合わせ", "配穴の一覧", "ツボの併用"],
     tags: ["配穴", "組み合わせ", "経穴", "四関穴", "八脈交会穴", "古典", "臨床試験"],
   },
   {
@@ -160,10 +163,11 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-diagnosis-self",
     type: "tool",
-    title: "気血水 体質チェック（12問）",
+    title: "気血水の体質チェック（学習用・12問）",
     subtitle: "伝統的な体質分類の学習用チェック。医学的な診断や治療判断には使用しません",
     badge: "セルフチェック",
     url: "/diagnosis",
+    exactTerms: ["気血水の体質チェック", "気血水 体質チェック"],
     tags: ["気血水", "診断", "セルフチェック", "体質", "気虚", "血虚", "瘀血"],
   },
   {
@@ -281,7 +285,8 @@ export function buildSearchCatalog(): SearchResultItem[] {
         id: `tsubo-${pt.codeLower}`,
         type: "acupoint",
         title: `${pt.name}（${pt.code}）`,
-        subtitle: `${pt.meridian}｜${pt.bodyPart}・${pt.locationSimple}`,
+        context: `${pt.meridian}・${pt.bodyPart}`,
+        subtitle: atlasLocationWithoutUnitNote(pt.locationSimple),
         badge: "ツボ図鑑",
         url: `/tsubo/${pt.codeLower}`,
         exactCode: pt.code.toLowerCase(),
@@ -319,9 +324,14 @@ export function buildSearchCatalog(): SearchResultItem[] {
       list.push({
         id: `classic-${c.id}`,
         type: "classic",
-        title: `『${c.book}』${c.chapter}：${c.theme}`,
-        subtitle: `${c.translation.slice(0, 48)}...`,
-        badge: `古典：${c.book}`,
+        title: c.id === "classic-reisu-01" ? "「気が至る」と十二原・四関" : c.theme,
+        context: `『${c.book}』${c.chapter}`,
+        subtitle: c.translation.match(/^[^。！？]+[。！？]?/)?.[0] ?? c.translation,
+        badge: "古典",
+        ...(c.id === "classic-reisu-01" && { relatedQueryNote: {
+          term: "四関穴",
+          text: "関連語「四関穴」に一致。原文の「四関」と、後世の合谷・太衝の組み合わせを区別して解説しています。",
+        } }),
         url: `/library#classic-${c.id}`,
         tags: [
           c.book,

@@ -55,7 +55,7 @@ assert.match(home, /action="\/search"/);
 assert.match(home, /<input(?=[^>]*type="search")(?=[^>]*name="q")[^>]*>/);
 const destinationPairs = [['/tsubo','はり太郎のツボ図鑑'], ['/learn','はり太郎の東洋医学'], ['/clinical','はり太郎の臨床演習']];
 const homeActions = home.match(/<ul class="platform-series-grid">([\s\S]*?)<\/ul>/)[1];
-for (const [[href, name], action] of destinationPairs.map((pair, index) => [pair, ['ツボを調べる', '講義一覧を見る', '臨床演習を選ぶ'][index]])) {
+for (const [[href, name], action] of destinationPairs.map((pair, index) => [pair, ['ツボを調べる', '講義を読む', '症例で練習する'][index]])) {
   const card = homeActions.split('</li>').find(item => item.includes(`href="${href}"`));
   assert(card?.includes(action) && card.includes('<svg'), `${name} is reachable through its illustrated homepage action`);
 }
@@ -63,6 +63,9 @@ assert(home.includes('href="/symptoms"'));
 assert.doesNotMatch(home, />\s*知\s*</);
 assert.match(home, /<h1[^>]*>東洋医学を学ぶ<\/h1>/);
 assert(home.includes('href="/learn/acupuncture"'), 'The acupuncture guide remains available from home');
+assert(home.indexOf('role="search"') < home.indexOf('class="platform-series-grid"'));
+assert(home.indexOf('class="platform-series-grid"') < home.indexOf('href="/symptoms"'), 'The general guide follows the main paths');
+assert(home.indexOf('href="/symptoms"') < home.indexOf('href="/tsubo/li4#acupoint-location"'), 'The featured figure follows the choices in DOM order');
 const collection = JSON.parse(home.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);
 assert.equal(collection.name, '東洋医学を学ぶ');
 assert(home.includes(collection.description), 'The homepage description matches the visible introduction');

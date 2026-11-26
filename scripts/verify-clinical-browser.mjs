@@ -8,6 +8,8 @@ const load = createDataLoader({ Intl });
 const { emptyClinicalEncounter, CLINICAL_ENCOUNTER_KEY } = load('src/utils/clinicalEncounter');
 const { clinicalStorageKeys, LEGACY_PATIENT_NOTES_KEY } = load('src/utils/clinicalStorage');
 const { CLINICAL_COMPLAINTS } = load('src/data/clinicalWorkflow');
+const { CLINICAL_CASES: [introductoryCase] } = load('src/data/clinicalCasesData');
+const { CASE_REVIEW_ANCHOR } = load('src/utils/caseStudyNavigation');
 const origin = new URL(process.argv[2] || 'http://127.0.0.1:3038');
 const sample = 'TEST-CLINICAL-PAUSE';
 const workspace = '/clinical/workspace?complaint=shoulder&example=private';
@@ -53,12 +55,84 @@ async function noRetiredEntry(page) {
 
 async function checkClinical(page) {
   await page.getByRole('heading', { name: 'はり太郎の臨床演習', exact: true, level: 1 }).waitFor();
-  await page.getByRole('heading', { name: '主訴別ガイド', exact: true }).waitFor();
+  await page.getByRole('heading', { name: '症状別の臨床演習ガイド', exact: true }).waitFor();
   assert.equal(await page.locator('#chief-complaints a[href^="/clinical/symptoms/"]').count(), CLINICAL_COMPLAINTS.length);
+  await page.getByRole('link', { name: '頭痛の模擬症例を読む', exact: true }).waitFor();
+  await page.getByRole('link', { name: '最初の設問へ', exact: true }).waitFor();
+  await page.getByRole('heading', { name: '相談から7日後まで追う：頭痛の架空症例', exact: true }).waitFor();
   for (const href of clinicalLinks) assert.equal(await page.locator('main a[href="' + href + '"]').count(), 1, href);
   await noRetiredEntry(page);
   const fits = await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
   assert(fits, 'Clinical landing page overflows at ' + page.viewportSize().width + 'px');
+}
+
+async function checkGuideAndPractice(page) {
+  await page.getByRole('link', { name: '最初の設問へ', exact: true }).click();
+  await page.waitForURL('**/cases/case-01-headache-liver-fire#case-reasoning');
+  await page.waitForFunction(() => {
+    const heading = document.getElementById('case-reasoning-title')?.getBoundingClientRect();
+    const header = document.querySelector('header:has(.site-header-container)')?.getBoundingClientRect();
+    return heading && header && heading.top >= header.bottom && heading.bottom <= window.innerHeight;
+  });
+  await page.getByText('頭痛と目の充血があるとき、最初に何を聞きますか。', { exact: true }).waitFor();
+  await page.getByRole('link', { name: 'この症例の受診・安全上の注意を読む', exact: true }).click();
+  await page.waitForURL('**/cases/case-01-headache-liver-fire#case-safety');
+
+  await page.getByRole('link', { name: '問題に答える', exact: true }).click();
+  for (const step of introductoryCase.reasoningSteps) {
+    const correctAnswer = step.options.find(option => option.isCorrect);
+    await page.getByRole('button', { name: correctAnswer.label, exact: true }).click();
+  }
+  await page.getByRole('link', { name: '振り返りへ', exact: true }).click();
+  await page.waitForURL(`**/cases/case-01-headache-liver-fire#${CASE_REVIEW_ANCHOR}`);
+
+  await open(page, '/cases');
+  await page.getByRole('link', { name: 'こめかみが強く痛み、目が赤くなる 症例を読む', exact: true }).waitFor();
+
+  await open(page, '/symptoms/headache-stiff-neck');
+  await page.getByRole('link', { name: '受診時に伝えることへ', exact: true }).click();
+  await page.waitForURL('**/symptoms/headache-stiff-neck#recording');
+  await page.getByRole('heading', { name: '受診時に伝えること', exact: true }).waitFor();
+  assert(await page.evaluate(() => {
+    const sections = ['safety', 'recording', 'daily-life', 'traditional', 'acupoints'].map(id => document.getElementById(id));
+    return sections.every((section, index) => section && (index === 0 || (sections[index - 1].compareDocumentPosition(section) & Node.DOCUMENT_POSITION_FOLLOWING)));
+  }));
+
+  await open(page, '/practice/haiketsu');
+  const palette = page.getByRole('region', { name: '経穴一覧', exact: true });
+  const selectedPoints = palette.locator('button[aria-pressed="true"]');
+  await page.getByText('例として2穴を選択済み（合谷・太衝）', { exact: true }).waitFor();
+  assert.equal(await selectedPoints.count(), 2);
+  const reset = page.getByRole('button', { name: '最初から選ぶ', exact: true });
+  await reset.click();
+  await page.getByText('選択中 0 / 8穴', { exact: true }).waitFor();
+  assert.equal(await selectedPoints.count(), 0);
+  assert.equal(await page.getByRole('textbox', { name: 'この組み合わせの名前' }).inputValue(), '');
+  await palette.getByRole('button', { name: /^合谷/ }).click();
+  await page.getByText('選択中 1 / 8穴', { exact: true }).waitFor();
+  assert.equal(await selectedPoints.count(), 1);
+  for (let count = 1; count < 8; count += 1) {
+    await palette.locator('button[aria-pressed="false"]').first().click();
+  }
+  await page.getByText('選択中 8 / 8穴', { exact: true }).waitFor();
+  const nextClick = palette.locator('button[aria-pressed="false"]').first();
+  const limitDialog = page.waitForEvent('dialog');
+  const limitClick = nextClick.click();
+  const warning = await limitDialog;
+  assert.match(warning.message(), /最大8穴/);
+  await warning.dismiss();
+  await limitClick;
+  assert.equal(await selectedPoints.count(), 8);
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1));
+
+  await open(page, '/diagnosis');
+  await page.getByRole('button', { name: '回答に関連する分類を見る' }).click();
+  await page.getByText('病気の診断や治療・施術の判断には使えません。', { exact: true }).waitFor();
+
+  await open(page, '/clinical/symptoms/headache');
+  await page.getByRole('link', { name: 'この症状の受診の目安を読む（一般向け）' }).click();
+  await page.waitForURL('**/symptoms/headache-stiff-neck#safety');
+  await page.getByRole('heading', { name: '受診の目安', exact: true }).waitFor();
 }
 
 try {
@@ -75,6 +149,7 @@ try {
 
   const mobile = await trackedPage(390, 'dark');
   await open(mobile, '/clinical');
+  await checkGuideAndPractice(mobile);
   await mobile.evaluate(({ draftStorage, savedStorage }) => {
     for (const [key, value] of Object.entries(draftStorage)) sessionStorage.setItem(key, value);
     for (const [key, value] of Object.entries(savedStorage)) localStorage.setItem(key, value);

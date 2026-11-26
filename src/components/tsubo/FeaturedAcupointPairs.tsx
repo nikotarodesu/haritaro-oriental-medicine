@@ -1,14 +1,13 @@
-import { ArrowRight, GitCompare } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 import { getAcupointByCode } from "@/data/tsubo";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
 import { ACUPOINT_PAIRS_PATH, FEATURED_ACUPOINT_PAIRS_ANCHOR, featuredPairAnchor, featuredPairPreview, getFeaturedPairs, type FeaturedPair } from "@/data/tsubo/atlas/featuredPairs";
-import { atlasLearningPairHref } from "@/data/tsubo/atlas/learningPairs";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import { normalizeSearchText } from "@/utils/search";
-import AcupointPairDirectory from "./AcupointPairDirectory";
+import AcupointPairDirectory, { PairComparisonLink } from "./AcupointPairDirectory";
 import HeguHandDiagram from "./atlas/HeguHandDiagram";
 import { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
 import styles from "./FeaturedAcupointPairs.module.css";
@@ -57,31 +56,39 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
     : hasClassic ? "古典の記述と出典" : "研究の詳細と出典";
 
   return (
-    <article className={`${styles.card} atlas-target`} id={featuredPairAnchor(pair.id)}>
+    <article className={`${styles.card}${pair.evidenceHighlights ? ` ${styles.featuredCard}` : ""} atlas-target`} id={featuredPairAnchor(pair.id)} tabIndex={-1}>
       <h3>{pair.name}</h3>
       <div className={styles.points}>
         <PairPointLink point={first} />
         <PairPointLink point={second} />
       </div>
-      <dl className={styles.takeaways}>
+      {pair.evidenceHighlights ? <>
+        <p>{pair.summary}</p>
+        <h4 className="font-semibold text-accent">研究結果とその限界</h4>
+        <dl className={styles.takeaways}>
+          {pair.evidenceHighlights.map(({ label, text, sources }) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd>
+                <p>{text}</p>
+                {sources.map(source => (
+                  <a key={source.url} href={source.url} className="atlas-source-link" data-analytics-action="atlas_source">{source.label}</a>
+                ))}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </> : <dl className={styles.takeaways}>
         <div>
           <dt>{evidenceLabel[pair.kind]}</dt>
           <dd>{pair.summary}</dd>
         </div>
         <div>
-          <dt>効果はどこまで分かる？</dt>
+          <dt>研究結果とその限界</dt>
           <dd>{pair.evidenceSummary}</dd>
         </div>
-      </dl>
-      <a
-        className={styles.compare}
-        href={atlasLearningPairHref(pair.pointIds)}
-        aria-label={`${first.name}と${second.name}の位置を並べて見る`}
-        data-analytics-action="atlas_compare"
-      >
-        <GitCompare size={17} aria-hidden="true" />
-        位置を並べて見る
-      </a>
+      </dl>}
+      <PairComparisonLink pairId={pair.id} codes={pair.pointIds} label={`${first.name}と${second.name}の位置を並べて見る`} />
       {pair.details.length > 0 && (
         <details className={`${styles.details} atlas-disclosure`}>
           <summary>{detailsLabel}</summary>
@@ -126,7 +133,7 @@ export default function FeaturedAcupointPairs({ pointCode, directory = false }: 
         name: pair.name,
         codes: pair.pointIds,
         searchText: normalizeSearchText([
-          pair.name, pair.summary, pair.evidenceSummary,
+          pair.name, pair.summary, pair.evidenceSummary, ...(pair.evidenceHighlights ?? []).map(({ text }) => text),
           ...pair.pointIds.map(code => getAcupointByCode(code)?.kana),
         ].join(" ")),
         card: <PairCard pair={pair} />,
@@ -146,7 +153,7 @@ export default function FeaturedAcupointPairs({ pointCode, directory = false }: 
   const Heading = pointCode ? "h3" : "h2";
   const directoryLink = (
     <a href={ACUPOINT_PAIRS_PATH} className={`atlas-text-action ${pointCode ? "" : styles.directoryLink}`}>
-      すべての組み合わせを見る<ArrowRight size={16} aria-hidden="true" />
+      ツボの組み合わせを見る<ArrowRight size={16} aria-hidden="true" />
     </a>
   );
   const groups = (

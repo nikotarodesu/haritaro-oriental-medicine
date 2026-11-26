@@ -16,7 +16,7 @@ export default function PublicReadingStart({ firstHref, className }: { firstHref
       <span className="learning-option-icon"><BookOpen size={21} aria-hidden="true" /></span>
       <span className="learning-option-label">
         <strong>{unit ? "続きから読む" : "第1講から読む"}</strong>
-        <span>{unit?.title ?? "東洋医学では何を確かめるか"}</span>
+        <span>{unit?.title ?? "東洋医学では何を見て、どう考える？"}</span>
       </span>
       <ArrowRight size={18} aria-hidden="true" />
     </ContentNavigationLink>

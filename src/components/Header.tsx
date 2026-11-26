@@ -24,7 +24,7 @@ const LEARN_LINKS: readonly HeaderLink[] = [
   { href: ACUPUNCTURE_GUIDE.href, label: "はじめての鍼灸", description: "はり・お灸・ツボ押しの違い", icon: BookOpen },
   { href: "/learn/essentials", label: "東洋医学の要点", description: "知りたい言葉を1ページで確認", icon: Layers3 },
   { ...ALL_NAV_ITEMS.diagnosis, label: ALL_NAV_ITEMS.diagnosis.label },
-  { href: "/learn/review#learning-review", label: "今日の復習" },
+  { href: "/learn/review#learning-review", label: "確認問題と復習" },
   { href: "/library", label: "古典・医学論文" },
   { href: "/articles", label: "解説記事" },
 ];
@@ -38,7 +38,7 @@ const OTHER_LINKS: readonly HeaderLink[] = [
 ];
 const SITE_LINKS: readonly HeaderLink[] = [
 
-  { href: "/about", label: "運営者情報" },
+  { href: "/about", label: "執筆・運営者" },
   { href: "/contact", label: "お問い合わせ" },
 ];
 const NAV_ICONS: Record<string, LucideIcon> = {

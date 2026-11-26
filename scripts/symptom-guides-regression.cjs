@@ -147,7 +147,8 @@ async function main() {
     assert(content.dailyLife.length > 0 && content.dailyLife.every(({ title, body }) => html.includes(title) && html.includes(body)), `${guide.id}: daily advice appears in initial HTML`);
     assert(content.observations.length >= 3 && content.observations.every(item => html.includes(item)), `${guide.id}: practical details for the visit appear in initial HTML`);
     assert(safety && html.includes(safety.message), `${guide.id}: safety message appears before any interaction`);
-    assert(html.indexOf(safety.message) < html.indexOf('id="acupoints"') && html.indexOf('id="acupoints"') < html.indexOf('id="daily-life"') && html.indexOf('id="daily-life"') < html.indexOf('id="traditional"'), `${guide.id}: triage and point links precede the guide's longer sections`);
+    const guideOrder = [safety.message, '受診時に伝えることへ', 'id="recording"', 'id="daily-life"', 'id="traditional"', 'id="acupoints"'].map(marker => html.indexOf(marker));
+    assert(guideOrder.every((position, index) => position >= 0 && (index === 0 || position > guideOrder[index - 1])), `${guide.id}: triage and recording precede daily advice and study examples`);
     assert(html.includes('東洋医学の教材で扱うツボの例です。'), `${guide.id}: the point list states its purpose before readers choose a point`);
     assert(html.includes(`aria-current="page">${guide.title}</span>`), `${guide.id}: breadcrumb identifies the current guide`);
     const recording = html.slice(html.indexOf('id="recording"'), html.indexOf('id="daily-life"'));
@@ -174,7 +175,7 @@ async function main() {
     const lecture = getPublicLectureArticle(resources.lectureId);
     assert(lecture && html.includes(renderToStaticMarkup(React.createElement(React.Fragment, null, lecture.title))), `${guide.id}: link title matches the revised article`);
     assert.equal((html.match(/専門家による監修は完了していません。/g) || []).length, 1, `${guide.id}: review status appears once with the author`);
-    assert(html.includes('href="/diagnosis"'), `${guide.id}: constitution check remains linked`);
+    assert(html.includes('href="/diagnosis"') && html.includes('気血水の体質チェック（学習用）'), `${guide.id}: constitution check is linked as a learning tool`);
     if (resources.articleId) assert(ARTICLES.some(article => article.id === resources.articleId), `${guide.id}: existing related article ${resources.articleId}`);
     if (resources.caseId) assert(CLINICAL_CASES.some(item => item.id === resources.caseId), `${guide.id}: existing fictional case`);
     for (const id of resources.paperIds || []) {

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import PageIntro from "@/components/design/PageIntro";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
-import { PageSymbol } from "@/components/design/PageArtwork";
 import { AlertCircle, ArrowRight } from "lucide-react";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { CASE_STUDY_DESCRIPTORS } from "@/data/cases/caseStudyCatalog";
@@ -13,7 +12,7 @@ import CaseStudyResume from "@/components/cases/CaseStudyResume";
 import { CASE_COURSE_COMPARISON_ANCHOR } from "@/utils/caseStudyNavigation";
 
 const title = "症例演習";
-const description = "模擬症例の主訴と経過、四診の所見を読み、どの記述を根拠に見立てやツボを選ぶか考えます。選んだ後に、解答例と理由を読めます。";
+const description = "模擬症例の訴え・経過・四診の所見を読み、何を根拠に見立て、どのツボを選ぶか考えます。回答すると解答例と理由を読めます。";
 
 export default function CasesIndexPage() {
   const totalCaseCount = CLINICAL_CASES.length;
@@ -25,10 +24,10 @@ export default function CasesIndexPage() {
       ) }} />
       <PageBreadcrumb items={[{ href: SERIES.practice.href, name: SERIES.practice.shortName }, { href: "/cases", name: title }]} />
 
-      <PageIntro eyebrow={`全${totalCaseCount}症例・所見から考える練習`} title={title} description={description} art="practice">
+      <PageIntro eyebrow="鍼灸学生・鍼灸師向け" title={title} description={description} art="practice">
         <div className="page-actions">
-          {firstCase && <Link href={`/cases/${firstCase.id}`} className="page-primary-action">最初の症例から始める<ArrowRight size={18} aria-hidden="true" /></Link>}
-          <a href="#case-catalog" className="page-secondary-action">症状から症例を探す</a>
+          {firstCase && <Link href={`/cases/${firstCase.id}`} className="page-primary-action">頭痛の模擬症例を読む<ArrowRight size={18} aria-hidden="true" /></Link>}
+          <a href="#case-catalog" className="page-secondary-action">模擬症例を一覧で見る</a>
         </div>
       </PageIntro>
 
@@ -37,7 +36,7 @@ export default function CasesIndexPage() {
       <section id="case-catalog" tabIndex={-1} className="scroll-mt-28 space-y-4" aria-labelledby="case-catalog-title">
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <h2 id="case-catalog-title" className="font-bold text-lg text-ink">
-            全{totalCaseCount}症例一覧
+            模擬症例の一覧（全{totalCaseCount}例）
           </h2>
           <a href={`#${CASE_COURSE_COMPARISON_ANCHOR}`} className="ui-text-link inline-flex min-h-11 items-center gap-1 text-sm">
             同じ症状の2例を比べる<ArrowRight size={15} aria-hidden="true" />
@@ -48,40 +47,18 @@ export default function CasesIndexPage() {
           caseNumber: c.caseNumber,
           card: (
             <Link
-              className="page-link-card page-link-card--stack group justify-between"
+              className="page-link-card page-link-card--stack group justify-between border-frame"
               href={`/cases/${c.id}`}
+              aria-labelledby={`${c.id}-title ${c.id}-action`}
             >
               <div className="space-y-3">
-                {/* ヘッダーバッジ */}
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-muted">
-                      症例 {c.caseNumber < 10 ? `0${c.caseNumber}` : c.caseNumber}
-                    </span>
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                      c.difficulty === "初級" 
-                        ? "bg-green-100 text-green-800 dark:bg-green-950/50 dark:text-green-300"
-                        : c.difficulty === "中級"
-                          ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-950/50 dark:text-yellow-300"
-                          : "bg-red-100 text-red-800 dark:bg-red-950/50 dark:text-red-300"
-                    }`}>
-                      {c.difficulty}
-                    </span>
-                  </div>
-
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <span className="page-link-icon"><PageSymbol kind="practice" /></span>
-                  <span className="text-sm font-semibold text-warm">{c.category}</span>
-                </div>
-
-                {/* タイトル */}
-                <h3 className="font-serif text-lg font-bold text-ink group-hover:text-[#1E3D34] dark:group-hover:text-[#74BA9E] transition-colors leading-snug">
+                <h3 id={`${c.id}-title`} className="text-lg font-bold leading-snug text-ink">
                   {c.title}
                 </h3>
-
-                {/* 主訴プレビュー */}
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
+                  <span className="font-semibold">難易度 {c.difficulty}</span>
+                  <span className="whitespace-nowrap">症例 {String(c.caseNumber).padStart(2, "0")}</span>
+                </div>
                 <p className="text-sm text-muted line-clamp-2 leading-relaxed">
                   「{c.patient.chiefComplaint}」
                 </p>
@@ -93,8 +70,8 @@ export default function CasesIndexPage() {
                   {c.patient.age}・{c.patient.gender}
                 </span>
                 
-                <span className="font-bold text-accent flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-                  演習を始める <ArrowRight aria-hidden="true" className="w-3.5 h-3.5" />
+                <span id={`${c.id}-action`} className="font-bold text-accent flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                  症例を読む <ArrowRight aria-hidden="true" className="w-3.5 h-3.5" />
                 </span>
               </div>
             </Link>
@@ -109,7 +86,7 @@ export default function CasesIndexPage() {
               症例演習で扱う範囲
             </p>
             <p className="leading-relaxed">
-              全20例は東洋医学の考え方を学ぶための架空症例です。実際の診断や施術については、担当する医療従事者の指導に従ってください。
+              全{totalCaseCount}例は東洋医学の考え方を学ぶための架空症例です。実際の診断や施術については、担当する医療従事者の指導に従ってください。
             </p>
           </div>
         </div>
@@ -122,9 +99,9 @@ export default function CasesIndexPage() {
         <Link href="/simulator#revision-training" className="inline-flex min-h-11 items-center gap-2 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">見立て修正の演習へ<ArrowRight size={16} aria-hidden="true" /></Link>
       </div>
       <nav aria-label="関連する演習" className="flex flex-wrap gap-x-6 gap-y-1">
-        <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">弁証演習へ</Link>
-        <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴演習へ</Link>
-        <Link href="/diagnosis" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">気血水 体質チェックへ</Link>
+        <Link href="/simulator" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">弁証（所見から見立てる）</Link>
+        <Link href="/practice/haiketsu" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">配穴を練習する</Link>
+        <Link href="/diagnosis" className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4">気血水の体質チェック（学習用）</Link>
       </nav>
     </div>
   );
