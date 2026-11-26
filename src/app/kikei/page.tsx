@@ -12,7 +12,7 @@ import {
   Plus,
 } from "lucide-react";
 import { KIKEI_VESSELS, HACHIMYAKU_PAIRS, type HachimyakuPair } from "@/data/kikeiData";
-import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
+import { collectionPageJsonLd, pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import KikeiEvidenceNote from "@/components/kikei/KikeiEvidenceNote";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 
@@ -21,6 +21,7 @@ const pageDescription = "督脈・任脈など奇経八脈が体のどこを通�
 
 export const metadata: Metadata = {
   title: pageTitle,
+  alternates: { canonical: "/kikei" },
   description: pageDescription,
   ...pageSocialMetadata(pageTitle, pageDescription, "/kikei"),
 };
@@ -44,9 +45,13 @@ function MeetingPoint({ point }: { point: HachimyakuPair["master1"] }) {
 export default function KikeiIndexPage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(
+        "/kikei", "奇経八脈と八脈交会穴", pageDescription, "八つの脈と流注図",
+        KIKEI_VESSELS.map(vessel => ({ name: vessel.name + "の流注図", href: "/kikei/" + vessel.slug })),
+      ) }} />
       <div className="page-layout page-layout--intro">
         <PageIntro compact title="奇経八脈と八脈交会穴" art="points" description="八つの脈が体のどこを通るとされるか、図で確かめます。手と足のツボを一つずつ組み合わせる八脈交会穴も見比べられます。">
-          <div className="page-actions"><a href="#eight-vessels" className="page-primary-action"><GitCommit aria-hidden="true" className="h-4 w-4" />8脈から選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><a href="#four-pairs" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />交会穴の4対を見る</a></div>
+          <div className="page-actions"><a href="#eight-vessels" className="page-primary-action"><GitCommit aria-hidden="true" className="h-4 w-4" />流注図を選ぶ<ArrowRight aria-hidden="true" className="h-4 w-4" /></a><a href="#four-pairs" className="page-secondary-action"><Layers aria-hidden="true" className="h-4 w-4" />交会穴の4対を見る</a></div>
         </PageIntro>
       </div>
 
@@ -58,59 +63,21 @@ export default function KikeiIndexPage() {
             <p className="text-sm text-muted">督脈と任脈には、それぞれ固有のツボがあります。</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <ul className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
             {KIKEI_VESSELS.map(vessel => (
-              <Link
-                key={vessel.slug}
-                href={`/kikei/${vessel.slug}`}
-                className="group bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 hover:border-[#B86924] transition-colors flex flex-col justify-between"
-              >
-                <div className="space-y-3">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                        vessel.category === "陽奇経"
-                          ? "bg-[#FCF4EB] text-[#B86924] dark:bg-[#2A1E14] dark:text-[#E6C387]"
-                          : "bg-[#EBF3EF] text-[#1E3D34] dark:bg-[#182823] dark:text-[#74BA9E]"
-                      }`}>
-                        {vessel.category}
-                      </span>
-                    </div>
-                    {vessel.pointsCount ? (
-                      <span className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                        固有穴 {vessel.pointsCount}穴
-                      </span>
-                    ) : null}
+              <li key={vessel.slug}>
+                <Link href={"/kikei/" + vessel.slug} aria-labelledby={"vessel-" + vessel.slug} className="group flex h-full min-w-0 flex-col gap-1.5 rounded-xl border border-frame bg-card p-3 hover:border-accent focus-visible:outline-accent sm:p-4">
+                  <span className="text-xs text-muted">{vessel.category}{vessel.pointsCount ? "・固有穴" + vessel.pointsCount + "穴" : ""}</span>
+                  <div className="flex items-center justify-between gap-1">
+                    <h3 id={"vessel-" + vessel.slug} className="font-serif text-lg font-bold text-accent">{vessel.name}<span className="sr-only">の流注図</span></h3>
+                    <ArrowRight size={16} aria-hidden="true" className="shrink-0 text-accent" />
                   </div>
-
-                  <div className="flex items-center gap-3">
-                    <span className="page-link-icon"><GitCommit aria-hidden="true" /></span>
-                    <div>
-                    <h3 className="font-serif text-xl font-bold text-[#232826] dark:text-[#FAF8F5] group-hover:text-[#B86924] transition-colors">
-                      {vessel.name}
-                    </h3>
-                    <p className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                      {vessel.reading}
-                    </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 border-t border-[#E5DEC9]/50 dark:border-[#2A3B4A]/50">
-                    <div className="text-xs text-[#737C77] dark:text-[#8899A6]">
-                      <span>交会穴 </span>
-                      <strong className="text-[#232826] dark:text-[#FAF8F5]">{vessel.masterPoint.name}</strong>
-                      <span className="text-xs text-[#737C77] ml-1">({vessel.masterPoint.code})</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 flex items-center justify-between text-xs font-bold text-[#B86924] dark:text-[#E6C387]">
-                  <span>流注図と演習を開く</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
+                  <span className="text-xs text-muted">{vessel.reading}</span>
+                  <span className="mt-auto border-t border-frame pt-2 text-sm">交会穴 <strong>{vessel.masterPoint.name}</strong></span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
 
         <section id="four-pairs" className="space-y-4 scroll-mt-28" aria-labelledby="four-pairs-title">

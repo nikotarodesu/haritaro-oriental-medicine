@@ -1,23 +1,22 @@
-'use client';
-
 import Link from 'next/link';
-import { ArrowRight, Home, Search } from 'lucide-react';
+import { ArrowRight, Home } from 'lucide-react';
+import PlatformSearchForm from '@/components/search/PlatformSearchForm';
 import PageIntro from '@/components/design/PageIntro';
 import { PageSymbol, type PageArtKind } from '@/components/design/PageArtwork';
 
 const destinations: { href: string; title: string; description: string; art: PageArtKind }[] = [
   { href: '/tsubo', title: 'ツボを調べる', description: '361のツボの場所や目印が分かります。', art: 'points' },
-  { href: '/curriculum', title: '講義で学ぶ', description: '陰陽五行・気血水・臓腑の基礎から', art: 'study' },
-  { href: '/diagnosis', title: '気血水 体質チェック', description: '12問で東洋医学の分類を学べます。', art: 'care' },
-  { href: '/simulator', title: '所見から考える', description: '症例の情報から、どんな見立てができるか考えます。', art: 'practice' },
+  { href: '/learn', title: '講義で学ぶ', description: '陰陽・気血・臓腑の講義を選べます。', art: 'study' },
+  { href: '/symptoms', title: '症状別ガイドを読む', description: '頭痛や腰痛など、気になる症状から探せます。', art: 'care' },
+  { href: '/cases', title: '模擬症例を選ぶ', description: '問診から経過まで、症例ごとにたどれます。', art: 'practice' },
 ];
 
 export default function NotFound() {
   return (
     <div className="page-layout page-layout--reading space-y-8">
-      <PageIntro title="ページが見つかりません" description="URLをご確認ください。ツボの名前や記事の題名が分かるときは、サイト内検索で探せます。" art="reading" compact>
+      <PageIntro title="ページが見つかりません" description="お探しのツボや記事は、名前から検索できます。" art="reading" compact>
+        <PlatformSearchForm id="missing-page-search" label="ツボ・症状・記事を探す" />
         <div className="page-actions">
-          <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('haritaro:open-search'))} aria-haspopup="dialog" className="page-primary-action"><Search size={18} aria-hidden="true" />サイト内を検索</button>
           <Link href="/" className="page-secondary-action"><Home size={18} aria-hidden="true" />ホームへ戻る</Link>
         </div>
       </PageIntro>

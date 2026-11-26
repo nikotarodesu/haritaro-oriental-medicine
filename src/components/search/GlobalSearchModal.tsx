@@ -48,6 +48,16 @@ function revealCurrentComparison(item: SearchResultItem) {
   requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
 }
 
+function followCurrentReadingFragment(item: SearchResultItem): boolean {
+  const [pathname, fragment] = item.url.split("#", 2);
+  if ((pathname !== "/glossary" && pathname !== "/library") || pathname !== window.location.pathname || !fragment) return false;
+
+  // The indexes use the native fragment event to clear filters and reveal the entry.
+  if (window.location.hash === `#${fragment}`) window.dispatchEvent(new HashChangeEvent("hashchange"));
+  else window.location.hash = fragment;
+  return true;
+}
+
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -177,7 +187,7 @@ export default function GlobalSearchModal({
         recordResultClick(target.item);
         revealCurrentComparison(target.item);
         onClose();
-        router.push(target.item.url);
+        if (!followCurrentReadingFragment(target.item)) router.push(target.item.url);
       }
     }
   };
@@ -410,7 +420,11 @@ export default function GlobalSearchModal({
                     aria-posinset={idx + 1}
                     aria-setsize={filteredResults.length}
                     onClick={() => recordResultClick(item)}
-                    onNavigate={() => { revealCurrentComparison(item); onClose(); }}
+                    onNavigate={event => {
+                      revealCurrentComparison(item);
+                      onClose();
+                      if (followCurrentReadingFragment(item)) event.preventDefault();
+                    }}
                     onMouseMove={(event) => {
                       // 結果の再描画で静止中のポインタが重なっても、キーボードの選択は保つ。
                       if (event.movementX !== 0 || event.movementY !== 0) { shouldScrollSelection.current = false; setSelectedIndex(idx); }

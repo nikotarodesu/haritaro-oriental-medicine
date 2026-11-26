@@ -1,5 +1,6 @@
 import { CURRICULUM_CHAPTERS_META } from '@/data/curriculumOutline';
 import { LEARNING_COURSES } from '@/data/learningCourses';
+import { KIKEI_VESSELS } from '@/data/kikeiData';
 import { SYMPTOMS } from '@/data/symptomData';
 import { SYMPTOM_RESEARCH_NOTES, SYMPTOM_RESEARCH_REVISED_AT } from '@/data/symptomResearchNotes';
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, MIGRAINE_RESEARCH_HREF, acupunctureResearchHref } from '@/config/acupunctureLearning';
@@ -325,6 +326,8 @@ export const PAGE_REVISIONS: Record<string, string> = {
   ].map(route => [route, PUBLIC_COPY_REVISED_AT])),
   ...Object.fromEntries([
     '/updates', '/learn', '/library', '/symptoms', '/cases', '/diagnosis',
+    '/kikei', '/glossary', '/tsubo/compare', ACUPOINT_PAIRS_PATH, '/learn/review',
+    ...KIKEI_VESSELS.map(vessel => '/kikei/' + vessel.slug),
     ...SYMPTOMS.map(guide => '/symptoms/' + guide.id),
     ...['daily-and-seasonal-changes', 'qi-blood-and-patterns', 'how-patterns-change', 'assessment-basics', 'assessment-frameworks', 'principles-and-goals'].map(slug => '/learn/lectures/' + slug),
     ...['science-of-meridians-network', 'science-of-qi-blood-fluid', 'science-of-yinyang-gogyo', 'east-west-integrative-gerd-gastric'].map(id => '/articles/' + id),
@@ -338,6 +341,7 @@ export const SITE_UPDATES: readonly {
   href?: string;
   links?: readonly { href: string; label: string }[];
 }[] = [
+  { date: '2026-11-26', label: '奇経八脈の図と、検索・復習の戻り先', text: '流注図のツボを図鑑と照合し、督脈の図で百会を八脈交会穴としていた表示を訂正しました。用語と文献は検索結果から該当箇所を直接開けます。復習で講義を読み返したあとも、同じ問題に戻れます。', links: [{ href: '/kikei/toku#kikei-pathway', label: '督脈の流注図' }, { href: '/glossary', label: '用語集' }, { href: '/learn/review', label: '復習' }] },
   { date: '2026-11-26', label: '講義・研究の本文検索と症状別ガイドの絞り込み', text: '講義や研究の本文にある言葉を検索し、一致した節を直接開けるようにしました。症状別ガイドでは「眠れない」などの普段の言い方でも探せます。模擬症例は、一覧で選んだ条件を保ったまま行き来できます。', links: [{ href: '/search', label: 'サイト内検索' }, { href: '/symptoms', label: '症状別ガイド' }, { href: '/cases', label: '模擬症例' }] },
   { date: '2026-11-25', label: '位置説明・症例・講義の文章を整理', text: 'ツボの位置と図の読み方、症例で情報を得た方法、講義の例と見出しを見直しました。文献の著者情報と、症状ガイドの受診時に伝える内容も確認しやすくしました。', links: [{ href: '/tsubo/li4', label: 'ツボ図鑑' }, { href: '/cases', label: '模擬症例' }, { href: '/learn', label: '講義' }, { href: '/library', label: '文献ライブラリ' }, { href: '/symptoms', label: '症状別ガイド' }] },
   { date: '2026-11-24', label: '比較図の確認問題と、講義・症例の振り返り', links: [{ href: '/tsubo#nearby-comparisons', label: 'ツボの比較図' }, { href: '/learn/review', label: '講義の復習' }, { href: '/cases', label: '症例演習' }], text: '比較図7組すべてに位置の確認問題を付けました。16講の確認問題は講義の復習で解き直せます。症例を解いたあとは、迷った設問の解説や登場したツボの比較を開けます。' },

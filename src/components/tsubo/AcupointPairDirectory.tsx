@@ -1,8 +1,9 @@
 "use client";
 
-import { createContext, Fragment, useContext, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { createContext, Fragment, useCallback, useContext, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { ArrowRight, GitCompare, Search } from "lucide-react";
 import { normalizeSearchText } from "@/utils/search";
+import { setAnalyticsDisabled } from "@/utils/analytics";
 import { comparisonSelectionHref } from "@/app/tsubo/compare/selection";
 import styles from "./FeaturedAcupointPairs.module.css";
 
@@ -22,18 +23,17 @@ export type AcupointPairDirectorySection = {
 
 const PairDirectoryContext = createContext(false);
 const queryKey = "haritaro-atlas-pair-filter";
-
-function subscribeToHistory(listener: () => void) {
-  window.addEventListener("popstate", listener);
-  return () => window.removeEventListener("popstate", listener);
-}
+const maximumQueryLength = 100;
 
 function restoreQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const sharedQuery = params.get("q");
+  if (sharedQuery !== null) return sharedQuery.slice(0, maximumQueryLength);
   const historyValue = window.history.state?.[queryKey];
-  if (typeof historyValue === "string") return historyValue;
-  if (new URLSearchParams(window.location.search).get("return") !== "1") return "";
+  if (typeof historyValue === "string") return historyValue.slice(0, maximumQueryLength);
+  if (params.get("return") !== "1") return "";
   try {
-    return window.sessionStorage.getItem(queryKey) ?? "";
+    return (window.sessionStorage.getItem(queryKey) ?? "").slice(0, maximumQueryLength);
   } catch {
     return "";
   }
@@ -57,16 +57,27 @@ export function PairComparisonLink({ pairId, codes, label }: {
 export default function AcupointPairDirectory({ sections }: {
   sections: readonly AcupointPairDirectorySection[];
 }) {
-  const restoredQuery = useSyncExternalStore(subscribeToHistory, restoreQuery, () => "");
   const [draft, setDraft] = useState<string | null>(null);
+  const subscribeToHistory = useCallback((listener: () => void) => {
+    const restore = () => {
+      setDraft(null);
+      listener();
+    };
+    window.addEventListener("popstate", restore);
+    return () => window.removeEventListener("popstate", restore);
+  }, []);
+  const restoredQuery = useSyncExternalStore(subscribeToHistory, restoreQuery, () => "");
   const query = draft ?? restoredQuery;
   const searchInput = useRef<HTMLInputElement>(null);
   function updateQuery(value: string) {
     setDraft(value);
     const url = new URL(window.location.href);
     url.searchParams.delete("return");
+    if (value.trim()) url.searchParams.set("q", value);
+    else url.searchParams.delete("q");
     if (url.hash.startsWith("#featured-acupoint-pair-")) url.hash = "";
     try {
+      if (url.searchParams.has("q")) setAnalyticsDisabled(true);
       window.history.replaceState({ ...window.history.state, [queryKey]: value }, "", url);
     } catch {
       // The current filter still works if the browser blocks History API writes.
@@ -102,7 +113,7 @@ export default function AcupointPairDirectory({ sections }: {
               onChange={event => updateQuery(event.target.value)}
               placeholder="例：四関穴、腰痛、ST36"
               autoComplete="off"
-              maxLength={100}
+              maxLength={maximumQueryLength}
             />
           </div>
           {query && (

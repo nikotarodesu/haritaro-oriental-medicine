@@ -26,11 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const title = seriesPageTitle(`${vessel.name}（${vessel.reading}）の流注図・交会穴・古典の記述`, "reading");
-  const description = `${vessel.name}が通るとされる経路を図で確認します。八脈交会穴（${vessel.masterPoint.name}と${vessel.couplePoint.name}）と『${vessel.classicQuote.book}』の記述も読めます。`;
+  const description = `${vessel.name}の流注図と、対応する八脈交会穴「${vessel.masterPoint.name}」を紹介します。${vessel.couplePoint.name}との組み合わせや、『${vessel.classicQuote.book}』${vessel.classicQuote.chapter}の原文と訳も読めます。`;
 
   return {
     title,
     description,
+    alternates: { canonical: "/kikei/" + vessel.slug },
     ...pageSocialMetadata(title, description, `/kikei/${vessel.slug}`),
   };
 }

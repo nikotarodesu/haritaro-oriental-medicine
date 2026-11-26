@@ -144,6 +144,13 @@ export function reviewSessionReturnHref(id: unknown): string {
   return validReviewSessionId(id) ? `/learn/review?resumeReview=${id}#learning-review-practice` : '/learn/review#learning-review';
 }
 
+export function reviewSessionLectureHref(href: string, id: unknown): string {
+  if (!validReviewSessionId(id)) return href;
+  const url = new URL(href, 'https://www.haritaro.jp');
+  url.searchParams.set('reviewSession', id);
+  return url.pathname + url.search + url.hash;
+}
+
 export function browserReviewStorage(): SessionStorage | null {
   try { return typeof window === 'undefined' ? null : window.sessionStorage; } catch { return null; }
 }

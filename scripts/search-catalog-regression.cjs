@@ -26,6 +26,14 @@ const { prepareSearchItem } = load('src/utils/search');
 const { preparePurposeSearchQuery, rankPurposeSearchResults } = load('src/utils/searchPurpose');
 const ranked = query => rankPurposeSearchResults(SEARCH_CATALOG.map(prepareSearchItem), preparePurposeSearchQuery(query));
 assert.equal(byId.get('tool-tsubo-pairs')?.url, '/tsubo/pairs', 'The pair directory is searchable');
+const { KIKEI_VESSELS } = load('src/data/kikeiData');
+for (const vessel of KIKEI_VESSELS) {
+  const href = '/kikei/' + vessel.slug;
+  assert.equal(ranked(vessel.name + 'の流注図')[0].item.url, href);
+  assert(ranked(vessel.reading).slice(0, 2).some(result => result.item.url === href));
+}
+assert.deepEqual(Array.from(ranked('帯脈').slice(0, 2), result => result.item.url), ['/tsubo/gb26', '/kikei/tai']);
+assert.equal(ranked('八脈交会穴')[0].item.url, '/kikei');
 const fourGates = ranked('四関穴');
 assert.equal(fourGates[0].item.url, '/tsubo/pairs');
 assert(fourGates.some(result => result.item.url === '/tsubo/li4'));

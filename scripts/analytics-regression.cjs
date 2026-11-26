@@ -28,6 +28,7 @@ assert.equal(publicAnalyticsPath('/learn/courses/yinyang-foundations?query=priva
 assert.equal(analyticsDocumentPath('/search', false), '/search', 'The bare search landing page can be measured');
 assert.equal(analyticsDocumentPath('/search', true), null, 'Query-bearing results are outside Google tag initialization');
 assert.equal(analyticsDocumentPath('/tsubo', true), null, 'The atlas search also accepts private search text');
+assert.equal(analyticsDocumentPath('/tsubo/pairs', true), null, 'Pair filters also accept search text');
 assert.equal(analyticsDocumentPath('/tsubo/extra-points/yintang', false), '/tsubo/extra-points/yintang');
 assert.equal(analyticsDocumentPath('/tsubo/extra-points/taiyang', false), '/tsubo/extra-points/taiyang');
 assert.equal(analyticsDocumentPath('/tsubo/extra-points/yintang', true), null);

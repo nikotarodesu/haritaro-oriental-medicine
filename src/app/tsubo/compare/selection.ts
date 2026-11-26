@@ -10,21 +10,23 @@ function first(value: ComparisonSearchParams[string]) {
   return Array.isArray(value) ? value[0] : value;
 }
 
-export function resolveComparisonCodes(
+export function resolveComparisonSelection(
   params: ComparisonSearchParams,
   choices: readonly { code: string; id: string }[],
-): string[] {
-  if (first(params.empty) === "1") return [];
+) {
+  if (first(params.empty) === "1") return { codes: [], unavailableCount: 0 };
 
-  const requested = [first(params.a) || first(params.code), first(params.b), first(params.c)];
+  const requested = [first(params.a) || first(params.code), first(params.b), first(params.c)]
+    .filter((value): value is string => Boolean(value?.trim()));
   const resolved = new Set<string>();
+  let unavailableCount = 0;
   for (const value of requested) {
-    if (!value) continue;
     const query = normalizeSearchText(value);
     const point = choices.find(choice => normalizeSearchText(choice.code) === query || normalizeSearchText(choice.id) === query);
     if (point) resolved.add(point.code);
+    else unavailableCount += 1;
   }
-  return resolved.size ? [...resolved] : [...DEFAULT_COMPARISON_CODES];
+  return { codes: requested.length ? [...resolved] : [...DEFAULT_COMPARISON_CODES], unavailableCount };
 }
 
 export function comparisonPairOrigin(params: ComparisonSearchParams): ComparisonPairOrigin | undefined {

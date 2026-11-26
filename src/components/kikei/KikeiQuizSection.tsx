@@ -14,6 +14,10 @@ function shuffleArray<T>(array: T[], seed: string): T[] {
   return shuffledIndices(array.length, seed).map(index => array[index]);
 }
 
+function focusHeading(node: HTMLElement | null) {
+  node?.focus();
+}
+
 export default function KikeiQuizSection({ vessel }: Props) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
@@ -62,7 +66,6 @@ export default function KikeiQuizSection({ vessel }: Props) {
 
   const currentQ = questions[currentIdx];
   const isSelectedCorrect = selectedOpt !== null ? currentQ.options[selectedOpt]?.isCorrect : false;
-  const correctOption = currentQ.options.find(o => o.isCorrect);
 
   const handleSelect = (idx: number) => {
     if (showAnswer) return;
@@ -93,36 +96,32 @@ export default function KikeiQuizSection({ vessel }: Props) {
   };
 
   return (
-    <div className="kikei-quiz bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-4">
+    <div id="kikei-quiz" className="scroll-mt-28 kikei-quiz bg-white dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 sm:p-6 shadow-sm space-y-4">
       {/* ヘッダー */}
       <div className="flex items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#B86924]" />
-          <h3 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+          <h2 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
             {vessel.name}の確認問題
-          </h3>
+          </h2>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#737C77] dark:text-[#8899A6]">
-          全 {questions.length} 問
-        </span>
       </div>
-      <p className="text-sm ui-muted">奇経は、経絡を補う八つの道筋です。八脈交会穴は、それぞれの道筋に結びつけて覚える八つのツボです。</p>
 
       {!isFinished ? (
         <div className="space-y-4 pt-1">
           {/* 進捗と現在スコア */}
           <div className="flex items-center justify-between text-xs text-[#737C77] dark:text-[#8899A6]">
             <span className="font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-              設問 {currentIdx + 1} / {questions.length}
+              第{currentIdx + 1}問 ／ 全{questions.length}問
             </span>
             <span className="font-medium">
-              現在正答数: <strong className="text-emerald-600 dark:text-emerald-400 font-bold">{score}</strong> / {currentIdx + (showAnswer ? 1 : 0)} 問
+              {currentIdx + Number(showAnswer) > 0 && <>{currentIdx + Number(showAnswer)}問中{score}問正解</>}
             </span>
           </div>
 
           {/* 問題文 */}
           <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E5DEC9]/80 dark:border-[#2A3B4A]/80">
-            <p className="quiz-result font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
+            <p key={quizSeed + "-" + currentIdx} tabIndex={-1} ref={currentIdx > 0 || quizSeed > 0 ? focusHeading : undefined} className="scroll-mt-28 quiz-result font-bold text-sm sm:text-base text-[#232826] dark:text-[#FAF8F5] leading-relaxed">
               {currentQ.question}
             </p>
           </div>
@@ -200,61 +199,13 @@ export default function KikeiQuizSection({ vessel }: Props) {
                   : "bg-rose-50/90 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700/60"
               }`}
             >
-              {/* 正誤判定の明瞭なヘッダー */}
-              <div
-                className={`flex items-center justify-between border-b pb-3 ${
-                  isSelectedCorrect
-                    ? "border-emerald-200 dark:border-emerald-800/60"
-                    : "border-rose-200 dark:border-rose-800/60"
-                }`}
-              >
-                {isSelectedCorrect ? (
-                  <div className="flex items-center gap-2.5 text-emerald-900 dark:text-emerald-100 font-bold text-sm sm:text-base">
-                    <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                      <CheckCircle2 className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="leading-tight">正解！見事です</div>
-                      <div className="text-[11px] font-normal text-emerald-700 dark:text-emerald-300">
-                        正しい経穴と理論を選択できました
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2.5 text-rose-900 dark:text-rose-100 font-bold text-sm sm:text-base">
-                    <div className="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-xs">
-                      <XCircle className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="leading-tight">不正解… もう一度確認しましょう</div>
-                      <div className="text-[11px] font-normal text-rose-700 dark:text-rose-300">
-                        正解は「<strong className="underline underline-offset-2">{correctOption?.text}</strong>」です
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <span
-                  className={`text-xs font-bold px-3 py-1 rounded-full shrink-0 ${
-                    isSelectedCorrect
-                      ? "bg-emerald-200/80 dark:bg-emerald-900/80 text-emerald-900 dark:text-emerald-100"
-                      : "bg-rose-200/80 dark:bg-rose-900/80 text-rose-900 dark:text-rose-100"
-                  }`}
-                >
-                  {isSelectedCorrect ? "+1 正解" : "不正解"}
-                </span>
-              </div>
-
-              {/* 臨床ポイント・解説文 */}
-              <div className="space-y-1.5 text-xs sm:text-sm">
-                <div className="quiz-explanation-title font-bold flex items-center gap-1.5 text-[#232826] dark:text-[#FAF8F5]">
-                  <Award className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-                  <span>臨床ポイントの解説</span>
-                </div>
-                <p className="quiz-explanation-body text-[#404743] dark:text-[#C5D2DB]">
-                  {currentQ.explanation}
-                </p>
-              </div>
+              <h3 ref={focusHeading} tabIndex={-1} className="quiz-explanation-title scroll-mt-28 text-base font-bold">
+                {isSelectedCorrect ? "正解です" : "不正解です"}
+              </h3>
+              <p className="quiz-explanation-body text-sm leading-relaxed">{currentQ.explanation}</p>
+              <a className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline underline-offset-4" href={currentIdx === 2 ? "#kikei-classic" : "#kikei-meeting-points"}>
+                {currentIdx === 2 ? "古典の原文と訳を読む" : "八脈交会穴の組み合わせを見る"}
+              </a>
 
               {/* 次へ進むアクション */}
               <div className="pt-2 flex justify-end">
@@ -285,17 +236,9 @@ export default function KikeiQuizSection({ vessel }: Props) {
             <Award className="w-7 h-7" />
           </div>
           <div className="space-y-1.5">
-            <h4 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-              {score === questions.length ? "全問正解！今回の3問を確認できました。" : "演習完了！"}
-            </h4>
-            <div className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-              正答率: {score} / {questions.length} 問正解 ({Math.round((score / questions.length) * 100)}%)
-            </div>
-            <p className="text-xs text-[#59615D] dark:text-[#96A6B2] max-w-md mx-auto pt-1">
-              {score === questions.length
-                ? `${vessel.name}に対応するツボ、組み合わせ、古典の記述を確認できました。時間をおいてもう一度解き、覚えているか確かめましょう。`
-                : `${vessel.name}の要点をもう一度復習して、全問正解を目指しましょう。`}
-            </p>
+            <h3 tabIndex={-1} ref={focusHeading} className="scroll-mt-28 font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+              {questions.length}問中{score}問正解
+            </h3>
           </div>
           <div className="pt-2">
             <button
@@ -304,7 +247,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
               className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#1E3D34] hover:bg-[#2B6958] text-white text-xs sm:text-sm font-bold shadow-xs hover:shadow-md transition-all cursor-pointer"
             >
               <RefreshCw className="w-4 h-4" />
-              <span>もう一度挑戦する（問題を再シャッフル）</span>
+              <span>選択肢を並べ替えてもう一度解く</span>
             </button>
           </div>
         </div>

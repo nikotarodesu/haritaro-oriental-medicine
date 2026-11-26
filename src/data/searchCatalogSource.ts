@@ -1,6 +1,7 @@
 // Build-time source only: client components import the generated searchCatalog instead.
 import { getAcupointByCode, getAllAcupoints } from "@/data/tsubo/index";
 import { CURRICULUM_DATA } from "@/data/curriculumData";
+import { KIKEI_VESSELS } from "@/data/kikeiData";
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import { GLOSSARY_TERMS } from "@/data/glossaryData";
 import { CLASSICAL_TEXTS } from "@/data/classicalTextsData";
@@ -147,11 +148,12 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-kikei",
     type: "tool",
-    title: "奇経八脈データベース",
-    subtitle: "督脈・任脈・衝脈・帯脈・陰陽蹻脈・陰陽維脈の走行と主治病態",
+    title: "奇経八脈と八脈交会穴",
+    subtitle: "八つの脈の流注図と、手足のツボを組み合わせる四通りの配穴。",
     badge: "経絡理論",
     url: "/kikei",
-    tags: ["奇経", "八脈", "任脈", "督脈", "衝脈", "帯脈"],
+    exactTerms: ["奇経八脈", "きけいはちみゃく", "八脈交会穴", "はちみゃくこうえけつ"],
+    tags: ["奇経", "八脈", "流注図", "八脈交会穴"],
   },
   {
     id: "tool-diagnosis-self",
@@ -181,6 +183,15 @@ export function buildSearchCatalog(): SearchResultItem[] {
 
     // 1. ツール群
     list.push(...STATIC_TOOLS);
+    for (const vessel of KIKEI_VESSELS) {
+      list.push({
+        id: "kikei-" + vessel.slug, type: "article", badge: "奇経八脈",
+        title: vessel.name + "の流注図", url: "/kikei/" + vessel.slug,
+        subtitle: vessel.reading + "。対応する交会穴は" + vessel.masterPoint.name + "。『" + vessel.classicQuote.book + "』" + vessel.classicQuote.chapter + "の原文と訳も読めます。",
+        exactTerms: [vessel.name, vessel.reading, vessel.name + "の流注図"],
+        tags: ["奇経八脈", "流注", "経絡", vessel.masterPoint.name],
+      });
+    }
     list.push(...NEARBY_COMPARISON_LINKS.map(({ id, region, codes, names, href, guideHref }): SearchResultItem => ({
       id: `atlas-comparison-${id}`, type: "tool", badge: "ツボの比較図",
       title: `${names.join("・")}を図で比べる`, subtitle: `${region}の位置と目印`,

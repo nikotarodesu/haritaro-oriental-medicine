@@ -12,6 +12,7 @@ import {
   ChevronRight, 
   Activity, 
   ArrowRight,
+  ArrowUp,
   MapPin,
   Focus,
   FlaskConical,
@@ -31,21 +32,37 @@ import PaperStudyFlow from "./PaperStudyFlow";
 const abstractCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'abstract').length;
 const fullTextCount = PAPERS_DATABASE.filter(paper => paper.verificationScope === 'selected_full_text').length;
 const bibliographyOnlyCount = PAPERS_DATABASE.length - abstractCount - fullTextCount;
+const itemAnchors = new Set([
+  ...PAPERS_DATABASE.map(({ id }) => `paper-${id}`),
+  ...CLASSICAL_TEXTS.map(({ id }) => `classic-${id}`),
+  ...PUBLIC_ARCHIVE_CASES.map(({ id }) => `archive-${id}`),
+]);
 
 export default function LibraryClient() {
 
   const [activeTab, setActiveTab] = useState<"all" | "papers" | "classics" | "cases" | "archives">("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [linkedItem, setLinkedItem] = useState<string>();
 
   useEffect(() => {
     let frame = 0;
     const revealLinkedItem = () => {
+      cancelAnimationFrame(frame);
       const id = window.location.hash.slice(1);
-      if (!/^(paper|classic|archive)-[a-z0-9-]+$/i.test(id)) return;
+      const found = itemAnchors.has(id);
+      setLinkedItem(found ? id : undefined);
+      if (!found) return;
       setActiveTab('all');
       setSearchQuery('');
       frame = requestAnimationFrame(() => {
-        frame = requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ block: 'start' }));
+        frame = requestAnimationFrame(() => {
+          const entry = document.getElementById(id);
+          const disclosure = entry?.querySelector<HTMLDetailsElement>('details.library-results')
+            ?? entry?.querySelector<HTMLDetailsElement>('details[data-library-source]');
+          if (disclosure) disclosure.open = true;
+          entry?.scrollIntoView({ block: 'start' });
+          entry?.querySelector('h3')?.focus({ preventScroll: true });
+        });
       });
     };
     frame = requestAnimationFrame(revealLinkedItem);
@@ -70,13 +87,14 @@ export default function LibraryClient() {
     cases: filteredCases.length,
     archives: filteredArchives.length,
   }[activeTab];
+  const searchAgain = <a href="#library-search-panel" className="ui-text-link text-sm"><ArrowUp size={16} aria-hidden="true" />資料の検索に戻る</a>;
 
   return (
     <div className="page-layout text-base leading-relaxed">
       <PageIntro title="文献・古典・症例教材" description="研究の方法や結果、古典の引用箇所、学習用の症例を探せます。" art="reading" compact>
         <Link href={ACUPUNCTURE_RESEARCH.href} className="page-secondary-action mt-4"><FlaskConical aria-hidden="true" />{ACUPUNCTURE_RESEARCH.title}</Link>
       </PageIntro>
-      <section aria-label="資料を探す" className="library-discovery rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
+      <section id="library-search-panel" tabIndex={-1} aria-label="資料を探す" className="library-discovery scroll-mt-28 rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
           <div className="library-search">
             <div className="library-search-label">
               <label htmlFor="library-search" className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">資料を検索</label>
@@ -208,9 +226,10 @@ export default function LibraryClient() {
                         </div>
 
                         <div>
-                          <h3 className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+                          <h3 tabIndex={-1} className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
                             {paper.japaneseTitle}
                           </h3>
+                          {linkedItem === `paper-${paper.id}` && searchAgain}
                         </div>
 
                         {design ? (
@@ -239,7 +258,7 @@ export default function LibraryClient() {
                           </div>
                         </details>}
 
-                        <details className="reference-disclosure library-bibliography">
+                        <details className="reference-disclosure library-bibliography" data-library-source>
                           <summary>著者・掲載誌と、確認した箇所</summary>
                           <div className="reference-disclosure-body">
                             <p>{paper.title}</p>
@@ -316,9 +335,10 @@ export default function LibraryClient() {
                           <span className="max-w-full break-words text-sm font-bold text-[#59615D] dark:text-[#A0B0BC]">
                             『{classic.book}』{classic.chapter}
                           </span>
-                          <h3 className="min-w-0 max-w-full break-words font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+                          <h3 tabIndex={-1} className="min-w-0 max-w-full break-words font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
                             {classic.theme}
                           </h3>
+                          {linkedItem === `classic-${classic.id}` && searchAgain}
                         </div>
 
                         {classic.id === 'classic-reisu-01' && <Link href={NINE_NEEDLES_GUIDE.href} className="ui-text-link">古代の九鍼を図で見る <ArrowRight size={16} aria-hidden="true" /></Link>}
@@ -500,9 +520,10 @@ export default function LibraryClient() {
                           </span>
                         </div>
 
-                        <h3 className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
+                        <h3 tabIndex={-1} className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5] leading-snug">
                           {ac.title}
                         </h3>
+                        {linkedItem === `archive-${ac.id}` && searchAgain}
 
                         <div className="space-y-3 text-base text-[#59615D] dark:text-[#A0B0BC]">
                           <p className="break-words">

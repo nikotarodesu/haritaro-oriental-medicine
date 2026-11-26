@@ -34,6 +34,7 @@ type CompareProps = {
   choices: readonly ComparisonChoice[];
   selectedTsubos: readonly ComparisonPoint[];
   origin?: ComparisonPairOrigin;
+  unavailableCount?: number;
 };
 
 const COMPARISON_FIELDS = [
@@ -78,15 +79,21 @@ const COMPARISON_FIELDS = [
   },
 ];
 
-export default function CompareClient({ choices, selectedTsubos, origin }: CompareProps) {
+export default function CompareClient({ choices, selectedTsubos, origin, unavailableCount = 0 }: CompareProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const focusResultsAfterNavigation = useRef(false);
   const picker = useRef<HTMLDetailsElement>(null);
+  const swapDialog = useRef<HTMLDialogElement>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingSwapTsubo, setPendingSwapTsubo] = useState<ComparisonChoice | null>(null);
   const [targetReplaceIndex, setTargetReplaceIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const dialog = swapDialog.current;
+    if (pendingSwapTsubo && dialog && !dialog.open) dialog.showModal();
+  }, [pendingSwapTsubo]);
 
   useEffect(() => {
     if (isPending || !focusResultsAfterNavigation.current) return;
@@ -119,7 +126,7 @@ export default function CompareClient({ choices, selectedTsubos, origin }: Compa
   };
 
   // ツボの追加・入れ替えハンドラー
-  const handleSelectTsubo = (tsubo: ComparisonChoice) => {
+  const handleSelectTsubo = (tsubo: ComparisonChoice, trigger: HTMLButtonElement) => {
     if (selectedCodes.includes(tsubo.code)) return;
 
     // 特定の列の「変更」から指定された場合
@@ -131,6 +138,7 @@ export default function CompareClient({ choices, selectedTsubos, origin }: Compa
     }
 
     if (selectedCodes.length >= 3) {
+      trigger.focus({ preventScroll: true });
       setPendingSwapTsubo(tsubo);
       return;
     }
@@ -148,6 +156,9 @@ export default function CompareClient({ choices, selectedTsubos, origin }: Compa
   return (
     <>
       <div className="page-layout page-layout--continuation tsubo-compare-workspace">
+        {unavailableCount > 0 && (
+          <p className="tsubo-compare-empty" role="status">URLで指定されたツボのうち{unavailableCount}穴が見つかりませんでした。名前や経穴コードで探し直せます。</p>
+        )}
         <details className="tsubo-compare-controls atlas-disclosure print:hidden" ref={picker} open={selectedTsubos.length < 2}>
           <summary>{pickerLabel}</summary>
           <section className="tsubo-compare-picker" aria-labelledby="tsubo-compare-picker-title">
@@ -193,7 +204,7 @@ export default function CompareClient({ choices, selectedTsubos, origin }: Compa
                     <button
                       type="button"
                       key={t.id}
-                      onClick={() => handleSelectTsubo(t)}
+                      onClick={event => handleSelectTsubo(t, event.currentTarget)}
                       disabled={isPending || isAlreadySelected}
                     >
                       <span>
@@ -239,7 +250,7 @@ export default function CompareClient({ choices, selectedTsubos, origin }: Compa
         </details>
 
         {selectedTsubos.length === 0 ? (
-          <p className="tsubo-compare-empty">比較するツボが選ばれていません。検索欄や比較例から追加できます。</p>
+          unavailableCount === 0 && <p className="tsubo-compare-empty">比較するツボが選ばれていません。検索欄や比較例から追加できます。</p>
         ) : (
           <section aria-labelledby="tsubo-compare-result-title" aria-busy={isPending}>
             <div className="tsubo-compare-result-heading">
@@ -324,68 +335,34 @@ export default function CompareClient({ choices, selectedTsubos, origin }: Compa
         )}
       </div>
 
-      {/* 3穴選んだ状態で別のツボを追加するときの入れ替え先 */}
-      {pendingSwapTsubo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div role="dialog" aria-modal="true" aria-labelledby="tsubo-compare-swap-title" className="bg-white dark:bg-[#17212A] rounded-3xl max-w-md w-full p-6 border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-2xl space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 id="tsubo-compare-swap-title" className="font-serif text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
-                比較する経穴の入れ替え
-              </h3>
-              <button
-                type="button"
-                aria-label="入れ替えを閉じる"
-                onClick={() => setPendingSwapTsubo(null)}
-                className="p-1.5 rounded-lg text-[#737C77] hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                <X className="w-5 h-5" />
+      <dialog ref={swapDialog} className="tsubo-compare-swap print:hidden" aria-labelledby="tsubo-compare-swap-title" aria-describedby="tsubo-compare-swap-point" onClose={() => setPendingSwapTsubo(null)}>
+        {pendingSwapTsubo && (
+          <div className="tsubo-compare-swap-content">
+            <div className="tsubo-compare-swap-header">
+              <h2 id="tsubo-compare-swap-title">どのツボと入れ替えますか？</h2>
+              <button type="button" aria-label="入れ替えを閉じる" onClick={() => swapDialog.current?.close()}>
+                <X size={20} aria-hidden="true" />
               </button>
             </div>
-
-            <p className="text-xs sm:text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed">
-              新しく「<strong className="text-[#1E3D34] dark:text-[#74BA9E]">{pendingSwapTsubo.name}（{pendingSwapTsubo.code}）</strong>」を追加します。どのツボと入れ替えますか？
-            </p>
-
-            <div className="space-y-2 pt-1">
+            <p id="tsubo-compare-swap-point">追加するツボは<strong>{pendingSwapTsubo.name}（{pendingSwapTsubo.code}）</strong>です。</p>
+            <ul className="tsubo-compare-swap-options" role="list">
               {selectedTsubos.map((current, idx) => (
-                <button
-                  key={current.id}
-                  type="button"
-                  onClick={() => {
+                <li key={current.id}>
+                  <button type="button" onClick={() => {
                     const updated = [...selectedCodes];
                     updated[idx] = pendingSwapTsubo.code;
+                    swapDialog.current?.close();
                     changeSelection(updated, true);
-                  }}
-                  className="w-full p-3.5 rounded-2xl border border-[#D8CFC0] dark:border-[#2A3B4A] hover:border-[#1E3D34] dark:hover:border-[#74BA9E] hover:bg-[#FAF8F5] dark:hover:bg-[#1f2c38] text-left flex items-center justify-between transition-all group"
-                >
-                  <div>
-                    <span className="text-xs text-[#737C77] dark:text-[#8899A6] block">
-                      {idx === 0 ? "左の経穴" : idx === 1 ? "右の経穴" : `第${idx + 1}の経穴`}と入れ替え
-                    </span>
-                    <strong className="font-serif text-sm text-[#232826] dark:text-[#FAF8F5]">
-                      {current.name}（{current.code}）
-                    </strong>
-                  </div>
-                  <span className="text-xs font-bold text-[#1E3D34] dark:text-[#74BA9E] group-hover:underline">
-                    入れ替える ➜
-                  </span>
-                </button>
+                  }}>
+                    {current.name}（{current.code}）と入れ替える<ArrowRight size={16} aria-hidden="true" />
+                  </button>
+                </li>
               ))}
-
-            </div>
-
-            <div className="pt-2 border-t border-[#F2ECE0] dark:border-[#22303D] flex justify-end">
-              <button
-                type="button"
-                onClick={() => setPendingSwapTsubo(null)}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-[#737C77] hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                キャンセル
-              </button>
-            </div>
+            </ul>
+            <button type="button" className="tsubo-compare-swap-cancel" onClick={() => swapDialog.current?.close()}>キャンセル</button>
           </div>
-        </div>
-      )}
+        )}
+      </dialog>
 
     </>
   );

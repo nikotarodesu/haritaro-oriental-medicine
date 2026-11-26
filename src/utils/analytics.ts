@@ -116,7 +116,7 @@ export function publicAnalyticsPath(value: string): string | null {
 /** GA's own site-search measurement can inspect page URLs. Keep result documents out. */
 export function analyticsDocumentPath(pathname: string, hasQuery: boolean): string | null {
   const path = publicAnalyticsPath(pathname);
-  return hasQuery && (path === "/search" || path === "/tsubo" || (path && EXTRA_POINT_PATHS.has(path))) ? null : path;
+  return hasQuery && (path === "/search" || path === "/tsubo" || path === "/tsubo/pairs" || (path && EXTRA_POINT_PATHS.has(path))) ? null : path;
 }
 
 export function setAnalyticsDisabled(disabled: boolean): void {

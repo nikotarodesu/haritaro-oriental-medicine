@@ -61,8 +61,8 @@ for (const vessel of KIKEI_VESSELS) {
   ];
   for (let attempt = 0; attempt < 2; attempt++) {
     if (attempt) {
-      quiz.button('もう一度挑戦する').props.onClick(); quiz.render();
-      assert(quiz.text().includes('現在正答数: 0 / 0 問'), `${vessel.slug}: retry resets score`);
+      quiz.button('もう一度解く').props.onClick(); quiz.render();
+      assert(quiz.text().includes('第1問 ／ 全3問') && !quiz.text().includes('問正解'), `${vessel.slug}: retry resets score`);
       if (quiz.options().map(text).join('|') !== firstOrder) variedRetryOrders++;
     }
     correctTexts.forEach((answer, index) => {
@@ -72,10 +72,10 @@ for (const vessel of KIKEI_VESSELS) {
       assert.equal(matching.length, 1, `${vessel.slug}: exactly one correct option for question ${index + 1}`);
       matching[0].props.onClick(); quiz.render();
       assert(quiz.options().every(option => option.props.disabled), 'Answered choices are locked');
-      assert(quiz.text().includes('正解！見事です'), 'Displayed choice retains its correct answer association');
+      assert(quiz.text().includes('正解です'), 'Displayed choice retains its correct answer association');
       quiz.button(index < 2 ? '次の問題へ進む' : '演習結果を確認する').props.onClick(); quiz.render();
     });
-    assert(quiz.text().includes('正答率: 3 / 3 問正解 (100%)'), `${vessel.slug}: correct scores after shuffle`);
+    assert(quiz.text().includes('3問中3問正解'), `${vessel.slug}: correct scores after shuffle`);
   }
 }
 assert(variedRetryOrders > 0, 'A user retry changes option order');

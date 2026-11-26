@@ -12,6 +12,7 @@ import PublicLectureSections, { PublicLectureLinks } from "@/components/curricul
 import ReadingUnitCheck from "@/components/curriculum/ReadingUnitCheck";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
+import ReviewLectureReturnLink from "@/components/learning/ReviewLectureReturnLink";
 import ReadingContents from "@/components/reading/ReadingContents";
 import ReadingSequence from "@/components/reading/ReadingSequence";
 import { pageSocialMetadata, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
@@ -225,6 +226,13 @@ export default async function ReadingLecturePage({ params }: Props) {
           <ul className="lecture-takeaways">
             {revision.takeaways.map(takeaway => <li key={takeaway}>{takeaway}</li>)}
           </ul>
+          <Suspense fallback={
+            <ContentNavigationLink href="/learn/review#learning-review" placement="reading_unit_review" className="ui-text-link inline-flex min-h-11 items-center">
+              間違えた問題を復習する
+            </ContentNavigationLink>
+          }>
+            <ReviewLectureReturnLink />
+          </Suspense>
           <details id="lecture-check" className="lecture-check" open>
             <summary>
               <span>確認問題</span>
@@ -234,9 +242,6 @@ export default async function ReadingLecturePage({ params }: Props) {
             <p className="text-sm ui-muted">講義「{unit.title}」の確認問題です。答えを選ぶと解説が表示されます。</p>
             <ReadingUnitCheck key={unit.slug} unitId={unit.slug} questions={questions} />
           </details>
-          <ContentNavigationLink href="/learn/review#learning-review" placement="reading_unit_review" className="ui-text-link inline-flex min-h-11 items-center">
-            間違えた問題を復習する
-          </ContentNavigationLink>
         </section>
 
         {practice && (

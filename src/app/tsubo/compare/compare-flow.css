@@ -59,6 +59,42 @@
 .tsubo-compare-page .tsubo-compare-case > p { font-size: .9375rem; line-height: 1.7; }
 .tsubo-compare-page .tsubo-compare-print { margin-top: .75rem; }
 
+.tsubo-compare-swap {
+  width: min(calc(100% - 1.5rem), 28rem);
+  max-height: calc(100dvh - 1.5rem);
+  margin: auto;
+  padding: clamp(.75rem, 4vw, 1.5rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--atlas-line);
+  border-radius: var(--radius-control);
+  background: var(--atlas-paper);
+  color: var(--atlas-ink);
+}
+
+.tsubo-compare-swap::backdrop { background: rgb(0 0 0 / .58); }
+.tsubo-compare-swap-content, .tsubo-compare-swap-options { display: grid; gap: .5rem; }
+.tsubo-compare-swap-header { display: flex; align-items: center; justify-content: space-between; gap: .375rem; }
+.tsubo-compare-swap-header h2 { font-size: 1.125rem; font-weight: 700; }
+.tsubo-compare-swap-content > p { font-size: .9375rem; }
+.tsubo-compare-swap button { min-height: 2.75rem; color: var(--atlas-accent); }
+.tsubo-compare-swap-header button { display: grid; flex: none; min-width: 2.75rem; place-items: center; }
+.tsubo-compare-swap-options button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding-inline: .625rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .5rem;
+  text-align: start;
+}
+.tsubo-compare-swap button:hover { background: var(--atlas-soft); }
+.tsubo-compare-swap button:focus-visible { outline: 2px solid var(--atlas-accent); outline-offset: 2px; }
+.tsubo-compare-swap-options svg { flex: none; }
+.tsubo-compare-swap-cancel { justify-self: end; padding-inline: .625rem; text-decoration: underline; }
+
 @media (min-width: 540px) {
   .tsubo-compare-page .tsubo-compare-position-grid[data-points="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

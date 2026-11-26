@@ -106,7 +106,7 @@ const { ACUPOINT_PAIRS_PATH, featuredPairs, featuredPairPreview } = load('src/da
 const { ATLAS_POINT_MARKERS } = load('src/data/tsubo/atlas/markers');
 const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
 const { ATLAS_SELF_CARE } = load('src/data/tsubo/atlas/selfCare');
-const pairRevised = new Set([ACUPOINT_PAIRS_PATH, ...featuredPairs.flatMap(pair => pair.pointIds.map(code => `/tsubo/${code}`))]);
+const pairRevised = new Set(featuredPairs.flatMap(pair => pair.pointIds.map(code => `/tsubo/${code}`)));
 const selfCareRevised = new Set(Object.keys(ATLAS_SELF_CARE).map(code => `/tsubo/${code}`));
 assert.equal(featuredPairPreview.length, 4);
 assert(featuredPairs.length > featuredPairPreview.length, 'The directory includes more examples than the atlas preview');
@@ -129,17 +129,17 @@ for (const pathname of selfCareRevised) {
 for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.href)]) {
   assert.equal(dateAt(pathname), '2026-11-25', pathname + ' has its own sitemap entry');
 }
-assert.equal(dateAt('/learn/review'), '2026-11-20');
+const { KIKEI_VESSELS } = load('src/data/kikeiData');
 assert.equal(dateAt('/learn/essentials'), '2026-11-24');
-for (const pathname of ['/articles', `/articles/${fourCommandReview}`, '/glossary']) assert.equal(dateAt(pathname), '2026-11-25', pathname);
+for (const pathname of ['/articles', `/articles/${fourCommandReview}`]) assert.equal(dateAt(pathname), '2026-11-25', pathname);
 const { SYMPTOMS } = load('src/data/symptomData');
-for (const pathname of ['/cases', '/updates', '/learn', '/diagnosis', '/library', '/symptoms', ...SYMPTOMS.map(guide => '/symptoms/' + guide.id)]) {
+for (const pathname of [ACUPOINT_PAIRS_PATH, '/learn/review', '/tsubo/compare', '/glossary', '/kikei', ...KIKEI_VESSELS.map(vessel => '/kikei/' + vessel.slug), '/cases', '/updates', '/learn', '/diagnosis', '/library', '/symptoms', ...SYMPTOMS.map(guide => '/symptoms/' + guide.id)]) {
   assert.equal(dateAt(pathname), '2026-11-26', pathname);
 }
 for (const pathname of [
   '/', '/about', '/curriculum',
   '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research',
-  '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei',
+  '/clinical', '/simulator', '/safety', '/practice/haiketsu',
   '/tsubo/cv21', '/cases/case-01-headache-liver-fire',
 ]) assert.equal(dateAt(pathname), '2026-11-25', pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');

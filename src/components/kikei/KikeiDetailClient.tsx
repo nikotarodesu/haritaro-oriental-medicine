@@ -1,7 +1,8 @@
 import Link from "next/link";
+import PageBreadcrumb from "@/components/design/PageBreadcrumb";
+import { getKikeiPathway } from "@/data/kikeiPathways";
 import PageIntro from "@/components/design/PageIntro";
 import { 
-  ArrowLeft, 
   BookOpen, 
   Compass, 
 } from "lucide-react";
@@ -16,26 +17,14 @@ interface Props {
 export default function KikeiDetailClient({ vessel }: Props) {
   return (
     <div className="min-h-screen bg-[#FAF8F5] dark:bg-[#10161C] text-[#232826] dark:text-[#FAF8F5]">
-      {/* ナビゲーションバー */}
-      <div className="bg-white dark:bg-[#17212A] border-b border-[#E5DEC9] dark:border-[#2A3B4A] sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <Link
-            href="/kikei"
-            className="inline-flex min-h-11 items-center gap-1.5 text-sm font-bold text-[#737C77] dark:text-[#8899A6] hover:text-[#232826] dark:hover:text-[#FAF8F5] transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>奇経八脈一覧へ</span>
-          </Link>
-
-        </div>
-      </div>
-
       <div className="page-layout page-layout--reading space-y-8">
-        
+        <PageBreadcrumb items={[{ href: "/kikei", name: "奇経八脈" }, { href: "/kikei/" + vessel.slug, name: vessel.name }]} hideCurrent />
         <section className="space-y-5">
-          <PageIntro compact eyebrow={vessel.category} title={vessel.name} art="points" description={<><span className="block text-sm">{vessel.reading}{vessel.pointsCount ? ' ・ 固有穴 ' + vessel.pointsCount + '穴' : ''}</span><span className="mt-2 block">{vessel.nature}</span></>} />
+          <PageIntro compact eyebrow={vessel.category} title={vessel.name} art="points" description={<><span className="block text-sm">{vessel.reading}{vessel.pointsCount ? ' ・ 固有穴 ' + vessel.pointsCount + '穴' : ''}</span><span className="mt-2 block">{vessel.nature}</span></>}>
+            <div className="page-actions"><a href="#kikei-pathway" className="page-primary-action">流注図を見る</a><a href="#kikei-quiz" className="page-secondary-action">確認問題を解く</a></div>
+          </PageIntro>
           {/* 八脈交会穴ハイライトボックス */}
-          <div className="bg-[#FAF8F5] dark:bg-[#121920] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 mt-4">
+          <div id="kikei-meeting-points" className="scroll-mt-28 bg-[#FAF8F5] dark:bg-[#121920] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 mt-4">
             <div className="flex items-center gap-2 mb-2">
               <Compass className="w-4 h-4 text-[#B86924]" />
               <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] uppercase tracking-wider">
@@ -44,7 +33,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="bg-white dark:bg-[#17212A] p-3 rounded-lg border border-[#E5DEC9] dark:border-[#2A3B4A]">
-                <span className="text-xs text-[#737C77] block">{vessel.name}に対応するツボ</span>
+                <span className="text-xs text-muted block">{vessel.name}に対応するツボ</span>
                 <Link className="text-base font-bold text-[#1E3D34] underline dark:text-[#74BA9E]" href={"/tsubo/" + vessel.masterPoint.code.toLowerCase() + "#acupoint-location"}>{vessel.masterPoint.name}</Link>
                 <span className="text-xs text-[#737C77] ml-1">({vessel.masterPoint.meridian} / {vessel.masterPoint.code})</span>
               </div>
@@ -56,12 +45,13 @@ export default function KikeiDetailClient({ vessel }: Props) {
             </div>
             <p className="text-xs text-[#59615D] dark:text-[#96A6B2] mt-3">
               古典で関連づける部位　<strong>{vessel.pairTargetArea}</strong>
+              <Link href="/library#classic-classic-taisei-hachimyaku" className="ml-2 inline-flex min-h-11 items-center text-accent underline underline-offset-4">『鍼灸大成』の八脈交会穴の歌を読む</Link>
             </p>
           </div>
         </section>
 
         {/* 流注SVGダイアグラム */}
-        <KikeiPathwaySvg vessel={vessel} />
+        <KikeiPathwaySvg vessel={vessel} config={getKikeiPathway(vessel.slug)} />
 
         {vessel.pointsList && vessel.pointsList.length > 0 && (
           <section className="space-y-2 rounded-2xl border border-frame bg-card p-5">
@@ -73,7 +63,7 @@ export default function KikeiDetailClient({ vessel }: Props) {
         )}
 
         {/* 古典条文（難経・素問） */}
-        <div className="bg-[#FAF8F5] dark:bg-[#151D25] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
+        <div id="kikei-classic" className="scroll-mt-28 bg-[#FAF8F5] dark:bg-[#151D25] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-6 sm:p-8 space-y-4">
           <div className="flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-[#B86924]" />
             <h2 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">

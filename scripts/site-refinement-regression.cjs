@@ -251,10 +251,22 @@ for (const pair of ATLAS_LEARNING_PAIRS) {
 }
 
 const Vessel = component('src/components/kikei/KikeiDetailClient.tsx');
+const Pathway = component('src/components/kikei/KikeiPathwaySvg.tsx');
+const { getKikeiPathway } = load('src/data/kikeiPathways');
 assert.equal(KIKEI_VESSELS.length, 8);
 for (const vessel of KIKEI_VESSELS) {
   const html = renderToStaticMarkup(React.createElement(Vessel, { vessel }));
   assert(html.includes('data-test="pathway"') && html.includes('data-test="quiz"'), vessel.slug);
+  const config = getKikeiPathway(vessel.slug);
+  const figure = renderToStaticMarkup(React.createElement(Pathway, { vessel, config }));
+  assert(config.nodes.length >= 2);
+  for (const node of config.nodes) {
+    const label = node.code ? node.name + '（' + node.code + '）' : node.name;
+    const legend = node.code === vessel.masterPoint.code ? 'kikei-meeting-legend' : 'kikei-landmark-legend';
+    assert(figure.includes('id="' + legend + '"'));
+    assert(figure.includes('aria-label="' + label + '" aria-describedby="' + legend + '"'), label);
+  }
+  if (vessel.slug === 'toku') assert(figure.includes('aria-label="百会（GV20）" aria-describedby="kikei-landmark-legend"'));
 }
 
 const prescription = renderToStaticMarkup(React.createElement(component('src/app/practice/haiketsu/page.tsx')));

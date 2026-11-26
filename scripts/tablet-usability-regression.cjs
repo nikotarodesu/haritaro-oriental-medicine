@@ -148,6 +148,8 @@ const TSUBOS = [
 const comparisonSelection = load('src/app/tsubo/compare/selection');
 let comparisonHref = '/tsubo/compare';
 let comparisonFocus;
+const swap = () => nodes(compare.tree()).find(node => node.type === 'dialog');
+const dialog = { open: false, showModal() { this.open = true; }, close() { this.open = false; swap().props.onClose(); } };
 const comparisonRouter = { replace(href, options) { assert.equal(options.scroll, false); comparisonHref = href; } };
 const AtlasLocationCheck = () => null;
 const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
@@ -159,13 +161,14 @@ const compare = client('src/app/tsubo/compare/CompareClient.tsx', {
   '@/data/tsubo/atlas/practiceReviews': load('src/data/tsubo/atlas/practiceReviews'),
   '@/components/tsubo/atlas/AtlasLocationCheck': { __esModule: true, default: AtlasLocationCheck },
   '@/utils/search': load('src/utils/search'),
-}, { window: { print() {} }, document: { getElementById: id => ({ focus() { comparisonFocus = id; } }) },
+}, { window: { print() {} }, document: { getElementById: id => ({ focus() { comparisonFocus = id; } }) }, elementFor: node => node.type === 'dialog' ? dialog : {},
 });
 const renderComparison = (href = comparisonHref) => {
   comparisonHref = href;
   const params = Object.fromEntries(new URL(href, 'https://www.haritaro.jp').searchParams);
-  const selectedTsubos = Array.from(comparisonSelection.resolveComparisonCodes(params, TSUBOS), code => TSUBOS.find(point => point.code === code));
-  compare.render({ choices: TSUBOS, selectedTsubos });
+  const { codes, unavailableCount } = comparisonSelection.resolveComparisonSelection(params, TSUBOS);
+  const selectedTsubos = Array.from(codes, code => TSUBOS.find(point => point.code === code));
+  compare.render({ choices: TSUBOS, selectedTsubos, unavailableCount });
 };
 renderComparison();
 const scroll = () => nodes(compare.tree()).find(node => node.props?.className === 'tsubo-compare-scroll');
@@ -220,7 +223,7 @@ assert.equal(new URL(fullAtlasLookup.props.href, 'https://www.haritaro.jp').sear
 compare.button('合谷を変更').props.onClick(); renderComparison();
 assert.equal(comparisonFocus, 'compare-search-input', 'Changing a selected point focuses the search input');
 compareInput().props.onChange({ target: { value: 'ＳＴ３６' } }); renderComparison();
-compare.button('足三里ST36 / 検証経絡').props.onClick(); renderComparison();
+compare.button('足三里ST36 / 検証経絡').props.onClick({ currentTarget: { focus() {} } }); renderComparison();
 assert.equal(comparisonHref, '/tsubo/compare?a=st36&b=lr3', 'Replacing a selected point preserves its column and updates the bookmark URL');
 assert.equal(comparisonFocus, 'tsubo-compare-result-title', 'Replacing a point focuses the updated result');
 renderComparison('/tsubo/compare');
@@ -258,6 +261,26 @@ assert(text(positionGrid()).includes(atlasLocations.getAtlasLocationSimple('st36
 assert(!text(positionGrid()).includes('旧版の部位説明'));
 assert(nodes(positionGrid()).some(node => node.type === Link && node.props.href === '/tsubo/gv20#acupoint-location'));
 assert(nodes(positionGrid()).some(node => node.type === Link && node.props.href === '/tsubo/st36#acupoint-location'));
+
+renderComparison('/tsubo/compare?a=li4&b=lr3&c=st36');
+compareInput().props.onChange({ target: { value: 'GV20' } }); renderComparison();
+const fourthCandidate = { currentTarget: { focus() { comparisonFocus = 'GV20-result'; } } };
+compare.button('百会GV20 / 検証経絡').props.onClick(fourthCandidate); renderComparison();
+assert(dialog.open, 'Choosing a fourth point opens a native modal');
+assert.equal(comparisonFocus, 'GV20-result', 'The native dialog has a named trigger to restore');
+assert(text(swap()).includes('百会（GV20）'));
+compare.button('キャンセル').props.onClick(); renderComparison();
+assert(!dialog.open && comparisonHref === '/tsubo/compare?a=li4&b=lr3&c=st36', 'Cancel preserves the comparison and its address');
+compare.button('百会GV20 / 検証経絡').props.onClick(fourthCandidate); renderComparison();
+compare.button('太衝（LR3）と入れ替える').props.onClick(); renderComparison();
+assert(!dialog.open && comparisonHref === '/tsubo/compare?a=li4&b=gv20&c=st36', 'Confirmed replacement changes only the chosen position');
+assert.equal(comparisonFocus, 'tsubo-compare-result-title', 'The updated comparison regains focus');
+renderComparison('/tsubo/compare?a=LI99');
+assert(!positionGrid() && comparePicker().props.open, 'An explicit unknown code does not silently open the example comparison');
+assert(text(compare.tree()).includes('URLで指定されたツボのうち1穴が見つかりませんでした。'));
+renderComparison('/tsubo/compare?a=lr3&b=LI99&c=ST36');
+assert.deepEqual(nodes(positionGrid()).filter(node => node.type === 'svg').map(node => node.props['aria-label']), ['太衝', '足三里']);
+assert(text(compare.tree()).includes('URLで指定されたツボのうち1穴が見つかりませんでした。'));
 
 const publicAtlas = load('src/data/acupointLookup');
 const gorou = client('src/components/GorouWorkstyleChecker.tsx', {
