@@ -265,7 +265,7 @@ export default function AboutPage() {
             href="/tsubo"
             className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#FFFFFF] dark:bg-[#17212A] border border-[#D5CCBC] dark:border-[#2A3B4A] text-[#232826] dark:text-[#E6EFEA] text-sm font-semibold hover:bg-[#FAF8F5] dark:hover:bg-[#1E2B36] text-center"
           >
-            経穴データベースを調べる
+            ツボ図鑑で調べる
           </Link>
         </div>
       </div>

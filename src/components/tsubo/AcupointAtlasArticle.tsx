@@ -16,6 +16,7 @@ import NearbyPointComparison from "./atlas/NearbyPointComparison";
 import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
 import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
+import { whoLocationNotes } from "@/data/tsubo/atlas/whoLocations";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
@@ -44,6 +45,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   const firstComparison = nearbyComparisons[0];
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
+  const locationNotes = article.expert.filter((paragraph) => paragraph !== whoLocationNotes[point.codeLower]);
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
@@ -57,10 +59,10 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <h2 className={headingClass}>場所と見つけ方</h2>
         <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
           <WhoPointLocation code={point.codeLower} pointName={point.name} />
-          {!hasIndividualAnatomy && article.expert.length > 0 && (
+          {!hasIndividualAnatomy && locationNotes.length > 0 && (
             <div className="atlas-location-expert">
               <h3>位置図の補足</h3>
-              <Paragraphs paragraphs={article.expert} />
+              <Paragraphs paragraphs={locationNotes} />
             </div>
           )}
         </PointAtlasDiagrams>
