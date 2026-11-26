@@ -8,11 +8,11 @@ const { renderToStaticMarkup } = require('react-dom/server');
 const { createDataLoader } = require('./data-loader.cjs');
 
 const load = createDataLoader();
-const { CLINICAL_CASES } = load('src/data/clinicalCasesData');
+const { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } = load('src/data/clinicalCasesData');
 const { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } = load('src/utils/caseStudyProgress');
 const { CASE_COURSE_READING_HREF, caseReviewLectureHref, caseReviewReturnHref, isReadingFromCaseCourse } = load('src/utils/caseStudyNavigation');
 const { KNEE_POINT_COMPARISON_HREF } = load('src/config/acupunctureLearning');
-const { CASE_STUDY_DESCRIPTORS, PUBLIC_CASE_STUDY_IDS, getCaseStudyUsingAcupoint } = load('src/data/cases/caseStudyCatalog');
+const { CASE_STUDY_DESCRIPTORS, CASE_STUDY_ORDER, PUBLIC_CASE_STUDY_IDS, getCaseStudyUsingAcupoint } = load('src/data/cases/caseStudyCatalog');
 const { ATLAS_LEARNING_PAIRS, getAtlasLearningPair } = load('src/data/tsubo/atlas/learningPairs');
 const { ATLAS_STUDY_ROUTES, atlasStudyExercise, KNEE_ATLAS_STUDY_ROUTE } = load('src/data/tsubo/atlas/studyRoutes');
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
@@ -59,6 +59,7 @@ function component(file, exportName = 'default') {
       if (id === '@/utils/analytics') return { trackEvent() {} };
       if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: learningValues, status: 'local', setEntry() {} }) };
       if (id === './CaseStudyReview') return { __esModule: true, default: component('src/components/cases/CaseStudyReview.tsx') };
+      if (id === './CaseCatalogNavigation') return { __esModule: true, default: component('src/components/cases/CaseCatalogNavigation.tsx') };
       if (id === './CaseQuestionReferences') return { __esModule: true, default: component('src/components/cases/CaseQuestionReferences.tsx'), CaseHistoryContent: component('src/components/cases/CaseQuestionReferences.tsx', 'CaseHistoryContent') };
       if (id === './CaseComplaintFigure') return { __esModule: true, default: component('src/components/cases/CaseComplaintFigure.tsx') };
       if (id === './CaseObservationFigure') return { __esModule: true, default: component('src/components/cases/CaseObservationFigure.tsx') };
@@ -89,13 +90,27 @@ assert.equal(comparisonReading.hash, '#part-lecture-treatment-1-section-2');
 caseCatalogSearch = 'symptom=fatigue';
 const fatigueIndex = renderToStaticMarkup(React.createElement(component('src/app/cases/page.tsx')));
 assert(fatigueIndex.includes('aria-pressed="true"') && fatigueIndex.includes('2件の症例'));
-assert(fatigueIndex.includes('href="/cases/case-02-fatigue-spleen-deficiency"'));
+assert(fatigueIndex.includes('href="/cases/case-02-fatigue-spleen-deficiency?symptom=fatigue"'));
 assert(!fatigueIndex.includes('href="/cases/case-20-bells-palsy"'));
 caseCatalogSearch = '';
 const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
+const CaseCatalogNavigation = component('src/components/cases/CaseCatalogNavigation.tsx');
 const CaseObservationFigure = component('src/components/cases/CaseObservationFigure.tsx');
 assert.equal(CLINICAL_CASES.length, 20);
 assert.equal(CASE_STUDY_DESCRIPTORS.length, CLINICAL_CASES.length);
+assert.equal(CASE_STUDY_ORDER.length, CLINICAL_CASES.length);
+assert(CASE_STUDY_ORDER.every(item => Object.keys(item).length === 2 && item.id && item.caseNumber), 'Navigation gets ids and numbers only');
+const navigationFor = (caseNumber) => renderToStaticMarkup(React.createElement(CaseCatalogNavigation, {
+  caseId: CASE_STUDY_ORDER.find(item => item.caseNumber === caseNumber).id,
+  caseOrder: CASE_STUDY_ORDER,
+}));
+assert.match(navigationFor(11), /case-12-orthostatic-hypotension"[^>]*>.*?次の症例へ（症例12）/);
+caseCatalogSearch = 'symptom=movement';
+assert.match(navigationFor(11), /case-14-knee-osteoarthritis\?symptom=movement"[^>]*>.*?同じ分類の次の症例へ（症例14）/);
+assert.match(navigationFor(14), /case-18-severe-eyestrain\?symptom=movement"/);
+assert.doesNotMatch(navigationFor(18), /次の症例へ/);
+assert.match(navigationFor(18), /href="\/cases\?symptom=movement#case-catalog"/);
+caseCatalogSearch = '';
 const histories = CLINICAL_CASES.map(({ patient }) => patient.historyOfPresentIllness);
 assert.equal(histories.filter(history => typeof history !== 'string' && !('kind' in history)).length, 13);
 assert.equal(histories.filter(history => typeof history !== 'string' && 'kind' in history).length, 7);
@@ -109,8 +124,14 @@ for (const clinicalCase of CLINICAL_CASES) {
   const readingUrl = new URL(readingHref, 'https://www.haritaro.jp');
   assert.equal(readingUrl.hash, '#part-lecture-diagnosis-1');
   assert.equal(caseReviewReturnHref(readingUrl.searchParams, PUBLIC_CASE_STUDY_IDS), '/cases/' + clinicalCase.id + '#case-practice-review');
-  const viewer = React.createElement(CaseViewer, { clinicalCase, reviewResources: { readingHref } });
+  const viewer = React.createElement(CaseViewer, {
+    clinicalCase,
+    reviewResources: { readingHref },
+    caseOrder: CASE_STUDY_ORDER,
+    safety: { ...CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id], scope: CLINICAL_CASE_SCOPE },
+  });
   const html = renderToStaticMarkup(viewer);
+  assert(html.includes('href="/cases#case-catalog"'), clinicalCase.id + ': the unfiltered return links to the catalog');
   for (const step of clinicalCase.reasoningSteps) {
     if (step.termNote) assert(html.includes(step.termNote), clinicalCase.id + ' explains the term before answering');
     if (step.studyLink) assert(html.includes('href="' + step.studyLink.href + '"'), clinicalCase.id + ' links to the relevant diagram');
@@ -180,6 +201,10 @@ for (const clinicalCase of CLINICAL_CASES) {
   learningValues = values;
   const completedHtml = renderToStaticMarkup(viewer);
   assert(completedHtml.includes('id="case-practice-review"') && completedHtml.includes('href="#case-question-1"'), clinicalCase.id);
+  const answeredOption = steps[0].options.find(option => option.id === values[caseStudyAnswerKey(clinicalCase.id, steps[0].stepNumber)].optionId);
+  const feedbackId = `case-question-${steps[0].stepNumber}-${answeredOption.id}-feedback`;
+  assert(completedHtml.includes(`aria-describedby="${feedbackId}"`));
+  assert(completedHtml.includes(`id="${feedbackId}" role="status"`), clinicalCase.id + ': reasoning feedback has a separate live region');
   assert(completedHtml.includes('href="' + readingHref + '"'), clinicalCase.id);
   assert(!completedHtml.includes('href="#case-question-2"'), clinicalCase.id);
   learningValues = {};

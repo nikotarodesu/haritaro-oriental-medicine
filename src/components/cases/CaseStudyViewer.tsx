@@ -5,7 +5,6 @@ import Link from "next/link";
 import { 
   CheckCircle2, 
   XCircle, 
-  ArrowRight, 
   ChevronRight, 
   Eye,
   Hand,
@@ -20,19 +19,18 @@ import {
   User as UserIcon,
   Layers
 } from "lucide-react";
-import type { CaseReasoningStep, ClinicalCase } from "@/types/clinicalCase";
-import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
+import type { CaseReasoningStep, CaseSafetyGuidance, ClinicalCase } from "@/types/clinicalCase";
 import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
-import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
 import { SlidersHorizontal, FlaskConical } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
 import { useLearningSync } from "@/contexts/LearningSyncContext";
 import { getLearningStorageAdapter } from "@/utils/learningStorageBridge";
-import { CASE_REASONING_ANCHOR, CASE_REVIEW_ANCHOR, caseQuestionAnchor } from "@/utils/caseStudyNavigation";
+import { CASE_REASONING_ANCHOR, CASE_REVIEW_ANCHOR, caseQuestionAnchor, type CaseCatalogPosition } from "@/utils/caseStudyNavigation";
 import { casePracticeReviewQuestion } from "@/utils/casePracticeReview";
 import { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } from "@/utils/caseStudyProgress";
 import { CASE_RETRY_PARAM, PRACTICE_REVIEW_HREF, recordPracticeReviewAnswer } from "@/utils/practiceReview";
 import CaseQuestionReferences, { CaseHistoryContent } from "./CaseQuestionReferences";
+import CaseCatalogNavigation from "./CaseCatalogNavigation";
 import CaseComplaintFigure from "./CaseComplaintFigure";
 import CaseObservationFigure from "./CaseObservationFigure";
 import CaseStudyReview, { type CaseStudyReviewResources } from "./CaseStudyReview";
@@ -57,7 +55,13 @@ function focusCaseAnchor(anchor: string) {
   target?.focus({ preventScroll: true });
 }
 
-export default function CaseStudyViewer({ clinicalCase, reviewResources }: { clinicalCase: ClinicalCase; reviewResources: CaseStudyReviewResources }) {
+export default function CaseStudyViewer({ clinicalCase, reviewResources, caseOrder, safety, simulatorHref }: {
+  clinicalCase: ClinicalCase;
+  reviewResources: CaseStudyReviewResources;
+  caseOrder: readonly CaseCatalogPosition[];
+  safety: CaseSafetyGuidance & { scope: string };
+  simulatorHref?: string;
+}) {
 
 
   // 四診タブ選択
@@ -68,11 +72,9 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
   const progress = getCaseStudyProgress(values, clinicalCase);
   const [showExplanation, setShowExplanation] = useState(false);
   const [retry, setRetry] = useState<{ stepNumber: number; optionId?: string } | null>(null);
-  const [activeAnchor, setActiveAnchor] = useState("");
   const retryStep = retry?.stepNumber;
   const history = clinicalCase.patient.historyOfPresentIllness;
   const observations = clinicalCase.clinicalExplanation.observations;
-  const safety = CLINICAL_CASE_SAFETY_GUIDANCE[clinicalCase.id];
 
   useEffect(() => {
     function openLinkedSafety() {
@@ -90,7 +92,6 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
       cancelAnimationFrame(frame);
       const anchor = window.location.hash.slice(1);
       frame = requestAnimationFrame(() => {
-        setActiveAnchor(anchor);
         if (anchor === CASE_REVIEW_ANCHOR) {
           focusCaseAnchor(progress.complete ? CASE_REVIEW_ANCHOR : CASE_REASONING_ANCHOR);
         }
@@ -189,7 +190,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
             </ul>
             <div className="border-t border-divider pt-3 text-muted">
               <p className="font-semibold text-ink">この演習で扱う範囲</p>
-              <p>{CLINICAL_CASE_SCOPE}</p>
+              <p>{safety.scope}</p>
             </div>
           </div>
         </details>
@@ -389,44 +390,48 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                   </Link>
                 )}
                 {step.termNote && <p className="text-sm leading-relaxed text-muted">{step.termNote}</p>}
-                <p className="text-base leading-[1.8] text-ink">
+                <p id={`${anchor}-prompt`} className="text-base leading-[1.8] text-ink">
                   {step.question}
                 </p>
 
-                <div className="space-y-2 pt-1">
+                <div role="group" aria-labelledby={`${anchor}-prompt`} className="space-y-2 pt-1">
                   {step.options.map((opt) => {
                     const isSelected = selected === opt.id;
+                    const feedbackId = `${anchor}-${opt.id}-feedback`;
                     return (
-                      <button
-                        key={opt.id}
-                        type="button"
-                        disabled={!ready}
-                        aria-pressed={isSelected}
-                        onClick={() => handleSelectOption(step, opt.id, Date.now())}
-                        className={`flex min-h-11 w-full cursor-pointer items-start gap-2.5 rounded-lg border p-3 text-left text-base leading-[1.65] ${
-                          isSelected
-                            ? opt.isCorrect
-                              ? "bg-green-50 dark:bg-green-950/40 border-green-500 text-green-900 dark:text-green-200 font-bold"
-                              : "bg-red-50 dark:bg-red-950/40 border-red-500 text-red-900 dark:text-red-200"
-                            : "border-field bg-panel text-ink hover:border-accent"
-                        }`}
-                      >
-                        <span aria-hidden="true" className="mt-1 shrink-0">
-                          {isSelected ? (
-                            opt.isCorrect ? <CheckCircle2 className="h-4 w-4 text-green-700 dark:text-green-300" /> : <XCircle className="h-4 w-4 text-red-700 dark:text-red-300" />
-                          ) : (
-                            <span className="inline-block h-4 w-4 rounded-full border border-field" />
-                          )}
-                        </span>
-                        <span className="min-w-0 space-y-1">
-                          <span>{opt.label}</span>
+                      <div key={opt.id}>
+                        <button
+                          type="button"
+                          disabled={!ready}
+                          aria-pressed={isSelected}
+                          aria-describedby={isSelected ? feedbackId : undefined}
+                          onClick={() => handleSelectOption(step, opt.id, Date.now())}
+                          className={`flex min-h-11 w-full cursor-pointer items-start gap-2.5 rounded-lg border p-3 text-left text-base leading-[1.65] ${
+                            isSelected
+                              ? opt.isCorrect
+                                ? "bg-green-50 dark:bg-green-950/40 border-green-500 text-green-900 dark:text-green-200 font-bold"
+                                : "bg-red-50 dark:bg-red-950/40 border-red-500 text-red-900 dark:text-red-200"
+                              : "border-field bg-panel text-ink hover:border-accent"
+                          }`}
+                        >
+                          <span aria-hidden="true" className="mt-1 shrink-0">
+                            {isSelected ? (
+                              opt.isCorrect ? <CheckCircle2 className="h-4 w-4 text-green-700 dark:text-green-300" /> : <XCircle className="h-4 w-4 text-red-700 dark:text-red-300" />
+                            ) : (
+                              <span className="inline-block h-4 w-4 rounded-full border border-field" />
+                            )}
+                          </span>
+                          <span className="min-w-0">{opt.label}</span>
+                        </button>
+                        <div id={feedbackId} role="status">
                           {isSelected && (
-                            <span className="block text-sm font-normal leading-[1.75]">
-                              <strong>{opt.isCorrect ? "正解" : "解説"}</strong>　{opt.feedback}
-                            </span>
+                            <p className="mt-2 rounded-lg border-s-2 border-frame bg-page px-3 py-2 text-sm leading-[1.75]">
+                              <strong className="block">{opt.isCorrect ? "正解" : "解答例と異なります"}</strong>
+                              {opt.feedback}
+                            </p>
                           )}
-                        </span>
-                      </button>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -600,27 +605,23 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                 </h4>
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {(() => {
-                  const simPreset = getCaseSimulatorPreset(clinicalCase.id);
-                  if (!simPreset) return null;
-                  return (
-                    <Link
-                      href={buildSimulatorUrlFromCase(simPreset)}
-                      className="group block space-y-1 rounded-lg border border-frame bg-panel-selected p-3.5 text-left hover:border-accent"
-                    >
-                      <div className="flex items-center justify-between text-xs font-bold text-accent">
-                        <span className="flex items-center gap-1">
-                          <FlaskConical className="w-3.5 h-3.5 text-warm" />
-                          <span>症例の条件を入れて候補を比べる</span>
-                        </span>
-                        <SlidersHorizontal className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
-                      </div>
-                      <p className="text-xs text-muted">
-                        寒熱や虚実などの条件を変え、候補と配穴の例がどう変わるかを見ます。
-                      </p>
-                    </Link>
-                  );
-                })()}
+                {simulatorHref && (
+                  <Link
+                    href={simulatorHref}
+                    className="group block space-y-1 rounded-lg border border-frame bg-panel-selected p-3.5 text-left hover:border-accent"
+                  >
+                    <div className="flex items-center justify-between text-xs font-bold text-accent">
+                      <span className="flex items-center gap-1">
+                        <FlaskConical className="w-3.5 h-3.5 text-warm" />
+                        <span>症例の条件を入れて候補を比べる</span>
+                      </span>
+                      <SlidersHorizontal className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                    </div>
+                    <p className="text-xs text-muted">
+                      寒熱や虚実などの条件を変え、候補と配穴の例がどう変わるかを見ます。
+                    </p>
+                  </Link>
+                )}
 
                 <Link
                   href="/curriculum"
@@ -641,29 +642,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
         </section>
       )}
 
-      {/* フッターナビゲーション */}
-      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 border-t border-divider pt-4">
-        <Link
-          href="/cases"
-          className="ui-text-link inline-flex min-h-11 items-center text-sm font-semibold"
-        >
-          <span>模擬症例を一覧で見る</span>
-        </Link>
-        {(() => {
-          const currentIdx = CLINICAL_CASES.findIndex((c) => c.id === clinicalCase.id);
-          const nextC = currentIdx >= 0 && currentIdx < CLINICAL_CASES.length - 1 ? CLINICAL_CASES[currentIdx + 1] : null;
-          if (!nextC) return null;
-          return (
-            <Link
-              href={`/cases/${nextC.id}`}
-              className="page-primary-action group"
-            >
-              <span>次の症例へ（症例{nextC.caseNumber}）</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-          );
-        })()}
-      </div>
+      <CaseCatalogNavigation caseId={clinicalCase.id} caseOrder={caseOrder} />
 
     </div>
   );

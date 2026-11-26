@@ -1,48 +1,52 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Fragment, Suspense, type ReactNode } from "react";
+import { ArrowRight } from "lucide-react";
+import { Suspense } from "react";
+import type { CasePatientProfile, ClinicalCase } from "@/types/clinicalCase";
+import { CASE_CATALOG_FILTERS, caseCatalogFilter, caseHrefWithSymptom, filterCaseCatalog } from "@/utils/caseStudyNavigation";
 
-type CatalogEntry = { caseNumber: number; card: ReactNode };
+type CatalogEntry = Pick<ClinicalCase, "id" | "caseNumber" | "title" | "difficulty">
+  & Pick<CasePatientProfile, "age" | "gender" | "chiefComplaint">;
 
-const symptomGroups: readonly { id: string; label: string; caseNumbers: readonly number[] }[] = [
-  { id: "headache", label: "頭痛・めまい", caseNumbers: [1, 9, 12] },
-  { id: "fatigue", label: "疲れ・だるさ", caseNumbers: [2, 12] },
-  { id: "digestion", label: "胃腸", caseNumbers: [2, 6, 7, 15] },
-  { id: "movement", label: "首・肩・腰・ひざ", caseNumbers: [8, 11, 14, 18] },
-  { id: "sleep", label: "睡眠", caseNumbers: [4, 5] },
-  { id: "temperature", label: "冷え・ほてり", caseNumbers: [3, 4, 8] },
-  { id: "breathing", label: "のど・咳・呼吸", caseNumbers: [10, 17, 19] },
-];
-
-const filters = [
-  { id: "all", label: "すべて" },
-  ...symptomGroups,
-  { id: "other", label: "ほかの症状" },
-];
-const groupedCaseNumbers = new Set(symptomGroups.flatMap(group => group.caseNumbers));
-
-function CaseGrid({ entries }: { entries: readonly CatalogEntry[] }) {
+function CaseGrid({ entries, symptom = null }: { entries: readonly CatalogEntry[]; symptom?: string | null }) {
   return (
     <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {entries.map(({ caseNumber, card }) => <Fragment key={caseNumber}>{card}</Fragment>)}
+      {entries.map(({ id, caseNumber, title, difficulty, age, gender, chiefComplaint }) => (
+        <Link
+          key={id}
+          className="page-link-card page-link-card--stack clinical-case-catalog-card"
+          href={caseHrefWithSymptom(`/cases/${id}`, symptom)}
+          aria-labelledby={`${id}-title`}
+        >
+          <div className="flex w-full items-start justify-between gap-2">
+            <h3 id={`${id}-title`} className="text-lg font-bold leading-snug text-ink">{title}</h3>
+            <ArrowRight aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-accent" />
+          </div>
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
+            <span className="font-semibold">難易度 {difficulty}</span>
+            <span className="whitespace-nowrap">症例 {String(caseNumber).padStart(2, "0")}</span>
+            <span>{age}・{gender}</span>
+          </p>
+          <p className="line-clamp-2 text-sm leading-relaxed text-muted">「{chiefComplaint}」</p>
+        </Link>
+      ))}
     </div>
   );
 }
 
 function FilteredCatalog({ entries }: { entries: readonly CatalogEntry[] }) {
   const symptom = useSearchParams().get("symptom");
-  const selectedFilter = filters.find(({ id }) => id === symptom)?.id ?? "all";
-  const group = symptomGroups.find(({ id }) => id === selectedFilter);
-  let visibleEntries = entries;
-  if (group) visibleEntries = entries.filter(({ caseNumber }) => group.caseNumbers.includes(caseNumber));
-  if (selectedFilter === "other") visibleEntries = entries.filter(({ caseNumber }) => !groupedCaseNumbers.has(caseNumber));
+  const selectedFilter = caseCatalogFilter(symptom);
+  const visibleEntries = filterCaseCatalog(entries, selectedFilter);
 
   function selectFilter(id: string) {
+    if (id === selectedFilter) return;
     const url = new URL(window.location.href);
     if (id === "all") url.searchParams.delete("symptom");
     else url.searchParams.set("symptom", id);
-    window.history.replaceState(null, "", url);
+    window.history.pushState(null, "", url);
   }
 
   return (
@@ -50,7 +54,7 @@ function FilteredCatalog({ entries }: { entries: readonly CatalogEntry[] }) {
       <fieldset className="space-y-2 print:hidden">
         <legend className="text-sm font-semibold text-ink">症状で絞り込む</legend>
         <div className="flex flex-wrap gap-2">
-          {filters.map(({ id, label }) => (
+          {CASE_CATALOG_FILTERS.map(({ id, label }) => (
             <button
               key={id}
               type="button"
@@ -64,7 +68,7 @@ function FilteredCatalog({ entries }: { entries: readonly CatalogEntry[] }) {
         </div>
       </fieldset>
       <p role="status" className="text-sm text-muted">{visibleEntries.length}件の症例</p>
-      <CaseGrid entries={visibleEntries} />
+      <CaseGrid entries={visibleEntries} symptom={selectedFilter} />
     </div>
   );
 }

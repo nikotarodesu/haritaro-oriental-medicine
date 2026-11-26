@@ -10,7 +10,7 @@ import InlineConceptFigure from "@/components/reading/InlineConceptFigure";
 import ReadingContents from "@/components/reading/ReadingContents";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
-import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
 import { ACUPUNCTURE_RESEARCH_ARTICLES } from "@/data/acupunctureResearch";
 import { ACUPUNCTURE_RESEARCH_FIGURES } from "@/data/acupunctureResearch/figures";
 import type { AcupunctureResearchArticle } from "@/data/acupunctureResearch/types";
@@ -95,6 +95,8 @@ export default async function AcupunctureResearchPage({ params }: Props) {
     description: article.description,
     inLanguage: "ja",
     learningResourceType: "鍼灸の研究解説",
+    author: SITE_AUTHOR,
+    publisher: { "@id": SITE_ORIGIN + "/#organization" },
     dateModified: revisedAt,
     isPartOf: { "@id": SITE_ORIGIN + ACUPUNCTURE_RESEARCH.href },
     citation: article.sources.map(source => source.url),
@@ -151,7 +153,7 @@ export default async function AcupunctureResearchPage({ params }: Props) {
                 <div className={styles.exercise}>
                   <p><ClipboardList size={19} aria-hidden="true" />{section.exercise.question}</p>
                   <details className="atlas-disclosure">
-                    <summary>考え方の例を読む</summary>
+                    <summary>答えと理由を見る</summary>
                     <p>{section.exercise.answer}</p>
                   </details>
                 </div>

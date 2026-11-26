@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import AtlasDictionaryReturnLink from "@/components/tsubo/AtlasDictionaryReturnLink";
 import NearbyComparisonArtwork from "@/components/tsubo/atlas/NearbyComparisonArtwork";
 import { SERIES } from "@/config/series";
-import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
 import { getAcupointByCode } from "@/data/tsubo";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { comparisonSize, NEARBY_COMPARISONS } from "@/data/tsubo/atlas/nearbyComparisons";
@@ -69,7 +69,7 @@ export default async function ComparisonGuidePage({ params }: Props) {
         headline: guide.title,
         description: guide.description,
         inLanguage: "ja",
-        author: { "@type": "Person", name: "はり太郎", url: SITE_ORIGIN + "/about" },
+        author: SITE_AUTHOR,
         publisher: { "@id": SITE_ORIGIN + "/#organization" },
         dateModified: ATLAS_COMPARISON_GUIDES_REVISED_AT,
         citation: sources.map(source => ({ "@type": "CreativeWork", ...source })),

@@ -2,7 +2,9 @@ import { pageSocialMetadata, SITE_ORIGIN } from "@/config/seo";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CLINICAL_CASES } from "@/data/clinicalCasesData";
+import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
+import { CASE_STUDY_ORDER } from "@/data/cases/caseStudyCatalog";
+import { buildSimulatorUrlFromCase, getCaseSimulatorPreset } from "@/data/cases/caseSimulatorMapping";
 import CaseStudyViewer from "@/components/cases/CaseStudyViewer";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { SERIES } from "@/config/series";
@@ -78,6 +80,7 @@ export default async function CaseDetailPage({ params }: Props) {
   const relatedSlug = Object.keys(SYMPTOM_LEARNING_RESOURCES).find(slug => SYMPTOM_LEARNING_RESOURCES[slug].caseId === id);
   const relatedGuide = relatedSlug ? getSymptomGuide(relatedSlug) : undefined;
   const researchExercise = caseResearchExercises[id];
+  const simulatorPreset = getCaseSimulatorPreset(id);
   const readingHref = caseReviewLectureHref(readingPartHref(CASE_REVIEW_LECTURE_ID), clinicalCase.id);
   const primaryCodes = new Set(clinicalCase.correctDiagnosis.primaryPoints.flatMap(point => {
     const code = point.match(/\(([A-Z]+\d+)\)/i)?.[1].toLowerCase();
@@ -112,7 +115,13 @@ export default async function CaseDetailPage({ params }: Props) {
         { href: "/cases", name: "症例演習" },
         { href: path, name: clinicalCase.title },
       ]} />
-      <CaseStudyViewer clinicalCase={clinicalCase} reviewResources={{ readingHref, comparison }} />
+      <CaseStudyViewer
+        clinicalCase={clinicalCase}
+        reviewResources={{ readingHref, comparison }}
+        caseOrder={CASE_STUDY_ORDER}
+        safety={{ ...CLINICAL_CASE_SAFETY_GUIDANCE[id], scope: CLINICAL_CASE_SCOPE }}
+        simulatorHref={simulatorPreset ? buildSimulatorUrlFromCase(simulatorPreset) : undefined}
+      />
       {researchExercise && (
         <section className="page-help mt-6 space-y-3" aria-labelledby="case-research-exercise">
           <h2 id="case-research-exercise" className="page-section-heading">研究と症例を読み比べる</h2>

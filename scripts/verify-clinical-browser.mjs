@@ -84,6 +84,12 @@ async function checkGuideAndPractice(page) {
   await page.locator('details#case-safety[open]').waitFor();
 
   await page.getByRole('link', { name: '問題に答える', exact: true }).click();
+  const firstIncorrect = introductoryCase.reasoningSteps[0].options.find(option => !option.isCorrect);
+  const firstIncorrectButton = page.locator('#case-question-1').getByRole('button', { name: firstIncorrect.label, exact: true });
+  await firstIncorrectButton.focus();
+  await page.keyboard.press('Enter');
+  await page.locator('#case-question-1').getByRole('status').filter({ hasText: '解答例と異なります' }).waitFor();
+  assert.equal(await firstIncorrectButton.getAttribute('aria-pressed'), 'true', 'Feedback keeps the original answer button name');
   for (const step of introductoryCase.reasoningSteps) {
     const correctAnswer = step.options.find(option => option.isCorrect);
     await page.getByRole('button', { name: correctAnswer.label, exact: true }).click();
@@ -95,14 +101,37 @@ async function checkGuideAndPractice(page) {
   await explanation.waitFor();
   assert.equal(await explanation.locator('a[href^="/simulator"]').count(), 1);
   assert((await explanation.locator('.clinical-role-figure a[href^="/tsubo/"]').count()) > 0);
-  assert.equal(await page.locator('.case-practice a[href="/cases"]').count(), 1);
+  assert.equal(await page.locator('.case-practice a[href="/cases#case-catalog"]').count(), 1);
 
   await open(page, '/cases');
   await page.getByRole('link', { name: 'こめかみが強く痛み、目が赤くなる', exact: true }).waitFor();
   const catalogSafety = page.getByRole('complementary', { name: '症例演習の注意' });
   assert.equal(await catalogSafety.locator('details').evaluate(details => details.open), false, 'Case catalog safety details start folded');
   await catalogSafety.getByRole('link', { name: '受診の目安と鍼灸の安全性' }).waitFor();
+  const catalog = page.locator('#case-catalog');
+  await catalog.getByRole('button', { name: '頭痛・めまい', exact: true }).click();
+  await page.waitForURL('**/cases?symptom=headache');
+  await catalog.getByRole('button', { name: '首・肩・腰・ひざ', exact: true }).click();
+  await page.waitForURL('**/cases?symptom=movement');
+  await page.goBack();
+  await catalog.getByRole('status').filter({ hasText: '3件の症例' }).waitFor();
+  await page.goForward();
+  await catalog.getByRole('status').filter({ hasText: '4件の症例' }).waitFor();
+  await catalog.locator('a[href="/cases/case-11-cervicobrachial-syndrome?symptom=movement"]').click();
+  const caseNavigation = page.getByRole('navigation', { name: 'ほかの症例へ', exact: true });
+  await caseNavigation.getByRole('link', { name: '同じ分類の次の症例へ（症例14）', exact: true }).click();
+  await page.waitForURL('**/cases/case-14-knee-osteoarthritis?symptom=movement');
+  await caseNavigation.getByRole('link', { name: '同じ分類の次の症例へ（症例18）', exact: true }).click();
+  await page.waitForURL('**/cases/case-18-severe-eyestrain?symptom=movement');
+  const returnToCatalog = caseNavigation.locator('a[href="/cases?symptom=movement#case-catalog"]');
+  await returnToCatalog.waitFor();
+  assert.equal(await caseNavigation.getByRole('link', { name: /次の症例へ/ }).count(), 0);
+  await returnToCatalog.click();
+  await page.waitForURL('**/cases?symptom=movement#case-catalog');
+  await catalog.getByRole('status').filter({ hasText: '4件の症例' }).waitFor();
 
+  await open(page, '/cases/case-11-cervicobrachial-syndrome');
+  await caseNavigation.getByRole('link', { name: '次の症例へ（症例12）', exact: true }).waitFor();
   await open(page, '/cases/case-01-headache-liver-fire#case-safety');
   await page.locator('details#case-safety[open]').waitFor();
 
@@ -146,9 +175,19 @@ async function checkGuideAndPractice(page) {
 
   await open(page, '/diagnosis');
   await page.waitForLoadState('load');
-  await page.getByRole('button', { name: '回答に関連する分類を見る' }).click();
+  await page.getByRole('button', { name: '選んだ項目を集計する' }).focus();
+  await page.keyboard.press('Enter');
   await page.getByRole('heading', { name: '選んだ項目はありません', exact: true }).waitFor();
+  await page.waitForFunction(() => document.activeElement?.getAttribute('aria-labelledby') === 'self-check-result-heading');
   await page.getByText('病気の診断や治療・施術の判断には使えません。', { exact: true }).waitFor();
+
+  await open(page, '/diagnosis?tab=gorou');
+  await page.waitForLoadState('load');
+  await page.getByRole('button', { name: /画面や文字を長く見続ける/ }).click();
+  const restLink = page.getByRole('link', { name: '休憩・動作の例を見る', exact: true });
+  await restLink.focus();
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(() => document.activeElement?.id === 'gorou-rest-heading');
 
   await open(page, '/clinical/symptoms/headache');
   const lectureLinks = page.getByRole('navigation', { name: '候補に関連する講義' }).getByRole('link');

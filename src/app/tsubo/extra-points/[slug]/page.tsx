@@ -6,7 +6,7 @@ import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import RegionalPointAnatomy from "@/components/tsubo/RegionalPointAnatomy";
-import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
 import { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } from "@/data/tsubo/extraPoints";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import ExtraPointDiagram from "../ExtraPointDiagram";
@@ -54,7 +54,7 @@ export default async function ExtraPointPage({ params }: Props) {
     learningResourceType: "奇穴の位置",
     dateModified: EXTRA_POINTS_REVISED_AT,
     isPartOf: { "@id": SITE_ORIGIN + EXTRA_POINTS_PATH },
-    author: { "@type": "Person", name: "はり太郎", url: SITE_ORIGIN + "/about" },
+    author: SITE_AUTHOR,
     citation: point.sources.map(source => source.href),
   };
 

@@ -59,7 +59,7 @@ export function getAcupointGuideLinks(code: string, editorialLinks: readonly { h
 }
 
 export function symptomGuideTitle(guide: SymptomGuide) {
-  return seriesPageTitle(`${guide.title}｜受診の目安と日常の工夫`, "dictionary");
+  return seriesPageTitle(`${guide.title}｜受診の目安と記録例`, "dictionary");
 }
 
 export function symptomGuideSummary(guide: SymptomGuide) {
@@ -67,7 +67,7 @@ export function symptomGuideSummary(guide: SymptomGuide) {
 }
 
 export function symptomGuideDescription(guide: SymptomGuide) {
-  return `${symptomGuideSummary(guide)} 一般向けに、受診の目安、日常の工夫、関連するツボの位置を紹介します。`;
+  return `受診の目安と症状の記録例。${symptomGuideSummary(guide)}`;
 }
 
 export function getSymptomGuideSources(guide: SymptomGuide) {

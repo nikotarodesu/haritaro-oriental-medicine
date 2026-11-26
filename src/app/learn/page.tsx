@@ -125,7 +125,7 @@ export default function LearnGuidePage() {
           <Link href="/diagnosis" className="ui-text-link">気血水の体質チェック（学習用）</Link>
           <Link href="/glossary" className="ui-text-link">用語集</Link>
           <Link href="/library" className="ui-text-link">古典・論文</Link>
-          <Link href="/editorial-policy" className="ui-text-link">出典と確認範囲</Link>
+          <Link href="/editorial-policy" className="ui-text-link">出典の確認方法と監修状況</Link>
           <Link href="/curriculum" className="ui-text-link">3シリーズの読み物・演習の全目次<ArrowRight aria-hidden="true" /></Link>
         </nav>
       </div>

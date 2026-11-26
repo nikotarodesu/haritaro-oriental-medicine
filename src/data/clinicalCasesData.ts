@@ -1,4 +1,4 @@
-import { ClinicalCase } from "@/types/clinicalCase";
+import type { CaseSafetyGuidance, ClinicalCase } from "@/types/clinicalCase";
 import { KNEE_POINT_COMPARISON_HREF } from "@/config/acupunctureLearning";
 
 const CASE_MODELS: ClinicalCase[] = [
@@ -2580,7 +2580,6 @@ const CASE_MODELS: ClinicalCase[] = [
 
 export const CLINICAL_CASE_SCOPE = "すべて架空の症例です。まず受診を急ぐ所見がないかを確かめ、その後に伝統医学の候補を比べます。舌や脈、証名だけで病気の有無は判断できません。配穴や方剤は、治法を読むための例です。診断の精度や治療の効果を調べた資料ではなく、専門家による監修は完了していません。";
 
-interface CaseSafetyGuidance { message: string; sources: { title: string; url: string; section: string }[]; }
 export const CLINICAL_CASE_SAFETY_GUIDANCE: Record<string, CaseSafetyGuidance> = {
   "case-01-headache-liver-fire": {
     "message": "新しく増悪する頭痛と眼の充血を、ストレスや肝火だけで説明しない。突然の激痛、意識・言語・手足の異常があるときは、すぐに119番へ連絡してください。急な強い眼痛や見え方の変化も緊急評価を優先し、遠隔穴への施術の反応を待たない。",

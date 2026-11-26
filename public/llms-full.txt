@@ -130,18 +130,18 @@
 - [鍼灸師の見立てはどこまで一致する？ 弁証の研究と架空例](https://www.haritaro.jp/learn/acupuncture/research/pattern-diagnosis-agreement): 慢性腰痛のある6人を、6人の鍼灸師が同じ日に評価した研究を読みます。架空の症例で、見立てを支える所見と次に聞きたいことを比べます。
 
 ### 症状別の学習ガイド
-- [慢性的な頭痛・首肩こり](https://www.haritaro.jp/symptoms/headache-stiff-neck): 頭痛と首・肩のこわばりが重なるときの受診の目安を紹介します。
-- [寝つけない・夜中に目が覚める](https://www.haritaro.jp/symptoms/stress-insomnia): 寝つけない日や夜中に目が覚める日が続くときに、受診の目安と日常の工夫を紹介します。
-- [胃もたれ・食欲不振・軟便](https://www.haritaro.jp/symptoms/stomach-fatigue): 胃もたれや軟便が気になるときに、食事と便通の変化を受診時に伝える方法を紹介します。
-- [月経痛・冷え・脚のむくみ](https://www.haritaro.jp/symptoms/menstrual-pain-chill): 月経痛、手足の冷え、脚のむくみが気になるときに、受診の目安と症状の記録例を紹介します。
-- [慢性疲労・だるさ・朝起きられない](https://www.haritaro.jp/symptoms/chronic-fatigue-lethargy): 疲れが長引くときに、休んだあとの変化や、家事・外出で困っていることを受診時に伝える方法を紹介します。
-- [腰痛・ぎっくり腰・坐骨神経痛](https://www.haritaro.jp/symptoms/lower-back-pain-sciatica): 腰の痛みや脚へ広がるしびれの受診の目安と、痛む範囲を図で伝える方法を紹介します。
-- [眼精疲労・ドライアイ・目のかすみ](https://www.haritaro.jp/symptoms/eye-strain-fatigue): 目が疲れる、乾く、かすむときに、受診を急ぐ変化と受診時に伝えることを紹介します。
-- [便秘・おなかの張り・便通の変化](https://www.haritaro.jp/symptoms/constipation-ibs): 便秘やおなかの張りが続くときに、受診の目安と便通の変化の伝え方を紹介します。
-- [めまい・耳鳴り・ふらつき](https://www.haritaro.jp/symptoms/dizziness-tinnitus): めまいや耳鳴りがあるときに、感じ方や症状が出た順番を受診時に伝える方法を紹介します。
-- [更年期のほてり・冷えのぼせ](https://www.haritaro.jp/symptoms/climacteric-hot-flash): 更年期にほてりや寝汗が出るときに、受診の目安と眠りへの影響の伝え方を紹介します。
-- [アレルギー性鼻炎・花粉症・鼻づまり](https://www.haritaro.jp/symptoms/allergic-rhinitis-hayfever): 花粉の季節に鼻や目の症状が出るときに、受診の目安と外出時や帰宅後の工夫を紹介します。
-- [ひざの痛み・階段の上り下りで感じる違和感](https://www.haritaro.jp/symptoms/knee-joint-pain): ひざが痛むときに、受診の目安と、痛みが出る動作を受診時に伝える方法を紹介します。
+- [慢性的な頭痛・首肩こり](https://www.haritaro.jp/symptoms/headache-stiff-neck): 頭痛と首・肩のこわばりは、いつ始まったかを別々に書きます。吐き気や、光をまぶしく感じた時刻も添えます。
+- [寝つけない・夜中に目が覚める](https://www.haritaro.jp/symptoms/stress-insomnia): 布団に入った時刻、寝つくまでの時間、夜中に目が覚めた回数を書きます。翌日の眠気や、仕事・家事で困ったことも添えます。
+- [胃もたれ・食欲不振・軟便](https://www.haritaro.jp/symptoms/stomach-fatigue): 食べた量と、食後どのくらいで胃が重くなったかを書きます。便が柔らかい日は、便の形や回数も記録します。
+- [月経痛・冷え・脚のむくみ](https://www.haritaro.jp/symptoms/menstrual-pain-chill): 月経の開始日と痛みが出た日、仕事や授業を休んだかを書きます。脚のむくみは、出た時刻と片脚か両脚かも記録します。
+- [慢性疲労・だるさ・朝起きられない](https://www.haritaro.jp/symptoms/chronic-fatigue-lethargy): 着替えや買い物など、どの動作で疲れるかを書きます。疲れが強くなる時刻、前の晩の睡眠、休んだあとの変化も記録します。
+- [腰痛・ぎっくり腰・坐骨神経痛](https://www.haritaro.jp/symptoms/lower-back-pain-sciatica): 腰だけが痛む場合と、お尻から脚まで痛む場合を図で比べます。しびれがあれば、痛む範囲とは別に、部位と左右を書きます。
+- [眼精疲労・ドライアイ・目のかすみ](https://www.haritaro.jp/symptoms/eye-strain-fatigue): 画面を見始めてから目が乾くまでの時間や、かすみが片目か両目かを書きます。休んだあとにどう変わったかも添えます。
+- [便秘・おなかの張り・便通の変化](https://www.haritaro.jp/symptoms/constipation-ibs): 便の回数と硬さに加え、おなかの張りや痛みが排便の前後でどう変わったかを書きます。便が柔らかい日も合わせて記録します。
+- [めまい・耳鳴り・ふらつき](https://www.haritaro.jp/symptoms/dizziness-tinnitus): 景色が回る、気が遠くなる、足元がふらつくなど、感じ方を書きます。耳鳴りや聞こえの変化は、左右と始まった時刻も添えます。
+- [更年期のほてり・冷えのぼせ](https://www.haritaro.jp/symptoms/climacteric-hot-flash): ほてりが出た時刻と、何分続いたかを書きます。寝汗で目が覚めたときは、その時刻と翌日の眠気も記録します。
+- [アレルギー性鼻炎・花粉症・鼻づまり](https://www.haritaro.jp/symptoms/allergic-rhinitis-hayfever): 外出中と帰宅後で、鼻水や目のかゆみがどう変わるかを書きます。鼻づまりで夜に目が覚めた日も記録します。
+- [ひざの痛み・階段の上り下りで感じる違和感](https://www.haritaro.jp/symptoms/knee-joint-pain): 階段の上り・下りや歩き始めで痛むか、ひざの前・横・裏のどこが痛むかを書きます。腫れや熱っぽさが出た時期も添えます。
 
 ### 経脈別の経穴索引
 

@@ -9,6 +9,7 @@ import { ARTICLES } from "@/data/articleData";
 import { ACUPUNCTURE_RESEARCH_ARTICLES } from "@/data/acupunctureResearch/index";
 import { SYMPTOMS } from "@/data/symptomData";
 import { PUBLIC_SYMPTOM_CONTENT } from "@/data/publicSymptoms";
+import { symptomLookupTerms } from "@/data/symptomLookupTerms";
 import { getPublicLectureArticle, getPublicLectureSeries } from "@/data/publicLectures/index";
 import { readingUnits } from "@/data/publicLectures/readingUnits";
 import { PUBLIC_ARCHIVE_CASES } from "@/data/cases/archiveCases";
@@ -28,14 +29,6 @@ import { atlasLocationWithoutUnitNote } from "@/data/tsubo/friendlyLocations";
 const guideLookupTerms = ["鍼灸", "鍼灸入門", "はじめての鍼灸", "はり", "鍼", "灸", "お灸", "はりとお灸", "はり・お灸・ツボ押しの違い", "ツボ押しとの違い"];
 const nineNeedlesLookupTerms = ["九鍼", "古代九鍼", "古代の九鍼", "九鍼十二原", "九鍼十二原篇"];
 const historyLookupTerms = ["鍼灸の歴史", "日本の鍼灸の歴史", "管鍼法"];
-const symptomLookupTerms: Readonly<Record<string, readonly string[]>> = {
-  "headache-stiff-neck": ["頭痛", "肩こり", "首こり"],
-  "stress-insomnia": ["不眠", "寝つき", "寝付き", "ストレス", "不安", "中途覚醒"],
-  "menstrual-pain-chill": ["生理痛", "月経痛", "下肢のむくみ"],
-  "constipation-ibs": ["腹部膨満", "過敏性腸症候群", "IBS"],
-  "allergic-rhinitis-hayfever": ["鼻閉", "鼻づまり"],
-  "knee-joint-pain": ["膝痛", "膝の痛み", "階段昇降"],
-};
 
 const progressiveCaseDescriptions: Readonly<Record<string, string>> = {
   'fatigue-reasoning': '疲れが出る時間と便の変化を別々に聞き、候補を絞る練習',
@@ -87,9 +80,9 @@ const STATIC_TOOLS: SearchResultItem[] = [
   {
     id: "tool-symptoms",
     type: "tool",
-    title: "お悩み・症状別 セルフケアガイド",
-    subtitle: "頭痛・肩こり・不眠などの受診目安と、セルフケア・養生を学ぶ",
-    badge: "セルフケア",
+    title: "一般向けの症状別ガイド",
+    subtitle: "頭痛・不眠・腰痛などの受診の目安と、受診時に伝える症状の記録例",
+    badge: "症状別ガイド",
     url: "/symptoms",
     tags: ["症状", "セルフケア", "お悩み", "頭痛", "肩こり", "不眠", "胃もたれ", "生理痛", "冷え性"],
   },

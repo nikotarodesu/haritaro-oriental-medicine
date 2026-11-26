@@ -47,8 +47,8 @@ function article(code: LegCode, copy: ArticleCopy): AcupointAtlasArticle {
   const calf = (view === "posterior" && !popliteal) || code === "ki9";
   const viewName = popliteal ? "ひざの裏" : code === "ki9" ? "ふくらはぎの内側" : calf ? "ふくらはぎの後ろ" : viewNames[view];
   return {
-    titleTopic: "場所・見つけ方と注意点",
-    description: `${copy.name}（${code.toUpperCase()}）の位置を${viewName}の図で確認できます。骨や筋肉の目印、近くのツボとの違い、触れるときの注意を解説します。`,
+    titleTopic: `${viewName}の位置図と注意点`,
+    description: `${copy.name}（${code.toUpperCase()}）の場所は、${copy.label}です。${viewName}の図で近くのツボと見比べ、WHO標準の位置と触れるときの注意も確認できます。`,
     locationSummary: `${copy.label}。${"cun" in point ? "寸は体の区間を等分した位置の目安です。" : ""}`,
     meridianReading: readings[family],
     regionLabel: copy.label,

@@ -24,6 +24,11 @@ export type CaseHistoryFindings = {
 
 export type CaseObservationTarget = "complaint" | "history" | "inspection" | "tongue" | "inquiry" | "palpation";
 
+export interface CaseSafetyGuidance {
+  message: string;
+  sources: { title: string; url: string; section: string }[];
+}
+
 export interface CasePatientProfile {
   age: string;
   gender: "男性" | "女性";

@@ -19,7 +19,7 @@ export const LEARNING_DISCOVERY = [
   {
     id: "meridians-research", question: "経絡と神経・筋膜の研究は、どう読み分ける？",
     description: "伝統的な経絡の記述と、神経・筋膜を調べる研究を分けて読みます。",
-    articleId: "science-of-meridians-network", heading: "2. 神経・筋膜との比較は、問いを作るために使う", label: "経絡と神経・筋膜の比較へ",
+    articleId: "science-of-meridians-network", heading: "2. 神経や筋膜の研究では、何を測る？", label: "神経や筋膜の研究で測ったことを読む",
   },
   {
     id: "mechanism-outcome", question: "作用機序の研究と、治療効果の研究はどう違う？",

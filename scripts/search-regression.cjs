@@ -29,7 +29,7 @@ function load(relative) {
     if (id.startsWith('.')) return load(path.resolve(path.dirname(file), id));
     return require(id);
   };
-  vm.runInNewContext(js, { exports, require: localRequire, URL, process, console }, { filename: file });
+  vm.runInNewContext(js, { exports, require: localRequire, URL, URLSearchParams, process, console }, { filename: file });
   return exports;
 }
 
@@ -237,7 +237,14 @@ assert(many.includes('さらに表示'));
 assert(many.includes('専門用語'));
 assert(many.includes('講義・コース'));
 const absent = render('zzzz-not-found-2026');
-assert(absent.includes('見つかりませんでした'));
-assert(absent.includes('検索語を消して入力し直す'));
+assert(absent.includes('一致する候補はありません'));
+assert(absent.includes('href="/search?q=zzzz-not-found-2026"'));
 assert(!absent.includes('role="option"'));
+const { findPublicReadingResults } = load('src/data/publicReadingSearch');
+assert.equal(findPublicReadingResults('？？').length, 0);
+assert(findPublicReadingResults('13,447,563').some(result =>
+  result.href === '/learn/acupuncture/research/anticoagulants-and-bleeding#insurance-claims'));
+assert(findPublicReadingResults('30分の会議').some(result =>
+  result.href === '/learn/lectures/getting-started#part-lecture-intro-2-section-1'));
+assert.equal(findPublicReadingResults('LI4')[0].href, '/tsubo/li4');
 console.log('Search regression passed: all 361 exact codes, purpose-aware symptom/research ranking, individual symptom links, interpretation status, prepared scoring, category coverage, keyboard bounds, public learning links, combobox semantics, pagination and empty results.');

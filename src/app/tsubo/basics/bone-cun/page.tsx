@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BoneCunExampleFigure, FingerCunFigure } from "@/components/tsubo/CunGuideFigures";
 import { ACUPOINT_PAGE_REVISED_AT } from "@/config/contentUpdates";
-import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR } from "@/config/seo";
 import { WHO_ATLAS_PDF } from "@/data/tsubo/atlas/whoAtlasPages";
 import { boneCunSpans } from "@/data/tsubo/atlas/whoMeasurements";
 
@@ -28,7 +28,7 @@ const structuredData = {
       url: siteUrl + path,
       inLanguage: "ja",
       dateModified: ACUPOINT_PAGE_REVISED_AT,
-      author: { "@type": "Person", name: "はり太郎", url: siteUrl + "/about" },
+      author: SITE_AUTHOR,
       publisher: { "@id": siteUrl + "/#organization" },
       citation: {
         "@type": "CreativeWork",

@@ -189,8 +189,8 @@ export default function GlobalSearchModal({
     { label: "講義の復習", q: "復習", category: "tool" },
     { label: "気虚", q: "気虚" },
     { label: "治未病 (古典)", q: "治未病", category: "library" },
-    { label: "肩こり・頭痛", q: "頭痛" },
-    { label: "膝痛・ランナー", q: "膝" },
+    { label: "頭痛", q: "頭痛" },
+    { label: "膝の痛み", q: "膝の痛み" },
     { label: "坐骨神経痛", q: "坐骨" },
     { label: "シミュレーター", q: "シミュレーター" },
   ];
@@ -228,6 +228,7 @@ export default function GlobalSearchModal({
             type="text"
             autoComplete="off"
             spellCheck={false}
+            maxLength={100}
             value={query}
             onChange={(e) => {
               updateQuery(e.target.value);
@@ -331,7 +332,7 @@ export default function GlobalSearchModal({
               <div>
                 <span className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]">
                   <Sparkles className="h-3.5 w-3.5 text-[var(--accent-readable)]" />
-                  おすすめの検索キーワード
+                  検索例
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {quickSearches.map((item) => (
@@ -462,7 +463,7 @@ export default function GlobalSearchModal({
             <div className="px-3 py-10 text-center space-y-3">
               <Search className="mx-auto h-8 w-8 text-[var(--text-secondary)]" />
               <p className="text-sm font-bold">
-                「{query}」に一致するページが見つかりませんでした
+                {activeCategory === "all" ? "タイトル・読み方・関連語に一致する候補はありません" : `「${activeCategoryLabel}」に一致する候補はありません`}
               </p>
               <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
                 {activeCategory !== "all" ? "「すべて」を対象にすると、ほかの分類のページも検索できます。" : "ツボなら「合谷」「ごうこく」「LI4」、症状なら「肩こり」など、名前や読みで探せます。"}
@@ -470,7 +471,6 @@ export default function GlobalSearchModal({
               <div className="flex flex-wrap justify-center gap-2 pt-1">
                 {activeCategory !== "all" && <button type="button" onClick={searchAllCategories} className="ui-button ui-button-primary text-sm">同じ検索語ですべてを検索</button>}
                 <button type="button" onClick={() => inputRef.current?.focus()} className="ui-button ui-button-outline text-sm">検索語を編集する</button>
-                {activeCategory === "all" && <button type="button" onClick={clearQueryAndFocus} className="ui-button ui-button-primary text-sm">検索語を消して入力し直す</button>}
               </div>
             </div>
           )}
@@ -478,7 +478,12 @@ export default function GlobalSearchModal({
 
         {/* フッター操作ガイド */}
         <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[var(--border-subtle)] bg-[var(--bg-washi)] px-4 py-2.5 text-sm text-[var(--text-secondary)]">
-          <span>空白で複数語を検索</span>
+          {hasQuery ? <Link
+            href={`/search?${new URLSearchParams({ q: query.trim() })}`}
+            prefetch={false}
+            onClick={() => { saveRecentSearch(query); onClose(); }}
+            className="ui-text-link inline-flex min-h-11 items-center gap-1.5 font-semibold"
+          >本文も含めてサイト全体を検索 <ArrowRight size={16} aria-hidden="true" /></Link> : <span>空白で複数語を検索</span>}
           <div className="hidden items-center gap-3 sm:flex" aria-hidden="true">
             <span>↑↓ 選択</span>
             <span>↵ 決定</span>

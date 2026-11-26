@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import PublicLectureReader from "@/components/curriculum/PublicLectureReader";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_AUTHOR, SITE_NAME } from "@/config/seo";
 import { SERIES } from "@/config/series";
 import { getArticlePreviews } from "@/data/articleData";
 import { createCurriculumReadingLinks, getCurriculumRelatedArticleIds } from "@/data/curriculumReadingGuides";
@@ -71,7 +71,7 @@ export default async function CurriculumDetailPage({ params }: Props) {
         description: article.description,
         dateModified: PAGE_REVISIONS[path],
         articleSection: section.shortName,
-        author: { "@type": "Person", name: "はり太郎", url: origin + "/about" },
+        author: SITE_AUTHOR,
         citation: citations.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })),
         inLanguage: "ja",
       },

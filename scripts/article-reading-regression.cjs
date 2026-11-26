@@ -43,6 +43,41 @@ assert.equal(reading.readArticleReadingPosition({ [reading.articleReadingKey(met
 assert.equal(reading.articleReadingResumeHref({ ...position, headingId: 'missing' }, meta), '/articles/' + meta.articleId);
 assert.throws(() => reading.articleReadingKey('https://example.com'));
 assert.equal(reading.readArticleReadingPosition({ 'settings:article-reading:other': position }, meta), null);
+
+const unchangedHeadings = [
+  ['science-of-meridians-network', '0a1b6846', '1f65844e', 'article-heading-6'],
+  ['science-of-qi-blood-fluid', 'ab46bfd6', '7b115f29', 'article-heading-31'],
+  ['science-of-yinyang-gogyo', '9315f92e', '5a9674cb', 'article-heading-50'],
+  ['east-west-integrative-gerd-gastric', '49b7c9e3', '2fa667c0', 'article-heading-13'],
+];
+const savedBeforeCopyEdit = {};
+for (const [articleId, previousRevision, currentRevision, headingId] of unchangedHeadings) {
+  const current = catalog.find(article => article.articleId === articleId);
+  assert.equal(current.revision, currentRevision, articleId + ': exact registered version');
+  const previous = reading.createArticleReadingPosition({ ...current, revision: previousRevision }, headingId, 51, '2026-10-04T01:00:00.000Z');
+  const storageKey = reading.articleReadingKey(articleId);
+  savedBeforeCopyEdit[storageKey] = previous;
+
+  assert(reading.validArticleReadingPosition(previous, current));
+  const normalized = reading.readArticleReadingPosition(savedBeforeCopyEdit, current);
+  assert.equal(normalized.revision, currentRevision);
+  assert.equal(normalized.headingId, headingId);
+  assert.equal(normalized.progress, 51);
+  assert.equal(previous.revision, previousRevision, 'Reading does not mutate the saved record');
+  assert.equal(reading.articleReadingResumeHref(previous, current), `/articles/${articleId}#${headingId}`);
+  assert.equal(reading.articleReadingResumeHref(normalized, current), `/articles/${articleId}#${headingId}`);
+  assert.equal(reading.readArticleReadingPosition(savedBeforeCopyEdit, { ...current, revision: '11111111' }), null, 'The old revision applies only to the reviewed next version');
+  assert.equal(reading.validArticleReadingPosition({ ...previous, revision: '00000000' }, current), false, 'Unknown revisions are rejected');
+  assert.equal(reading.validArticleReadingPosition({ ...previous, headingId: 'article-heading-99999' }, current), false, 'Unknown headings are rejected');
+}
+const migratedList = reading.readArticleReadingPositions(savedBeforeCopyEdit, catalog);
+assert.equal(migratedList.length, unchangedHeadings.length, 'The article list recovers all compatible positions');
+for (const entry of migratedList) {
+  const current = catalog.find(article => article.articleId === entry.articleId);
+  assert.equal(entry.revision, current.revision);
+  assert.equal(reading.articleReadingResumeHref(entry, current), `/articles/${entry.articleId}#${entry.headingId}`);
+}
+
 const device = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const key = reading.articleReadingKey(meta.articleId);
 const entry = sync.nextLearningEntry({}, key, position, device);

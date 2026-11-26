@@ -341,7 +341,7 @@ export const ARTICLE_READING_GUIDES: Record<string, ArticleReadingGuide> = {
   "east-west-integrative-gerd-gastric": {
     inserts: [
       {
-        afterHeading: "4. 東洋医学の見立ての位置づけ",
+        afterHeading: "4. 胃気上逆と心下痞は、何を表す？",
         afterParagraph: 2,
         figure: {
           id: "gerd-pattern-evaluation",

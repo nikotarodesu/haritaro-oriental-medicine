@@ -13,7 +13,7 @@ import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import PwaRegister from "@/components/pwa/PwaRegister";
 import PwaInstallPrompt from "@/components/pwa/PwaInstallPrompt";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { SHARED_OG_IMAGES, SITE_NAME, SITE_ORIGIN, SITE_TITLE } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_AUTHOR, SITE_NAME, SITE_ORIGIN, SITE_TITLE } from "@/config/seo";
 import { BRAND_INK } from "@/config/brand";
 import { PLATFORM_DESCRIPTION } from "@/config/series";
 import { getAdSensePublisherId } from "@/components/ads/config";
@@ -149,12 +149,9 @@ export default function RootLayout({
                   "url": SITE_ORIGIN,
                   "logo": SITE_ORIGIN + "/icon-512.png",
                   "description": siteDescription,
-                  "founder": {
-                    "@type": "Person",
-                    "name": "はり太郎",
-                    "jobTitle": "鍼灸師・鍼灸院院長",
-                  },
+                  "founder": { "@id": SITE_AUTHOR["@id"] },
                 },
+                SITE_AUTHOR,
               ],
             }),
           }}

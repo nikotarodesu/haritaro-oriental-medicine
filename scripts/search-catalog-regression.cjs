@@ -106,7 +106,7 @@ assert(!/correctDiagnosis|\.explanation|\.options|contentMarkdown|treatmentAndCo
 if (process.argv.includes('--build-output')) {
   const dir = path.join(root, '.next/static/chunks');
   const scripts = fs.readdirSync(dir, { recursive: true }).filter(file => file.endsWith('.js')).map(file => ({ file, text: fs.readFileSync(path.join(dir, file), 'utf8') }));
-  const searchChunks = scripts.filter(file => file.text.includes('検索語を消して入力し直す'));
+  const searchChunks = scripts.filter(file => file.text.includes('本文も含めてサイト全体を検索'));
   assert(searchChunks.length, 'The built search UI chunk exists');
   for (const chunk of searchChunks) {
     assert(!chunk.text.includes('contentMarkdown'), 'Built search UI must not include lecture body objects');

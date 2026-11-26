@@ -55,30 +55,8 @@ export default function CasesIndexPage() {
           </a>
         </div>
 
-        <CaseCatalog entries={CLINICAL_CASES.map((c) => ({
-          caseNumber: c.caseNumber,
-          card: (
-            <Link
-              className="page-link-card page-link-card--stack clinical-case-catalog-card"
-              href={`/cases/${c.id}`}
-              aria-labelledby={`${c.id}-title`}
-            >
-              <div className="flex w-full items-start justify-between gap-2">
-                <h3 id={`${c.id}-title`} className="text-lg font-bold leading-snug text-ink">
-                  {c.title}
-                </h3>
-                <ArrowRight aria-hidden="true" className="mt-1 h-4 w-4 shrink-0 text-accent" />
-              </div>
-              <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
-                <span className="font-semibold">難易度 {c.difficulty}</span>
-                <span className="whitespace-nowrap">症例 {String(c.caseNumber).padStart(2, "0")}</span>
-                <span>{c.patient.age}・{c.patient.gender}</span>
-              </p>
-              <p className="line-clamp-2 text-sm leading-relaxed text-muted">
-                「{c.patient.chiefComplaint}」
-              </p>
-            </Link>
-          ),
+        <CaseCatalog entries={CLINICAL_CASES.map(({ id, caseNumber, title, difficulty, patient }) => ({
+          id, caseNumber, title, difficulty, age: patient.age, gender: patient.gender, chiefComplaint: patient.chiefComplaint,
         }))} />
 
       </section>

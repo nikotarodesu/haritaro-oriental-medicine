@@ -45,6 +45,7 @@ const articleRevisions = new Map([
   ...Array.from(additionalResearchArticles, id => [id, '2026-11-23']),
   ...Array.from(updatedArticleComparisons, id => [id, '2026-11-24']),
   ...copyRevisedArticles.map(id => [id, '2026-11-25']),
+  ...['science-of-meridians-network', 'science-of-qi-blood-fluid', 'science-of-yinyang-gogyo', 'east-west-integrative-gerd-gastric'].map(id => [id, '2026-11-26']),
 ]);
 for(const article of ARTICLES) {
  const guide=ARTICLE_LEARNING_GUIDES[article.id]; assert(guide,article.id);
@@ -94,12 +95,13 @@ const revisedLecturePaths = {
   '/learn/lectures/meridians-and-points': '2026-11-24',
   '/learn/lectures/reading-evidence': '2026-11-25',
   ...Object.fromEntries(['yin-yang-basics', 'zangfu-basics', 'five-elements', 'qi-blood-and-patterns', 'assessment-frameworks'].map(slug => ['/learn/lectures/' + slug, '2026-11-25'])),
+  ...Object.fromEntries(['daily-and-seasonal-changes', 'qi-blood-and-patterns', 'how-patterns-change', 'assessment-basics', 'assessment-frameworks', 'principles-and-goals'].map(slug => ['/learn/lectures/' + slug, '2026-11-26'])),
 };
 for (const unit of readingUnits) assert.equal(dateAt(unit.href), revisedLecturePaths[unit.href] ?? READING_LECTURES_REVISED_AT, unit.href);
 assert.equal(dateAt('/tsubo/sp11'), '2026-11-25', 'The shared acupoint page copy was revised');
 const { KEY_POINT_TYPES_GUIDE } = load('src/data/tsubo/keyPointTypes');
 const { EXTRA_POINTS, EXTRA_POINTS_PATH } = load('src/data/tsubo/extraPoints');
-const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/tsubo/lu7', KEY_POINT_TYPES_GUIDE, '/symptoms/constipation-ibs', '/symptoms/headache-stiff-neck']);
+const searchRevised = new Set(['/tsubo', '/tsubo/li10', '/tsubo/st37', '/tsubo/lu7', KEY_POINT_TYPES_GUIDE]);
 const { ACUPOINT_PAIRS_PATH, featuredPairs, featuredPairPreview } = load('src/data/tsubo/atlas/featuredPairs');
 const { ATLAS_POINT_MARKERS } = load('src/data/tsubo/atlas/markers');
 const { ATLAS_ARTICLES } = load('src/data/tsubo/atlas/articles');
@@ -129,13 +131,16 @@ for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.hr
 }
 assert.equal(dateAt('/learn/review'), '2026-11-20');
 assert.equal(dateAt('/learn/essentials'), '2026-11-24');
-for (const pathname of ['/articles', `/articles/${fourCommandReview}`, '/glossary', '/library']) assert.equal(dateAt(pathname), '2026-11-25', pathname);
+for (const pathname of ['/articles', `/articles/${fourCommandReview}`, '/glossary']) assert.equal(dateAt(pathname), '2026-11-25', pathname);
+const { SYMPTOMS } = load('src/data/symptomData');
+for (const pathname of ['/cases', '/updates', '/learn', '/diagnosis', '/library', '/symptoms', ...SYMPTOMS.map(guide => '/symptoms/' + guide.id)]) {
+  assert.equal(dateAt(pathname), '2026-11-26', pathname);
+}
 for (const pathname of [
-  '/', '/about', '/cases', '/curriculum', '/symptoms', '/updates', '/learn',
-  '/diagnosis', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research',
+  '/', '/about', '/curriculum',
+  '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research',
   '/clinical', '/simulator', '/safety', '/practice/haiketsu', '/tsubo/compare', '/kikei',
-  '/tsubo/cv21', '/symptoms/dizziness-tinnitus',
-  '/symptoms/knee-joint-pain', '/cases/case-01-headache-liver-fire',
+  '/tsubo/cv21', '/cases/case-01-headache-liver-fire',
 ]) assert.equal(dateAt(pathname), '2026-11-25', pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');
 const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch');
@@ -143,7 +148,8 @@ for (const article of ACUPUNCTURE_RESEARCH_ARTICLES) {
   const route = acupunctureResearchHref(article.slug);
   const knownSources = new Set(article.sources.map(source => source.id));
   const revisedSources = ['migraine-prevention', 'postoperative-nausea', 'pattern-diagnosis-agreement'].includes(article.slug);
-  assert.equal(dateAt(route), revisedSources ? '2026-11-25' : ACUPUNCTURE_RESEARCH.revisedAt, route + ' sitemap revision');
+  const revisedText = ['anticoagulants-and-bleeding', 'knee-osteoarthritis', 'urinary-incontinence'].includes(article.slug);
+  assert.equal(dateAt(route), revisedText ? '2026-11-26' : revisedSources ? '2026-11-25' : ACUPUNCTURE_RESEARCH.revisedAt, route + ' sitemap revision');
   assert.equal(knownSources.size, article.sources.length, route + ' source IDs are unique');
   assert(article.sources.every(source => new URL(source.url).protocol === 'https:' && source.scope), route + ' direct sources and their scope');
   assert(article.sections.every(section => (section.sources.length > 0 || section.exercise) && section.sources.every(id => knownSources.has(id))), route + ' evidence sections cite originals and uncovered fictional exercises stay distinct');

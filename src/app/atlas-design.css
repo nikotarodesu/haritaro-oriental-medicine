@@ -893,6 +893,7 @@
 .atlas-entry .atlas-point-header { gap: .4rem; }
 .atlas-entry .atlas-point-header .atlas-breadcrumb > a { min-height: 2.75rem; }
 .atlas-entry .atlas-point-lead { max-width: 66ch; line-height: 1.7; }
+.atlas-point-location-actions { display: flex; flex-wrap: wrap; align-items: start; gap: 0 1rem; }
 .atlas-entry .atlas-traditional-use {
   padding: 0;
   border: 0;

@@ -1,4 +1,4 @@
-import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
+import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
 import { AUTHOR_OPENED_AT } from "@/config/author";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -30,6 +30,15 @@ export default function AboutPage() {
   const [comparisonArticle] = getArticlePreviews(["east-west-integrative-unified-theory"]);
   return (
     <article className="about-page page-layout page-layout--reading space-y-9 sm:space-y-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "@id": SITE_ORIGIN + "/about",
+        name: "はり太郎について",
+        url: SITE_ORIGIN + "/about",
+        inLanguage: "ja",
+        mainEntity: { "@id": SITE_AUTHOR["@id"] },
+      }) }} />
       <PageIntro title="はり太郎について" description="誰が、どんな資料をもとに教材を作っているかを紹介します。" compact />
 
       <section aria-labelledby="about-operator" className="border-y border-divider py-5 sm:py-7">

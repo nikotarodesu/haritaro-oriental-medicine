@@ -1,5 +1,8 @@
 import { CLINICAL_CASES } from "@/data/clinicalCasesData";
 import type { CaseStudyDescriptor } from "@/utils/caseStudyProgress";
+import type { CaseCatalogPosition } from "@/utils/caseStudyNavigation";
+
+export const CASE_STUDY_ORDER: readonly CaseCatalogPosition[] = CLINICAL_CASES.map(({ id, caseNumber }) => ({ id, caseNumber }));
 
 export const CASE_STUDY_DESCRIPTORS: readonly CaseStudyDescriptor[] = CLINICAL_CASES.map(({ id, title, reasoningSteps }) => ({
   id,

@@ -3,6 +3,13 @@ import { SERIES } from "./series";
 
 export { SITE_NAME } from "./brand";
 export const SITE_ORIGIN = "https://www.haritaro.jp";
+export const SITE_AUTHOR = {
+  "@type": "Person",
+  "@id": SITE_ORIGIN + "/about#about-operator",
+  name: SITE_NAME,
+  url: SITE_ORIGIN + "/about#about-operator",
+  jobTitle: "鍼灸師・鍼灸院院長",
+} as const;
 export const HOME_HEADING = "東洋医学を学ぶ";
 export const SITE_SECTIONS_LABEL = "ツボ図鑑・東洋医学の講義・臨床演習";
 export const SITE_TITLE = seriesPageTitle(`${HOME_HEADING}｜ツボ図鑑・講義・臨床演習`, "reading");

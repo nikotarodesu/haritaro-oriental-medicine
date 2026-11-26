@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES, SITE_NAME } from "@/config/seo";
+import { SHARED_OG_IMAGES, SITE_AUTHOR, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const title = `${article.title}｜はり太郎の東洋医学`;
-  const description = `${article.summary}（読了約${article.readTime} / 執筆：${article.author.name}）`;
+  const description = article.summary;
 
   return {
     title,
@@ -129,24 +129,15 @@ export default async function ArticleDetailPage({ params }: Props) {
         "description": article.summary,
         "url": `https://www.haritaro.jp/articles/${article.id}`,
         "mainEntityOfPage": `https://www.haritaro.jp/articles/${article.id}`,
-        "datePublished": article.publishedAt || "2026-03-01",
+        "datePublished": article.publishedAt,
         "dateModified": article.updatedAt || article.publishedAt,
         "image": "https://www.haritaro.jp/og-image.png",
-        "author": {
-          "@type": "Person",
-          "name": article.author.name,
-          "jobTitle": article.author.role,
-          "url": "https://www.haritaro.jp/about",
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "はり太郎の東洋医学",
-          "url": "https://www.haritaro.jp",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.haritaro.jp/icon.png",
-          },
-        },
+        "inLanguage": "ja",
+        "author": article.author.name === SITE_AUTHOR.name ? SITE_AUTHOR : { "@type": "Person", name: article.author.name, jobTitle: article.author.role },
+        "publisher": { "@id": SITE_ORIGIN + "/#organization" },
+        "citation": resolvedReferences
+          .filter(ref => ref.url && ref.bibliographyStatus === "matched" && ref.claimsStatus !== "do-not-use")
+          .map(ref => ({ "@type": "CreativeWork", name: ref.title, url: ref.url })),
       },
       {
         "@type": "BreadcrumbList",
@@ -179,7 +170,7 @@ export default async function ArticleDetailPage({ params }: Props) {
       {/* 構造化データ埋め込み */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
 
       <div className="space-y-5 sm:space-y-8">
@@ -237,22 +228,22 @@ export default async function ArticleDetailPage({ params }: Props) {
             {resolvedReferences.length > 0 && <a href="#article-references-section" className="page-secondary-action"><Bookmark aria-hidden="true" className="h-4 w-4" />出典</a>}
           </nav>
           <ReadingContents label="記事の目次" headings={headings} />
-          <details className="page-help text-base leading-relaxed text-muted"><summary>この記事の要点・読み方</summary><div className="space-y-3">
+          <details className="page-help text-base leading-relaxed text-muted"><summary>この記事の要点</summary><div className="space-y-3">
             <p><InlineTextRenderer text={article.summary} /></p>
             {learningGuide && <div className="space-y-2 border-s-2 border-frame ps-4 text-sm">
-              <p><strong>学ぶポイント：</strong>{learningGuide.focus}</p>
+              <p>{learningGuide.focus}</p>
             </div>}
             <section className="text-sm">
-              <h2 className="font-semibold text-accent">説明の範囲</h2>
+              <h2 className="font-semibold text-accent">古典・研究・たとえの読み方</h2>
               <p className="pt-2">
-            伝統理論の説明、研究で得られた知見、筆者による比較・比喩を区別してお読みください。生理学との対比表や「ネットワーク」などの説明は、伝統概念との同一性や治療効果を証明するものではありません。研究結果は対象・方法・限界とともに確認してください。
+                古典に書かれた説明、研究で測った結果、筆者が理解を助けるために使うたとえを分けて読みます。伝統理論が現代の生理学とどこまで対応するか、治療に効果があるかは、それぞれ研究で確かめる必要があります。論文を読むときは、誰を調べ、何を比べ、どこまで分かったかを確認します。
               </p>
-              {resolvedReferences.length > 0 && <a href="#article-references-section" className="ui-text-link">原典・研究対象・方法を出典で確認する</a>}
+              {resolvedReferences.length > 0 && <a href="#article-references-section" className="ui-text-link">この記事が参照した資料を見る</a>}
             </section>
           </div></details>
           {/* 本文 */}
           <div id="article-content" tabIndex={-1} className="reader-content">
-          {learningGuide && <p className="mb-5 text-sm leading-relaxed text-muted"><strong>判断の限界：</strong>{learningGuide.limitation}</p>}
+          {learningGuide && <p className="mb-5 text-sm leading-relaxed text-muted">{learningGuide.limitation}</p>}
           <MarkdownBody
             contentMarkdown={article.contentMarkdown}
             idPrefix="article-heading"

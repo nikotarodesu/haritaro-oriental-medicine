@@ -101,8 +101,8 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
   ].filter(Boolean);
 
   return {
-    titleTopic: "場所と図での見つけ方・注意点",
-    description: `${nameWithCode}の位置は、${profile.location}です。${view.label}の拡大図に、探すときの目印を示します。${point.meridianShort}での並び順と注意点も掲載しています。`,
+    titleTopic: "場所と注意点",
+    description: `${nameWithCode}の位置は、${profile.location}です。${view.label}の拡大図、WHO標準の位置、安全上の注意を掲載しています。`,
     meridianReading: meridianReadings[point.meridianId],
     regionLabel: view.label,
     lead: `${nameWithCode}の位置は、${profile.location}です。`,

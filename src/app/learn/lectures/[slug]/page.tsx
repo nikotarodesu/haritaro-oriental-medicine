@@ -14,7 +14,7 @@ import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import ReadingContents from "@/components/reading/ReadingContents";
 import ReadingSequence from "@/components/reading/ReadingSequence";
-import { pageSocialMetadata, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
+import { pageSocialMetadata, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { SERIES } from "@/config/series";
 import { PUBLIC_CASE_STUDY_IDS } from "@/data/cases/caseStudyCatalog";
@@ -139,7 +139,7 @@ export default async function ReadingLecturePage({ params }: Props) {
         articleSection: chapter?.label,
         inLanguage: "ja",
         dateModified: revisedAt,
-        author: { "@type": "Person", name: SITE_NAME, url: `${SITE_ORIGIN}/about` },
+        author: SITE_AUTHOR,
         publisher: { "@id": `${SITE_ORIGIN}/#organization` },
         citation: citations.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })),
       },

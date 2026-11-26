@@ -206,7 +206,7 @@ const check = client('src/components/diagnosis/DiagnosisClient.tsx', {
 });
 const checkProps = { relatedArticles: [], studyLinks: {} };
 const checkResults = () => {
-  check.button('回答に関連する分類を見る').props.onClick();
+  check.button('選んだ項目を集計する').props.onClick();
   check.render(checkProps);
 };
 const resultHeadings = () => nodes(check.tree()).filter(node => node.type === 'h2').map(text);
@@ -218,7 +218,7 @@ checkResults();
 assert(resultHeadings().includes('気虚（ききょ）'), 'One match immediately opens that classification');
 check.button('ため息がよく出た').props.onClick(); check.render(checkProps);
 checkResults();
-assert(resultHeadings().includes('同じ数の項目を選んだ分類'), 'Tied results present both choices before opening a classification');
+assert(resultHeadings().includes('選んだ項目数が同じ分類'), 'Tied results present both choices before opening a classification');
 assert.equal(check.button('気虚').props['aria-pressed'], false);
 assert.equal(check.button('気滞').props['aria-pressed'], false);
 check.button('気滞').props.onClick(); check.render(checkProps);
@@ -227,7 +227,7 @@ assert(resultHeadings().includes('気滞（きたい）'));
 check.button('気虚').props.onClick(); check.render(checkProps);
 assert(resultHeadings().includes('気虚（ききょ）'));
 check.button('ため息がよく出た').props.onClick(); check.render(checkProps);
-assert(!resultHeadings().includes('同じ数の項目を選んだ分類'), 'Changing an answer invalidates the prior result');
+assert(!resultHeadings().includes('選んだ項目数が同じ分類'), 'Changing an answer invalidates the prior result');
 
 const caseData = {};
 const casePath = path.resolve(__dirname, '../src/data/clinicalCasesData.ts');

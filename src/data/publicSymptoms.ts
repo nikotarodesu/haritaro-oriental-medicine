@@ -11,7 +11,7 @@ interface PublicSymptomContent {
 
 export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
   'headache-stiff-neck': {
-    summary: '頭痛と首・肩のこわばりが重なるときの受診の目安を紹介します。',
+    summary: '頭痛と首・肩のこわばりは、いつ始まったかを別々に書きます。吐き気や、光をまぶしく感じた時刻も添えます。',
     dailyLife: [
       { title: '食事と休憩の間隔を見直す', body: '忙しい日に食事を抜いていなかったか、水分が取れていたかを確認します。画面を見ながら同じ姿勢が続く日は、作業の区切りで目と体を休めましょう。' },
     ],
@@ -24,7 +24,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'stress-insomnia': {
-    summary: '寝つけない日や夜中に目が覚める日が続くときに、受診の目安と日常の工夫を紹介します。',
+    summary: '布団に入った時刻、寝つくまでの時間、夜中に目が覚めた回数を書きます。翌日の眠気や、仕事・家事で困ったことも添えます。',
     dailyLife: [
       { title: 'まず起きる時刻を振り返る', body: '普段の起床時刻を確かめ、生活に合わせてできる範囲でそろえます。眠る前に仕事や家事が続く日は、一区切りつけて落ち着いて過ごす時間を作りましょう。' },
       { title: '夕方以降の飲み物を振り返る', body: '夕方や夜にコーヒー、お茶、お酒を飲んだ日と、そうでない日の眠りを見比べます。睡眠のために市販品やサプリメントを使いたいときは、服用中の薬も伝えて医師・薬剤師に相談してください。' },
@@ -39,7 +39,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'stomach-fatigue': {
-    summary: '胃もたれや軟便が気になるときに、食事と便通の変化を受診時に伝える方法を紹介します。',
+    summary: '食べた量と、食後どのくらいで胃が重くなったかを書きます。便が柔らかい日は、便の形や回数も記録します。',
     dailyLife: [
       { title: '特定の食材で症状が続くとき', body: '同じ食材を食べたあとに気になる変化が続くときは、記録をもとに医師や管理栄養士に相談しましょう。' },
       { title: 'カイロを使うときの注意', body: 'おなかを温めるためにカイロを使う場合は、肌に直接貼ったり、つけたまま眠ったりしないでください。' },
@@ -54,7 +54,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'menstrual-pain-chill': {
-    summary: '月経痛、手足の冷え、脚のむくみが気になるときに、受診の目安と症状の記録例を紹介します。',
+    summary: '月経の開始日と痛みが出た日、仕事や授業を休んだかを書きます。脚のむくみは、出た時刻と片脚か両脚かも記録します。',
     dailyLife: [
       { title: '妊娠中のお灸について', body: '妊娠中や妊娠の可能性があるときは、図鑑に載っているツボを参考に、自分でお灸を始めないでください。' },
     ],
@@ -67,7 +67,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'chronic-fatigue-lethargy': {
-    summary: '疲れが長引くときに、休んだあとの変化や、家事・外出で困っていることを受診時に伝える方法を紹介します。',
+    summary: '着替えや買い物など、どの動作で疲れるかを書きます。疲れが強くなる時刻、前の晩の睡眠、休んだあとの変化も記録します。',
     dailyLife: [
       { title: '食事・水分・休憩の時間を確保する', body: '疲れが強まる活動は無理に続けず、食事、水分、休憩の時間を取れるように予定を見直します。着替えや買い物など、以前できていたことが負担になる状態が続く場合は、その経過を医療機関で相談してください。' },
     ],
@@ -80,7 +80,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'lower-back-pain-sciatica': {
-    summary: '腰の痛みや脚へ広がるしびれの受診の目安と、痛む範囲を図で伝える方法を紹介します。',
+    summary: '腰だけが痛む場合と、お尻から脚まで痛む場合を図で比べます。しびれがあれば、痛む範囲とは別に、部位と左右を書きます。',
     safetyNote: '会陰部の感覚低下とは、外性器や肛門の周りがしびれたり、触れた感覚が鈍くなったりすることです。',
     dailyLife: [
       { title: '症状が強まる動きは無理に繰り返さない', body: '例えば立ち上がるときと座り続けたときで、痛みがどう違うかを振り返ります。強い痛みや脚のしびれを増やす動きは避け、普段の動作に支障が続くときは医療機関で相談してください。' },
@@ -94,7 +94,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'eye-strain-fatigue': {
-    summary: '目が疲れる、乾く、かすむときに、受診を急ぐ変化と受診時に伝えることを紹介します。',
+    summary: '画面を見始めてから目が乾くまでの時間や、かすみが片目か両目かを書きます。休んだあとにどう変わったかも添えます。',
     dailyLife: [
       { title: '画面を見続ける作業に区切りをつける', body: 'メールへの返信や資料の確認が一つ終わったら、画面から目を離す時間を作ります。' },
       { title: '目の周りを刺激する前の注意', body: '痛みや見え方の変化が続くときは、眼科へ相談してください。眼球や目の周りを強く押したり、自分で鍼を刺したりするのは避けてください。' },
@@ -109,7 +109,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'constipation-ibs': {
-    summary: '便秘やおなかの張りが続くときに、受診の目安と便通の変化の伝え方を紹介します。',
+    summary: '便の回数と硬さに加え、おなかの張りや痛みが排便の前後でどう変わったかを書きます。便が柔らかい日も合わせて記録します。',
     dailyLife: [
       { title: '食事の変化と、便意を我慢した場面を確認する', body: '便意があったときにトイレを後回しにしていなかったか、食事や飲み物に最近の変化があったかを見ます。水分や食物繊維の取り方を変えたい場合は、症状と食事の記録をもとに医師や管理栄養士に相談してください。' },
     ],
@@ -123,7 +123,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'dizziness-tinnitus': {
-    summary: 'めまいや耳鳴りがあるときに、感じ方や症状が出た順番を受診時に伝える方法を紹介します。',
+    summary: '景色が回る、気が遠くなる、足元がふらつくなど、感じ方を書きます。耳鳴りや聞こえの変化は、左右と始まった時刻も添えます。',
     dailyLife: [
       { title: 'ふらつくときは安全な場所で休む', body: 'めまいの間は転びにくい場所で休み、車の運転や脚立を使う作業は避けてください。受診を急ぐ症状は、上の目安に沿って対応してください。' },
     ],
@@ -136,7 +136,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'climacteric-hot-flash': {
-    summary: '更年期にほてりや寝汗が出るときに、受診の目安と眠りへの影響の伝え方を紹介します。',
+    summary: 'ほてりが出た時刻と、何分続いたかを書きます。寝汗で目が覚めたときは、その時刻と翌日の眠気も記録します。',
     dailyLife: [
       { title: '室温や衣服を調整しやすくする', body: '体が暑くなったときに上着を脱げるようにし、寝室は過ごしやすい温度に調整します。' },
       { title: 'サプリメントを使う前に相談する', body: 'サプリメントなどを使いたい場合は、現在受けている治療や飲んでいる薬を主治医に伝えて相談してください。' },
@@ -150,7 +150,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'allergic-rhinitis-hayfever': {
-    summary: '花粉の季節に鼻や目の症状が出るときに、受診の目安と外出時や帰宅後の工夫を紹介します。',
+    summary: '外出中と帰宅後で、鼻水や目のかゆみがどう変わるかを書きます。鼻づまりで夜に目が覚めた日も記録します。',
     dailyLife: [
       { title: '外ではマスクや眼鏡、帰宅後は着替え', body: '外出時のマスクや眼鏡、帰宅後の着替えなど、取り入れやすい方法から試します。' },
       { title: '薬を相談するときに困りごとも伝える', body: '「鼻が詰まって夜に目が覚める」など、一番困っていることを医師や薬剤師に伝えます。すでに使っている薬や、気になる副作用も一緒に伝えましょう。鼻の周りにドライヤーの温風を当てたり、自分でお灸をしたりすると、やけどのおそれがあります。' },
@@ -165,7 +165,7 @@ export const PUBLIC_SYMPTOM_CONTENT: Record<string, PublicSymptomContent> = {
     ],
   },
   'knee-joint-pain': {
-    summary: 'ひざが痛むときに、受診の目安と、痛みが出る動作を受診時に伝える方法を紹介します。',
+    summary: '階段の上り・下りや歩き始めで痛むか、ひざの前・横・裏のどこが痛むかを書きます。腫れや熱っぽさが出た時期も添えます。',
     dailyLife: [
       { title: '痛みが増える動きは繰り返さず、運動の量を相談する', body: '痛みが強まる動作は無理に繰り返さず、運動の種類や負荷の調整を医療機関で相談します。急に腫れて熱を持ったときや、けがのあとに体重をかけられないときは、上の受診の目安を先に確認してください。' },
     ],

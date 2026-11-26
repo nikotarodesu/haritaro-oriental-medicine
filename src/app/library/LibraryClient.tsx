@@ -73,7 +73,7 @@ export default function LibraryClient() {
 
   return (
     <div className="page-layout text-base leading-relaxed">
-      <PageIntro title="文献・古典・症例教材" description="論文の確認範囲、古典の出典、症例教材を探せます。" art="reading" compact>
+      <PageIntro title="文献・古典・症例教材" description="研究の方法や結果、古典の引用箇所、学習用の症例を探せます。" art="reading" compact>
         <Link href={ACUPUNCTURE_RESEARCH.href} className="page-secondary-action mt-4"><FlaskConical aria-hidden="true" />{ACUPUNCTURE_RESEARCH.title}</Link>
       </PageIntro>
       <section aria-label="資料を探す" className="library-discovery rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
@@ -125,9 +125,9 @@ export default function LibraryClient() {
         <div className="library-result-summary">
           <h2 aria-live="polite" aria-atomic="true" className="font-serif text-base font-bold text-[#232826] dark:text-[#FAF8F5]">検索結果：{visibleResultCount}件</h2>
           <details className="reference-disclosure library-source-disclosure">
-            <summary>出典・確認範囲</summary>
+            <summary>引用元と確認した箇所</summary>
             <div className="reference-disclosure-body">
-              <p>論文は著者・題名・掲載誌を原典と照らし合わせて掲載しています。古典では『素問』『霊枢』『難経』などの記述と、確認した箇所を読めます。</p>
+              <p>論文は、著者名・題名・掲載誌が出典と合っているかを確かめています。古典は『素問』『霊枢』『難経』などのどこを参照したかを記載しています。</p>
               <p>
                 掲載論文のうち、{abstractCount}件は抄録、{fullTextCount}件は本文の一部まで確認しています。
                 {bibliographyOnlyCount > 0 && `${bibliographyOnlyCount}件は書誌情報を確認しています。`}
@@ -161,7 +161,7 @@ export default function LibraryClient() {
                 <div className="flex items-center gap-2">
                   <GraduationCap className="w-5 h-5 text-[#1E3D34] dark:text-[#74BA9E]" />
                   <h2 className="font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-                    現代の研究論文・確認範囲
+                    研究論文
                   </h2>
                 </div>
                 <span className="text-sm text-[#737C77] dark:text-[#8899A6]">
@@ -233,7 +233,7 @@ export default function LibraryClient() {
                               </ul>
                             </div>}
                             <div className="library-study-limitations">
-                              <h4 className="font-bold">限界・読み取れないこと</h4>
+                              <h4 className="font-bold">この研究で分かる範囲</h4>
                               {paper.clinicalTakeaways.map(limitation => <p key={limitation}>{limitation}</p>)}
                             </div>
                           </div>
@@ -246,7 +246,7 @@ export default function LibraryClient() {
                             {paper.authors.length > 0 && <p>{paper.authors.join(", ")}</p>}
                             <p>{paper.journal} ({paper.year})</p>
                             {paper.sourceLocator && <p>
-                              <strong>確認範囲: </strong>
+                              <strong>確認した箇所 </strong>
                               {paper.sourceLocator}（確認日 {paper.claimsCheckedAt}）
                             </p>}
                             {paper.sourceCheckedAt && <p>書誌確認日：<time dateTime={paper.sourceCheckedAt}>{paper.sourceCheckedAt}</time></p>}
@@ -341,7 +341,7 @@ export default function LibraryClient() {
                             </details>
                           )}
                           {quotation && (
-                            <section className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-3 space-y-2" aria-label="引用と確認範囲">
+                            <section className="border-t border-[#EFE8D8]/70 dark:border-[#25323E] pt-3 space-y-2" aria-label="引用と出典">
                               <h4 className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">{imageChecked ? '刊本画像で照合した引用' : '電子本文からの引用（底本画像は未確認）'}</h4>
                               <blockquote className="font-serif text-base leading-relaxed break-words">{quotation.text}</blockquote>
                               <details className="text-sm leading-relaxed">

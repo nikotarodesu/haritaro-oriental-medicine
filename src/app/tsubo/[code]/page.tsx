@@ -1,4 +1,4 @@
-import { SHARED_OG_IMAGES, acupointPageTitle, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
+import { SHARED_OG_IMAGES, acupointPageTitle, SITE_AUTHOR, SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
@@ -66,10 +66,11 @@ interface Props {
   params: Promise<{ code: string }>;
 }
 
-function atlasPageTitle(point: AcupointMaster, topic = "場所と押し方・注意点") {
+function atlasPageTitle(point: AcupointMaster, topic = "場所と注意点") {
   const copy = ACUPOINT_SEARCH_COPY[point.codeLower];
-  if (copy) return `${point.name}（${point.kana}・${point.code}）の場所｜${copy.landmark}を図解｜はり太郎のツボ図鑑`;
-  return `${point.name}（${point.kana}）の${topic}｜はり太郎のツボ図鑑`;
+  const subject = `${point.name}（${point.kana}・${point.code}）`;
+  if (copy) return `${subject}の場所｜${copy.landmark}を図解｜はり太郎のツボ図鑑`;
+  return `${subject}｜${topic}｜はり太郎のツボ図鑑`;
 }
 
 export async function generateStaticParams() {
@@ -212,7 +213,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           },
         }),
         "publisher": { "@id": "https://www.haritaro.jp/#organization" },
-        "editor": { "@type": "Person", "name": "はり太郎", "url": "https://www.haritaro.jp/about" },
+        "author": SITE_AUTHOR,
         ...(sources.length > 0 && { citation: sources.map(({ name, url }) => ({ "@type": "CreativeWork", name, url })) }),
         "description": copy?.lead ?? atlasArticle?.description ?? (point.locationDetail || point.locationSimple),
         "about": [

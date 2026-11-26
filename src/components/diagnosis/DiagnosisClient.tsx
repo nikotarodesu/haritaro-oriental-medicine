@@ -208,11 +208,12 @@ export default function DiagnosisClient({ initialTab: activeTab = "self", relate
 
   const scrollToResult = () => {
     setTimeout(() => {
-      if (resultRef.current) {
-        const yOffset = -90;
-        const y = resultRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
+      const result = resultRef.current;
+      if (!result) return;
+      result.focus({ preventScroll: true });
+      const y = result.getBoundingClientRect().top + window.pageYOffset - 90;
+      const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth";
+      window.scrollTo({ top: y, behavior });
     }, 100);
   };
 
@@ -451,7 +452,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           <div className="bg-[#FFFFFF] dark:bg-[#17212A] p-3.5 sm:p-9 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-sm space-y-4 sm:space-y-6 transition-colors">
             <div className="flex items-center justify-between border-b border-[#F2ECE0] dark:border-[#22303D] pb-3 text-xs text-[#59615D] dark:text-[#96A6B2]">
               <span>直近1〜2週間に当てはまった項目を選んでください。1行につき1項目として数えます。</span>
-              <span>
+              <span role="status">
                 選択中: <strong className="text-[#1E3D34] dark:text-[#74BA9E]">{selectedAnswers.length}</strong> 項目
               </span>
             </div>
@@ -493,7 +494,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                 onClick={handleDiagnoseSelf}
                 className="w-full sm:w-auto px-10 py-4 rounded-xl bg-[#1E3D34] dark:bg-[#2B6958] text-[#FAF8F5] hover:bg-[#162E27] dark:hover:bg-[#225345] font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>回答に関連する分類を見る</span>
+                <span>選んだ項目を集計する</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
               {selectedAnswers.length > 0 && (
@@ -510,8 +511,8 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
           </div>
 
           {selfMatches && selfMatches.results.length > 1 && (
-            <section ref={selfResult ? undefined : resultRef} className="rounded-xl border border-frame bg-panel p-5 space-y-3" aria-labelledby="self-check-tie-heading">
-              <h2 id="self-check-tie-heading" className="text-xl font-bold">同じ数の項目を選んだ分類</h2>
+            <section ref={selfResult ? undefined : resultRef} tabIndex={-1} className="rounded-xl border border-frame bg-panel p-5 space-y-3" aria-labelledby="self-check-tie-heading">
+              <h2 id="self-check-tie-heading" className="text-xl font-bold">選んだ項目数が同じ分類</h2>
               <p>以下の分類はそれぞれ{selfMatches.count}項目でした。読みたい分類を選んでください。</p>
               {!selfResult && <p className="text-sm text-muted">{SELF_CHECK_RESULT_SCOPE}</p>}
               <ul className="flex flex-wrap gap-2">
@@ -533,14 +534,14 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
 
           {/* 診断結果表示 */}
           {selfResult && (
-            <div ref={resultRef} className="space-y-6 animate-fadeIn">
+            <div ref={resultRef} role="region" aria-labelledby="self-check-result-heading" tabIndex={-1} className="space-y-6 animate-fadeIn">
               <div className="bg-[#FAF8F5] dark:bg-[#152028] p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] shadow-md space-y-6">
                 {/* 臨床補助の注記（P0要件） */}
                 <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5">
                   <span className="text-xs font-bold text-[#B86924] dark:text-[#E6C387] tracking-wider uppercase">
                     {selfResult.type === "neutral" ? "質問票の回答" : `選んだ項目が${selfMatches?.count}つ関連する分類`}
                   </span>
-                  <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <h2 id="self-check-result-heading" className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                     {selfResult.name}
                     {selfResult.reading && <span className="text-base font-sans font-normal text-[#59615D] dark:text-[#8899A6] ml-2">
                       （{selfResult.reading}）
@@ -826,7 +827,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
 
           {/* 問診結果表示 */}
           {clinicalResult && (
-            <div ref={resultRef} className="space-y-6 pt-4 animate-fadeIn">
+            <div ref={resultRef} role="region" aria-labelledby="clinical-check-result-heading" tabIndex={-1} className="space-y-6 pt-4 animate-fadeIn">
               <div className="bg-[#FAF8F5] dark:bg-[#152028] p-5 sm:p-8 rounded-2xl sm:rounded-3xl border-2 border-[#1E3D34] dark:border-[#74BA9E] shadow-md space-y-6">
                 <div className="text-center space-y-2 border-b border-[#F2ECE0] dark:border-[#22303D] pb-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF3EF] dark:bg-[#182823] text-[#1E3D34] dark:text-[#74BA9E] text-xs font-bold mb-1">
@@ -835,7 +836,7 @@ ${DIAGNOSIS_QUESTIONS.map(question => `${question.text}：${statusLabels[questio
                       問診集計完了 {patientIdentifier ? `[ ${patientIdentifier} ]` : ""}
                     </span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  <h2 id="clinical-check-result-heading" className="text-2xl sm:text-3xl font-serif font-bold text-[#232826] dark:text-[#FAF8F5]">
                     {clinicalResult.name}
                     {clinicalResult.reading && <span className="text-base font-sans font-normal text-[#59615D] dark:text-[#8899A6] ml-2">
                       （{clinicalResult.reading}）

@@ -323,6 +323,13 @@ export const PAGE_REVISIONS: Record<string, string> = {
     ...LEARNING_COURSES.map(course => '/learn/courses/' + course.slug),
     ...SYMPTOMS.map(guide => '/symptoms/' + guide.id),
   ].map(route => [route, PUBLIC_COPY_REVISED_AT])),
+  ...Object.fromEntries([
+    '/updates', '/learn', '/library', '/symptoms', '/cases', '/diagnosis',
+    ...SYMPTOMS.map(guide => '/symptoms/' + guide.id),
+    ...['daily-and-seasonal-changes', 'qi-blood-and-patterns', 'how-patterns-change', 'assessment-basics', 'assessment-frameworks', 'principles-and-goals'].map(slug => '/learn/lectures/' + slug),
+    ...['science-of-meridians-network', 'science-of-qi-blood-fluid', 'science-of-yinyang-gogyo', 'east-west-integrative-gerd-gastric'].map(id => '/articles/' + id),
+    ...['anticoagulants-and-bleeding', 'knee-osteoarthritis', 'urinary-incontinence'].map(acupunctureResearchHref),
+  ].map(route => [route, '2026-11-26'])),
 };
 export const SITE_UPDATES: readonly {
   date: string;
@@ -331,6 +338,7 @@ export const SITE_UPDATES: readonly {
   href?: string;
   links?: readonly { href: string; label: string }[];
 }[] = [
+  { date: '2026-11-26', label: '講義・研究の本文検索と症状別ガイドの絞り込み', text: '講義や研究の本文にある言葉を検索し、一致した節を直接開けるようにしました。症状別ガイドでは「眠れない」などの普段の言い方でも探せます。模擬症例は、一覧で選んだ条件を保ったまま行き来できます。', links: [{ href: '/search', label: 'サイト内検索' }, { href: '/symptoms', label: '症状別ガイド' }, { href: '/cases', label: '模擬症例' }] },
   { date: '2026-11-25', label: '位置説明・症例・講義の文章を整理', text: 'ツボの位置と図の読み方、症例で情報を得た方法、講義の例と見出しを見直しました。文献の著者情報と、症状ガイドの受診時に伝える内容も確認しやすくしました。', links: [{ href: '/tsubo/li4', label: 'ツボ図鑑' }, { href: '/cases', label: '模擬症例' }, { href: '/learn', label: '講義' }, { href: '/library', label: '文献ライブラリ' }, { href: '/symptoms', label: '症状別ガイド' }] },
   { date: '2026-11-24', label: '比較図の確認問題と、講義・症例の振り返り', links: [{ href: '/tsubo#nearby-comparisons', label: 'ツボの比較図' }, { href: '/learn/review', label: '講義の復習' }, { href: '/cases', label: '症例演習' }], text: '比較図7組すべてに位置の確認問題を付けました。16講の確認問題は講義の復習で解き直せます。症例を解いたあとは、迷った設問の解説や登場したツボの比較を開けます。' },
   { date: PUBLIC_VISUALS_REVISED_AT, label: 'ツボの目印・症例の経過・試験の組み立てを図に', href: '/tsubo#nearby-comparisons', text: '合谷・内関・足三里は、同じ図で目印から位置まで順にたどれます。肩・ひじの比較図を加え、症例は症状の経過を時系列で、論文は参加者・比較相手・評価項目を図で確認できるようにしました。' },

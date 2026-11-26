@@ -16,6 +16,19 @@ export interface ArticleReadingPosition {
 const PREFIX = 'settings:article-reading:';
 const ARTICLE_ID = /^[a-z0-9-]{1,80}$/;
 const HEADING_ID = /^article-heading-\d{1,5}$/;
+// These exact editorial revisions preserve the existing heading anchors.
+const compatibleRevisions: ReadonlyMap<string, readonly [previous: string, current: string]> = new Map([
+  ['science-of-meridians-network', ['0a1b6846', '1f65844e']],
+  ['science-of-qi-blood-fluid', ['ab46bfd6', '7b115f29']],
+  ['science-of-yinyang-gogyo', ['9315f92e', '5a9674cb']],
+  ['east-west-integrative-gerd-gastric', ['49b7c9e3', '2fa667c0']],
+]);
+
+function acceptsRevision(saved: unknown, metadata: ArticleReadingMetadata): boolean {
+  if (saved === metadata.revision) return true;
+  const pair = compatibleRevisions.get(metadata.articleId);
+  return pair !== undefined && saved === pair[0] && metadata.revision === pair[1];
+}
 
 /** Compute on the server; only the short revision and public heading IDs enter client props. */
 export function articleReadingRevision(content: string): string {
@@ -33,7 +46,7 @@ export function validArticleReadingPosition(value: unknown, metadata: ArticleRea
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
   const position = value as Partial<ArticleReadingPosition>;
   return ARTICLE_ID.test(metadata.articleId) && position.version === 1 && position.articleId === metadata.articleId
-    && /^[a-f\d]{8}$/.test(metadata.revision) && position.revision === metadata.revision
+    && /^[a-f\d]{8}$/.test(metadata.revision) && acceptsRevision(position.revision, metadata)
     && typeof position.headingId === 'string' && HEADING_ID.test(position.headingId) && metadata.headingIds.includes(position.headingId)
     && typeof position.progress === 'number' && Number.isInteger(position.progress) && position.progress >= 1 && position.progress <= 100
     && typeof position.updatedAt === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(position.updatedAt)
@@ -49,7 +62,8 @@ export function createArticleReadingPosition(metadata: ArticleReadingMetadata, h
 export function readArticleReadingPosition(values: Record<string, unknown>, metadata: ArticleReadingMetadata): ArticleReadingPosition | null {
   if (!ARTICLE_ID.test(metadata.articleId)) return null;
   const value = values[articleReadingKey(metadata.articleId)];
-  return validArticleReadingPosition(value, metadata) ? value : null;
+  if (!validArticleReadingPosition(value, metadata)) return null;
+  return value.revision === metadata.revision ? value : { ...value, revision: metadata.revision };
 }
 
 export function readArticleReadingPositions(values: Record<string, unknown>, catalog: readonly ArticleReadingMetadata[]): ArticleReadingPosition[] {

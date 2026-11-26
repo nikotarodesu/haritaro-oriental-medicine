@@ -7,8 +7,8 @@ import { SYMPTOMS, SYMPTOM_GUIDANCE_SCOPE } from '@/data/symptomData';
 import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
 import { getSymptomsIndexJsonLd, symptomGuideSummary } from '@/utils/symptomGuides';
 
-const title = seriesPageTitle('症状別ガイド｜受診の目安・日常の工夫・東洋医学の学習', "dictionary");
-const description = `頭痛・首肩こり、不眠、胃腸の不調など${SYMPTOMS.length}の症状から、受診の目安や受診時に伝えることを探せます。症状の原因や病名を診断するガイドではありません。`;
+const title = seriesPageTitle('症状別ガイド｜受診の目安と症状の記録例', "dictionary");
+const description = `頭痛、不眠、腰痛など${SYMPTOMS.length}の症状別ガイド。受診の目安と、いつから・どこが・どんなときにつらいかを伝える記録例を掲載しています。`;
 
 export const metadata: Metadata = {
   title,
@@ -31,7 +31,7 @@ export default function SymptomsPage() {
         <div>
           <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">はり太郎のツボ図鑑</Link><span aria-hidden="true">/</span><span aria-current="page">症状別ガイド</span></nav>
           <h1>一般向けの症状別ガイド</h1>
-          <p>頭痛や腰痛など、気になる症状から、受診の目安と受診時に伝えることを探せます。</p>
+          <p>頭痛、眠れない、ひざが痛い。気になる症状から、受診の目安と記録の例を探せます。</p>
           <Link href="/tsubo#tsubo-search" className="atlas-text-action"><MapPin size={17} aria-hidden="true" />ツボの名前から探す</Link>
         </div>
         <AtlasOverviewArt />

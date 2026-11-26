@@ -54,7 +54,7 @@ function article(code: FootCode, copy: Copy): AcupointAtlasArticle {
   const order = Number(code.slice(2));
   const nearFirst = Math.min(Math.max(1, order - 1), lastOrder[family] - 2);
   return {
-    titleTopic: "場所・見つけ方と注意点",
+    titleTopic: "足の位置図と注意点",
     description: `${copy.name}（${code.toUpperCase()}）の位置を、${copy.region}を目印に図解。近くのツボとの違い、WHO標準部位と自分で触れる際の注意点を紹介します。`,
     locationSummary: `${copy.region}。`,
     meridianReading: readings[family],
