@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CLINICAL_COMPLAINTS, CLINICAL_PATTERNS } from '@/data/clinicalWorkflow';
 import ClinicalEvidenceKey from '@/components/clinical/ClinicalEvidenceKey';
+import InlineConceptFigure from '@/components/reading/InlineConceptFigure';
 import PageIntro from '@/components/design/PageIntro';
 import ContentEndAd from '@/components/ads/ContentEndAd';
 import { pageSocialMetadata, seriesPageTitle } from '@/config/seo';
@@ -41,7 +42,12 @@ export default async function Page({ params }: Props) {
     <section id="questions" className="page-section space-y-3"><h2 className="page-section-heading">1. 問診で聞くこと</h2><ul className="list-disc space-y-3 pl-5">{item.questions.map(question => <li key={question}>{question}</li>)}</ul><p className="text-sm leading-relaxed">受診を急ぐ症状があるときは、施術より先に医療機関での評価を優先します。以前の病気、服薬、受診の結果も確認します。</p><Link href="/safety" className="ui-text-link">受診の目安を読む</Link></section>
     <section id="patterns" className="page-section space-y-3"><h2 className="page-section-heading">2. 伝統医学の候補を比べる</h2><p className="text-sm">東洋医学では、症状や診察で分かったことから考える体の状態を「証」と呼びます。候補ごとに、当てはまること、食い違うこと、まだ確かめていないことを書きます。</p><div className="page-link-grid">{item.patternIds.map(id => { const pattern = CLINICAL_PATTERNS.find(candidate => candidate.id === id)!; return <section className="page-link-card page-link-card--stack !gap-2" key={id}><h3>{pattern.name}</h3><p>{item.patternExamples?.[id] ?? pattern.distinguish}</p><p>施術の考え方（治法）の例 {pattern.principle}</p><Link className="inline-flex min-h-11 items-center gap-2 text-sm underline" href={readingPartHref(pattern.lectureId)}>この証が出てくる講義へ<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link></section>; })}</div></section>
     <section id="record" className="page-section space-y-3"><h2 className="page-section-heading">3. ツボを組み合わせる理由を残す</h2><p className="leading-relaxed">{item.recordPrompt}</p><Link className="page-secondary-action" href="/tsubo">候補にしたツボの位置と分類を調べる<ArrowRight aria-hidden="true" /></Link></section>
-    <section id="review" className="page-section space-y-3"><h2 className="page-section-heading">4. 直後と次回で同じ項目を比べる</h2><ul className="list-disc space-y-2 pl-5">{item.review.map(review => <li key={review}>{review}</li>)}</ul><p>その場で何が変わり、帰宅後もその変化が続いたかを書きます。元に戻ったときや新しい症状が出たときは、聞き取った情報から見直します。</p><Link className="page-secondary-action" href={readingPartHref(item.lectureId)}>この症状に関係する四診の講義へ<ArrowRight aria-hidden="true" /></Link></section>
+    <section id="review" className="page-section space-y-3">
+      <h2 className="page-section-heading">4. 次回の問診で比べること</h2>
+      <InlineConceptFigure figure={{ ...item.review, id: `review-${slug}`, layout: item.review.graphic === 'timeline' ? 'steps' : 'compare' }} />
+      <p>症状が元に戻ったときや新しい症状が出たときは、いつ、何をしていたかを聞き直します。</p>
+      <Link className="page-secondary-action" href={readingPartHref(item.lectureId)}>この症状に関係する四診の講義へ<ArrowRight aria-hidden="true" /></Link>
+    </section>
     <ClinicalEvidenceKey sourceKeys={item.sourceKeys} />
     {researchLink && <p><Link href={researchLink.href} className="ui-text-link">{researchLink.label}</Link></p>}
     {slug === 'back' && <p><Link href={PATTERN_AGREEMENT_HREF} className="ui-text-link">腰痛の所見から、二人の見立てを比べる</Link></p>}

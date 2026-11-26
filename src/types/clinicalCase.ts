@@ -17,6 +17,11 @@ export type CaseHistoryTimeline = {
   context?: string;
 };
 
+export type CaseHistoryFindings = {
+  kind: "findings";
+  entries: readonly { label: string; description: string }[];
+};
+
 export type CaseObservationTarget = "complaint" | "history" | "inspection" | "tongue" | "inquiry" | "palpation";
 
 export interface CasePatientProfile {
@@ -24,7 +29,7 @@ export interface CasePatientProfile {
   gender: "男性" | "女性";
   occupation: string;
   chiefComplaint: string; // 主訴
-  historyOfPresentIllness: string | CaseHistoryTimeline;
+  historyOfPresentIllness: string | CaseHistoryTimeline | CaseHistoryFindings;
   pastHistory: string[]; // 既往歴
   lifestyle: string; // 生活背景（睡眠・食事・ストレス・運動）
 }

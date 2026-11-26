@@ -1,6 +1,7 @@
 /** Traditional teaching models, not validated diagnostic rules or efficacy evidence. */
 import { resolvedExaminationObservations, type ClinicalExamination } from './clinicalExamination';
 import { compareExaminationFindings, type ComparisonFindingId } from './clinicalExaminationComparison';
+import type { ReadingFigure } from '@/types/reading';
 export const CLINICAL_SIGNS = [
   { id: 'fatigue', group: '問診', label: '疲労・気力低下', question: 'いつから疲れやすくなりましたか。仕事中や休んだ後で、どう変わりますか。' },
   { id: 'appetite', group: '問診', label: '食欲低下・食後の張り', question: '食べる量や体重は変わりましたか。食後に何が起きますか。' },
@@ -116,7 +117,8 @@ export const CLINICAL_SOURCES = {
 } as const;
 
 export interface ClinicalComplaint {
-  slug: string; title: string; summary: string; questions: string[]; recordPrompt: string; review: string[];
+  slug: string; title: string; summary: string; questions: string[]; recordPrompt: string;
+  review: Pick<ReadingFigure, 'title' | 'items' | 'caption'> & { graphic: 'comparison' | 'timeline' };
   patternIds: string[]; lectureId: string; sourceKeys: (keyof typeof CLINICAL_SOURCES)[];
   patternExamples?: Readonly<Record<string, string>>;
 }
@@ -126,7 +128,15 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
     summary: '姿勢や動作による痛みの変化を確かめます。翌日、症状が仕事や睡眠にどう影響したかを確認します。',
     questions: ['いつ始まり、仕事中や姿勢を変えたときにどう変わりますか。', '痛い場所、痛み方、腕や手まで広がるかを聞きます。力の入り方やしびれも確認します。', '頭痛や冷えはありますか。眠れなかった日や緊張した日は、痛みが普段と違いますか。持病や薬も聞きます。'],
     recordPrompt: '肩のどこが痛むか、腕を上げるとどう変わるかを見返します。症状に近いツボと離れたツボを考えた場合は、それぞれ何を手がかりにしたかを書きます。',
-    review: ['腕を上げるなど、前と同じ動作での痛みと動く範囲', '翌日以降に仕事や睡眠へどんな影響が出たか'],
+    review: {
+      title: '腕を上げたときの痛みを、翌日の生活と照らし合わせる', graphic: 'timeline',
+      items: [
+        { label: '最初の記録', description: '腕をどこまで上げると、肩のどこが痛むか。', icon: 'book' },
+        { label: 'その場で再確認', description: '同じ動作で、痛みと腕が上がる範囲はどう変わったか。', icon: 'check' },
+        { label: '翌日以降', description: '仕事で腕を使えたか。夜は痛みで目が覚めたか。', icon: 'calendar' },
+      ],
+      caption: 'その場で腕を動かしたときの記録と、帰宅後に本人が困った場面を分けて残します。',
+    },
     patternIds: ['liver-qi', 'stasis', 'damp'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['terminology'],
     patternExamples: {
       'liver-qi': '首の付け根と肩のどちらが張るかを聞きます。同じ姿勢で作業をするときや、緊張が解けたあとに張りがどう変わるかを比べます。',
@@ -139,7 +149,14 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
     summary: '腰から脚へ広がる痛みを記録し、どの動作に支障が出ているかを確認します。',
     questions: ['いつ、何をしていて痛み始めましたか。けがの有無と、動いたときや休んだときの変化を聞きます。', '両脚のしびれ、力の入りにくさ、股の周りの感覚、排尿・排便に新しい変化がないかを確認します。', '発熱や体重の変化、持病や薬はありますか。靴下をはくなど、困った動作も聞きます。'],
     recordPrompt: '腰のどこに痛みがあり、脚のどこまで広がるかを見返します。動作による変化と、それぞれのツボを候補にした理由を書き分けます。',
-    review: ['前と同じ動作での痛みと、できるようになった動作', '脚の力やしびれの変化と、医療機関で確認したこと'],
+    review: {
+      title: '腰の痛みと脚の変化を分けて聞く', graphic: 'comparison',
+      items: [
+        { label: '同じ動作での腰痛', description: '靴下をはくなど、前回困った動作でどこが痛むか。今回はどこまでできるか。', icon: 'steps' },
+        { label: '脚の力としびれ', description: '力の入り方やしびれる範囲は前回とどう違うか。医療機関で何を確認したか。', icon: 'compass' },
+      ],
+      caption: '痛みが変わった時期と、脚の様子が変わった時期をそれぞれ記録します。',
+    },
     patternIds: ['stasis', 'damp', 'spleen-yang'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['back', 'terminology'],
     patternExamples: {
       'spleen-yang': '腰痛に加えて、おなかの冷え、食欲や便の変化があるかを聞きます。腰の痛みと胃腸の訴えが同じ時期に出たかも分けて記録します。',
@@ -150,7 +167,14 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
     summary: '急いで受診する必要がないかを先に確かめ、頭痛が出た日数、仕事への影響、薬を使った回数を記録します。',
     questions: ['突然始まりましたか。いつもの痛みと違うか、頭を打ったことや発熱がないかも聞きます。', 'どこがどんなふうに痛み、何分・何時間続きますか。見え方、言葉、手足の動きの変化も確認します。', '睡眠、緊張した日、月経の前後で変わりますか。使った薬と、仕事などで困ったことも聞きます。'],
     recordPrompt: '痛む場所と、頭痛が強まる時間や場面を見返します。場所を手がかりに選んだツボと、一緒に出た症状を手がかりに選んだツボを分けて書きます。',
-    review: ['頭痛が出た日数、一回の長さ、痛みの程度', '中断した仕事や家事、薬を使った回数、受診結果'],
+    review: {
+      title: '一回の頭痛と、前回から今日までの記録を比べる', graphic: 'comparison',
+      items: [
+        { label: '頭痛が起きたとき', description: 'どれほど痛く、どのくらい続いたか。仕事や家事を中断したか。', icon: 'clock' },
+        { label: '期間全体', description: '頭痛があったのは何日か。頭痛薬を使ったのは何回か。', icon: 'calendar' },
+      ],
+      caption: '受診したときは、その結果も同じ記録に添えます。',
+    },
     patternIds: ['liver-qi', 'liver-heat', 'stasis', 'yin'], lectureId: 'lecture-diagnosis-2', sourceKeys: ['headache', 'terminology'],
     patternExamples: {
       'liver-qi': '頭が締め付けられる感じが、緊張の前後でどう変わるかを聞きます。口の苦さや目の赤みを伴うときは、肝鬱化火の説明も読み比べます。',
@@ -162,7 +186,15 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
     summary: '寝付くまでの時間と、夜に目が覚める回数を聞き取ります。翌日、眠気で困った場面も確かめます。',
     questions: ['何時に床に入り、何時に起きますか。寝付きにくい、夜中や早朝に目が覚めるなど、いつから続いているかも聞きます。', '翌日、眠気で何に困りますか。いびきや睡眠中の呼吸、カフェイン・飲酒・服薬も聞きます。', '痛み、気分の変化、ほてりや口の乾きはありますか。持病や受診状況も確認します。'],
     recordPrompt: '寝付けないときと、夜中に目が覚めたときの記録を見返します。痛み、ほてり、翌日の眠気など、どの訴えを手がかりにツボを考えたかを書きます。',
-    review: ['床に入ってから寝るまでの時間と、夜に目が覚めた回数', '昼間の眠気が、仕事や家事にどの程度影響したか'],
+    review: {
+      title: '寝付き・夜中の目覚め・翌日の眠気を順に聞く', graphic: 'timeline',
+      items: [
+        { label: '床に入ってから', description: '眠りにつくまでに何分かかったか。', icon: 'clock' },
+        { label: '夜中', description: '眠りについたあと、何回目が覚めたか。', icon: 'moon' },
+        { label: '翌日', description: '日中の眠気で、仕事や家事の何に困ったか。', icon: 'sun' },
+      ],
+      caption: '眠りにつくまでの時間、目覚めた回数、翌日の過ごし方を、前回と同じ項目で比べます。',
+    },
     patternIds: ['liver-qi', 'liver-heat', 'yin'], lectureId: 'lecture-diagnosis-1', sourceKeys: ['sleep', 'terminology'],
     patternExamples: {
       'liver-qi': '緊張した日とそうでない日で、寝付くまでの時間を比べます。胸や肋骨の下が張る感じがあったかも別に聞きます。',
@@ -175,7 +207,14 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
     summary: '食前と食後の症状、便の状態、体重の変化を分けて聞きます。',
     questions: ['食後に胃が重くなる、痛む、眠くなるといった変化はありますか。何がどのくらい続きますか。便の硬さと回数も聞きます。', '強い腹痛、血の混じる便、発熱、体重の変化はありますか。持病や薬も確認します。', '疲れや冷えがあるか、温めたときや緊張した日で症状が変わるかを聞きます。'],
     recordPrompt: '胃もたれが出る時刻と、便の変化が出る時期を見返します。どちらを主な手がかりにツボを考えたか、その理由を書きます。',
-    review: ['以前と比べた食欲、便の硬さと回数', '食後に仕事や家事を中断したか、その時間。体重や体調の変化'],
+    review: {
+      title: '食事の前後と排便時の記録を見比べる', graphic: 'comparison',
+      items: [
+        { label: '食事の前後', description: '食欲は普段とどう違うか。食後に仕事や家事を休んだ場合、どのくらい休んだか。', icon: 'meal' },
+        { label: '排便時', description: '便の硬さと回数は以前とどう違うか。いつから変わったか。', icon: 'calendar' },
+      ],
+      caption: '前回から体重や体調に変化があったときは、その経過も一緒に聞きます。',
+    },
     patternIds: ['spleen-qi', 'spleen-yang', 'damp', 'liver-qi'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['terminology'],
   },
   {
@@ -183,7 +222,15 @@ export const CLINICAL_COMPLAINTS: ClinicalComplaint[] = [
     summary: '疲れが出る時間帯、休んだ後の変化、できなくなった日常動作を聞き、受診や検査の結果も確認します。',
     questions: ['いつから疲れが続き、何時ごろ強まりますか。動いたときと休んだ後、どんなことに困るかを聞きます。', '眠り、食欲、便通は変わりましたか。息切れ、動悸、体重の変化も確認します。', 'これまでの病気や服薬、受診や検査の結果を聞きます。冷えやほてりの有無も尋ねます。'],
     recordPrompt: '動いたときの疲れと、食後に強くなる疲れの記録を見返します。どちらの訴えを手がかりに各穴を検討したかを書きます。',
-    review: ['同じ買い物や家事での疲れ方と、休み始めてから動作を再開できるまでの時間', '睡眠と食欲の変化、受診の結果、施術後に困った反応'],
+    review: {
+      title: 'いつもの家事で疲れてから、再開するまでを追う', graphic: 'timeline',
+      items: [
+        { label: '動いている間', description: '同じ買い物や家事で、どの動作をしたときに疲れたか。', icon: 'steps' },
+        { label: '休んでいる間', description: '休み始めたのはいつか。疲れはどう変わったか。', icon: 'clock' },
+        { label: '動き出すとき', description: '再開できたか。できた場合、休み始めてからどのくらいたったか。', icon: 'check' },
+      ],
+      caption: '睡眠や食欲の変化、受診の結果、施術後に困ったことも次回の記録に添えます。',
+    },
     patternIds: ['spleen-qi', 'spleen-yang', 'damp', 'yin'], lectureId: 'lecture-diagnosis-8', sourceKeys: ['fatigue', 'terminology'],
   },
 ];

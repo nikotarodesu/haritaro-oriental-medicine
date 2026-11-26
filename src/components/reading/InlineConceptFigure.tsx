@@ -12,6 +12,12 @@ function ConceptGlyph({ icon, x, y }: { icon: ConceptIcon; x?: number; y?: numbe
     flask: <><path d="M9 3h6M10 3v6L4 19c-1 2 0 2 2 2h12c2 0 3 0 2-2L14 9V3M7 15h10" /><circle cx="11" cy="17" r=".6" /></>,
     check: <><circle cx="12" cy="12" r="9" /><path d="m8 12 3 3 5-6" /></>,
     compass: <><circle cx="12" cy="12" r="9" /><path d="m15 9-2 4-4 2 2-4 4-2Z" /></>,
+    clock: <><circle cx="12" cy="12" r="9" /><path d="M12 6v6l4 2" /></>,
+    calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 10h18m-14 4h2m3 0h2m-7 3h2" /></>,
+    moon: <path d="M20.5 14.8A9 9 0 0 1 9.2 3.5a9 9 0 1 0 11.3 11.3Z" />,
+    sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" /></>,
+    steps: <><path d="M2 20h6v-5h6v-5h7" /><path d="M3 11 12 2M5 2h7v7" /></>,
+    meal: <><path d="M5 3v5a3 3 0 0 0 6 0V3M8 3v18m12 0V3c-4 2-5 6-5 10h5" /></>,
   };
 
   return (

@@ -44,21 +44,27 @@ export default function CaseCourseComparison() {
       <h2 id="case-comparison-title" className="text-xl font-bold">同じ首の痛み、次に何を聞く？</h2>
       <p>架空の2症例です。どちらも仕事中に振り向くと首が痛みます。施術前から翌日までの記録を見比べてください。</p>
 
-      <table className="w-full border-collapse text-sm">
-        <caption className="pb-2 text-left font-semibold">痛みの強さ（0は痛みなし、10は最も強い痛み）</caption>
+      <table id="case-pain-course" className="w-full table-fixed border-collapse text-sm">
+        <caption className="pb-2 text-left font-semibold">首を動かしたときの痛み（0は痛みなし、10は最も強い痛み）</caption>
         <thead>
           <tr className="border-b border-frame bg-page">
-            <th scope="col" className="px-3 py-2 text-left">記録した時点</th>
-            <th scope="col" className="px-3 py-2">Aさん</th>
-            <th scope="col" className="px-3 py-2">Bさん</th>
+            <th scope="col" className="w-1/4 px-2 py-2 text-left">記録した時点</th>
+            <th scope="col" className="px-2 py-2 text-left">Aさん</th>
+            <th scope="col" className="px-2 py-2 text-left">Bさん</th>
           </tr>
         </thead>
         <tbody>
           {observations.map(({ label, a, b }) => (
             <tr key={label} className="border-b border-frame">
-              <th scope="row" className="px-3 py-2 text-left">{label}</th>
-              <td className="px-3 py-2 text-center tabular-nums">{a}</td>
-              <td className="px-3 py-2 text-center tabular-nums">{b}</td>
+              <th scope="row" className="px-2 py-2 text-left">{label}</th>
+              {[a, b].map((value, patientIndex) => (
+                <td key={patientIndex} className="px-2 py-2">
+                  <span className="font-semibold tabular-nums">{value}</span>
+                  <svg viewBox="0 0 10 1" preserveAspectRatio="none" className="mt-1 block h-2 w-full rounded-sm bg-panel-selected" aria-hidden="true" focusable="false">
+                    <rect width={value} height="1" className={patientIndex === 0 ? "fill-accent" : "fill-warm"} />
+                  </svg>
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>

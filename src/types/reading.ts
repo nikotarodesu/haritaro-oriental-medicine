@@ -1,4 +1,5 @@
-export type ConceptIcon = "balance" | "leaf" | "drop" | "pulse" | "eye" | "book" | "flask" | "check" | "compass";
+export type ConceptIcon = "balance" | "leaf" | "drop" | "pulse" | "eye" | "book" | "flask" | "check" | "compass"
+  | "clock" | "calendar" | "moon" | "sun" | "steps" | "meal";
 
 export type ReadingGraphic = "comparison" | "flow" | "timeline"
   | { kind: "bars"; maximum: number; unit: string; values: readonly number[] };

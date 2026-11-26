@@ -60,6 +60,8 @@ function component(file, exportName = 'default') {
       if (id === '@/contexts/LearningSyncContext') return { useLearningSync: () => ({ ready: true, values: learningValues, status: 'local', setEntry() {} }) };
       if (id === './CaseStudyReview') return { __esModule: true, default: component('src/components/cases/CaseStudyReview.tsx') };
       if (id === './CaseQuestionReferences') return { __esModule: true, default: component('src/components/cases/CaseQuestionReferences.tsx'), CaseHistoryContent: component('src/components/cases/CaseQuestionReferences.tsx', 'CaseHistoryContent') };
+      if (id === './CaseComplaintFigure') return { __esModule: true, default: component('src/components/cases/CaseComplaintFigure.tsx') };
+      if (id === './CaseObservationFigure') return { __esModule: true, default: component('src/components/cases/CaseObservationFigure.tsx') };
       if (mockComponents[id]) return { __esModule: true, default: mockComponents[id] };
       if (id.startsWith('@/')) return load('src/' + id.slice(2));
       return require(id);
@@ -72,6 +74,9 @@ const casesIndex = renderToStaticMarkup(React.createElement(component('src/app/c
 assert.match(casesIndex, /<nav aria-label="パンくず"[^>]*>.*?href="\/clinical"/);
 assert.match(casesIndex, /href="#case-comparison"/);
 assert.match(casesIndex, /id="case-comparison"[^>]*>.*<table/);
+const painChart = casesIndex.match(/<table id="case-pain-course".*?<\/table>/s)?.[0];
+assert(painChart, 'Both patients share the same pain scale');
+assert.deepEqual(Array.from(painChart.matchAll(/<rect width="(\d+)" height="1"/g), match => Number(match[1])), [6, 6, 3, 3, 3, 6]);
 assert.match(casesIndex, /id="case-comparison"[^>]*>.*?<fieldset[^>]*disabled/, 'Comparison choices wait for their client handler and saved answer');
 assert(casesIndex.includes('href="' + CASE_COURSE_READING_HREF + '"'));
 const comparisonReading = new URL(CASE_COURSE_READING_HREF, 'https://www.haritaro.jp');
@@ -85,9 +90,12 @@ assert(fatigueIndex.includes('href="/cases/case-02-fatigue-spleen-deficiency"'))
 assert(!fatigueIndex.includes('href="/cases/case-20-bells-palsy"'));
 caseCatalogSearch = '';
 const CaseViewer = component('src/components/cases/CaseStudyViewer.tsx');
+const CaseObservationFigure = component('src/components/cases/CaseObservationFigure.tsx');
 assert.equal(CLINICAL_CASES.length, 20);
 assert.equal(CASE_STUDY_DESCRIPTORS.length, CLINICAL_CASES.length);
-assert.equal(CLINICAL_CASES.filter(({ patient }) => typeof patient.historyOfPresentIllness !== 'string').length, 13);
+const histories = CLINICAL_CASES.map(({ patient }) => patient.historyOfPresentIllness);
+assert.equal(histories.filter(history => typeof history !== 'string' && !('kind' in history)).length, 13);
+assert.equal(histories.filter(history => typeof history !== 'string' && 'kind' in history).length, 7);
 assert.equal(NEARBY_COMPARISONS.length, 8);
 for (const group of NEARBY_COMPARISONS) {
   assert(group.points.some(point => point.code === group.question.answerCode), group.id);
@@ -112,17 +120,47 @@ for (const clinicalCase of CLINICAL_CASES) {
     assert.equal(html.split(label).length - 1, clinicalCase.reasoningSteps.length, clinicalCase.id + ': references are available at every question');
   }
   assert(!html.includes('class="case-observation-links"'), clinicalCase.id + ': reveal the evidence links with the explanation');
+  assert(!html.includes('data-case-observation-figure'), clinicalCase.id + ': keep the observation-to-pattern figure behind the explanation');
   assert(!html.includes('この症例に出てくるツボの位置と注意点'), clinicalCase.id + ': reveal the point links with the explanation');
   const history = clinicalCase.patient.historyOfPresentIllness;
-  if (typeof history === 'string') {
-    assert(html.includes(history) && !html.includes('class="case-history-timeline"'), clinicalCase.id + ': keep narrative history where there is no timeline');
+  const historyHtml = html.match(/<section id="case-history"[^>]*>(.*?)<\/section>/)?.[1];
+  assert(historyHtml && typeof history !== 'string');
+  const findings = 'kind' in history;
+  assert(historyHtml.includes(`data-case-history-figure="${findings ? 'findings' : 'timeline'}"`), clinicalCase.id + ': render the correct diagram for the vignette');
+  assert.match(historyHtml, /<svg[^>]+aria-hidden="true"/);
+  assert.doesNotMatch(historyHtml, /<text\b/);
+  assert.equal(historyHtml.split('class="case-history-connector"').length - 1, findings ? 0 : history.entries.length - 1);
+  if (!findings) {
+    assert(historyHtml.includes('class="case-history-connector-down"') && historyHtml.includes('class="case-history-connector-across"'));
+  }
+  let priorIndex = -1;
+  for (const entry of history.entries) {
+    const item = 'label' in entry
+      ? `${entry.label}</dt><dd>${entry.description}</dd>`
+      : `<strong>${entry.when}</strong><p>${entry.description}</p>`;
+    const index = historyHtml.indexOf(item);
+    assert(index > priorIndex, clinicalCase.id + ': render every vignette entry in its original order as HTML');
+    priorIndex = index;
+  }
+  if (clinicalCase.caseNumber === 8) {
+    assert.match(html, /data-case-complaint-figure="back-leg".*?本人の右.*?ふくらはぎまで.*?実線は引きつるような痛み.*?点線はしびれ/);
+  } else if (clinicalCase.caseNumber === 11) {
+    assert.match(html, /data-case-complaint-figure="neck-arm".*?本人の右.*?親指まで.*?肩甲骨の内側.*?左右の記載はありません/);
   } else {
-    assert(html.includes('class="case-history-timeline"'), clinicalCase.id + ': prerender the timeline');
-    let priorIndex = -1;
-    for (const { when, description } of history.entries) {
-      const index = html.indexOf('<strong>' + when + '</strong><p>' + description + '</p>');
-      assert(index > priorIndex, clinicalCase.id + ': render every timeline entry in order');
-      priorIndex = index;
+    assert(!html.includes('data-case-complaint-figure'));
+  }
+  const { observations } = clinicalCase.clinicalExplanation;
+  if (observations?.length) {
+    const diagram = renderToStaticMarkup(React.createElement(CaseObservationFigure, {
+      observations,
+      pattern: clinicalCase.correctDiagnosis.pattern,
+      onExaminationSelect() {},
+    }));
+    assert.match(diagram, /<svg[^>]+aria-hidden="true"/);
+    assert(diagram.includes(clinicalCase.correctDiagnosis.pattern));
+    for (const { target, label } of observations) {
+      const anchor = ['history', 'complaint'].includes(target) ? target : 'examination-content';
+      assert(diagram.includes(label + 'を見る') && diagram.includes(`href="#case-${anchor}"`));
     }
   }
   assert(!html.includes('id="case-practice-review"'), clinicalCase.id);

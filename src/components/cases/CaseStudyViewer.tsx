@@ -21,7 +21,7 @@ import {
   Layers,
   RotateCcw
 } from "lucide-react";
-import type { CaseObservationTarget, CaseReasoningStep, ClinicalCase } from "@/types/clinicalCase";
+import type { CaseReasoningStep, ClinicalCase } from "@/types/clinicalCase";
 import { CLINICAL_CASES, CLINICAL_CASE_SCOPE, CLINICAL_CASE_SAFETY_GUIDANCE } from "@/data/clinicalCasesData";
 import { CLINICAL_CASE_EVIDENCE } from "@/data/clinicalCaseEvidence";
 import { getCaseSimulatorPreset, buildSimulatorUrlFromCase } from "@/data/cases/caseSimulatorMapping";
@@ -34,6 +34,8 @@ import { casePracticeReviewQuestion } from "@/utils/casePracticeReview";
 import { caseStudyAnswerKey, caseStudyAttemptKey, getCaseStudyProgress } from "@/utils/caseStudyProgress";
 import { CASE_RETRY_PARAM, PRACTICE_REVIEW_HREF, recordPracticeReviewAnswer } from "@/utils/practiceReview";
 import CaseQuestionReferences, { CaseHistoryContent } from "./CaseQuestionReferences";
+import CaseComplaintFigure from "./CaseComplaintFigure";
+import CaseObservationFigure from "./CaseObservationFigure";
 import CaseStudyReview, { type CaseStudyReviewResources } from "./CaseStudyReview";
 
 const examinationOptions = [
@@ -48,17 +50,6 @@ const CASE_SAFETY_ANCHOR = "case-safety";
 function openCaseSafety() {
   const safety = document.getElementById(CASE_SAFETY_ANCHOR);
   if (safety instanceof HTMLDetailsElement) safety.open = true;
-}
-
-function observationHref(target: CaseObservationTarget) {
-  switch (target) {
-    case "complaint":
-      return "#case-complaint";
-    case "history":
-      return "#case-history";
-    default:
-      return "#case-examination-content";
-  }
 }
 
 function focusCaseAnchor(anchor: string) {
@@ -233,6 +224,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
           <p className="rounded-e-lg border-s-2 border-frame bg-page p-3 text-base leading-[1.8]">
             「{clinicalCase.patient.chiefComplaint}」
           </p>
+          <CaseComplaintFigure caseId={clinicalCase.id} />
         </div>
 
         {/* 現病歴 ＆ 生活背景 */}
@@ -543,20 +535,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources }: { cli
                 {clinicalCase.clinicalExplanation.pathomechanism}
               </p>
               {observations?.length ? (
-                <ul role="list" className="case-observation-links" aria-label="この説明で使った所見">
-                  {observations.map(({ target, label }) => (
-                    <li key={target}>
-                      <a
-                        href={observationHref(target)}
-                        onClick={() => {
-                          if (target !== "complaint" && target !== "history") setActiveExamTab(target);
-                        }}
-                      >
-                        {label}を見る
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <CaseObservationFigure observations={observations} pattern={clinicalCase.correctDiagnosis.pattern} onExaminationSelect={setActiveExamTab} />
               ) : null}
             </div>
 

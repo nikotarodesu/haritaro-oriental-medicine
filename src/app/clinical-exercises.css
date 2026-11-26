@@ -248,6 +248,8 @@
 
 .case-reading-path svg { width: 1rem; height: 1rem; }
 
+.case-history-diagram { container-type: inline-size; }
+
 .case-history-timeline {
   display: grid;
   gap: .125rem;
@@ -261,34 +263,91 @@
   position: relative;
   min-width: 0;
   padding-block: .1875rem .75rem;
-  padding-inline-start: 1.3rem;
+  padding-inline-start: 1.5rem;
 }
 
 .case-history-timeline > li:last-child { padding-block-end: .1875rem; }
 
-.case-history-timeline > li::before,
-.case-history-timeline > li:not(:last-child)::after {
+.case-history-marker,
+.case-history-connector {
   position: absolute;
-  content: "";
+  pointer-events: none;
 }
 
-.case-history-timeline > li::before {
-  inset-block-start: .85rem;
+.case-history-marker {
+  inset-block-start: .625rem;
   inset-inline-start: 0;
-  z-index: 1;
-  width: .5rem;
-  height: .5rem;
-  border-radius: 50%;
-  background: var(--accent-readable);
+  inline-size: .875rem;
+  block-size: .875rem;
+  color: var(--accent-readable);
 }
 
-.case-history-timeline > li:not(:last-child)::after {
-  inset-block: 1.15rem -.98rem;
-  inset-inline-start: .25rem;
-  border-inline-start: 1px solid var(--border-control);
+.case-history-connector {
+  inset-block-start: 1.0625rem;
+  inset-inline-start: .375rem;
+  inline-size: .125rem;
+  block-size: calc(100% + .125rem);
+  color: var(--border-control);
 }
 
-.case-history-timeline strong { display: block; color: var(--accent-readable); }
+.case-history-connector-across { display: none; }
+
+@container (min-width: 34rem) {
+  .case-history-timeline {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: .75rem;
+  }
+
+  .case-history-timeline > li,
+  .case-history-timeline > li:last-child {
+    padding: 1.25rem 0 0;
+  }
+
+  .case-history-marker { inset-block-start: 0; }
+
+  .case-history-connector {
+    inset-block-start: .375rem;
+    inset-inline-start: .4375rem;
+    inline-size: calc(100% + .75rem);
+    block-size: .125rem;
+  }
+
+  .case-history-connector-down { display: none; }
+  .case-history-connector-across { display: inline; }
+}
+
+.case-history-timeline strong,
+.case-history-findings dt {
+  display: block;
+  color: var(--accent-readable);
+  font-weight: 700;
+}
+
+.case-history-findings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: .5rem;
+}
+
+.case-history-findings > div {
+  position: relative;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding: .625rem .75rem .625rem 1.75rem;
+  border: 1px solid var(--border-washi);
+  border-radius: .75rem;
+  background: var(--bg-washi);
+}
+
+.case-history-bracket {
+  position: absolute;
+  inset-block-start: .85rem;
+  inset-inline-start: .625rem;
+  inline-size: .625rem;
+  block-size: 1.25rem;
+  color: var(--accent-readable);
+}
 
 .case-observation-links {
   display: flex;

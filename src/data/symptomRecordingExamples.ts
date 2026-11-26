@@ -1,11 +1,12 @@
-import type { LectureDiagram } from '@/data/publicLectures/diagrams/types';
+import type { SymptomRecordingExample } from '@/components/symptoms/recordingFigureTypes';
 
 const exampleNote = '架空の記録です。';
 
-export const SYMPTOM_RECORDING_EXAMPLES: Readonly<Partial<Record<string, LectureDiagram>>> = {
+export const SYMPTOM_RECORDING_EXAMPLES: Readonly<Partial<Record<string, SymptomRecordingExample>>> = {
   'headache-stiff-neck': {
     title: '首・肩と頭の症状を、起きた順に書く',
     layout: 'flow',
+    offsets: [0, 180, 210],
     items: [
       ['午後2時', '右肩が重くなる'],
       ['午後5時', '右のこめかみがズキズキし始める'],
@@ -26,6 +27,7 @@ export const SYMPTOM_RECORDING_EXAMPLES: Readonly<Partial<Record<string, Lecture
   'stomach-fatigue': {
     title: '食べた量と、胃が重くなった時刻',
     layout: 'flow',
+    offsets: [0, 30, 120],
     items: [
       ['正午', '昼食を半分ほど食べる'],
       ['12時半', '胃が重くなり始める'],
@@ -36,6 +38,7 @@ export const SYMPTOM_RECORDING_EXAMPLES: Readonly<Partial<Record<string, Lecture
   'menstrual-pain-chill': {
     title: '月経が始まった日と、痛みが出た日',
     layout: 'flow',
+    offsets: [0, 1],
     items: [
       ['6日', '月経が始まる'],
       ['7日', '下腹が痛み、午前の授業を休む'],
@@ -54,10 +57,11 @@ export const SYMPTOM_RECORDING_EXAMPLES: Readonly<Partial<Record<string, Lecture
   },
   'eye-strain-fatigue': {
     title: '画面を見ているときと、目を休めたあと',
-    layout: 'compare',
-    items: [
-      ['作業を始めて1時間', '両目が乾き、右目がかすむ', 'eye'],
-      ['10分休んだあと', '乾きは軽くなる。右目のかすみは残る', 'eye'],
+    layout: 'matrix',
+    columns: ['作業を始めて1時間', '10分休んだあと'],
+    rows: [
+      { label: '乾き', cells: ['両目が乾く', '乾きは軽くなる'], change: 'eased' },
+      { label: '右目のかすみ', cells: ['右目がかすむ', '右目のかすみは残る'], change: 'remained' },
     ],
     note: exampleNote,
   },
@@ -66,14 +70,15 @@ export const SYMPTOM_RECORDING_EXAMPLES: Readonly<Partial<Record<string, Lecture
     layout: 'matrix',
     columns: ['排便の前', '排便のあと'],
     rows: [
-      { label: '張り', cells: ['おなかが張る', '張りが残る'] },
-      { label: '痛み', cells: ['下腹が痛む', '痛みは軽くなる'] },
+      { label: '張り', cells: ['おなかが張る', '張りが残る'], change: 'remained' },
+      { label: '痛み', cells: ['下腹が痛む', '痛みは軽くなる'], change: 'eased' },
     ],
     note: `${exampleNote} この日は朝に1回、硬い便が出ました。`,
   },
   'dizziness-tinnitus': {
     title: 'めまいの感じ方と、耳鳴りが出た時刻',
     layout: 'flow',
+    offsets: [0, 5, 60],
     items: [
       ['午前8時', '立ち上がったときに景色が回る', 'footprints'],
       ['午前8時5分', '景色が回る感じが落ち着く'],
@@ -96,14 +101,15 @@ export const SYMPTOM_RECORDING_EXAMPLES: Readonly<Partial<Record<string, Lecture
     layout: 'matrix',
     columns: ['外にいるとき', '帰宅してから'],
     rows: [
-      { label: '鼻', cells: ['くしゃみと鼻水', '鼻水が続く'] },
-      { label: '目', cells: ['両目がかゆい', 'かゆみが軽くなる'] },
+      { label: '鼻水', cells: ['鼻水が出る。くしゃみもある', '鼻水が続く'], change: 'remained' },
+      { label: '目のかゆみ', cells: ['両目がかゆい', 'かゆみが軽くなる'], change: 'eased' },
     ],
     note: exampleNote,
   },
   'knee-joint-pain': {
     title: '同じ階段でも、上りと下りを分けて書く',
     layout: 'compare',
+    mode: 'stairs',
     items: [
       ['階段を上る', '右ひざは痛まない', 'footprints'],
       ['階段を下りる', '右ひざの前が痛み、手すりを使う', 'footprints'],

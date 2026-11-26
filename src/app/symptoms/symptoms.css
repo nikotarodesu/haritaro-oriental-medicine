@@ -198,6 +198,111 @@
   stroke-width: 9;
 }
 
+.symptoms-recording-axis {
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  height: auto;
+  margin: .15rem auto .65rem;
+  overflow: visible;
+}
+
+.symptoms-recording-axis-line,
+.symptoms-recording-change-mark,
+.symptoms-recording-stair-arrow {
+  fill: none;
+  stroke: var(--accent-readable);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.symptoms-recording-event-mark {
+  fill: var(--bg-card);
+  stroke: var(--accent-readable);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.symptoms-recording-events,
+.symptoms-recording-stairs {
+  display: grid;
+  gap: .5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.symptoms-recording-events {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+}
+
+.symptoms-recording-stairs {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.symptoms-recording-events li,
+.symptoms-recording-stairs li {
+  display: grid;
+  align-content: start;
+  gap: .25rem;
+  min-width: 0;
+  padding: .55rem clamp(.45rem, 2cqi, .8rem);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-tag);
+  background: var(--bg-card);
+}
+
+.symptoms-recording-events strong {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.symptoms-recording-key-mark,
+.symptoms-recording-change-mark {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+}
+
+.symptoms-recording-events li > span,
+.symptoms-recording-stairs li > span {
+  color: var(--text-secondary);
+}
+
+.symptoms-recording-change {
+  display: flex;
+  align-items: flex-start;
+  gap: .25rem;
+}
+
+.symptoms-recording-change-mark[data-change="remained"],
+.symptoms-recording-stairs li:nth-child(2) .symptoms-recording-stair-arrow {
+  stroke: var(--warm-readable);
+}
+
+.symptoms-recording-stair-profile {
+  display: block;
+  width: min(100%, 9rem);
+  height: auto;
+  margin-inline: auto;
+}
+
+.symptoms-recording-stair-steps {
+  fill: none;
+  stroke: var(--text-secondary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@container (max-width: 23rem) {
+  .symptoms-recording-change {
+    display: grid;
+  }
+}
+
 .symptoms-guide .atlas-observations {
   padding: clamp(.875rem, 2.5vw, 1.25rem);
   border-inline-start: 3px solid var(--atlas-accent);

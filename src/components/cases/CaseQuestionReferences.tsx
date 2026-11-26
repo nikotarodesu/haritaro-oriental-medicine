@@ -14,15 +14,45 @@ export function CaseHistoryContent({ history, labelledBy }: {
 }) {
   if (typeof history === "string") return <p>{history}</p>;
 
+  if ("kind" in history) {
+    return (
+      <dl aria-labelledby={labelledBy} data-case-history-figure="findings" className="case-history-findings">
+        {history.entries.map(({ label, description }) => (
+          <div key={label}>
+            <dt>
+              <svg className="case-history-bracket" viewBox="0 0 10 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                <path d="M8 2H2v16h6M2 10h3" />
+              </svg>
+              {label}
+            </dt>
+            <dd>{description}</dd>
+          </div>
+        ))}
+      </dl>
+    );
+  }
+
   return (
-    <>
-      <ol role="list" aria-labelledby={labelledBy} className="case-history-timeline">
-        {history.entries.map(({ when, description }) => (
-          <li key={when}><strong>{when}</strong><p>{description}</p></li>
+    <div className="case-history-diagram space-y-2">
+      <ol role="list" aria-labelledby={labelledBy} data-case-history-figure="timeline" className="case-history-timeline">
+        {history.entries.map(({ when, description }, index) => (
+          <li key={when}>
+            {index < history.entries.length - 1 && (
+              <svg className="case-history-connector" viewBox="0 0 10 10" preserveAspectRatio="none" fill="none" stroke="currentColor" aria-hidden="true" focusable="false">
+                <path className="case-history-connector-down" d="M5 0v10" vectorEffect="non-scaling-stroke" />
+                <path className="case-history-connector-across" d="M0 5h10" vectorEffect="non-scaling-stroke" />
+              </svg>
+            )}
+            <svg className="case-history-marker" viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+              <circle cx="7" cy="7" r="4" fill="currentColor" />
+            </svg>
+            <strong>{when}</strong>
+            <p>{description}</p>
+          </li>
         ))}
       </ol>
       {history.context && <p>{history.context}</p>}
-    </>
+    </div>
   );
 }
 

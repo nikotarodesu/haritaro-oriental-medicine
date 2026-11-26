@@ -4,11 +4,11 @@ import { ArrowDown, BookOpen, ClipboardList, FlaskConical, MapPin, ShieldCheck }
 import { notFound } from 'next/navigation';
 import AuthorSupervisorCard from '@/components/common/AuthorSupervisorCard';
 import ContentEndAd from '@/components/ads/ContentEndAd';
-import StudyDiagram from '@/components/reading/StudyDiagram';
 import BackPainAreaComparison from '@/components/symptoms/BackPainAreaComparison';
 import SymptomPerspective from '@/components/symptoms/SymptomPerspective';
 import SymptomResearchReferences from '@/components/symptoms/SymptomResearchReferences';
 import SymptomIcon from '@/components/symptoms/SymptomIcon';
+import SymptomRecordingFigure from '@/components/symptoms/SymptomRecordingFigure';
 import { AtlasStudyCard } from '@/components/tsubo/AcupointResearch';
 import { PUBLIC_SYMPTOM_CONTENT } from '@/data/publicSymptoms';
 import { SYMPTOM_RECORDING_EXAMPLES } from '@/data/symptomRecordingExamples';
@@ -100,7 +100,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <section id="recording" className={sectionClass}>
         <h2 className="atlas-section-title">受診時に伝えること</h2>
         {slug === 'lower-back-pain-sciatica' ? <BackPainAreaComparison /> : recordingExample && (
-          <StudyDiagram id="recording-example" diagram={recordingExample} />
+          <SymptomRecordingFigure diagram={recordingExample} />
         )}
         <div className="atlas-observations">
           <h3><ClipboardList size={20} aria-hidden="true" />書いておくと伝えやすいこと</h3>

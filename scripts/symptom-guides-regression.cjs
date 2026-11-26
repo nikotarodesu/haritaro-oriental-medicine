@@ -29,9 +29,47 @@ function load(candidate) {
   return exports;
 }
 
+function checkRecordingFigure(recording, guideId, example) {
+  const figure = recording.match(/<figure id="recording-example"[\s\S]*?<\/figure>/)?.[0];
+  assert(figure?.includes('架空の記録です。'), `${guideId}: one visible fictional recording example`);
+  assert.equal((recording.match(/id="recording-example"/g) ?? []).length, 1, `${guideId}: existing figure anchor is unique`);
+  assert(figure.includes('aria-labelledby="recording-example-title"') && figure.includes('aria-describedby="recording-example-note"'), `${guideId}: figure title and note are accessible`);
+  assert.match(figure, /<svg\b[^>]*aria-hidden="true"/);
+
+  if (!example) {
+    assert.equal(guideId, 'lower-back-pain-sciatica');
+    assert.equal((figure.match(/class="symptoms-back-view"/g) ?? []).length, 2, 'The illustrated comparison of pain locations remains');
+    return;
+  }
+
+  if (example.layout === 'flow') {
+    const { items, offsets } = example;
+    const axis = figure.match(/<svg class="symptoms-recording-axis"[\s\S]*?<\/svg>/)?.[0] ?? '';
+    const points = [...axis.matchAll(/transform="translate\(([\d.]+) 16\)"/g)].map(match => Number(match[1]));
+    assert.equal(points.length, items.length, `${guideId}: every event has a mark on the SVG`);
+    assert(figure.includes('<ol') && items.every(([label, observation]) => figure.includes(label) && figure.includes(observation)), `${guideId}: the complete timeline is available as HTML`);
+    assert(axis.includes(`data-recording-scale="${offsets ? 'interval' : 'sequence'}"`), `${guideId}: only known intervals get a time scale`);
+    const extent = points.at(-1) - points[0];
+    points.forEach((point, index) => {
+      const expected = offsets ? offsets[index] / offsets.at(-1) : index / (items.length - 1);
+      assert(Math.abs((point - points[0]) / extent - expected) < 0.000001, `${guideId}: each point matches the order or actual interval`);
+    });
+  } else if (example.layout === 'matrix') {
+    assert(figure.includes('<table') && example.columns.every(label => figure.includes(`scope="col">${label}`)), `${guideId}: observation conditions are semantic column headers`);
+    for (const { label, cells: [before, after], change } of example.rows) {
+      assert(figure.includes(`scope="row">${label}`) && figure.includes(before) && figure.includes(after) && figure.includes(`data-change="${change}"`), `${guideId}: each change is described in text and SVG`);
+    }
+  } else {
+    const arrows = [...figure.matchAll(/class="symptoms-recording-stair-arrow" d="([^"]+)"/g)];
+    assert.equal(new Set(arrows.map(match => match[1])).size, 2, 'Stairs have two different SVG directions');
+    assert(example.items.every(([label, observation]) => figure.includes(label) && figure.includes(observation)), 'Both stair activities are described in HTML');
+  }
+}
+
 async function main() {
   const { SYMPTOMS, SYMPTOM_SAFETY_GUIDANCE } = load('src/data/symptomData');
   const { PUBLIC_SYMPTOM_CONTENT } = load('src/data/publicSymptoms');
+  const { SYMPTOM_RECORDING_EXAMPLES } = load('src/data/symptomRecordingExamples');
   const { ARTICLES } = load('src/data/articleData');
   const { CURRICULUM_DATA } = load('src/data/curriculumData');
   const { getPublicLectureArticle } = load('src/data/publicLectures');
@@ -152,7 +190,7 @@ async function main() {
     assert(html.includes('東洋医学の教材で扱うツボの例です。'), `${guide.id}: the point list states its purpose before readers choose a point`);
     assert(html.includes(`aria-current="page">${guide.title}</span>`), `${guide.id}: breadcrumb identifies the current guide`);
     const recording = html.slice(html.indexOf('id="recording"'), html.indexOf('id="daily-life"'));
-    assert(recording.includes('<figure id="recording-example"') && recording.includes('架空の記録です。'), `${guide.id}: the illustrated recording example is visible and identified as fictional`);
+    checkRecordingFigure(recording, guide.id, SYMPTOM_RECORDING_EXAMPLES[guide.id]);
     assert(html.includes('href="#recording"'), `${guide.id}: the recording section is linked from the table of contents`);
     for (const study of getSymptomStudies(guide.id)) {
       assert(html.includes(study.result) && html.includes(study.limits), `${guide.id}: evidence appears alongside its limits`);

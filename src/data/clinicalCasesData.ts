@@ -773,7 +773,7 @@ const CASE_MODELS: ClinicalCase[] = [
       },
       auscultationAndOlfaction: "お腹からグルグル・キュルキュルと大きな腸鳴音が聞こえる。",
       inquiry: [
-        { question: "腹痛と排便の関係は？", answer: "お腹が痛くなって下痢が出ると、痛みがすーっと引きます（痛んで下痢し、下痢して痛む）。" },
+        { question: "腹痛と排便の関係は？", answer: "お腹が痛くなって下痢が出ると、痛みはいったん引きます。" },
         { question: "平日と休日で症状に違いはありますか？", answer: "自宅でリラックスしている休日は全く症状が出ません。" },
       ],
       palpation: {
@@ -1039,7 +1039,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "パート事務",
       chiefComplaint: "歩くと体が浮くようにふらつき、頭が重いです。",
-      historyOfPresentIllness: "雨の日や台風が近づくとめまいが強くなるという。乗り物に酔いやすく、吐き気と耳が詰まる感じもある。",
+      historyOfPresentIllness: {
+        kind: "findings",
+        entries: [
+          { label: "天候とめまい", description: "雨の日や台風が近づくとめまいが強くなるという。" },
+          { label: "一緒にある症状", description: "乗り物に酔いやすく、吐き気と耳が詰まる感じもある。" },
+        ],
+      },
       pastHistory: ["メニエール病の既往"],
       lifestyle: "甘いものや乳製品を毎日とります。ふだん運動する習慣はありません。",
     },
@@ -1318,7 +1324,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "タクシードライバー",
       chiefComplaint: "右の首から腕を通って親指まで、電気が走るようにしびれます。肩甲骨の内側も刺すように痛みます。",
-      historyOfPresentIllness: "同じ姿勢で長く運転すると強まり、夜は痛みで眠りにくい。ジャクソンテストとスパーリングテストは陽性と記録されている。",
+      historyOfPresentIllness: {
+        kind: "findings",
+        entries: [
+          { label: "運転中と夜", description: "同じ姿勢で長く運転すると強まり、夜は痛みで眠りにくい。" },
+          { label: "検査の記録", description: "ジャクソンテストとスパーリングテストは陽性と記録されている。" },
+        ],
+      },
       pastHistory: ["頚椎症指摘"],
       lifestyle: "運動する機会が少なく、たばこを吸います。",
     },
@@ -1440,7 +1452,14 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "在宅勤務プログラマー",
       chiefComplaint: "朝ベッドから起き上がると目の前が暗くなります。午前中は体が重く、動き出すのがつらいです。",
-      historyOfPresentIllness: "収縮期血圧は85 mmHg前後と記録されている。朝に動きづらく、午後になると少し動きやすいという。息切れと動悸があり、顔色は白っぽい。",
+      historyOfPresentIllness: {
+        kind: "findings",
+        entries: [
+          { label: "血圧の記録", description: "収縮期血圧は85 mmHg前後と記録されている。" },
+          { label: "時間帯での変化", description: "朝に動きづらく、午後になると少し動きやすいという。" },
+          { label: "ほかの所見", description: "息切れと動悸があり、顔色は白っぽい。" },
+        ],
+      },
       pastHistory: ["貧血の既往"],
       lifestyle: "運動する機会が少なく、食事は少量です。",
     },
@@ -1691,7 +1710,14 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "女性",
       occupation: "主婦",
       chiefComplaint: "正座ができません。椅子から立つときと階段を下りるときに、膝の内側が強く痛みます。",
-      historyOfPresentIllness: "O脚が進んできた。雨の日や梅雨には膝が腫れぼったく、重だるいという。以前に関節穿刺を受けたことがある。",
+      historyOfPresentIllness: {
+        kind: "findings",
+        entries: [
+          { label: "膝の形", description: "O脚が進んできた。" },
+          { label: "天候による変化", description: "雨の日や梅雨には膝が腫れぼったく、重だるいという。" },
+          { label: "以前の処置", description: "以前に関節穿刺を受けたことがある。" },
+        ],
+      },
       pastHistory: ["高血圧"],
       lifestyle: "散歩を控えることが増え、脚の力が落ちています。",
     },
@@ -1811,7 +1837,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "金融ディーラー",
       chiefComplaint: "夜中やおなかがすいたときに、みぞおちがきりきり痛みます。何か食べると、いったん楽になります。",
-      historyOfPresentIllness: "仕事で相場を追う負担が大きい時期に、空腹時のみぞおちの痛みと胸やけが強くなったという。コーヒーとたばこの習慣がある。",
+      historyOfPresentIllness: {
+        kind: "findings",
+        entries: [
+          { label: "症状が強まった時期", description: "仕事で相場を追う負担が大きい時期に、空腹時のみぞおちの痛みと胸やけが強くなったという。" },
+          { label: "ふだんの習慣", description: "コーヒーとたばこの習慣がある。" },
+        ],
+      },
       pastHistory: ["十二指腸潰瘍歴あり"],
       lifestyle: "食事の時刻が不規則で、刺激の強いものも食べます。",
     },
@@ -2180,7 +2212,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "グラフィックデザイナー",
       chiefComplaint: "夕方は目の奥が重く痛み、画面の文字がぼやけることがあります。二つに重なって見えることもあります。後頭部から首の辺りもこわばります。",
-      historyOfPresentIllness: "1日に12時間以上、画面を見る。目薬をよく使う。肩がこるときには、こめかみも痛くなるという。",
+      historyOfPresentIllness: {
+        kind: "findings",
+        entries: [
+          { label: "画面を見る時間と目薬", description: "1日に12時間以上、画面を見る。目薬をよく使う。" },
+          { label: "肩こりと頭痛", description: "肩がこるときには、こめかみも痛くなるという。" },
+        ],
+      },
       pastHistory: ["近視・乱視"],
       lifestyle: "スマートフォンを長時間使います。",
     },
@@ -2301,7 +2339,13 @@ const CASE_MODELS: ClinicalCase[] = [
       gender: "男性",
       occupation: "大学教授（講義で声を多用）",
       chiefComplaint: "風邪をひいた後、痰の出ない咳が二か月続いています。",
-      historyOfPresentIllness: "喉が乾いて声がかれる。夜や話し始めに咳き込み、胸に鈍い痛みが出るという。受診時のレントゲンとCTでは異常を指摘されなかった。",
+      historyOfPresentIllness: {
+        kind: "findings",
+        entries: [
+          { label: "本人の訴え", description: "喉が乾いて声がかれる。夜や話し始めに咳き込み、胸に鈍い痛みが出るという。" },
+          { label: "受診時の画像検査", description: "受診時のレントゲンとCTでは異常を指摘されなかった。" },
+        ],
+      },
       pastHistory: ["既往歴なし"],
       lifestyle: "エアコンで部屋を暖めています。水分をとる量は少なめです。",
     },
