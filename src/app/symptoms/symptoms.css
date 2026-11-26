@@ -46,7 +46,9 @@
 
 .symptoms-search-field > svg { flex-shrink: 0; }
 
-.symptoms-search-field:focus-within { outline: 2px solid var(--atlas-accent); outline-offset: 2px; }
+.symptoms-search-field:has(> input:focus-visible) { outline: 2px solid var(--atlas-accent); outline-offset: 2px; }
+.symptoms-search-field:has(> input:focus-visible) > input { outline: none; }
+.symptoms-directory .symptoms-search-field button:focus-visible { outline-offset: -3px; }
 
 .symptoms-search-field input {
   flex: 1;
