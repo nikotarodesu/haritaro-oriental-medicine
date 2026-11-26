@@ -1,5 +1,14 @@
-import type { ArticleReadingGuide } from "@/types/reading";
+import type { ArticleReadingGuide, ReadingInsert } from "@/types/reading";
 import { FOUR_COMMAND_REVIEW_ID } from "@/data/tsubo/keyPointTypes";
+import { APPLIED_ARTICLE_FIGURES } from "./articleFiguresApplied";
+import { FOUNDATION_ARTICLE_FIGURES } from "./articleFiguresFoundations";
+
+export function getArticleReadingInserts(id: string): ReadingInsert[] {
+  const inserts = new Map(ARTICLE_READING_GUIDES[id]?.inserts.map(insert => [insert.figure.id, insert]));
+  const graphicInserts = [...(FOUNDATION_ARTICLE_FIGURES[id] ?? []), ...(APPLIED_ARTICLE_FIGURES[id] ?? [])];
+  for (const insert of graphicInserts) inserts.set(insert.figure.id, insert);
+  return [...inserts.values()];
+}
 
 // 本文の要点を図にする。新しい医学的事実・治療効果を追加しない。
 // afterParagraph は、指定H2節内の paragraph ブロックだけを1から数える。

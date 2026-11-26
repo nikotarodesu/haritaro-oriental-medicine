@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Fragment } from "react";
 import { ArrowRight, BookOpen, ClipboardList, ExternalLink } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import PageIntro from "@/components/design/PageIntro";
+import InlineConceptFigure from "@/components/reading/InlineConceptFigure";
 import ReadingContents from "@/components/reading/ReadingContents";
 import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH, acupunctureResearchHref } from "@/config/acupunctureLearning";
 import { PAGE_REVISIONS } from "@/config/contentUpdates";
 import { pageSocialMetadata, seriesPageTitle, SITE_ORIGIN } from "@/config/seo";
 import { ACUPUNCTURE_RESEARCH_ARTICLES } from "@/data/acupunctureResearch";
+import { ACUPUNCTURE_RESEARCH_FIGURES } from "@/data/acupunctureResearch/figures";
 import type { AcupunctureResearchArticle } from "@/data/acupunctureResearch/types";
 import styles from "../research.module.css";
 
@@ -79,6 +82,7 @@ function ResearchComparison({ comparison, sources }: {
 
 export default async function AcupunctureResearchPage({ params }: Props) {
   const article = await getArticle(params);
+  const figures = ACUPUNCTURE_RESEARCH_FIGURES[article.slug] ?? [];
   const path = acupunctureResearchHref(article.slug);
   const revisedAt = PAGE_REVISIONS[path] ?? ACUPUNCTURE_RESEARCH.revisedAt;
   const url = SITE_ORIGIN + path;
@@ -135,7 +139,14 @@ export default async function AcupunctureResearchPage({ params }: Props) {
           {article.sections.map(section => (
             <section key={section.id} id={section.id} className={styles.studySection} aria-labelledby={`${section.id}-title`}>
               <h2 id={`${section.id}-title`}>{section.title}</h2>
-              {section.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+              {section.paragraphs.map((paragraph, index) => (
+                <Fragment key={paragraph}>
+                  <p>{paragraph}</p>
+                  {figures.filter(item => item.sectionId === section.id && item.afterParagraph === index + 1).map(({ figure }) => (
+                    <InlineConceptFigure key={figure.id} figure={figure} />
+                  ))}
+                </Fragment>
+              ))}
               {section.exercise && (
                 <div className={styles.exercise}>
                   <p><ClipboardList size={19} aria-hidden="true" />{section.exercise.question}</p>

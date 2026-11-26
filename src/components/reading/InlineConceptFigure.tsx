@@ -1,7 +1,7 @@
 import type { ConceptIcon, ReadingFigure } from "@/types/reading";
 import type { ReactNode } from "react";
 
-function ConceptGlyph({ icon }: { icon: ConceptIcon }) {
+function ConceptGlyph({ icon, x, y }: { icon: ConceptIcon; x?: number; y?: number }) {
   const paths: Record<ConceptIcon, ReactNode> = {
     balance: <><path d="M12 4v16M6 20h12M4 7h16M6 7l-3 6h6L6 7Zm12 0-3 6h6l-3-6Z" /><circle cx="12" cy="4" r="1" /></>,
     leaf: <><path d="M19 4C9 3 4 8 5 15c7 3 14-1 14-11Z" /><path d="M4 21 15 10M9 16v-5m0 5h5" /></>,
@@ -15,9 +15,72 @@ function ConceptGlyph({ icon }: { icon: ConceptIcon }) {
   };
 
   return (
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+    <svg x={x} y={y} viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
       {paths[icon]}
     </svg>
+  );
+}
+
+function FigureGraphic({ graphic, items }: { graphic: NonNullable<ReadingFigure["graphic"]>; items: ReadingFigure["items"] }) {
+  if (typeof graphic !== "string") {
+    return (
+      <>
+        <ul className="grid gap-4" role="list">
+          {items.map(({ label, description }, index) => {
+            const value = graphic.values[index];
+            return (
+              <li key={label}>
+                <div className="flex flex-wrap justify-between gap-x-3 text-sm"><strong>{label}</strong><span className="font-semibold tabular-nums text-accent">{value} {graphic.unit}</span></div>
+                <svg className="my-1 block h-3 w-full overflow-hidden rounded-sm bg-panel-selected" viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                  <rect width={value / graphic.maximum * 100} height="8" className="fill-accent" />
+                </svg>
+                {description && <p className="text-sm leading-relaxed text-muted">{description}</p>}
+              </li>
+            );
+          })}
+        </ul>
+        <div className="mt-3 flex justify-between border-t border-frame pt-1 text-xs tabular-nums text-muted" aria-hidden="true"><span>0</span><span>{graphic.maximum}</span></div>
+      </>
+    );
+  }
+
+  const trackWidth = 360;
+  const positions = items.map((_, index) => trackWidth * (index + 0.5) / items.length);
+  const List = graphic === "comparison" ? "ul" : "ol";
+  return (
+    <>
+      <svg viewBox={`0 0 ${trackWidth} 82`} className="block w-full text-accent" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          {graphic === "comparison" && (
+            <path d={`M${positions[0]} 26V12H${positions.at(-1)}V26 ${positions.slice(1, -1).map(x => `M${x} 12V26`).join(" ")}`} />
+          )}
+          {graphic === "flow" && positions.slice(0, -1).map((x, index) => {
+            const end = positions[index + 1] - 24;
+            return <path key={x} d={`M${x + 22} 48H${end}m-6-5 6 5-6 5`} />;
+          })}
+          {graphic === "timeline" && (
+            <>
+              <path d="M10 72H350" strokeDasharray="4 5" />
+              {positions.map(x => <path key={x} d={`M${x} 67V77`} />)}
+            </>
+          )}
+          {items.map(({ label, icon }, index) => (
+            <g key={label}>
+              <circle cx={positions[index]} cy="48" r="20" className="fill-panel-selected" />
+              <ConceptGlyph icon={icon} x={positions[index] - 12} y={36} />
+            </g>
+          ))}
+        </g>
+      </svg>
+      <List className="grid gap-2 sm:gap-4" role="list" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+        {items.map(({ label, description }) => (
+          <li key={label} className="min-w-0 border-t border-frame pt-2 [overflow-wrap:anywhere]">
+            <strong className="block text-sm leading-snug text-ink sm:text-base">{label}</strong>
+            <p className="mt-1 text-sm leading-relaxed text-muted">{description}</p>
+          </li>
+        ))}
+      </List>
+    </>
   );
 }
 
@@ -41,11 +104,11 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
   const grid = figure.items.length === 2 || figure.items.length > 3 ? "sm:grid-cols-2" : "sm:grid-cols-3";
 
   return (
-    <figure id={`reading-figure-${figure.id}`} aria-labelledby={titleId} aria-describedby={captionId} data-reading-figure={figure.id} className="not-prose my-8 scroll-mt-32 overflow-hidden rounded-xl border border-frame bg-page p-4 sm:p-6">
+    <figure id={`reading-figure-${figure.id}`} aria-labelledby={titleId} aria-describedby={captionId} data-reading-figure={figure.id} data-reading-graphic={typeof figure.graphic === "string" ? figure.graphic : figure.graphic?.kind} className="not-prose my-8 scroll-mt-32 overflow-hidden rounded-xl border border-frame bg-page p-4 sm:p-6">
       <figcaption className="mb-4">
         <strong id={titleId} className="block font-serif text-lg leading-relaxed font-semibold text-ink sm:text-xl">{figure.title}</strong>
       </figcaption>
-      <List className={`grid ${simpleComparison ? "grid-cols-2 gap-2 sm:gap-4" : `gap-x-8 sm:gap-y-3 ${grid}`}`}>
+      {figure.graphic ? <FigureGraphic graphic={figure.graphic} items={figure.items} /> : <List className={`grid ${simpleComparison ? "grid-cols-2 gap-2 sm:gap-4" : `gap-x-8 sm:gap-y-3 ${grid}`}`}>
         {figure.items.map((item, index) => (
           <li key={item.label} className="relative min-w-0">
             <div className={`rounded-lg border border-frame bg-panel sm:p-4 ${simpleComparison ? "h-full px-2.5 py-3" : "p-3 sm:h-full"}`}>
@@ -61,7 +124,7 @@ export default function InlineConceptFigure({ figure }: { figure: ReadingFigure 
             )}
           </li>
         ))}
-      </List>
+      </List>}
       {figure.exercise && (
         <div className="mt-4 border-t border-frame pt-4">
           <p className="text-base leading-relaxed font-semibold">{figure.exercise.prompt}</p>

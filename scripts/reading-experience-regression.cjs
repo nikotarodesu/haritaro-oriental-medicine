@@ -35,11 +35,14 @@ function load(relative) {
 const { parseMarkdownBlocks } = load('src/utils/markdownParser');
 const { resolveConceptArtPlacement, resolveReadingInsertions } = load('src/utils/readingInserts');
 const { ARTICLES, getArticlePreviews } = load('src/data/articleData');
-const { ARTICLE_READING_GUIDES } = load('src/data/articleReadingGuides');
+const { ARTICLE_READING_GUIDES, getArticleReadingInserts } = load('src/data/articleReadingGuides');
+const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch/index');
+const { ACUPUNCTURE_RESEARCH_FIGURES } = load('src/data/acupunctureResearch/figures');
 const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_READING_INSERTS, CURRICULUM_READING_QUESTIONS, createCurriculumReadingLinks, getCurriculumRelatedArticleIds } = load('src/data/curriculumReadingGuides');
 const MarkdownBody = load('src/components/MarkdownBody').default;
 const StudyDiagram = load('src/components/reading/StudyDiagram').default;
+const InlineConceptFigure = load('src/components/reading/InlineConceptFigure').default;
 const PublicLectureSections = load('src/components/curriculum/PublicLectureSections').default;
 const { getPublicLectureGroups, getPublicLectureArticle } = load('src/data/publicLectures/index');
 const { getPublicLectureDiagram, publicLectureDiagrams } = load('src/data/publicLectures/diagrams/index');
@@ -186,6 +189,7 @@ function checkInsertions(id, content, inserts) {
     assert(illustrated.includes(`aria-labelledby="reading-figure-${figure.id}-title"`), id + ' accessible name');
     assert(illustrated.includes(figure.caption.replaceAll('&', '&amp;')), id + ' scope caption');
     for (const item of figure.items) assert(illustrated.includes(item.label.replaceAll('&', '&amp;')), id + ' HTML concept label');
+    if (figure.graphic) checkGraphic(figure);
     if (figure.exercise) {
       assert(illustrated.includes(figure.exercise.prompt), id + ' example asks the reader to compare');
       const exercise = illustrated.match(new RegExp(`<details data-reading-exercise="${figure.id}"[^>]*>[\\s\\S]*?<\\/details>`))?.[0];
@@ -197,15 +201,42 @@ function checkInsertions(id, content, inserts) {
   assert(!/<svg[^>]*>[\s\S]*?<text\b/.test(illustrated), id + ' labels must not shrink inside SVG');
 }
 
+function checkGraphic(figure) {
+  const svg = renderToStaticMarkup(React.createElement(InlineConceptFigure, { figure }));
+  assert(figure.caption.trim() && svg.includes('<svg') && svg.includes('data-reading-graphic='), figure.id + ' has an SVG with a caption');
+  assert(!/<text\b/.test(svg), figure.id + ' preserves scalable HTML labels');
+  for (const { label } of figure.items) assert(svg.includes(label.replaceAll('&', '&amp;')), figure.id + ' HTML label: ' + label);
+  if (typeof figure.graphic === 'object') {
+    const { maximum, values, unit } = figure.graphic;
+    assert(Number.isFinite(maximum) && maximum > 0 && values.length === figure.items.length && unit.trim(), figure.id + ' valid graph scale');
+    assert(values.every(value => Number.isFinite(value) && value >= 0 && value <= maximum), figure.id + ' uses the same scale for every value');
+    assert.equal((svg.match(/<rect /g) || []).length, values.length, figure.id + ' draws a bar for each value');
+  }
+}
+
 assert.equal(Object.keys(ARTICLE_READING_GUIDES).length, ARTICLES.length);
+let addedArticleFigures = 0;
 for (const article of ARTICLES) {
   const guide = ARTICLE_READING_GUIDES[article.id];
-  checkInsertions(article.id, article.contentMarkdown, guide.inserts);
+  const inserts = getArticleReadingInserts(article.id);
+  assert(guide.inserts.every(old => inserts.some(next => next.figure.id === old.figure.id)), article.id + ' retains original figure links');
+  addedArticleFigures += inserts.length - guide.inserts.length;
+  checkInsertions(article.id, article.contentMarkdown, inserts);
   assert.equal(guide.nextArticles.length, 3);
   assert.equal(new Set(guide.nextArticles.map(link => link.articleId)).size, 3);
   for (const link of guide.nextArticles) {
     assert(articleIds.has(link.articleId) && link.articleId !== article.id, article.id + ' relevant article destination');
     assert(link.reason.length >= 24 && link.reason.length <= 45, article.id + ' reason explains what to read next');
+  }
+}
+for (const [slug, figures] of Object.entries(ACUPUNCTURE_RESEARCH_FIGURES)) {
+  const article = ACUPUNCTURE_RESEARCH_ARTICLES.find(article => article.slug === slug);
+  assert(article, slug + ' is published');
+  for (const { sectionId, afterParagraph, figure } of figures) {
+    assert(article.sections.find(section => section.id === sectionId)?.paragraphs[afterParagraph - 1], figure.id + ' targets a published paragraph');
+    assert(!figureIds.has(figure.id), 'duplicate research figure id ' + figure.id);
+    figureIds.add(figure.id);
+    checkGraphic(figure);
   }
 }
 const lectures = CURRICULUM_DATA.flatMap(series => series.lectures);
@@ -242,5 +273,5 @@ const figureInB = resolveReadingInsertions(separateSections, [{ afterHeading: 'B
 assert.equal(resolveConceptArtPlacement(separateSections, 'A', figureInB), 1, 'A visual in a later section must not suppress the current explanation');
 assert.equal(resolveConceptArtPlacement(separateSections, 'B', figureInB), -1, 'A same-section figure replaces redundant artwork');
 assert.equal(resolveConceptArtPlacement(separateSections, 'Missing', new Map()), -1, 'Missing headings do not move artwork to an unrelated section');
-assert.equal(checkedFigures, 26, 'The duplicate qi/blood relationship card is replaced by the existing triangle diagram');
+assert.equal(checkedFigures, 26 + addedArticleFigures, 'Existing figure placements are preserved alongside the new article visuals');
 console.log(`Passed: ${ARTICLES.length} articles, ${Object.keys(CURRICULUM_READING_INSERTS).length} lectures, ${checkedFigures} figure placements/renderings, stable heading anchors, ${ARTICLES.length * 3} related destinations, and metadata-only article previews.`);

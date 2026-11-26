@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { parseMarkdownBlocks } from "@/utils/markdownParser";
 import { ARTICLE_LEARNING_GUIDES } from "@/data/articleLearningGuides";
-import { ARTICLE_READING_GUIDES } from "@/data/articleReadingGuides";
+import { ARTICLE_READING_GUIDES, getArticleReadingInserts } from "@/data/articleReadingGuides";
 import LearningPathLinks from "@/components/learning/LearningPathLinks";
 import ContentNavigationLink from "@/components/learning/ContentNavigationLink";
 import { LEARNING_COURSES } from "@/data/learningCourses";
@@ -93,7 +93,8 @@ export default async function ArticleDetailPage({ params }: Props) {
     course.reading.some(item => item.href === `/articles/${article.id}`) ||
     course.steps.some(step => step.lectureId === ARTICLE_LEARNING_GUIDES[article.id]?.lectureId));
   const readingGuide = ARTICLE_READING_GUIDES[article.id];
-  const firstFigure = readingGuide?.inserts[0]?.figure;
+  const readingInserts = getArticleReadingInserts(article.id);
+  const firstFigure = readingInserts[0]?.figure;
   const nextArticleIds = new Set<string>();
   const nextArticles = (readingGuide?.nextArticles || []).flatMap(item => {
     const next = ARTICLES.find(candidate => candidate.id === item.articleId);
@@ -263,7 +264,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             contentMarkdown={article.contentMarkdown}
             idPrefix="article-heading"
             resolvedReferences={resolvedReferences}
-            readingInserts={readingGuide?.inserts}
+            readingInserts={readingInserts}
             relatedReading={relatedReading}
             conceptArt={articleInsert}
           />

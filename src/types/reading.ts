@@ -1,11 +1,15 @@
 export type ConceptIcon = "balance" | "leaf" | "drop" | "pulse" | "eye" | "book" | "flask" | "check" | "compass";
 
+export type ReadingGraphic = "comparison" | "flow" | "timeline"
+  | { kind: "bars"; maximum: number; unit: string; values: readonly number[] };
+
 export interface ReadingFigure {
   id: string;
   title: string;
   layout: "compare" | "steps" | "triad";
   items: ReadonlyArray<{ label: string; description: string; icon: ConceptIcon }>;
   caption: string;
+  graphic?: ReadingGraphic;
   exercise?: { prompt: string; answer: string };
 }
 
