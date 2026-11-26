@@ -234,7 +234,7 @@ export default async function ReadingLecturePage({ params }: Props) {
           <ul className="lecture-takeaways">
             {revision.takeaways.map(takeaway => <li key={takeaway}>{takeaway}</li>)}
           </ul>
-          <details id="lecture-check" className="lecture-check">
+          <details id="lecture-check" className="lecture-check" open>
             <summary>
               <span>確認問題</span>
               <span className="lecture-check-count">{questions.length}問</span>

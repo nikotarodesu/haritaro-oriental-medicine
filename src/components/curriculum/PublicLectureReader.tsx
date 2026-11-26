@@ -62,7 +62,7 @@ export default function PublicLectureReader({ id, article, series, references, r
         <PublicLectureSections lectureId={id} sections={article.sections} />
       </div>
       {hasExercises && (
-        <details id="lecture-supplements" className="page-help">
+        <details id="lecture-supplements" className="page-help" open>
           <summary>確認問題・復習</summary>
           {quiz && <div id="lecture-quiz" className="scroll-mt-28"><InteractiveQuiz quiz={quiz} /></div>}
           {assessment && <ChapterAssessment assessment={assessment} />}
