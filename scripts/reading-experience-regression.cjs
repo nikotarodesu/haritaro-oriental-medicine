@@ -11,7 +11,9 @@ const root = path.resolve(__dirname, '..');
 const cache = new Map();
 function load(relative) {
   let file = path.resolve(root, relative);
-  if (!path.extname(file)) file += fs.existsSync(file + '.tsx') ? '.tsx' : '.ts';
+  if (!path.extname(file)) {
+    file = [file + '.tsx', file + '.ts', path.join(file, 'index.ts')].find(candidate => fs.existsSync(candidate)) ?? file + '.ts';
+  }
   if (cache.has(file)) return cache.get(file);
   const exports = {};
   cache.set(file, exports);
@@ -38,8 +40,10 @@ const { CURRICULUM_DATA } = load('src/data/curriculumData');
 const { CURRICULUM_READING_INSERTS, CURRICULUM_READING_QUESTIONS, createCurriculumReadingLinks, getCurriculumRelatedArticleIds } = load('src/data/curriculumReadingGuides');
 const MarkdownBody = load('src/components/MarkdownBody').default;
 const StudyDiagram = load('src/components/reading/StudyDiagram').default;
+const PublicLectureSections = load('src/components/curriculum/PublicLectureSections').default;
 const { getPublicLectureGroups, getPublicLectureArticle } = load('src/data/publicLectures/index');
 const { getPublicLectureDiagram, publicLectureDiagrams } = load('src/data/publicLectures/diagrams/index');
+const { supportingLectureDiagrams } = load('src/data/publicLectures/diagrams/supporting');
 const { readingUnits } = load('src/data/publicLectures/readingUnits');
 const { proxy } = load('src/proxy');
 const { originalLectureHref, restoreLegacyExerciseHref } = load('src/utils/curriculumLegacyPaths');
@@ -72,10 +76,10 @@ for (const lectureId of publicLectures) {
     assert.equal((html.match(/<th\b[^>]*scope="row"/g) || []).length, diagram.rows.length, lectureId + ' semantic row headers');
   } else if (diagram.layout === 'bars') {
     assert(html.includes('class="study-diagram-bars" role="list"'), lectureId + ' names values in a list');
-    assert.equal((html.match(/class="study-diagram-bar-track"/g) || []).length, diagram.rows.length, lectureId + ' renders every bar');
+    assert.equal((html.match(/<svg class="study-diagram-bar-track"/g) || []).length, diagram.rows.length, lectureId + ' renders every SVG bar');
     for (const { label, percent } of diagram.rows) {
       assert(label.trim() && Number.isFinite(percent) && percent >= 0 && percent <= 100, lectureId + ' percentage uses the 0–100 scale');
-      assert(html.includes(`>${percent.toFixed(1)}%</span>`) && html.includes(`style="width:${percent}%"`), lectureId + ' renders value as text and bar width');
+      assert(html.includes(`>${percent.toFixed(1)}%</span>`) && html.includes(`class="study-diagram-bar-value" width="${percent}"`), lectureId + ' renders value as text and SVG width');
     }
   } else {
     assert(html.includes('<svg'), lectureId + ' has SVG connections or marks');
@@ -94,7 +98,7 @@ for (const unit of readingUnits) {
   assert.equal(Object.keys(revision.copy).length, unit.parts.length, unit.slug);
   let before = 0;
   let after = 0;
-  for (const { lectureId } of unit.parts) {
+  for (const { lectureId, anchor } of unit.parts) {
     const original = getPublicLectureArticle(lectureId);
     const copy = revision.copy[lectureId];
     assert.equal(copy?.length, original.sections.length, lectureId + ' keeps every existing section and figure position');
@@ -102,6 +106,14 @@ for (const unit of readingUnits) {
     const edited = reviseLectureSections(original.sections, copy);
     assert(edited.every(section => section.paragraphs.length && section.paragraphs.every(text => text.trim())), lectureId);
     assert.equal(JSON.stringify(edited.map(section => [section.heading, section.links])), JSON.stringify(original.sections.map(section => [section.heading, section.links])), lectureId);
+    const html = renderToStaticMarkup(React.createElement(PublicLectureSections, { lectureId, sections: edited, partAnchor: anchor, unitHref: unit.href }));
+    assert(html.includes(`id="${anchor}-diagram"`) && !html.includes('lecture-figure-details'), lectureId + ' primary figure is visible with its existing anchor');
+    const supporting = supportingLectureDiagrams[lectureId];
+    if (supporting) {
+      assert(edited[supporting.afterSection - 1], lectureId + ' supplemental figure has a section');
+      const subsection = html.split(`id="${anchor}-section-${supporting.afterSection}"`)[1].split('</section>')[0];
+      assert(subsection.includes(`id="reading-figure-${supporting.anchor}"`) && subsection.includes(`data-study-illustration="${supporting.illustration}"`), lectureId + ' supporting SVG shown near its explanation');
+    }
     before += original.lead.length + original.sections.flatMap(section => section.paragraphs).join('').length;
     after += edited.flatMap(section => section.paragraphs).join('').length;
   }
@@ -109,9 +121,6 @@ for (const unit of readingUnits) {
   assert.equal(new Set(revision.takeaways).size, 3, unit.slug);
   const mergedCount = readingLectureMerges.filter(([, target]) => target === unit.slug).length;
   assert.equal(revision.questions.length, 2 * (mergedCount + 1), unit.slug + ' retains every optional question');
-  for (const featured of unit.featuredDiagrams ?? []) {
-    assert(unit.parts.some(part => part.lectureId === featured) && getPublicLectureDiagram(featured), featured);
-  }
   const questions = getReadingUnitQuestions(unit.slug);
   for (const [index, item] of revision.questions.entries()) {
     assert.equal(new Set(item.choices).size, 3, unit.slug + ' has three distinct choices');
@@ -120,7 +129,7 @@ for (const unit of readingUnits) {
     const part = unit.parts.find(part => part.lectureId === lectureId);
     assert(part, unit.slug + ' links to a section of this lecture');
     if (section === 'diagram') {
-      assert(getPublicLectureDiagram(lectureId) && (!unit.featuredDiagrams || unit.featuredDiagrams.includes(lectureId)), lectureId + ' links to a visible figure');
+      assert(getPublicLectureDiagram(lectureId), lectureId + ' links to a visible figure');
     } else {
       assert(getPublicLectureArticle(lectureId).sections[section - 1], lectureId + ' links to an existing section');
     }

@@ -1,4 +1,9 @@
-export type DiagramIllustration = "temperature" | "dawn" | "qi-blood" | "five-elements" | "meridian" | "water";
+export type DiagramIllustration =
+  | "temperature" | "dawn" | "qi-blood" | "five-elements" | "meridian" | "water"
+  | "reading-sources" | "daily-goals" | "research-reading"
+  | "zong-qi" | "movement-directions" | "lung-movement" | "five-elements-family"
+  | "assessment-observations" | "assessment-consent" | "assessment-axes" | "treatment-outcome" | "treatment-timeline"
+  | "case-time-comparison" | "soap-record" | "case-visit-response" | "case-follow-up";
 export type DiagramIcon = "sun" | "footprints" | "rain" | "moon" | "sunrise" | "eye" | "ear" | "speech" | "hand";
 
 type DiagramPoint = readonly [label: string, explanation: string, icon?: DiagramIcon];

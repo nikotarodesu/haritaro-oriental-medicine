@@ -150,6 +150,7 @@ export const foundationDiagrams = {
   "lecture-zangfu-2": {
     title: "肺の二つの働きを、向きで見分ける",
     layout: "matrix",
+    illustration: "lung-movement",
     columns: ["宣発", "粛降"],
     rows: [
       { label: "上と下", cells: ["上へ広げる", "下へ降ろす"] },
@@ -196,6 +197,7 @@ export const foundationDiagrams = {
   "lecture-lifedynamics-3": {
     title: "飲食と呼吸から胸に集まる宗気",
     layout: "relations",
+    illustration: "zong-qi",
     directional: true,
     afterSection: 2,
     items: [["飲食", "宗気", "水穀の精気"], ["呼吸", "宗気", "自然の清気"], ["宗気", "呼吸・声", "胸に集まり支える"]],
@@ -230,6 +232,7 @@ export const foundationDiagrams = {
   "lecture-lifedynamics-7": {
     title: "昇・降・出・入の四つの向き",
     layout: "relations",
+    illustration: "movement-directions",
     directional: true,
     items: [["昇", "上へ", "脾が得たものを上へ運ぶ"], ["降", "下へ", "胃が飲食を下へ送る"], ["出", "外へ", "内側から外側に向かう"], ["入", "内へ", "外側から内側に向かう"]],
     note: "何がどの方向に動くと説明されているかを読み取ります。",
@@ -333,6 +336,7 @@ export const foundationDiagrams = {
   "lecture-wuxing-8": {
     title: "同じ「水」でも、相手によって母と子が変わる",
     layout: "relations",
+    illustration: "five-elements-family",
     directional: true,
     items: [["金（肺）", "水（腎）", "水が子"], ["水（腎）", "木（肝）", "水が母"]],
     note: "相生の矢印では、支える側が母、支えられる側が子です。",

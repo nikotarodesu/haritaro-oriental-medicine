@@ -51,9 +51,9 @@ function DiagramBars({ rows }: { rows: Extract<LectureDiagram, { layout: "bars" 
         {rows.map(({ label, percent }) => (
           <li key={label}>
             <strong>{label}</strong><span>{percent.toFixed(1)}%</span>
-            <div className="study-diagram-bar-track" aria-hidden="true">
-              <div style={{ width: `${percent}%` }} />
-            </div>
+            <svg className="study-diagram-bar-track" viewBox="0 0 100 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <rect className="study-diagram-bar-value" width={percent} height="1" />
+            </svg>
           </li>
         ))}
       </ul>

@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
 import StudyDiagram from "@/components/reading/StudyDiagram";
 import { getCurriculumReadingInserts } from "@/data/curriculumReadingGuides";
 import { getPublicLectureDiagram } from "@/data/publicLectures/diagrams";
+import { supportingLectureDiagrams } from "@/data/publicLectures/diagrams/supporting";
 import { readingLinkHref } from "@/data/publicLectures/readingUnits";
 import type { PublicLectureArticle, PublicLectureLink } from "@/data/publicLectures/types";
 
@@ -18,20 +18,20 @@ export function PublicLectureLinks({ links, unitHref }: { links: readonly Public
   );
 }
 
-export default function PublicLectureSections({ lectureId, sections, partAnchor, unitHref, collapseDiagram = false, sectionPreface }: {
+export default function PublicLectureSections({ lectureId, sections, partAnchor, unitHref, sectionPreface }: {
   lectureId: string;
   sections: PublicLectureArticle["sections"];
   partAnchor?: string;
   unitHref?: string;
-  collapseDiagram?: boolean;
   sectionPreface?: { sectionNumber: number; content: ReactNode };
 }) {
   const diagram = getPublicLectureDiagram(lectureId);
   const diagramIndex = (diagram?.afterSection ?? 1) - 1;
+  const supportingDiagram = supportingLectureDiagrams[lectureId];
   const readingInserts = getCurriculumReadingInserts(lectureId);
   const prefix = partAnchor ?? "lecture";
   const Heading = partAnchor ? "h3" : "h2";
-  const figureAfterOpening = Boolean(partAnchor && diagram && !collapseDiagram && lectureId !== "lecture-diagnosis-2");
+  const figureAfterSection = lectureId === "lecture-diagnosis-2";
   const figure = diagram && (
     <div id={`${prefix}-diagram`} className="lecture-diagram" tabIndex={-1}>
       {readingInserts.map(({ figure }) => (
@@ -49,16 +49,6 @@ export default function PublicLectureSections({ lectureId, sections, partAnchor,
       ) : null)}
     </div>
   );
-  const diagramBlock = diagram && collapseDiagram ? (
-    <details className="lecture-figure-details">
-      <summary>
-        <span>図で確認する</span><span className="sr-only"> {diagram.title}</span>
-        <ChevronDown aria-hidden="true" />
-      </summary>
-      {figure}
-    </details>
-  ) : figure;
-
   return sections.map((section, index) => (
     <section key={section.heading} id={`${prefix}-section-${index + 1}`} tabIndex={-1} data-lecture-section={index} className="lecture-section">
       {(!partAnchor || index > 0) && (
@@ -68,10 +58,15 @@ export default function PublicLectureSections({ lectureId, sections, partAnchor,
       {section.paragraphs.map((paragraph, paragraphIndex) => (
         <Fragment key={paragraphIndex}>
           <p>{paragraph}</p>
-          {figureAfterOpening && index === diagramIndex && paragraphIndex === 0 && diagramBlock}
+          {paragraphIndex === 0 && index === diagramIndex && !figureAfterSection && figure}
+          {paragraphIndex === 0 && supportingDiagram?.afterSection === index + 1 && (
+            <div className="lecture-diagram">
+              <StudyDiagram id={`reading-figure-${supportingDiagram.anchor}`} diagram={supportingDiagram} />
+            </div>
+          )}
         </Fragment>
       ))}
-      {!figureAfterOpening && index === diagramIndex && diagramBlock}
+      {figureAfterSection && index === diagramIndex && figure}
       {section.links?.length ? <PublicLectureLinks links={section.links} unitHref={unitHref} /> : null}
     </section>
   ));

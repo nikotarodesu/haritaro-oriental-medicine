@@ -1,5 +1,19 @@
 import type { LectureDiagram } from "./types";
 
+export const assessmentAxesDiagram = {
+  title: "八綱の四つの対",
+  layout: "compare",
+  anchor: "assessment-axes",
+  afterSection: 1,
+  illustration: "assessment-axes",
+  items: [
+    ["表・裏", "不調が体の表と内のどちらに関わるか。"],
+    ["寒・熱", "冷えと熱の特徴をどう捉えるか。"],
+    ["虚・実", "体を支える働きの不足や、不調に関わるものの強さ。"],
+    ["陰・陽", "得られた特徴を全体としてどうまとめるか。"],
+  ],
+} satisfies LectureDiagram;
+
 export const appliedDiagrams = {
   "lecture-pathomechanism-1": {
     title: "夕食後のおなかの張りを、四つの言葉で読む",
@@ -139,12 +153,14 @@ export const appliedDiagrams = {
   "lecture-diagnosis-5": {
     title: "目で見たことと、耳や鼻で気づいたこと",
     layout: "compare",
+    illustration: "assessment-observations",
     items: [["望診", "立ち上がるときの動きや、舌の色・形を見る。", "eye"], ["聞診", "話しているときの声や呼吸の音を聞く。においも確かめる。", "ear"]],
     note: "舌を見るときは、舌そのものの舌質と、表面の舌苔を分けます。",
   },
   "lecture-diagnosis-6": {
     title: "触れて観察する前後に確かめること",
     layout: "flow",
+    illustration: "assessment-consent",
     items: [["説明と同意", "何を確認するかを説明し、同意を確かめる。"], ["触れた内容を記録", "脈や腹などで、どんな特徴があったか。"], ["条件を添える", "姿勢や時間など、観察時の条件を残す。"]],
   },
   "lecture-diagnosis-7": {
@@ -199,6 +215,7 @@ export const appliedDiagrams = {
   "lecture-treatment-1": {
     title: "肩の痛みと、洗濯物を干す途中の休憩",
     layout: "matrix",
+    illustration: "treatment-outcome",
     columns: ["前回", "今回"],
     rows: [
       { label: "痛み（0～10）", cells: [[{ label: "6" }], [{ label: "4", tone: "positive" }]] },
@@ -261,6 +278,7 @@ export const appliedDiagrams = {
   "lecture-treatment-10": {
     title: "残業が増えた日と、肩の痛みが強くなった日",
     layout: "flow",
+    illustration: "treatment-timeline",
     items: [
       ["月曜", "残業が増えた。"],
       ["火曜の夕方", "画面作業の途中で肩の痛みが強くなった。"],

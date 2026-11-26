@@ -216,7 +216,6 @@ export default async function ReadingLecturePage({ params }: Props) {
                 sections={sections}
                 partAnchor={part.anchor}
                 unitHref={unit.href}
-                collapseDiagram={unit.featuredDiagrams && !unit.featuredDiagrams.includes(part.lectureId)}
                 sectionPreface={part.lectureId === CASE_COURSE_REVIEW_LECTURE_ID ? {
                   sectionNumber: CASE_COURSE_REVIEW_SECTION,
                   content: <Suspense fallback={null}><CaseCourseLectureContext /></Suspense>,

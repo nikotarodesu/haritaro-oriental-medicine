@@ -132,14 +132,16 @@
 .study-diagram-bars > li > span { font-variant-numeric: tabular-nums; color: var(--accent-readable); font-weight: 650; }
 
 .study-diagram-bar-track {
+  display: block;
   grid-column: 1 / -1;
+  width: 100%;
   height: .9rem;
   border: 1px solid var(--border-subtle);
   border-radius: .25rem;
   background: var(--bg-muted);
 }
 
-.study-diagram-bar-track > div { height: 100%; border-radius: inherit; background: var(--accent-readable); }
+.study-diagram-bar-value { fill: var(--accent-readable); }
 .study-diagram-bar-axis { display: flex; justify-content: space-between; color: var(--text-secondary); font-size: .8125rem; }
 
 .study-diagram-point > .study-diagram-point-icon {
@@ -259,6 +261,8 @@
   line-height: 1.45;
   text-align: center;
 }
+
+.study-artwork-scale--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .study-artwork-scale strong {
   color: var(--warm-readable);

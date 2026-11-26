@@ -7,7 +7,6 @@ interface UnitDefinition {
   description: string;
   opening: readonly [string, ...string[]];
   parts: readonly (readonly [lectureId: string, label: string])[];
-  featuredDiagrams?: readonly string[];
 }
 
 const units: readonly UnitDefinition[] = [
@@ -41,7 +40,6 @@ const units: readonly UnitDefinition[] = [
       ["lecture-yinyang-7", "本人の話と診察で見たこと"],
       ["lecture-yinyang-8", "顔のほてりと足の冷えが出る時間帯"],
     ],
-    featuredDiagrams: ["lecture-yinyang-1", "lecture-yinyang-2", "lecture-yinyang-4", "lecture-yinyang-7", "lecture-yinyang-8"],
   },
   {
     slug: "qi-blood-fluids", chapter: "qi-blood-water", title: "気・血・津液とは？",
@@ -56,7 +54,6 @@ const units: readonly UnitDefinition[] = [
       ["lecture-qiblood-4", "気と血の関係、血と津液の由来"],
       ["lecture-qiblood-5", "散歩のあとに感じた温かさ"],
     ],
-    featuredDiagrams: ["lecture-qiblood-1", "lecture-qiblood-3", "lecture-qiblood-4"],
   },
   {
     slug: "zangfu-basics", chapter: "zangfu", title: "五臓と六腑は何をする？",
@@ -71,7 +68,6 @@ const units: readonly UnitDefinition[] = [
       ["lecture-zangfu-4", "肝と腎が蓄えるもの"],
       ["lecture-zangfu-5", "臓と腑を組にする「表裏」"],
     ],
-    featuredDiagrams: ["lecture-zangfu-1", "lecture-zangfu-3", "lecture-zangfu-5"],
   },
   {
     slug: "body-functions", chapter: "vital-function", title: "宗気・営気・衛気の違い",
@@ -80,7 +76,6 @@ const units: readonly UnitDefinition[] = [
       "古典では、食事から得るものと、呼吸で取り込む気が合わさって、胸に集まる「宗気（そうき）」になると考えます。ここから、営気と衛気がそれぞれどこで何をすると説明されるかを読み分けます。",
     ],
     parts: [["lecture-lifedynamics-1", "食べる、歩く、休む"], ["lecture-lifedynamics-2", "成長の「精」と心の「神」"], ["lecture-lifedynamics-3", "食べものと呼吸から生まれる宗気"], ["lecture-lifedynamics-4", "内を養う営気、表を守る衛気"]],
-    featuredDiagrams: ["lecture-lifedynamics-3", "lecture-lifedynamics-4"],
   },
   {
     slug: "triple-burner-and-movement", chapter: "vital-function", title: "三焦と体の中を巡る津液",
@@ -89,7 +84,6 @@ const units: readonly UnitDefinition[] = [
       "汁物を飲んだあと、取り込んだ水分を体に配り、不要なものを外に出します。東洋医学では、三焦（さんしょう）という言葉を使って、こうした働きを体の上・中・下に分けて説明します。",
     ],
     parts: [["lecture-lifedynamics-5", "三焦の上・中・下"], ["lecture-lifedynamics-6", "脾と胃で分けて考える"], ["lecture-lifedynamics-7", "上へ、下へ、外へ、内へ"], ["lecture-lifedynamics-11", "水分を変える、配る、調整する"], ["lecture-lifedynamics-12", "朝の一杯に戻って考える"]],
-    featuredDiagrams: ["lecture-lifedynamics-5", "lecture-lifedynamics-11"],
   },
   {
     slug: "daily-and-seasonal-changes", chapter: "vital-function", title: "昼と夜、季節と体調",
@@ -98,7 +92,6 @@ const units: readonly UnitDefinition[] = [
       "「冬は疲れやすい」といっても、寒い屋外で長く過ごした日と、前の夜に何度も目が覚めた日では、手がかりが違います。季節の話と、その日に何があったかを分けて記録する例を見ます。",
     ],
     parts: [["lecture-lifedynamics-8", "夜中に目が覚めた日の記録"], ["lecture-lifedynamics-9", "季節の名前と、その日の気温"], ["lecture-lifedynamics-10", "普段の買い物でも疲れる？"]],
-    featuredDiagrams: ["lecture-lifedynamics-8", "lecture-lifedynamics-10"],
   },
   {
     slug: "five-elements", chapter: "five-elements", title: "五行とは？ 矢印と表の読み方",
@@ -116,7 +109,6 @@ const units: readonly UnitDefinition[] = [
       ["lecture-wuxing-6", "五神は心の働き、五志は感情"],
       ["lecture-wuxing-7", "季節と味を横に読む"],
     ],
-    featuredDiagrams: ["lecture-wuxing-3", "lecture-wuxing-5"],
   },
   {
     slug: "meridians-and-points", chapter: "meridians", title: "経絡・経脈・経穴の違い",
@@ -133,7 +125,6 @@ const units: readonly UnitDefinition[] = [
       "帰り道で雨にぬれ、その晩は夜更かしした。翌朝は体がだるかった。ここまでが本人の話です。どの出来事が関わったと考えるかが「病因」、どんな変化を経てだるさが出たと考えるかが「病機」です。",
     ],
     parts: [["lecture-pathomechanism-1", "症状・病因・病機・証の違い"], ["lecture-pathomechanism-2", "出来事とだるさを順に並べる"], ["lecture-pathomechanism-7", "風や寒さを表す古典の言葉"], ["lecture-pathomechanism-8", "食事や休み方が変わった日"]],
-    featuredDiagrams: ["lecture-pathomechanism-1", "lecture-pathomechanism-2"],
   },
   {
     slug: "qi-blood-and-patterns", chapter: "pathology", title: "気・血・津液の不足と滞り",
@@ -142,7 +133,6 @@ const units: readonly UnitDefinition[] = [
       "階段を上るとすぐ疲れる人と、緊張するとお腹が張る人がいます。東洋医学では、どんな場面で何が起きたかを手がかりに、気の不足や滞りといった候補を考えます。",
     ],
     parts: [["lecture-pathomechanism-3", "気虚・気滞・気逆・気陥の違い"], ["lecture-pathomechanism-4", "口の乾きと水分の滞り"], ["lecture-pathomechanism-5", "血虚と瘀血はどう違う？"], ["lecture-pathomechanism-6", "寒熱と虚実を掛け合わせる"]],
-    featuredDiagrams: ["lecture-pathomechanism-3", "lecture-pathomechanism-6"],
   },
   {
     slug: "how-patterns-change", chapter: "pathology", title: "不調の経過から、次に何を聞く？",
@@ -156,7 +146,6 @@ const units: readonly UnitDefinition[] = [
       ["lecture-pathomechanism-11", "二つの見立てを並べる"],
       ["lecture-pathomechanism-12", "食欲が戻った日の夜は？"],
     ],
-    featuredDiagrams: ["lecture-pathomechanism-9", "lecture-pathomechanism-12"],
   },
   {
     slug: "assessment-basics", chapter: "diagnosis", title: "四診と弁証、何を確かめる？",
@@ -172,7 +161,6 @@ const units: readonly UnitDefinition[] = [
       ["lecture-diagnosis-5", "目、耳、鼻で確かめる"],
       ["lecture-diagnosis-6", "触れる前に説明し、同意を得る"],
     ],
-    featuredDiagrams: ["lecture-diagnosis-1", "lecture-diagnosis-2", "lecture-diagnosis-4"],
   },
   {
     slug: "assessment-frameworks", chapter: "diagnosis", title: "八綱で体の状態をどう読む？",
@@ -181,7 +169,6 @@ const units: readonly UnitDefinition[] = [
       "「夕方に顔がほてる。寝る前には足先が冷える」と聞きました。場所と時刻を別々に記録し、同じ時間帯にも重なったかを尋ねます。東洋医学で体の状態を整理する四組の見方を「八綱」と呼びます。この例では、その一組の「寒熱」で冷えとほてりを見比べます。",
     ],
     parts: [["lecture-diagnosis-7", "顔のほてりと足先の冷えをどう読む？"], ["lecture-diagnosis-8", "何が足りず、何が滞る？"], ["lecture-diagnosis-9", "臓腑は働き、経絡は場所を見る"]],
-    featuredDiagrams: ["lecture-diagnosis-7", "lecture-diagnosis-9"],
   },
   {
     slug: "principles-and-goals", chapter: "treatment", title: "施術の目標と、治法の読み方",
@@ -199,7 +186,6 @@ const units: readonly UnitDefinition[] = [
       ["lecture-treatment-6", "血を養う、津液を巡らせる"],
       ["lecture-treatment-7", "二つの臓が入る治法名"],
     ],
-    featuredDiagrams: ["lecture-treatment-1", "lecture-treatment-2", "lecture-treatment-3"],
   },
 ];
 

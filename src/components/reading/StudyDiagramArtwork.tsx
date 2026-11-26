@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
 import type { DiagramIllustration } from "@/data/publicLectures/diagrams/types";
+import { appliedArtwork } from "./StudyAppliedArtwork";
+import { caseArtwork } from "./StudyCaseArtwork";
+import { foundationArtwork } from "./StudyFoundationArtwork";
+import { introArtwork } from "./StudyIntroArtwork";
 
 type Node = { label: string; x: number; y: number };
 
@@ -179,7 +183,18 @@ function Water() {
   );
 }
 
-const artwork = { temperature: Temperature, dawn: Dawn, "qi-blood": QiBlood, "five-elements": FiveElements, meridian: Meridian, water: Water };
+const artwork: Record<DiagramIllustration, (props: { id: string }) => ReactNode> = {
+  temperature: Temperature,
+  dawn: Dawn,
+  "qi-blood": QiBlood,
+  "five-elements": FiveElements,
+  meridian: Meridian,
+  water: Water,
+  ...introArtwork,
+  ...foundationArtwork,
+  ...appliedArtwork,
+  ...caseArtwork,
+};
 
 export default function StudyDiagramArtwork({ kind, id }: { kind: DiagramIllustration; id: string }) {
   const Art = artwork[kind];
