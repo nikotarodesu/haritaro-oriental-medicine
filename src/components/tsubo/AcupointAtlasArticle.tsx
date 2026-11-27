@@ -95,16 +95,13 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         />
       )}
 
-      <div className="atlas-care-section">
-        <AcupointCautions>
-          <Paragraphs paragraphs={article.cautions} />
-          {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
-          {hasIndividualAnatomy && (
-            <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
-          )}
-        </AcupointCautions>
-        <AcupointSelfCare code={point.codeLower} />
-      </div>
+      <AcupointCautions>
+        <Paragraphs paragraphs={article.cautions} />
+        {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
+        {hasIndividualAnatomy && (
+          <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
+        )}
+      </AcupointCautions>
 
       <AcupointLocationComparison point={point} related={article.relatedPoints}>
         {nearbyComparisons.map((comparison, index) => (
@@ -120,6 +117,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       </AcupointLocationComparison>
 
       <AcupointTraditionalUses code={point.codeLower} />
+      <AcupointSelfCare code={point.codeLower} />
       <div className="atlas-secondary-sections">
         <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
         <FeaturedAcupointPairs pointCode={point.codeLower} />

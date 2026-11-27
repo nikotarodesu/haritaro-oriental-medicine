@@ -948,14 +948,14 @@
   border-radius: 50%;
   background: #7f3520;
 }
-.atlas-care-section { display: grid; gap: 1rem; min-width: 0; }
-.atlas-care-section:has(.atlas-self-care) {
+.atlas-entry > .atlas-self-care {
+  min-width: 0;
   padding: clamp(.75rem, 2.5vw, 1.25rem);
   border: 1px solid var(--atlas-line);
   border-radius: .875rem;
   background: var(--atlas-paper);
 }
-.atlas-care-section .atlas-care-method { background: var(--bg-washi); }
+.atlas-entry > .atlas-self-care .atlas-care-method { background: var(--bg-washi); }
 .atlas-cautions {
   padding-inline: .625rem;
   border-block: 1px solid var(--atlas-line);

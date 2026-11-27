@@ -49,15 +49,12 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
 
       <AcupointAnatomy point={point} />
 
-      <div className="atlas-care-section">
-        <AcupointCautions priority={<p>{heguAtlasReading.caution}</p>}>
-          <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
-          <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
-          <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
-          <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
-        </AcupointCautions>
-        <AcupointSelfCare code={point.codeLower} />
-      </div>
+      <AcupointCautions priority={<p>{heguAtlasReading.caution}</p>}>
+        <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
+        <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
+        <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
+        <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
+      </AcupointCautions>
 
       <AcupointLocationComparison point={point} related={[
         { code: "LI3", text: "同じ経絡で、合谷より人差し指の先に近いツボです。" },
@@ -66,6 +63,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       ]} />
 
       <AcupointTraditionalUses code={point.codeLower} />
+      <AcupointSelfCare code={point.codeLower} />
       <div className="atlas-secondary-sections">
         <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
         <FeaturedAcupointPairs pointCode={point.codeLower} />
