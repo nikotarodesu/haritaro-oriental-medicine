@@ -228,7 +228,7 @@ export default async function ReadingLecturePage({ params }: Props) {
           </ul>
           <Suspense fallback={
             <ContentNavigationLink href="/learn/review#learning-review" placement="reading_unit_review" className="ui-text-link inline-flex min-h-11 items-center">
-              間違えた問題を復習する
+              確認問題と復習
             </ContentNavigationLink>
           }>
             <ReviewLectureReturnLink />

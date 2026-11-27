@@ -40,7 +40,7 @@ export default function SafetyPage() {
       <p>強い腰痛や脚へ広がる痛みに、新たな尿の出にくさ・失禁、排便や性機能の変化、会陰部のしびれが伴う場合は、馬尾症候群などの緊急評価が必要です。鍼灸を試すために待たず、すぐに医療機関を受診してください。これらの症状だけで診断は確定せず、症状がないことだけで完全に除外もできません。</p>
       <p className="text-sm">出典：<a className="underline" href={sources.caudaEquina.url}>NICE NG127 1.7.3</a>。英国の紹介基準を参考にし、国内の受診経路へ置き換えて説明しています。</p>
     </section>
-    <section id="procedure" className="scroll-mt-28 space-y-4"><h2 className="text-xl font-bold">鍼灸を受ける前と受けたあと</h2>
+    <section id="procedure" className="scroll-mt-28 space-y-4"><h2 className="text-xl font-bold">鍼灸を受ける前と受けた後</h2>
       <ol role="list" className="grid gap-3">
         <li className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-xl border border-[var(--border-washi)] bg-[var(--bg-card)] p-4">
           <ClipboardList size={22} className="mt-1 text-[var(--accent-readable)]" aria-hidden="true" />

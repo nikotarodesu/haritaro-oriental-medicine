@@ -12,7 +12,7 @@ import CaseStudyResume from "@/components/cases/CaseStudyResume";
 import { CASE_COURSE_COMPARISON_ANCHOR } from "@/utils/caseStudyNavigation";
 
 const title = "症例演習";
-const description = "模擬症例の訴え・経過・四診の所見を読み、何を根拠に見立て、どのツボを選ぶか考えます。回答すると解答例と理由を読めます。";
+const description = "模擬症例の訴え・経過・四診の所見を読み、見立ての根拠を探し、ツボを選ぶ理由を考えます。回答すると解答例と理由を読めます。";
 
 export default function CasesIndexPage() {
   const firstCase = CLINICAL_CASES[0];
@@ -32,7 +32,7 @@ export default function CasesIndexPage() {
         </div>
       </PageIntro>
 
-      <aside aria-label="症例演習の注意" className="rounded-xl border border-frame bg-panel px-3 text-sm sm:px-4">
+      <aside aria-label="症例演習の注意" className="rounded-xl border border-frame px-3 text-sm sm:px-4">
         <div className="flex flex-wrap items-center justify-between gap-x-4">
           <p className="py-2 font-medium">すべて学習用の架空症例です。</p>
           <Link href="/safety" className="ui-text-link inline-flex min-h-11 items-center">受診の目安と鍼灸の安全性</Link>
@@ -51,7 +51,7 @@ export default function CasesIndexPage() {
             模擬症例の一覧
           </h2>
           <a href={`#${CASE_COURSE_COMPARISON_ANCHOR}`} className="ui-text-link inline-flex min-h-11 items-center gap-1 text-sm">
-            同じ症状の2例を比べる<ArrowRight size={15} aria-hidden="true" />
+            同じ訴えの2例を読み比べる<ArrowRight size={15} aria-hidden="true" />
           </a>
         </div>
 

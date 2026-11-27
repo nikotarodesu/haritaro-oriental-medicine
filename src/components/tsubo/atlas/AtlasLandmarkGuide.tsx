@@ -11,7 +11,7 @@ const choices = [
 const guidance = {
   li4: {
     origin: "人差し指につながる骨をたどり、長さの真ん中を見ます。",
-    direction: "人差し指につながる骨の真ん中が目印です。矢印は、そこから少し親指側を指しています。",
+    direction: <><span aria-hidden="true">白丸から、矢印が少し親指側を指しています。</span><span className="sr-only">白丸は人差し指につながる骨の長さの真ん中です。そこから少し親指側へ進みます。</span></>,
     point: "人差し指につながる骨の真ん中より、少し親指側にある丸印が合谷です。",
   },
   pc4: {

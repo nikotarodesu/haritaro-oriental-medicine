@@ -76,7 +76,11 @@
 .clinical-exercise-simulator button,
 .clinical-exercise-simulator a { min-height: 2.75rem; }
 .clinical-exercise-simulator a { align-content: center; }
-.clinical-case-catalog .clinical-case-catalog-card { gap: .5rem; padding: clamp(.75rem, 2vw, 1.125rem); }
+.clinical-case-catalog .clinical-case-catalog-card {
+  gap: .5rem;
+  padding: clamp(.75rem, 2vw, 1.125rem);
+  background: transparent;
+}
 .clinical-haiketsu-selected-list { border-bottom: 1px solid var(--exercise-line); }
 .clinical-haiketsu-selected { border-top: 1px solid var(--exercise-line); padding: 1rem 0; }
 .clinical-haiketsu-grid { display: grid; gap: 1rem; align-items: start; }
@@ -196,10 +200,8 @@
   display: grid;
   min-width: 0;
   gap: clamp(.85rem, 2vw, 1.4rem);
-  padding: clamp(1rem, 3.6vw, 1.7rem);
-  border: 1px solid var(--border-washi);
-  border-radius: var(--radius-card);
-  background: var(--bg-card);
+  padding-block: clamp(1rem, 3.6vw, 1.5rem);
+  border-block-start: 1px solid var(--border-washi);
   scroll-margin-block-start: .5rem;
   overflow-wrap: anywhere;
 }
@@ -228,7 +230,8 @@
 
 .case-reading-path a {
   display: flex;
-  min-height: 100%;
+  min-height: 2.75rem;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -236,7 +239,6 @@
   padding: .6rem .25rem;
   border: 1px solid var(--border-washi);
   border-radius: .75rem;
-  background: var(--bg-card);
   color: var(--accent-readable);
   font-size: .875rem;
   font-weight: 700;

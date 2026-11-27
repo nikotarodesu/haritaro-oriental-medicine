@@ -295,3 +295,27 @@
   text-decoration: underline;
   text-underline-offset: .18em;
 }
+
+.directoryPage { gap: clamp(1.5rem, 4vw, 3rem); }
+
+.directoryPage :is(.directoryIndex, .directory > div, .card, .point .figure, .takeaways > div + div) {
+  background: transparent;
+}
+
+.directoryPage .card { border-color: var(--atlas-line); gap: .75rem; }
+.directoryPage .card h3 { font-family: var(--font-serif); }
+.directoryPage .point .figure svg text { display: none; }
+.directoryPage .takeaways > div + div { border-inline-start-color: var(--atlas-line); }
+
+header.directoryHeader {
+  padding: 0 0 .875rem;
+  border: 0;
+  border-bottom: 1px solid var(--atlas-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+@media (max-width: 479px) {
+  .directoryPage .points { grid-template-columns: minmax(0, 1fr); }
+  .directoryPage .point .figure svg { height: 6rem; }
+}

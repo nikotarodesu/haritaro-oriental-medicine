@@ -59,7 +59,8 @@ async function checkClinical(page) {
   assert.equal(await page.locator('#chief-complaints a[href^="/clinical/symptoms/"]').count(), CLINICAL_COMPLAINTS.length);
   await page.getByRole('link', { name: '頭痛の模擬症例を読む', exact: true }).waitFor();
   await page.getByRole('link', { name: '最初の設問へ', exact: true }).waitFor();
-  await page.getByRole('heading', { name: '相談から7日後まで追う：頭痛の架空症例', exact: true }).waitFor();
+  await page.getByRole('heading', { name: '頭痛の別症例を、初回相談から7日後まで追う', exact: true }).waitFor();
+  await page.getByRole('link', { name: '第6段階：7日後の再評価', exact: true }).waitFor();
   for (const href of clinicalLinks) assert.equal(await page.locator('main a[href="' + href + '"]').count(), 1, href);
   assert.equal(await page.locator('main a[href="/symptoms"]').count(), 1, 'One general-audience entry appears in the clinical hub');
   await noRetiredEntry(page);
@@ -67,21 +68,47 @@ async function checkClinical(page) {
   assert(fits, 'Clinical landing page overflows at ' + page.viewportSize().width + 'px');
 }
 
+async function checkCaseAnchor(page, id) {
+  await page.waitForFunction(anchor => {
+    const target = document.getElementById(anchor);
+    const title = target?.querySelector('h2, h3, summary')?.getBoundingClientRect();
+    const header = document.querySelector('header:has(.site-header-container)')?.getBoundingClientRect();
+    const bottom = document.querySelector('nav[aria-label="モバイル下部ナビゲーション"]')?.getBoundingClientRect();
+    const viewportBottom = bottom?.height ? bottom.top : window.innerHeight;
+    return target && document.activeElement === target && title && header && title.top >= header.bottom && title.bottom <= viewportBottom;
+  }, id);
+}
+
+async function activateLinkWithKeyboard(link) {
+  await link.focus();
+  await link.press('Enter');
+}
+
 async function checkGuideAndPractice(page) {
   await page.getByRole('link', { name: '最初の設問へ', exact: true }).click();
   await page.waitForURL('**/cases/case-01-headache-liver-fire#case-reasoning');
-  await page.waitForFunction(() => {
-    const heading = document.getElementById('case-reasoning-title')?.getBoundingClientRect();
-    const header = document.querySelector('header:has(.site-header-container)')?.getBoundingClientRect();
-    return heading && header && heading.top >= header.bottom && heading.bottom <= window.innerHeight;
-  });
+  await checkCaseAnchor(page, 'case-reasoning');
   await page.getByText('頭痛と目の充血があるとき、最初に何を聞きますか。', { exact: true }).waitFor();
   const safety = page.locator('details#case-safety');
   assert.equal(await safety.evaluate(details => details.open), false, 'Case safety details start folded when opening a question');
   await page.getByRole('complementary', { name: '症例演習の注意' }).getByRole('link', { name: '受診の目安と鍼灸の安全性' }).waitFor();
-  await page.getByRole('link', { name: 'この症例の受診・安全上の注意を読む', exact: true }).click();
+  await activateLinkWithKeyboard(page.getByRole('link', { name: '受診・安全上の注意を読む', exact: true }));
   await page.waitForURL('**/cases/case-01-headache-liver-fire#case-safety');
   await page.locator('details#case-safety[open]').waitFor();
+  await checkCaseAnchor(page, 'case-safety');
+  await activateLinkWithKeyboard(page.getByRole('link', { name: '安全上の注意から設問に戻る', exact: true }));
+  await checkCaseAnchor(page, 'case-reasoning');
+  await activateLinkWithKeyboard(page.getByRole('link', { name: '症状の経過を読む', exact: true }));
+  await page.waitForURL('**/cases/case-01-headache-liver-fire#case-history');
+  await checkCaseAnchor(page, 'case-history');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await checkCaseAnchor(page, 'case-history');
+  await page.goBack();
+  await checkCaseAnchor(page, 'case-reasoning');
+  await page.goForward();
+  await checkCaseAnchor(page, 'case-history');
+  await activateLinkWithKeyboard(page.getByRole('link', { name: '症状の経過から設問に戻る', exact: true }));
+  await checkCaseAnchor(page, 'case-reasoning');
 
   await page.getByRole('link', { name: '問題に答える', exact: true }).click();
   const firstIncorrect = introductoryCase.reasoningSteps[0].options.find(option => !option.isCorrect);
@@ -109,6 +136,8 @@ async function checkGuideAndPractice(page) {
   assert.equal(await catalogSafety.locator('details').evaluate(details => details.open), false, 'Case catalog safety details start folded');
   await catalogSafety.getByRole('link', { name: '受診の目安と鍼灸の安全性' }).waitFor();
   const catalog = page.locator('#case-catalog');
+  await catalog.getByRole('link', { name: introductoryCase.title, exact: true }).getByText('難易度 ' + introductoryCase.difficulty, { exact: true }).waitFor();
+  await catalog.getByRole('link', { name: '同じ訴えの2例を読み比べる', exact: true }).waitFor();
   await catalog.getByRole('button', { name: '頭痛・めまい', exact: true }).click();
   await page.waitForURL('**/cases?symptom=headache');
   await catalog.getByRole('button', { name: '首・肩・腰・ひざ', exact: true }).click();
@@ -134,6 +163,7 @@ async function checkGuideAndPractice(page) {
   await caseNavigation.getByRole('link', { name: '次の症例へ（症例12）', exact: true }).waitFor();
   await open(page, '/cases/case-01-headache-liver-fire#case-safety');
   await page.locator('details#case-safety[open]').waitFor();
+  await checkCaseAnchor(page, 'case-safety');
 
   await open(page, '/symptoms/headache-stiff-neck');
   await page.getByRole('link', { name: '受診時に伝えることへ', exact: true }).click();

@@ -47,7 +47,7 @@ type ReviewPanelProps = {
 export default function LearningReviewPanel({ compact = false, readingQuestions, practiceQuestions }: ReviewPanelProps = {}) {
   const { isMounted } = useCurriculumProgress();
   // Mount only after the current owner's catalog is ready. Never render the previous owner's answers.
-  if (!isMounted) return <section id="learning-review" className="scroll-mt-24 p-4" role="status">このブラウザーの学習記録を読み込んでいます。</section>;
+  if (!isMounted) return <section id="learning-review" className="learning-review-loading scroll-mt-24 p-4" role="status">このブラウザーの学習記録を読み込んでいます。</section>;
   return <ReviewWorkspace owner={'guest'} compact={compact} readingQuestions={readingQuestions} practiceQuestions={practiceQuestions} />;
 }
 

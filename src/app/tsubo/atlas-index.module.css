@@ -31,6 +31,21 @@
   color: var(--atlas-muted);
 }
 
+.index :global(.dictionary-search-shortcuts) :global(.dictionary-comparison-link) {
+  display: flex;
+  min-height: 2.75rem;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: .35rem;
+  color: var(--atlas-accent);
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.index :global(.dictionary-comparison-link) > span { text-decoration: underline; text-underline-offset: .2em; }
+.index :global(.dictionary-comparison-link) > small { color: var(--atlas-muted); font-size: .8125rem; font-weight: 400; }
+
 .index :global(.dictionary-index-links) {
   min-width: 0;
   padding-inline: .5rem;

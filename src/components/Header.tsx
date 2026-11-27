@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Activity, ArrowRight, BookOpen, ChevronDown, ClipboardPenLine, FileQuestion, GitCompareArrows, GraduationCap, History, Layers3, Library, Mail, Menu, ScanLine, Search, Settings, User as UserIcon, X, type LucideIcon } from "lucide-react";
 import dynamic from "next/dynamic";
+import { GLOBAL_SEARCH_HISTORY_KEY, type GlobalSearchHistory } from "@/utils/globalSearchHistory";
 import BrandLogo from "@/components/brand/BrandLogo";
 import { ACUPUNCTURE_GUIDE } from "@/config/acupunctureLearning";
 import { SERIES } from "@/config/series";
@@ -98,7 +99,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<Dropdown | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchInitialQuery, setSearchInitialQuery] = useState("");
+  const [searchInitial, setSearchInitial] = useState<Partial<GlobalSearchHistory>>({});
   const headerRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const compactSearchRef = useRef<HTMLButtonElement>(null);
@@ -162,23 +163,36 @@ export default function Header() {
     observer.observe(header);
     return () => { observer.disconnect(); delete document.documentElement.dataset.navigationLayout; };
   }, [syncNavigationLayout]);
-  const openSearch = useCallback((query = "") => {
+  const openSearch = useCallback((query = "", restored?: GlobalSearchHistory) => {
     const focused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     searchReturnFocus.current = focused && document.getElementById(SITE_MENU_ID)?.contains(focused) ? menuReturnFocus.current : focused;
-    setSearchInitialQuery(query);
+    setSearchInitial(restored ?? { query });
     setMobileMenuOpen(false);
     setOpenDropdown(null);
     setIsSearchOpen(true);
   }, []);
   const closeSearch = useCallback(() => {
     setIsSearchOpen(false);
-    setSearchInitialQuery("");
+    setSearchInitial({});
     requestAnimationFrame(() => {
       const previous = searchReturnFocus.current;
       if (previous?.isConnected && previous.getClientRects().length) previous.focus();
       else (compactSearchRef.current?.getClientRects().length ? compactSearchRef.current : desktopSearchRef.current)?.focus();
     });
   }, []);
+
+  useEffect(() => {
+    const restoreSearch = (event: PopStateEvent) => {
+      const saved = event.state?.[GLOBAL_SEARCH_HISTORY_KEY] as GlobalSearchHistory | undefined;
+      if (!saved || saved.location !== window.location.pathname + window.location.search + window.location.hash) return;
+      const state = { ...window.history.state };
+      delete state[GLOBAL_SEARCH_HISTORY_KEY];
+      try { window.history.replaceState(state, ""); } catch { /* Restore the dialog even if history is restricted. */ }
+      openSearch(saved.query, saved);
+    };
+    window.addEventListener("popstate", restoreSearch);
+    return () => window.removeEventListener("popstate", restoreSearch);
+  }, [openSearch]);
 
   // Keep the existing keyboard shortcuts and externally requested initial query.
   useEffect(() => {
@@ -312,6 +326,6 @@ export default function Header() {
       </nav> : null}
       <RecentToolTracker />
     </header>
-    {isSearchOpen ? <GlobalSearchModal key={searchInitialQuery} isOpen={isSearchOpen} initialQuery={searchInitialQuery} onClose={closeSearch} /> : null}
+    {isSearchOpen ? <GlobalSearchModal key={searchInitial.query} isOpen={isSearchOpen} initialQuery={searchInitial.query} initialCategory={searchInitial.category} initialPurpose={searchInitial.purpose} onClose={closeSearch} /> : null}
   </>;
 }

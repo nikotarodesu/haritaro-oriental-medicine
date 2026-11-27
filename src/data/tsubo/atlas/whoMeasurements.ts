@@ -27,7 +27,7 @@ const spans = boneCunSpans;
 // Every rule matches a measurement's preceding words in the published WHO summary.
 // A full span is given only where both endpoints are established skeletal landmarks.
 const references: readonly Reference[] = [
-  [/手首のしわから、?ひじへ$/, "手首のしわ", "ひじ側へ", ["ひじの横じわ", spans.forearm]],
+  [/手首のしわから、?ひじ(?:側)?へ$/, "手首のしわ", "ひじ側へ", ["ひじの横じわ", spans.forearm]],
   [/ひじの横じわから手首へ$/, "ひじの横じわ", "手首側へ", ["手首のしわ", spans.forearm]],
   [/脇の前のしわから下へ$/, "脇の前のしわ", "下へ", ["ひじの横じわ", spans.upperArm]],
   [/ひじの横じわから肩へ$/, "ひじの横じわ", "肩側へ", ["脇のしわの高さ", spans.upperArm]],

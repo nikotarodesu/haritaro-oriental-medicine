@@ -15,8 +15,8 @@ export default function PublicReadingStart({ firstHref, className }: { firstHref
     <ContentNavigationLink href={href} placement={unit ? "learn_resume_lecture" : "learn_intro_start"} className={className}>
       <span className="learning-option-icon"><BookOpen size={21} aria-hidden="true" /></span>
       <span className="learning-option-label">
-        <strong>{unit ? "続きから読む" : "第1講から読む"}</strong>
-        <span>{unit?.title ?? "東洋医学では何を見て、どう考える？"}</span>
+        <strong>{unit ? "続きから読む" : "第1講を読む"}</strong>
+        <span>{unit?.title ?? "疲れを例に、東洋医学の見立てを学ぶ"}</span>
       </span>
       <ArrowRight size={18} aria-hidden="true" />
     </ContentNavigationLink>

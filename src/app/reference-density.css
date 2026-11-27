@@ -84,6 +84,19 @@
   min-height: 44px;
   padding: 8px 12px;
   text-align: left;
+  border-color: var(--border-washi);
+  color: var(--text-secondary);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+
+.library-category-button:hover,
+.library-category-button[aria-pressed="true"] {
+  border-color: var(--accent-readable);
+  color: var(--text-sumi);
+}
+
+.library-category-button[aria-pressed="true"] {
+  background: var(--accent-soft);
 }
 
 .library-category-button svg {
@@ -129,8 +142,10 @@
   }
 }
 
-.library-paper-card {
+.library-record {
   min-width: 0;
+  border: 1px solid var(--border-washi);
+  border-radius: var(--radius-control);
 }
 
 .library-confirmation-scope {
@@ -148,9 +163,8 @@
 .library-study-outline {
   display: grid;
   gap: 12px;
-  padding: 12px;
-  border-radius: var(--radius-tag);
-  background: color-mix(in srgb, var(--tokiwa-light) 64%, var(--bg-card));
+  padding: 12px 0;
+  border-block: 1px solid var(--border-washi);
 }
 
 .library-study-part {

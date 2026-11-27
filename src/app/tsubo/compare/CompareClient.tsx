@@ -26,6 +26,7 @@ export type ComparisonPoint = ComparisonChoice & Pick<Tsubo, "bodyPart" | "locat
   category: readonly string[];
   traditional?: string;
   caution: string;
+  symptomWarning?: string;
   hasResearch: boolean;
   locationFigure: React.ReactNode;
 };
@@ -39,12 +40,22 @@ type CompareProps = {
 
 const COMPARISON_FIELDS = [
   {
-    label: "注意事項",
+    label: "ツボごとの注意",
     emphasis: "caution",
     content: (point: ComparisonPoint) => (
       <>
         <p className="tsubo-compare-caution"><AlertTriangle aria-hidden="true" size={15} /><span>{point.caution}</span></p>
         <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-cautions`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">詳しい注意点</Link>
+      </>
+    ),
+  },
+  {
+    label: "症状がある場合の受診目安",
+    emphasis: "caution",
+    content: (point: ComparisonPoint) => (
+      <>
+        {point.symptomWarning && <p>{point.symptomWarning}</p>}
+        <Link href="/safety" className="tsubo-compare-detail-link">受診の目安を読む</Link>
       </>
     ),
   },
@@ -66,7 +77,7 @@ const COMPARISON_FIELDS = [
     ) : "特記なし",
   },
   {
-    label: "伝統的な使われ方と研究",
+    label: "伝統的な使われ方と研究の出典",
     content: (point: ComparisonPoint) => (
       <>
         {point.traditional && <p>古典に記された例　{point.traditional}</p>}
@@ -280,11 +291,11 @@ export default function CompareClient({ choices, selectedTsubos, origin, unavail
               ))}
             </ul>
             <details className="tsubo-compare-facts atlas-disclosure">
-              <summary id="tsubo-compare-facts-title">注意点・経絡などを比べる</summary>
-              <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">注意点・経絡・要穴の分類・伝統的な使われ方を確認できます。</p>
+              <summary id="tsubo-compare-facts-title">注意点・経絡・出典を比べる</summary>
+              <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">ツボごとの注意、症状がある場合の受診目安、所属経絡、要穴の分類、研究の出典をまとめています。</p>
               <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-facts-title" aria-describedby="tsubo-compare-scroll-hint">
                 <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
-                  <caption className="sr-only">注意事項・所属経絡・要穴・伝統的な使われ方と研究の比較</caption>
+                  <caption className="sr-only">ツボごとの注意・受診目安・経絡・要穴・出典の比較</caption>
                   <thead role="rowgroup">
                     <tr role="row">
                       <th scope="col" role="columnheader">比較項目</th>

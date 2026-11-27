@@ -2,6 +2,7 @@ import { Search } from "lucide-react";
 
 interface PlatformSearchFormProps {
   query?: string;
+  category?: string;
   id?: string;
   label?: string;
   placeholder?: string;
@@ -9,12 +10,14 @@ interface PlatformSearchFormProps {
 
 export default function PlatformSearchForm({
   query = "",
+  category,
   id = "platform-query",
   label = "ツボ・症状・東洋医学の用語を探す",
   placeholder = "合谷、肩こり、手首のツボ",
 }: PlatformSearchFormProps) {
   return (
     <form action="/search" method="get" role="search" className="platform-search" aria-label="サイト内検索" data-analytics-action="platform_search">
+      {category && category !== "all" && <input type="hidden" name="category" value={category} />}
       <label htmlFor={id}>{label}</label>
       <div className="platform-search-controls">
         <Search aria-hidden="true" />

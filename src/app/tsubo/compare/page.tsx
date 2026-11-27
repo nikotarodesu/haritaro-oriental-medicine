@@ -11,6 +11,8 @@ import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
 import { ACUPOINT_PAIRS_PATH, featuredPairAnchor, featuredPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
+import { getAtlasSafetyNotices } from "@/data/tsubo/atlas/safetyNotices";
+import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
 import type { Metadata } from "next";
 import CompareClient, { type ComparisonChoice, type ComparisonPoint } from "./CompareClient";
 import { comparisonPairOrigin, resolveComparisonSelection, type ComparisonSearchParams } from "./selection";
@@ -34,10 +36,21 @@ const comparisonChoices: ComparisonChoice[] = ALL_ACUPOINTS.map(
 );
 const pointsByCode = new Map(ALL_ACUPOINTS.map(point => [point.code, point]));
 
+function comparisonCategories(point: AcupointMaster) {
+  const categories = [...new Set(point.categories)];
+  if (!categories.includes("兪土穴・原穴")) return categories;
+  const types = getAcupointKeyPointTypes(point.codeLower);
+  const stream = types.find(({ id }) => id === "shu-stream");
+  if (!stream || !types.some(({ id }) => id === "yuan")) return categories;
+  return [stream.label, "原穴", ...categories.filter(category => !["兪土穴・原穴", "兪土穴", "輸土穴", "原穴"].includes(category))];
+}
+
 function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
-  const { legacyId, code, codeLower, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple, categories } = point;
+  const { legacyId, code, codeLower, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple } = point;
   const article = ATLAS_ARTICLES[codeLower];
-  const caution = code === "LI4" ? heguAtlasReading.caution : article.safetyWarning ?? article.cautions[0];
+  const { pointWarning, symptomWarning } = code === "LI4"
+    ? { pointWarning: heguAtlasReading.caution, symptomWarning: heguAtlasReading.symptomWarning }
+    : getAtlasSafetyNotices(article);
   const marker = ATLAS_POINT_MARKERS[codeLower];
   const locationFigure = code === "LI4"
     ? <HeguHandDiagram thumbnail />
@@ -47,8 +60,9 @@ function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
     figureRegion: code === "LI4" ? "手の甲" : code === "LR3" ? "足の甲" : bodyPart,
     locationSimple: atlasLocationWithoutUnitNote(locationSimple),
     traditional: TRADITIONAL_POINT_USES[codeLower]?.labels.join("、"),
-    caution,
-    category: [...new Set(categories)],
+    caution: pointWarning ?? article.cautions[0],
+    symptomWarning,
+    category: comparisonCategories(point),
     hasResearch: getAcupointStudies(codeLower).length > 0 || Boolean(DETAILED_ACUPOINTS[codeLower]?.researchEvidence),
     locationFigure,
   };

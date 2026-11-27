@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Clock, Search, X } from "lucide-react";
 import PageIntro from "@/components/design/PageIntro";
@@ -46,7 +46,9 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
     (selectedCategory === "すべて" || article.category === selectedCategory) &&
     matchesSearchText(searchQuery, [article.title, article.summary, article.category, ...article.tags]));
   const hasFilters = selectedCategory !== "すべて" || searchQuery.trim().length > 0;
-  const resetFilters = () => { setSelectedCategory("すべて"); setSearchQuery(""); };
+  const searchInput = useRef<HTMLInputElement>(null);
+  const clearSearch = () => { setSearchQuery(""); searchInput.current?.focus(); };
+  const resetFilters = () => { setSelectedCategory("すべて"); clearSearch(); };
 
   return (
     <div className="page-layout space-y-8">
@@ -70,8 +72,8 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
             <label htmlFor="article-search" className="sr-only">記事をキーワードで絞る</label>
             <div id="article-search-hint" className="relative">
               <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-              <input id="article-search" type="text" inputMode="search" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="例：陰陽・経絡・脈診" className="min-h-11 w-full rounded-lg border border-field bg-page py-2 pl-10 pr-12 text-base placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />
-              {searchQuery && <button type="button" onClick={() => setSearchQuery("")} aria-label="検索キーワードを消す" className="absolute right-0 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-lg text-muted hover:bg-panel-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"><X aria-hidden="true" className="h-4 w-4" /></button>}
+              <input ref={searchInput} id="article-search" type="text" inputMode="search" value={searchQuery} onChange={event => setSearchQuery(event.target.value)} placeholder="例：陰陽・経絡・脈診" className="min-h-11 w-full rounded-lg border border-field bg-page py-2 pl-10 pr-12 text-base placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent" />
+              {searchQuery && <button type="button" onClick={clearSearch} aria-label="検索キーワードを消す" className="absolute right-0 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-lg text-muted hover:bg-panel-selected focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"><X aria-hidden="true" className="h-4 w-4" /></button>}
             </div>
           </div>
         </div>
@@ -82,17 +84,17 @@ export default function ArticlesListClient({ articles }: ArticlesListClientProps
 
       <section aria-labelledby="article-results-title" className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 id="article-results-title" className="font-serif text-lg font-bold text-ink">{hasFilters ? "条件に合う記事" : "すべての記事"}</h2>
+          <h2 id="article-results-title" className="font-serif text-lg font-bold text-ink">記事一覧</h2>
           <p role="status" aria-atomic="true" className="text-sm text-muted">
             {hasFilters ? `全${articles.length}件中${filteredArticles.length}件` : `全${articles.length}件`}
           </p>
-          {hasFilters && <button type="button" onClick={resetFilters} className="ui-text-link text-sm">条件を解除</button>}
+          {hasFilters && filteredArticles.length > 0 && <button type="button" onClick={resetFilters} className="ui-text-link inline-flex min-h-11 items-center text-sm">条件をクリア</button>}
         </div>
         {filteredArticles.length === 0 ? <div className="mx-auto max-w-xl space-y-4 rounded-xl border border-frame bg-panel px-5 py-8 text-center">
           <BookOpen aria-hidden="true" className="mx-auto h-8 w-8 text-accent" />
           <h3 className="font-serif text-lg font-bold text-ink">該当する記事が見つかりませんでした</h3>
-          <p className="text-sm leading-relaxed text-muted">検索キーワードまたはカテゴリの選択を変更してお試しください。</p>
-          <button type="button" onClick={resetFilters} className="page-primary-action">すべての記事を表示する</button>
+          <p className="text-sm leading-relaxed text-muted">「陰陽」「経絡」「脈診」など、短い言葉で探せます。</p>
+          <button type="button" onClick={resetFilters} className="page-primary-action">条件をクリア</button>
         </div> : <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{filteredArticles.map(article => <Link key={article.id} href={`/articles/${article.id}`} aria-labelledby={`article-list-${article.id}`} onClick={() => trackEvent("context_link_click", { placement: "article_list", article_id: article.id })} className="article-cover-card group flex flex-col gap-3 rounded-2xl border border-frame p-5 hover:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
           <ArticleCover articleId={article.id} />
           <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-muted"><span className="font-semibold text-accent">{CATEGORY_LABELS[article.category] || article.category}</span><span className="inline-flex items-center gap-1"><Clock aria-hidden="true" className="h-4 w-4" />約 {article.readTime}</span></div>

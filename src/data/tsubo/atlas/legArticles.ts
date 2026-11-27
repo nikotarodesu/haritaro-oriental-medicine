@@ -61,6 +61,7 @@ function article(code: LegCode, copy: ArticleCopy): AcupointAtlasArticle {
     cautions: [calf ? calfCaution : workCaution],
     expert: ["WHO標準では" + copy.expert + ("cun" in point ? units : "")],
     safetyWarning: [copy.warning, calf ? calfWarning : undefined].filter(Boolean).join(" ") || undefined,
+    pointWarning: code === "sp6" ? copy.warning : undefined,
     relatedPoints: copy.links,
     symptomLinks: [{ href: view === "knee" || popliteal ? "/symptoms/knee-joint-pain" : "/symptoms", label: view === "knee" || popliteal ? "ひざの痛み・受診の目安" : "気になる症状から受診の目安を探す" }],
     sources: [

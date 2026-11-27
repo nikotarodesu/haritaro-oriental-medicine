@@ -43,6 +43,8 @@ const examinationOptions = [
 ] as const;
 
 const CASE_SAFETY_ANCHOR = "case-safety";
+const CASE_HISTORY_ANCHOR = "case-history";
+const caseContextAnchors = new Set([CASE_SAFETY_ANCHOR, CASE_HISTORY_ANCHOR, CASE_REASONING_ANCHOR]);
 
 function openCaseSafety() {
   const safety = document.getElementById(CASE_SAFETY_ANCHOR);
@@ -51,7 +53,7 @@ function openCaseSafety() {
 
 function focusCaseAnchor(anchor: string) {
   const target = document.getElementById(anchor);
-  target?.scrollIntoView({ block: "start" });
+  target?.scrollIntoView({ block: "start", behavior: "instant" });
   target?.focus({ preventScroll: true });
 }
 
@@ -73,16 +75,27 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources, caseOrd
   const [showExplanation, setShowExplanation] = useState(false);
   const [retry, setRetry] = useState<{ stepNumber: number; optionId?: string } | null>(null);
   const retryStep = retry?.stepNumber;
+  const returnToQuestionsHref = `#${retryStep === undefined ? CASE_REASONING_ANCHOR : caseQuestionAnchor(retryStep)}`;
   const history = clinicalCase.patient.historyOfPresentIllness;
   const observations = clinicalCase.clinicalExplanation.observations;
 
   useEffect(() => {
-    function openLinkedSafety() {
-      if (window.location.hash === `#${CASE_SAFETY_ANCHOR}`) openCaseSafety();
+    let frame = 0;
+    function syncContextAnchor() {
+      cancelAnimationFrame(frame);
+      const anchor = window.location.hash.slice(1);
+      if (!caseContextAnchors.has(anchor)) return;
+      if (anchor === CASE_SAFETY_ANCHOR) openCaseSafety();
+      frame = requestAnimationFrame(() => focusCaseAnchor(anchor));
     }
-    openLinkedSafety();
-    window.addEventListener("hashchange", openLinkedSafety);
-    return () => window.removeEventListener("hashchange", openLinkedSafety);
+    syncContextAnchor();
+    window.addEventListener("hashchange", syncContextAnchor);
+    window.addEventListener("popstate", syncContextAnchor);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", syncContextAnchor);
+      window.removeEventListener("popstate", syncContextAnchor);
+    };
   }, [clinicalCase.id]);
 
   useEffect(() => {
@@ -111,8 +124,8 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources, caseOrd
     if (!ready) return;
     const anchor = window.location.hash.slice(1);
     const question = clinicalCase.reasoningSteps.find(step => caseQuestionAnchor(step.stepNumber) === anchor);
-    if (anchor !== CASE_REASONING_ANCHOR && !question) return;
-    const retrying = question && new URLSearchParams(window.location.search).get(CASE_RETRY_PARAM) === "1";
+    if (!question) return;
+    const retrying = new URLSearchParams(window.location.search).get(CASE_RETRY_PARAM) === "1";
     const frame = requestAnimationFrame(() => {
       if (retrying) setRetry({ stepNumber: question.stepNumber });
       else focusCaseAnchor(anchor);
@@ -174,13 +187,13 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources, caseOrd
         </ol>
       </nav>
 
-      <aside aria-label="症例演習の注意" className="rounded-xl border border-frame bg-panel px-3 text-sm sm:px-4">
+      <aside aria-label="症例演習の注意" className="rounded-xl border border-frame px-3 text-sm sm:px-4">
         <div className="flex flex-wrap items-center justify-between gap-x-4">
           <p className="py-2 font-medium">架空の症例です。受診を急ぐ所見を先に確認します。</p>
           <Link href="/safety" className="ui-text-link inline-flex min-h-11 items-center">受診の目安と鍼灸の安全性</Link>
         </div>
-        <details id={CASE_SAFETY_ANCHOR} tabIndex={-1} className="scroll-mt-3 border-t border-divider">
-          <summary className="min-h-11 cursor-pointer content-center py-2 font-semibold">この症例の受診・安全上の注意</summary>
+        <details id={CASE_SAFETY_ANCHOR} tabIndex={-1} aria-labelledby="case-safety-title" className="scroll-mt-3 border-t border-divider">
+          <summary id="case-safety-title" className="min-h-11 cursor-pointer content-center py-2 font-semibold">この症例の受診・安全上の注意</summary>
           <div className="space-y-3 pb-3 leading-relaxed">
             <p>{safety.message}</p>
             <ul className="list-disc space-y-1 pl-5">
@@ -192,6 +205,7 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources, caseOrd
               <p className="font-semibold text-ink">この演習で扱う範囲</p>
               <p>{safety.scope}</p>
             </div>
+            <a href={returnToQuestionsHref} aria-label="安全上の注意から設問に戻る" className="ui-text-link inline-flex min-h-11 items-center font-semibold">設問に戻る</a>
           </div>
         </details>
       </aside>
@@ -229,9 +243,10 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources, caseOrd
 
         {/* 現病歴 ＆ 生活背景 */}
         <div className="space-y-3 text-base leading-[1.85]">
-          <section id="case-history" tabIndex={-1} aria-labelledby="case-history-title" className="space-y-2">
+          <section id={CASE_HISTORY_ANCHOR} tabIndex={-1} aria-labelledby="case-history-title" className="space-y-2">
             <h3 id="case-history-title" className="font-bold text-ink">症状の経過と背景</h3>
             <CaseHistoryContent history={history} labelledBy="case-history-title" />
+            <a href={returnToQuestionsHref} aria-label="症状の経過から設問に戻る" className="ui-text-link inline-flex min-h-11 items-center text-sm font-semibold">設問に戻る</a>
           </section>
           {clinicalCase.patient.lifestyle && <div className="space-y-1">
             <span className="font-bold text-ink">仕事や日ごろの習慣</span>
@@ -353,7 +368,10 @@ export default function CaseStudyViewer({ clinicalCase, reviewResources, caseOrd
         <h2 id="case-reasoning-title" className="reader-section-title flex items-center gap-2">
           <Activity aria-hidden="true" className="h-5 w-5 shrink-0 text-accent" />{retry ? "症例の復習" : "症例を読んで判断する"}
         </h2>
-        <p><a href={`#${CASE_SAFETY_ANCHOR}`} onClick={openCaseSafety} className="ui-text-link inline-flex min-h-11 items-center text-sm">この症例の受診・安全上の注意を読む</a></p>
+        <nav aria-label="設問の前に見返す資料" className="flex flex-wrap gap-x-4">
+          <a href={`#${CASE_SAFETY_ANCHOR}`} onClick={openCaseSafety} className="ui-text-link inline-flex min-h-11 items-center text-sm">受診・安全上の注意を読む</a>
+          <a href={`#${CASE_HISTORY_ANCHOR}`} className="ui-text-link inline-flex min-h-11 items-center text-sm">症状の経過を読む</a>
+        </nav>
 
         {ready && !retry && (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">

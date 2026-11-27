@@ -40,7 +40,7 @@ export default function CaseCourseComparison() {
   }
 
   return (
-    <section id={CASE_COURSE_COMPARISON_ANCHOR} tabIndex={-1} className="scroll-mt-28 space-y-4 rounded-xl border border-frame bg-panel p-4 sm:p-6" aria-labelledby="case-comparison-title">
+    <section id={CASE_COURSE_COMPARISON_ANCHOR} tabIndex={-1} className="scroll-mt-28 space-y-4 border-t border-frame pt-6 sm:pt-8" aria-labelledby="case-comparison-title">
       <h2 id="case-comparison-title" className="text-xl font-bold">同じ首の痛み、次に何を聞く？</h2>
       <p>架空の2症例です。どちらも仕事中に振り向くと首が痛みます。施術前から翌日までの記録を見比べてください。</p>
 

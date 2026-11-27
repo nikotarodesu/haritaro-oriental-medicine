@@ -21,8 +21,9 @@ import {
   Trash2,
 } from "lucide-react";
 import { trackEvent } from "@/utils/analytics";
-import { SEARCH_CATEGORIES, matchesSearchCategory, nextSearchResultIndex, prepareSearchItem, type SearchCategory } from "@/utils/search";
+import { SEARCH_CATEGORIES, matchesSearchCategory, nextSearchResultIndex, prepareSearchItem, searchResultsHref, type SearchCategory } from "@/utils/search";
 import { SEARCH_PURPOSES, preparePurposeSearchQuery, rankPurposeSearchResults, type SearchPurpose } from "@/utils/searchPurpose";
+import { GLOBAL_SEARCH_HISTORY_KEY, type GlobalSearchHistory } from "@/utils/globalSearchHistory";
 import { useModalDialog } from "@/hooks/useModalDialog";
 
 export type { SearchItemType } from "@/utils/search";
@@ -62,17 +63,21 @@ interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialQuery?: string;
+  initialCategory?: SearchCategory;
+  initialPurpose?: SearchPurpose;
 }
 
 export default function GlobalSearchModal({
   isOpen,
   onClose,
   initialQuery = "",
+  initialCategory = "all",
+  initialPurpose = "auto",
 }: GlobalSearchModalProps) {
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
-  const [activeCategory, setActiveCategory] = useState<SearchCategory>("all");
-  const [searchPurpose, setSearchPurpose] = useState<SearchPurpose>("auto");
+  const [activeCategory, setActiveCategory] = useState<SearchCategory>(initialCategory);
+  const [searchPurpose, setSearchPurpose] = useState<SearchPurpose>(initialPurpose);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [recentSearches, setRecentSearches] = useState<string[]>(() => {
     try {
@@ -121,14 +126,14 @@ export default function GlobalSearchModal({
     inputRef.current?.focus();
   };
 
-  const searchContext = useMemo(() => preparePurposeSearchQuery(query, searchPurpose === "auto" && activeCategory === "library" ? "research" : searchPurpose), [query, searchPurpose, activeCategory]);
+  const searchContext = useMemo(() => preparePurposeSearchQuery(query, searchPurpose), [query, searchPurpose]);
   // The whole matching set is retained so users can continue past the first page.
   const matchingResults = useMemo(() => {
     if (!searchContext.query.normalized) return [];
     return rankPurposeSearchResults(SEARCH_INDEX, searchContext);
   }, [searchContext]);
-  const filteredResults = useMemo(() => matchingResults.filter(result => matchesSearchCategory(result.item.type, activeCategory)), [matchingResults, activeCategory]);
-  const categoryCounts = useMemo(() => Object.fromEntries(SEARCH_CATEGORIES.map(category => [category.id, matchingResults.filter(result => matchesSearchCategory(result.item.type, category.id)).length])), [matchingResults]);
+  const filteredResults = useMemo(() => matchingResults.filter(result => matchesSearchCategory(result.item, activeCategory)), [matchingResults, activeCategory]);
+  const categoryCounts = useMemo(() => Object.fromEntries(SEARCH_CATEGORIES.map(category => [category.id, matchingResults.filter(result => matchesSearchCategory(result.item, category.id)).length])), [matchingResults]);
   const visibleResults = useMemo(() => filteredResults.slice(0, resultLimit), [filteredResults, resultLimit]);
   const hasQuery = query.trim().length > 0;
   const selectedResult = selectedIndex >= 0 ? visibleResults[selectedIndex] : undefined;
@@ -166,6 +171,17 @@ export default function GlobalSearchModal({
     saveRecentSearch(query || item.title);
     trackEvent("search_result_click", { placement: "global_search", result_type: item.type });
   };
+  const rememberBeforeNavigation = (href: string) => {
+    const target = new URL(href, window.location.origin);
+    if (target.pathname + target.search === window.location.pathname + window.location.search) return;
+    const snapshot: GlobalSearchHistory = {
+      location: window.location.pathname + window.location.search + window.location.hash,
+      query, category: activeCategory, purpose: searchPurpose,
+    };
+    try {
+      window.history.replaceState({ ...window.history.state, [GLOBAL_SEARCH_HISTORY_KEY]: snapshot }, "");
+    } catch { /* A blocked history update must leave the result link usable. */ }
+  };
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.nativeEvent.isComposing || event.keyCode === 229 || event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
@@ -187,7 +203,10 @@ export default function GlobalSearchModal({
         recordResultClick(target.item);
         revealCurrentComparison(target.item);
         onClose();
-        if (!followCurrentReadingFragment(target.item)) router.push(target.item.url);
+        if (!followCurrentReadingFragment(target.item)) {
+          rememberBeforeNavigation(target.item.url);
+          router.push(target.item.url);
+        }
       }
     }
   };
@@ -196,9 +215,9 @@ export default function GlobalSearchModal({
   const quickSearches: Array<{ label: string; q: string; category?: SearchCategory }> = [
     { label: "合谷 (LI4)", q: "合谷" },
     { label: "足三里 (ST36)", q: "足三里" },
-    { label: "講義の復習", q: "復習", category: "tool" },
+    { label: "講義の復習", q: "復習", category: "practice" },
     { label: "気虚", q: "気虚" },
-    { label: "治未病 (古典)", q: "治未病", category: "library" },
+    { label: "治未病 (古典)", q: "治未病", category: "reading" },
     { label: "頭痛", q: "頭痛" },
     { label: "膝の痛み", q: "膝の痛み" },
     { label: "坐骨神経痛", q: "坐骨" },
@@ -296,6 +315,8 @@ export default function GlobalSearchModal({
           <p id={statusId} role="status" aria-live="polite" aria-atomic="true" className={hasQuery ? "px-3 py-1 text-sm font-semibold text-[var(--text-secondary)]" : "sr-only"}>
             {hasQuery ? `${activeCategoryLabel}：${filteredResults.length}件${filteredResults.length > visibleResults.length ? `（${visibleResults.length}件を表示）` : ""}` : "検索語を入力してください。"}
           </p>
+          {hasQuery && searchContext.matchedTopic && <p className="px-3 text-sm text-muted">索引では「{searchContext.matchedTopic}」で照合しました。</p>}
+          {hasQuery && activeCategory === "all" && filteredResults.some(result => result.item.type === "symptom") && filteredResults.some(result => result.item.type === "acupoint") && <p className="px-3 text-sm text-muted">ツボ図鑑の結果では、ツボの位置や注意点を確認できます。</p>}
           <p id={helpId} className="sr-only">複数のキーワードは空白で区切れます。上下の矢印キーで結果を選び、Enterで移動します。選択前にEnterを押すと先頭の結果へ移動します。</p>
           {/* 未入力時：最近の検索 ＆ クイック検索候補 */}
           {!hasQuery && (
@@ -369,6 +390,7 @@ export default function GlobalSearchModal({
                       key={tool.id}
                       type="button"
                       onClick={() => {
+                        rememberBeforeNavigation(tool.url);
                         onClose();
                         router.push(tool.url);
                       }}
@@ -424,6 +446,7 @@ export default function GlobalSearchModal({
                       revealCurrentComparison(item);
                       onClose();
                       if (followCurrentReadingFragment(item)) event.preventDefault();
+                      else rememberBeforeNavigation(item.url);
                     }}
                     onMouseMove={(event) => {
                       // 結果の再描画で静止中のポインタが重なっても、キーボードの選択は保つ。
@@ -483,8 +506,8 @@ export default function GlobalSearchModal({
                 {activeCategory !== "all" ? "「すべて」を対象にすると、ほかの分類のページも検索できます。" : "ツボなら「合谷」「ごうこく」「LI4」、症状なら「肩こり」など、名前や読みで探せます。"}
               </p>
               <div className="flex flex-wrap justify-center gap-2 pt-1">
-                {activeCategory !== "all" && <button type="button" onClick={searchAllCategories} className="ui-button ui-button-primary text-sm">同じ検索語ですべてを検索</button>}
-                <button type="button" onClick={() => inputRef.current?.focus()} className="ui-button ui-button-outline text-sm">検索語を編集する</button>
+                {activeCategory !== "all" && <button type="button" onClick={searchAllCategories} className="ui-button ui-button-primary text-sm">種類の絞り込みを解除</button>}
+                <button type="button" onClick={() => { setActiveCategory("all"); setSearchPurpose("auto"); clearQueryAndFocus(); }} className="ui-button ui-button-outline text-sm">条件をクリア</button>
               </div>
             </div>
           )}
@@ -493,9 +516,10 @@ export default function GlobalSearchModal({
         {/* フッター操作ガイド */}
         <div className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-t border-[var(--border-subtle)] bg-[var(--bg-washi)] px-4 py-2.5 text-sm text-[var(--text-secondary)]">
           {hasQuery ? <Link
-            href={`/search?${new URLSearchParams({ q: query.trim() })}`}
+            href={searchResultsHref(query.trim(), activeCategory)}
             prefetch={false}
-            onClick={() => { saveRecentSearch(query); onClose(); }}
+            onClick={() => saveRecentSearch(query)}
+            onNavigate={() => { rememberBeforeNavigation(searchResultsHref(query.trim(), activeCategory)); onClose(); }}
             className="ui-text-link inline-flex min-h-11 items-center gap-1.5 font-semibold"
           >本文も含めてサイト全体を検索 <ArrowRight size={16} aria-hidden="true" /></Link> : <span>空白で複数語を検索</span>}
           <div className="hidden items-center gap-3 sm:flex" aria-hidden="true">

@@ -13,6 +13,8 @@ export interface AcupointAtlasArticle {
   regionLabel: string;
   lead: string;
   safetyWarning?: string;
+  pointWarning?: string;
+  symptomWarning?: string;
   location: readonly string[];
   traditionalTitle?: string;
   traditional: readonly string[];

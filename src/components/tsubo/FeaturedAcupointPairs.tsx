@@ -140,7 +140,7 @@ export default function FeaturedAcupointPairs({ pointCode, directory = false }: 
       })),
     }));
     return (
-      <div id={FEATURED_ACUPOINT_PAIRS_ANCHOR} className={`${styles.groups} atlas-target`}>
+      <div id={FEATURED_ACUPOINT_PAIRS_ANCHOR} className={`${styles.groups} ${styles.directoryPage} atlas-target`}>
         <AcupointPairDirectory sections={sections} />
       </div>
     );

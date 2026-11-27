@@ -94,11 +94,11 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     : "このツボは左右に一つずつあります。";
   const meridianStart = Math.max(1, point.meridianOrder - 2);
   const meridianEnd = Math.min(graph.length, meridianStart + 3);
-  const warnings = [
+  const symptomWarning = [
     view.care === "chest" ? heartWarning : care.emergency,
     view.care !== "chest" && hasHeartCaution ? heartWarning : undefined,
-    point.codeLower === "gb21" ? "妊娠中は肩井への強い刺激を控え、施術については担当の産科へ相談してください。" : undefined,
-  ].filter(Boolean);
+  ].filter(Boolean).join(" ") || undefined;
+  const pointWarning = point.codeLower === "gb21" ? "妊娠中は肩井への強い刺激を控え、施術については担当の産科へ相談してください。" : undefined;
 
   return {
     titleTopic: "場所と注意点",
@@ -106,7 +106,9 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     meridianReading: meridianReadings[point.meridianId],
     regionLabel: view.label,
     lead: `${nameWithCode}の位置は、${profile.location}です。`,
-    safetyWarning: warnings.join(" ") || undefined,
+    safetyWarning: [symptomWarning, pointWarning].filter(Boolean).join(" ") || undefined,
+    pointWarning,
+    symptomWarning,
     location: [profile.guide, locationComparisons[point.codeLower]].filter(Boolean),
     traditional: [],
     visualOnly: true,

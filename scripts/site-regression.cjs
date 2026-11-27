@@ -72,7 +72,7 @@ assert.equal(queryPages[0].url, 'https://www.haritaro.jp/diagnosis?tab=gorou');
 assert.equal(queryPages[0].lastModified.toISOString().slice(0,10), '2026-11-25', 'Gorou has its own publication revision date');
 assert(!sitemap.some(page=>new URL(page.url).pathname==='/notes'));
 assert.equal(new Set(sitemap.map(page=>page.url)).size,sitemap.length);
-const { PUBLIC_VISUALS_REVISED_AT, CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS, NATURAL_JAPANESE_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
+const { CURRICULUM_EDITORIAL_REVISIONS, READABILITY_EDITORIAL_REVISIONS, NATURAL_JAPANESE_EDITORIAL_REVISIONS } = load('src/config/contentUpdates');
 assert.equal(CURRICULUM_EDITORIAL_REVISIONS.length, 55);
 assert.equal(new Set(CURRICULUM_EDITORIAL_REVISIONS).size, 55);
 assert.equal(READABILITY_EDITORIAL_REVISIONS.length, 43);
@@ -117,30 +117,24 @@ for (const pair of featuredPairs) {
   assert(pair.pointIds.every(code => code === 'li4' || (ATLAS_POINT_MARKERS[code] && ATLAS_ARTICLES[code])), pair.id + ' has both location figures');
   assert(pair.details.length && pair.details.every(detail => detail.sources.length && detail.sources.every(source => new URL(source.url).protocol === 'https:')), pair.id + ' has public sources');
 }
-for (const pathname of searchRevised) {
-  assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its search and navigation revisions');
-}
-for (const pathname of pairRevised) {
-  assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its new pairing guide');
-}
-for (const pathname of selfCareRevised) {
-  assert.equal(dateAt(pathname), '2026-11-25', pathname + ' reflects its new self-care guidance');
-}
-for (const pathname of [EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.href)]) {
-  assert.equal(dateAt(pathname), '2026-11-25', pathname + ' has its own sitemap entry');
-}
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
-assert.equal(dateAt('/learn/essentials'), '2026-11-24');
-for (const pathname of ['/articles', `/articles/${fourCommandReview}`]) assert.equal(dateAt(pathname), '2026-11-25', pathname);
+const revisedThisRound = new Set([
+  '/', '/symptoms', '/clinical', '/cases', '/cases/case-01-headache-liver-fire',
+  '/learn', '/learn/essentials', '/curriculum', '/learn/review', '/library',
+  '/tsubo', '/tsubo/compare', ACUPOINT_PAIRS_PATH, '/tsubo/li4', '/tsubo/st36', '/tsubo/lu7', '/tsubo/bl23', '/tsubo/sp6',
+  '/articles', '/updates', ...KIKEI_VESSELS.map(vessel => '/kikei/' + vessel.slug),
+]);
+for (const pathname of revisedThisRound) assert.equal(dateAt(pathname), '2026-11-27', pathname);
+for (const pathname of new Set([...searchRevised, ...pairRevised, ...selfCareRevised, EXTRA_POINTS_PATH, ...EXTRA_POINTS.map(point => point.href)])) {
+  if (!revisedThisRound.has(pathname)) assert.equal(dateAt(pathname), '2026-11-25', pathname);
+}
 const { SYMPTOMS } = load('src/data/symptomData');
-for (const pathname of [ACUPOINT_PAIRS_PATH, '/learn/review', '/tsubo/compare', '/glossary', '/kikei', ...KIKEI_VESSELS.map(vessel => '/kikei/' + vessel.slug), '/cases', '/updates', '/learn', '/diagnosis', '/library', '/symptoms', ...SYMPTOMS.map(guide => '/symptoms/' + guide.id)]) {
+for (const pathname of ['/glossary', '/kikei', '/diagnosis', ...SYMPTOMS.map(guide => '/symptoms/' + guide.id)]) {
   assert.equal(dateAt(pathname), '2026-11-26', pathname);
 }
 for (const pathname of [
-  '/', '/about', '/curriculum',
-  '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research',
-  '/clinical', '/simulator', '/safety', '/practice/haiketsu',
-  '/tsubo/cv21', '/cases/case-01-headache-liver-fire',
+  '/about', '/clinical/symptoms/headache', '/learn/acupuncture', '/learn/acupuncture/research',
+  '/simulator', '/safety', '/practice/haiketsu', '/tsubo/cv21',
 ]) assert.equal(dateAt(pathname), '2026-11-25', pathname);
 const { ACUPUNCTURE_RESEARCH, acupunctureResearchHref } = load('src/config/acupunctureLearning');
 const { ACUPUNCTURE_RESEARCH_ARTICLES } = load('src/data/acupunctureResearch');

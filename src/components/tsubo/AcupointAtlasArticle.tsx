@@ -17,6 +17,7 @@ import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagr
 import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
 import { whoLocationNotes } from "@/data/tsubo/atlas/whoLocations";
+import { getAtlasSafetyNotices } from "@/data/tsubo/atlas/safetyNotices";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import type { AcupointDetail, AcupointMaster } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle as AtlasArticle, AtlasMarker } from "@/data/tsubo/atlas/types";
@@ -46,11 +47,17 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
   const locationNotes = article.expert.filter((paragraph) => paragraph !== whoLocationNotes[point.codeLower]);
+  const { pointWarning, symptomWarning } = getAtlasSafetyNotices(article);
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} />
-      {article.safetyWarning && <aside className="atlas-caution-priority"><p>{article.safetyWarning}</p></aside>}
+      {(pointWarning || symptomWarning) && (
+        <aside className="atlas-caution-priority space-y-2" aria-label="このツボを探す前に">
+          {symptomWarning && <div><p className="font-semibold">症状がある場合の受診目安</p><p>{symptomWarning}</p></div>}
+          {pointWarning && <div><p className="font-semibold">ツボごとの注意</p><p>{pointWarning}</p></div>}
+        </aside>
+      )}
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>

@@ -92,9 +92,9 @@ export default function LibraryClient() {
   return (
     <div className="page-layout text-base leading-relaxed">
       <PageIntro title="文献・古典・症例教材" description="研究の方法や結果、古典の引用箇所、学習用の症例を探せます。" art="reading" compact>
-        <Link href={ACUPUNCTURE_RESEARCH.href} className="page-secondary-action mt-4"><FlaskConical aria-hidden="true" />{ACUPUNCTURE_RESEARCH.title}</Link>
+        <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link mt-2 inline-flex min-h-11 items-center"><FlaskConical aria-hidden="true" />{ACUPUNCTURE_RESEARCH.title}</Link>
       </PageIntro>
-      <section id="library-search-panel" tabIndex={-1} aria-label="資料を探す" className="library-discovery scroll-mt-28 rounded-2xl border border-[#E5DEC9] bg-[#FCFAF6] p-4 dark:border-[#2A3B4A] dark:bg-[#17212A] sm:p-6">
+      <section id="library-search-panel" tabIndex={-1} aria-label="資料を探す" className="library-discovery scroll-mt-28 rounded-xl border border-frame bg-panel p-4 sm:p-6">
           <div className="library-search">
             <div className="library-search-label">
               <label htmlFor="library-search" className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">資料を検索</label>
@@ -109,7 +109,7 @@ export default function LibraryClient() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="キーワードを入力"
-                className="w-full min-h-11 pl-10 pr-14 py-3 rounded-lg text-base bg-[#FFFFFF] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder-[#737C77] focus:outline-none focus:border-[#1E3D34] focus:ring-2 focus:ring-[#1E3D34]/20"
+                className="w-full min-h-11 pl-10 pr-14 py-3 rounded-lg text-base bg-[#FFFFFF] dark:bg-[#121920] border border-[#E5DEC9] dark:border-[#2A3B4A] text-[#232826] dark:text-[#FAF8F5] placeholder:text-muted focus:outline-none focus:border-[#1E3D34] focus:ring-2 focus:ring-[#1E3D34]/20"
               />
               {searchQuery.length > 0 && <button type="button" aria-label="検索をクリア" onClick={() => setSearchQuery('')} className="absolute right-1 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-md text-[#59615D] dark:text-[#A0B0BC] hover:bg-[#E8EFEA] dark:hover:bg-[#182823]"><X className="h-5 w-5" aria-hidden="true" /></button>}
             </div>
@@ -126,13 +126,8 @@ export default function LibraryClient() {
               key={tab.id}
               type="button"
               aria-pressed={activeTab === tab.id}
-              style={{ minHeight: 44 }}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`library-category-button rounded-xl border font-bold transition-colors ${
-                activeTab === tab.id
-                  ? "bg-[#1E3D34] border-[#1E3D34] text-white dark:bg-[#2B6958] dark:border-[#2B6958]"
-                  : "bg-[#FCFAF6] dark:bg-[#17212A] text-[#59615D] dark:text-[#A0B0BC] border-[#E5DEC9] dark:border-[#2A3B4A] hover:bg-[#E8EFEA] dark:hover:bg-[#182823]"
-              }`}
+              className="library-category-button rounded-xl border font-semibold"
             >
               {tab.id === "papers" ? <GraduationCap aria-hidden="true" className="h-5 w-5" /> : tab.id === "classics" ? <BookOpen aria-hidden="true" className="h-5 w-5" /> : tab.id === "cases" || tab.id === "archives" ? <FileText aria-hidden="true" className="h-5 w-5" /> : <Search aria-hidden="true" className="h-5 w-5" />}<span>{tab.label}</span>
               <span className="text-sm opacity-90">({tab.count})</span>
@@ -156,7 +151,7 @@ export default function LibraryClient() {
         </div>
       </section>
 
-      <div className="py-4 sm:py-6 space-y-6">
+      <div className="space-y-8 py-6 sm:space-y-12 sm:py-8">
 
         {visibleResultCount === 0 && <section aria-labelledby="library-empty-title" className="rounded-xl bg-[#FCFAF6] dark:bg-[#17212A] p-5 sm:p-6 space-y-3">
           <h2 id="library-empty-title" className="font-serif text-xl font-bold">該当する資料がありません</h2>
@@ -213,7 +208,7 @@ export default function LibraryClient() {
                     <div
                       key={paper.id}
                       id={`paper-${paper.id}`}
-                      className="library-paper-card scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 space-y-4 flex flex-col justify-between hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors"
+                      className="library-paper-card library-record scroll-mt-28 target:ring-2 target:ring-[#B86924] p-4 sm:p-5 space-y-4 flex flex-col justify-between"
                     >
                       <div className="space-y-3">
                         <div className="flex flex-wrap items-center justify-between gap-2">
@@ -292,7 +287,7 @@ export default function LibraryClient() {
                             rel="noopener noreferrer"
                             className="min-h-11 text-sm text-[#1E3D34] dark:text-[#74BA9E] font-bold hover:underline inline-flex items-center gap-1"
                           >
-                            <span>{paper.sourceUrl ? '確認に使った論文を開く' : '論文の掲載情報を開く'}</span>
+                            <span>{paper.sourceUrl ? '原著を開く' : '論文の掲載情報を開く'}</span>
                             <ExternalLink className="w-3 h-3" />
                           </a>
                         )}
@@ -328,7 +323,7 @@ export default function LibraryClient() {
                     <div
                       key={classic.id}
                       id={`classic-${classic.id}`}
-                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 space-y-4 flex flex-col justify-between hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors"
+                      className="library-record scroll-mt-28 target:ring-2 target:ring-[#B86924] p-4 sm:p-5 space-y-4 flex flex-col justify-between"
                     >
                       <div className="space-y-3">
                         <div className="flex min-w-0 flex-col items-start gap-2">
@@ -446,9 +441,9 @@ export default function LibraryClient() {
                 </div>
                 <Link
                   href="/cases"
-                  className="text-sm font-bold text-[#B86924] dark:text-[#E6C387] hover:underline flex items-center gap-1"
+                  className="ui-text-link min-h-11 text-sm"
                 >
-                  <span>症例演習ページへ</span>
+                  <span>模擬症例を一覧で見る</span>
                   <ChevronRight className="w-3 h-3" />
                 </Link>
               </div>
@@ -458,11 +453,11 @@ export default function LibraryClient() {
                   <Link
                     key={c.id}
                     href={`/cases/${c.id}`}
-                    className="group bg-[#FCFAF6] dark:bg-[#17212A] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 hover:border-[#1E3D34] dark:hover:border-[#74BA9E] transition-colors space-y-2.5 flex flex-col justify-between"
+                    className="group library-record p-4 hover:border-accent space-y-2.5 flex flex-col justify-between"
                   >
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
-                        <span className="font-bold text-[#737C77]">
+                        <span className="font-bold text-muted">
                           症例演習 · {c.category}
                         </span>
                       </div>
@@ -507,7 +502,7 @@ export default function LibraryClient() {
                     <div
                       key={ac.id}
                       id={`archive-${ac.id}`}
-                      className="scroll-mt-28 target:ring-2 target:ring-[#B86924] bg-[#FCFAF6] dark:bg-[#17212A] rounded-2xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-5 space-y-3 flex flex-col justify-between hover:border-emerald-600 dark:hover:border-emerald-500 transition-all"
+                      className="library-record scroll-mt-28 target:ring-2 target:ring-[#B86924] p-5 space-y-3 flex flex-col justify-between"
                     >
                       <div className="space-y-2.5">
                         <div className="flex items-center justify-between gap-2">

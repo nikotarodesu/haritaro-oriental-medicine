@@ -48,21 +48,21 @@ for (const query of ['陰陽', '陰陽 根拠', ' 陰陽　根拠 ', '陰陽 根
 assert.equal(scoreSearchItem(fixture, '陰陽 根拠 根拠'), scoreSearchItem(fixture, '陰陽 根拠'), 'Repeating a token must not change relevance');
 assert.equal(scoreSearchItem(fixture, '陰陽 未収録語'), 0, 'All terms must match');
 assert.equal(searchMatchHint(fixture, prepareSearchQuery('陰陽')), null);
-assert.equal(searchMatchHint(fixture, prepareSearchQuery('陰陽 根拠')), '関連語に一致');
-assert.equal(searchMatchHint(prepareSearchItem({ title: '合谷（LI4）', exactCode: 'LI4' }), prepareSearchQuery('ＬＩ ４')), '経穴コードが一致');
+assert.equal(searchMatchHint(fixture, prepareSearchQuery('陰陽 根拠')), '索引語「診断の根拠」に一致');
+assert.equal(searchMatchHint(prepareSearchItem({ title: '合谷（LI4）', exactCode: 'LI4' }), prepareSearchQuery('ＬＩ ４')), '経穴コードが一致「LI4」');
 
 const types = ['article', 'acupoint', 'lecture', 'case', 'tool', 'glossary', 'classic', 'paper', 'symptom'];
 assert.equal(new Set(SEARCH_CATEGORIES.map(category => category.id)).size, SEARCH_CATEGORIES.length);
 assert(!SEARCH_CATEGORIES.some(category => category.id === 'kokushi' || /国試|国家試験/.test(category.label)), 'Retired exam practice has no public search filter');
 for (const type of types) {
-  assert(matchesSearchCategory(type, 'all'));
+  assert(matchesSearchCategory({ type, url: '/test' }, 'all'));
   const partitions = SEARCH_CATEGORIES.filter(category => category.id !== 'all' && matchesSearchCategory(type, category.id));
   assert.equal(partitions.length, 1, type + ' has one specific filter');
 }
-assert(matchesSearchCategory('glossary', 'glossary'));
-assert(!matchesSearchCategory('glossary', 'library'));
-assert(matchesSearchCategory('paper', 'library'));
-assert(matchesSearchCategory('classic', 'library'));
+assert(matchesSearchCategory({type:'glossary',url:'/glossary'}, 'reading'));
+assert(!matchesSearchCategory({type:'glossary',url:'/glossary'}, 'symptom'));
+assert(matchesSearchCategory({type:'paper',url:'/library#paper-example'}, 'reading'));
+assert(matchesSearchCategory({type:'classic',url:'/library#classic-example'}, 'reading'));
 assert.equal(nextSearchResultIndex(-1, 'next', 25), 0);
 assert.equal(nextSearchResultIndex(-1, 'previous', 25), 24);
 assert.equal(nextSearchResultIndex(0, 'previous', 25), 0);
@@ -227,6 +227,8 @@ const research = render('肩こり 論文');
 assert(optionUrls(research)[0]?.startsWith('/library#paper-'), 'Explicit research intent promotes a relevant paper: ' + optionUrls(research).slice(0, 3).join(', '));
 assert(research.includes('論文：原典要約の照合済み'), 'Checked interpretations show their source-review status');
 assert(!research.includes('書誌照合済み・解釈確認待ち'), 'All published shoulder summaries have been checked');
+assert.equal(preparePurposeSearchQuery('眠れない').matchedTopic, '不眠');
+assert.equal(preparePurposeSearchQuery('ずつう').matchedTopic, '頭痛');
 assert(shoulder.includes('検索の目的に合わせて表示順を変える'));
 assert(shoulder.includes('論文・原典'));
 const { REFLECTION_CASES } = load('src/data/learningReflectionCatalog');
@@ -234,8 +236,8 @@ for (const caseItem of REFLECTION_CASES) assert(render(caseItem.title).includes(
 const many = render('気');
 assert((many.match(/role="option"/g) || []).length === 25, 'Long result sets retain the first page');
 assert(many.includes('さらに表示'));
-assert(many.includes('専門用語'));
-assert(many.includes('講義・コース'));
+assert(many.includes('一般向けガイド'));
+assert(many.includes('講義・研究'));
 const absent = render('zzzz-not-found-2026');
 assert(absent.includes('一致する候補はありません'));
 assert(absent.includes('href="/search?q=zzzz-not-found-2026"'));

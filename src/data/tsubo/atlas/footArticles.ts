@@ -68,6 +68,7 @@ function article(code: FootCode, copy: Copy): AcupointAtlasArticle {
     cautions: [gentleCautions],
     expert: [copy.expert],
     safetyWarning: copy.warning,
+    pointWarning: copy.warning,
     symptomLinks: [{ href: "/symptoms", label: "気になる症状から受診の目安を探す" }],
     relatedPoints: copy.compare,
     sources: [

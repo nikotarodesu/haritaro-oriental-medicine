@@ -1,8 +1,10 @@
 import { getPointSearchTopic, normalizeSearchText, prepareSearchItem, prepareSearchQuery, scoreSearchItem, searchMatchHint, type SearchableItem, type SearchItemType } from "./search";
 
+import { normalizeSearchAliases } from "./searchAliases";
+
 export type SearchPurpose = "auto" | "guide" | "research";
 export const SEARCH_PURPOSES: ReadonlyArray<{ id: SearchPurpose; label: string }> = [
-  { id: "auto", label: "おすすめ順" },
+  { id: "auto", label: "関連度順" },
   { id: "guide", label: "学習・症状ガイド" },
   { id: "research", label: "論文・原典" },
 ];
@@ -64,7 +66,7 @@ function pointLookupResult<T extends PurposeSearchItem>(
   };
   if (locationTopic !== normalized && locationTopic) {
     const point = exactPoint(locationTopic);
-    if (point) return { item: point.item, score: 150, hint: "経穴の位置" };
+    if (point) return { item: point.item, score: 150, hint: "位置を調べる経穴名・コード " + point.item.title };
   }
 
   const terms = comparisonTopic.replace(/\s*と\s*/gu, "と").split(POINT_SEPARATORS).filter(Boolean);
@@ -79,7 +81,7 @@ function pointLookupResult<T extends PurposeSearchItem>(
   if (distinct.length < 2) return;
   const comparison = indexes.find(({ item: { comparisonCodes } }) => comparisonCodes &&
     distinct.every(code => comparisonCodes.includes(code)));
-  if (comparison) return { item: comparison.item, score: 150, hint: "経穴名に一致" };
+  if (comparison) return { item: comparison.item, score: 150, hint: "比較する経穴コード「" + distinct.map(code => code.toUpperCase()).join("」「") + "」" };
 }
 
 export function preparePurposeSearchQuery(query: string, requestedPurpose: SearchPurpose = "auto") {
@@ -99,6 +101,7 @@ export function preparePurposeSearchQuery(query: string, requestedPurpose: Searc
   const searchTopic = SPOKEN_TOPICS.get(bareTopic) ?? bareTopic;
   return {
     purpose,
+    matchedTopic: searchTopic !== bareTopic || normalizeSearchAliases(query.trim()) !== query.trim() ? searchTopic : undefined,
     researchFocus,
     learningFocus,
     query: searchTopic && searchTopic !== topicQuery.normalized ? prepareSearchQuery(searchTopic) : topicQuery,
@@ -113,7 +116,7 @@ export function rankPurposeSearchResults<T extends PurposeSearchItem>(
   const pointLookup = context.purpose === "research" ? undefined : pointLookupResult(indexes, context.query.normalized);
   const matches = indexes
     .filter(index => index.item.reviewStatus !== "do-not-use")
-    .map(index => ({ index, item: index.item, score: scoreSearchItem(index, context.query), hint: searchMatchHint(index, context.query) }))
+    .map(index => ({ index, item: index.item, score: scoreSearchItem(index, context.query), hint: index.item.type === "case" ? null : searchMatchHint(index, context.query) }))
     .filter(result => result.score > 0);
 
   const isSymptomQuery = matches.some(({ index, item }) =>

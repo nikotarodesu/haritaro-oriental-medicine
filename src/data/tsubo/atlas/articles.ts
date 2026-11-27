@@ -216,7 +216,7 @@ export const ATLAS_ARTICLES: Readonly<Record<string, AcupointAtlasArticle>> = {
       region: "anterolateralLowerLeg",
       bodyLabel: "左右のひざの下、すねの前外側",
       closeUpAlt: "ひざからすねの前面。①膝蓋骨の下の外側のくぼみを起点に足首側へ測り、②脛骨の前縁より外側の③前脛骨筋に足三里（ST36）を示す。",
-      closeUpCaption: "ひざ下の外側のくぼみから足首の前の中央までを16等分し、ひざ側から3寸下の高さに丸印があります。",
+      closeUpCaption: "ひざ下の外側のくぼみから足首の前の中央までを16等分します。丸印は、ひざの外側のくぼみから線に沿って下へ3寸です。",
       meridianStart: 34,
       meridianEnd: 39,
       meridianCaption: "ひざの周りからすねにかけての胃経（ST34〜ST39）。足三里（ST36）は犢鼻（ST35）と上巨虚（ST37）の間です。",

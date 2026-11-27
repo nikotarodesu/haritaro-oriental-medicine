@@ -333,6 +333,12 @@ export const PAGE_REVISIONS: Record<string, string> = {
     ...['science-of-meridians-network', 'science-of-qi-blood-fluid', 'science-of-yinyang-gogyo', 'east-west-integrative-gerd-gastric'].map(id => '/articles/' + id),
     ...['anticoagulants-and-bleeding', 'knee-osteoarthritis', 'urinary-incontinence'].map(acupunctureResearchHref),
   ].map(route => [route, '2026-11-26'])),
+  ...Object.fromEntries([
+    '/', '/symptoms', '/clinical', '/cases', '/cases/case-01-headache-liver-fire',
+    '/learn', '/learn/essentials', '/curriculum', '/learn/review', '/library',
+    '/tsubo', '/tsubo/compare', ACUPOINT_PAIRS_PATH, '/tsubo/li4', '/tsubo/st36', '/tsubo/lu7', '/tsubo/bl23', '/tsubo/sp6',
+    '/articles', '/updates', ...KIKEI_VESSELS.map(vessel => '/kikei/' + vessel.slug),
+  ].map(route => [route, '2026-11-27'])),
 };
 export const SITE_UPDATES: readonly {
   date: string;
@@ -341,6 +347,7 @@ export const SITE_UPDATES: readonly {
   href?: string;
   links?: readonly { href: string; label: string }[];
 }[] = [
+  { date: '2026-11-27', label: '症状ガイド・サイト内検索・演習の入口を整理', text: '症状別ガイドから症状の記録と受診案内を探しやすくしました。サイト内検索では結果の種類を選べます。模擬症例は設問から安全上の注意や経過を見返せます。', links: [{ href: '/symptoms', label: '症状別ガイド' }, { href: '/search', label: 'サイト内検索' }, { href: '/clinical', label: '臨床演習' }] },
   { date: '2026-11-26', label: '奇経八脈の図と、検索・復習の戻り先', text: '流注図のツボを図鑑と照合し、督脈の図で百会を八脈交会穴としていた表示を訂正しました。用語と文献は検索結果から該当箇所を直接開けます。復習で講義を読み返したあとも、同じ問題に戻れます。', links: [{ href: '/kikei/toku#kikei-pathway', label: '督脈の流注図' }, { href: '/glossary', label: '用語集' }, { href: '/learn/review', label: '復習' }] },
   { date: '2026-11-26', label: '講義・研究の本文検索と症状別ガイドの絞り込み', text: '講義や研究の本文にある言葉を検索し、一致した節を直接開けるようにしました。症状別ガイドでは「眠れない」などの普段の言い方でも探せます。模擬症例は、一覧で選んだ条件を保ったまま行き来できます。', links: [{ href: '/search', label: 'サイト内検索' }, { href: '/symptoms', label: '症状別ガイド' }, { href: '/cases', label: '模擬症例' }] },
   { date: '2026-11-25', label: '位置説明・症例・講義の文章を整理', text: 'ツボの位置と図の読み方、症例で情報を得た方法、講義の例と見出しを見直しました。文献の著者情報と、症状ガイドの受診時に伝える内容も確認しやすくしました。', links: [{ href: '/tsubo/li4', label: 'ツボ図鑑' }, { href: '/cases', label: '模擬症例' }, { href: '/learn', label: '講義' }, { href: '/library', label: '文献ライブラリ' }, { href: '/symptoms', label: '症状別ガイド' }] },

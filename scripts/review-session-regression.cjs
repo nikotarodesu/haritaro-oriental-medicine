@@ -233,7 +233,7 @@ const actualLectureReturn = LectureReturnLink();
 assert.equal(actualLectureReturn.props.href, session.reviewSessionReturnHref(started.id));
 assert.equal(text(actualLectureReturn), '中断した復習に戻る');
 browser.location.search = '?reviewSession=invalid';
-assert.equal(text(LectureReturnLink()), '間違えた問題を復習する');
+assert.equal(text(LectureReturnLink()), '確認問題と復習');
 assert.equal(LectureReturnLink().props.href, '/learn/review#learning-review');
 const explanation = nodes(tree).find(node => node.type === Link && text(node) === '講義で解説を読む');
 browser.location.search = new URL(explanation.props.href, 'https://www.haritaro.jp').search;
@@ -414,7 +414,7 @@ const SyncStatusUI = client('src/components/learning/LearningSyncStatus.tsx');
 for (const [status, ready, message] of [
   ['local', true, 'このブラウザーに保存されます'],
   ['local', false, 'このブラウザーの学習記録を読み込んでいます。'],
-  ['memory', true, '端末に保存できません'],
+  ['memory', true, 'このブラウザーに学習履歴を保存できません'],
 ]) {
   sync = { ready, status };
   const syncTree = SyncStatusUI({ compact: true });

@@ -88,7 +88,7 @@ export default function HaiketsuPracticePage() {
       <div className="page-layout page-layout--intro">
         <PageIntro compact eyebrow="基本の32穴から選ぶ" title="配穴を練習する" art="points" description="ツボを組み合わせ、教材上の役割を見比べます。組み合わせた理由も自分の言葉で書けます。">
           <p className="mb-3 text-sm leading-relaxed text-muted">鍼灸学生・鍼灸師向けの学習用教材です。選んだツボや分類は、病気の診断や治療・施術の判断には使えません。</p>
-          <a href="#haiketsu-palette" className="page-primary-action">経穴を選ぶ</a>
+          <a href="#haiketsu-palette" className="page-primary-action">ツボの選択欄へ</a>
         </PageIntro>
       </div>
 
@@ -112,7 +112,7 @@ export default function HaiketsuPracticePage() {
         <div className="clinical-haiketsu-grid">
           <section id="haiketsu-palette" tabIndex={-1} aria-labelledby="haiketsu-palette-title" className="clinical-exercise-surface clinical-haiketsu-palette min-w-0 space-y-3">
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-              <h2 id="haiketsu-palette-title" className="reader-section-title">経穴を選ぶ</h2>
+              <h2 id="haiketsu-palette-title" className="reader-section-title">候補のツボから選ぶ</h2>
               <p id="haiketsu-selection-status" role="status" className="text-sm text-muted">
                 {initialExample ? `例として${selectedPointIds.length}穴を選択済み（合谷・太衝）` : `選択中 ${selectedPointIds.length} / 8穴`}
               </p>
@@ -147,7 +147,7 @@ export default function HaiketsuPracticePage() {
           </section>
 
           <section id="haiketsu-review" tabIndex={-1} aria-labelledby="haiketsu-review-title" className="min-w-0 space-y-5">
-            <h2 id="haiketsu-review-title" className="reader-section-title">配穴を確認する</h2>
+            <h2 id="haiketsu-review-title" className="reader-section-title">選んだツボと役割</h2>
             
             <div className="clinical-exercise-surface space-y-5">
               <figure className="clinical-role-figure">
@@ -195,7 +195,7 @@ export default function HaiketsuPracticePage() {
               {selectedPointIds.length > 0 && <h3 className="font-semibold text-ink">選択中の経穴</h3>}
               {selectedPointIds.length === 0 ? (
                 <div className="p-8 text-center bg-panel rounded-2xl border border-dashed border-frame text-sm text-muted">
-                  「経穴を選ぶ」欄から、組み合わせたいツボを選んでください。
+                  「候補のツボから選ぶ」欄から、組み合わせたいツボを選んでください。
                 </div>
               ) : (
                 <div className="clinical-haiketsu-selected-list">

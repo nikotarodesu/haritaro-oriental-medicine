@@ -44,7 +44,7 @@ export default function AcupunctureResearchIndexPage() {
         __html: collectionPageJsonLd(href, title, description, "鍼灸の研究解説", entries).replace(/</g, "\\u003c"),
       }} />
       <PageBreadcrumb items={[{ href: "/learn", name: "東洋医学" }, { href: ACUPUNCTURE_GUIDE.href, name: ACUPUNCTURE_GUIDE.label }, { href, name: title }]} />
-      <PageIntro title={title} description="症状や安全性から研究を探せます。試験で何を比べたかを読み、原著へのリンクで結果を確かめられます。" art="reading" compact className={styles.hero} />
+      <PageIntro title={title} description="症状や安全性から研究を探し、試験で何を比べたかを読めます。原著へのリンクを掲載しています。読める範囲は論文によって異なります。" art="reading" compact className={styles.hero} />
       <nav aria-labelledby="research-topics-heading" className={styles.topicNavigation}>
         <h2 id="research-topics-heading">研究のテーマ</h2>
         <ul>

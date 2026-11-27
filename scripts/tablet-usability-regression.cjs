@@ -141,7 +141,7 @@ assert(!nodes(picker()).filter(node => node.type === 'button').some(node => node
 const atlasLocations = load('src/data/tsubo/friendlyLocations');
 const tsubo = (code, name) => ({ id: code.toLowerCase(), code, name, kana: name, romaji: name, meridian: '検証経絡', meridianShort: '検証経絡', bodyPart: '検証部位', category: [], indications: ['旧版の疾患タグ'], traditional: '公開済みの伝統的な背景', clinicalNote: '公開済みの補足', caution: '公開済みの注意', locationSimple: atlasLocations.getAtlasLocationSimple(code.toLowerCase()), locationFigure: React.createElement('svg', { role: 'img', 'aria-label': name }) });
 const TSUBOS = [
-  { ...tsubo('LI4','合谷'), hasResearch: true },
+  { ...tsubo('LI4','合谷'), hasResearch: true, symptomWarning: '公開済みの受診目安' },
   tsubo('LR3','太衝'),
   { ...tsubo('ST36','足三里'), kana: 'あしさんり', romaji: 'Zusanli', locationDetail: '旧版の部位説明' },
 ];
@@ -184,7 +184,7 @@ assert.equal(scroll().props.tabIndex, 0, 'The two-direction scrolling region is 
 assert.equal(scroll().props.role, 'region');
 assert.equal(scroll().props['aria-describedby'], nodes(compare.tree()).find(node => node.props?.id === 'tsubo-compare-scroll-hint').props.id);
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 3);
-assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 4);
+assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 5);
 assert(nodes(scroll()).some(node => node.type === 'caption'));
 for (const code of ['li4', 'lr3']) {
   assert(nodes(positionGrid()).some(node => node.type === Link && node.props.href === '/tsubo/' + code + '#acupoint-location' && !node.props.target), 'Default comparison links directly to every diagram in the same tab');
@@ -204,8 +204,10 @@ assert(compareNodes.indexOf(compareInput()) < compareNodes.indexOf(pointSelectio
 assert(!examples.props.open);
 const mobilePointNames = row => nodes(row).filter(node => node.props?.className === 'tsubo-compare-row-point').map(text).join(',');
 const itemRows = () => nodes(scroll()).filter(node => node.type === 'tr' && node.props?.children?.[0]?.props?.scope === 'row');
-assert.equal(itemRows().length, 4);
-assert.equal(text(itemRows()[0].props.children[0]), '注意事項', 'Safety is first in the supplementary table');
+assert.equal(itemRows().length, 5);
+assert.equal(text(itemRows()[0].props.children[0]), 'ツボごとの注意', 'Point-specific safety is first in the supplementary table');
+assert.equal(text(itemRows()[1].props.children[0]), '症状がある場合の受診目安', 'Triage has a dedicated row');
+assert(text(itemRows()[1]).includes('公開済みの受診目安') && !text(itemRows()[0]).includes('公開済みの受診目安'));
 assert(compareNodes.indexOf(positionGrid()) < compareNodes.indexOf(scroll()), 'The location cards precede the table');
 assert(!compareNodes.find(node => node.type === 'details' && node.props?.className.includes('tsubo-compare-facts')).props.open);
 assert.deepEqual(nodes(positionGrid()).filter(node => node.type === 'svg').map(node => node.props['aria-label']), ['合谷', '太衝']);
@@ -232,7 +234,7 @@ compare.button('合谷を比較から外す').props.onClick();
 assert.equal(comparisonHref, '/tsubo/compare?a=lr3');
 renderComparison();
 assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'col').length, 2, 'Existing removal still updates the comparison columns');
-assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 4);
+assert.equal(nodes(scroll()).filter(node => node.type === 'th' && node.props.scope === 'row').length, 5);
 assert(comparePicker().props.open, 'A single selected point makes the picker available straight away');
 assert.equal(locationCheck(), undefined, 'A single point has no pair-specific question');
 assert.equal(caseLinks().length, 0);
@@ -415,6 +417,8 @@ async function checkComparisonHeader() {
     '@/data/tsubo/atlas/featuredPairs': { ACUPOINT_PAIRS_PATH: '/tsubo/pairs', featuredPairAnchor: id => 'featured-acupoint-pair-' + id, featuredPairs: [{ id: 'four-gates' }] },
     '@/data/tsubo/friendlyLocations': atlasLocations,
     '@/data/tsubo/atlas/traditionalUses': { TRADITIONAL_POINT_USES: {} },
+    '@/data/tsubo/atlas/safetyNotices': load('src/data/tsubo/atlas/safetyNotices'),
+    '@/data/tsubo/keyPointTypes': load('src/data/tsubo/keyPointTypes'),
     '@/data/tsubo/atlas/markers': { ATLAS_POINT_MARKERS: {} },
     './CompareClient': emptyComponent,
     './compare-flow.css': {},

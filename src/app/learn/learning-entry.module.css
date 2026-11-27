@@ -8,6 +8,12 @@
   --learn-ink: color-mix(in srgb, var(--tokiwa-green) 18%, var(--text-sumi));
 }
 
+.entry :global(.learning-guide-intro) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
 .options:global(.learning-options) {
   margin-block: 0;
 }
@@ -26,6 +32,23 @@
 .primaryOption :global(.learning-option-icon) {
   background: var(--bg-card);
   color: var(--learn-ink);
+}
+
+.options .secondaryOption {
+  background: transparent;
+}
+
+.secondaryOption :global(.learning-option-icon),
+.articleIcon {
+  background: transparent;
+  color: var(--learn-ink);
+}
+
+.reviewLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block-start: .5rem;
 }
 
 .contents {
@@ -82,8 +105,6 @@
   height: 2rem;
   place-items: center;
   border-radius: var(--radius-tag);
-  background: var(--tokiwa-light);
-  color: var(--learn-ink);
 }
 
 .resources {

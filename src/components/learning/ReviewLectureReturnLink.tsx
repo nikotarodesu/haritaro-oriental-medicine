@@ -14,7 +14,7 @@ export default function ReviewLectureReturnLink() {
       placement="reading_unit_review"
       className="ui-text-link inline-flex min-h-11 items-center"
     >
-      {resume ? '中断した復習に戻る' : '間違えた問題を復習する'}
+      {resume ? '中断した復習に戻る' : '確認問題と復習'}
     </ContentNavigationLink>
   );
 }

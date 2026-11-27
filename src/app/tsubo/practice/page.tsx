@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import PracticeClient from "./PracticeClient";
 
 const title = seriesPageTitle("ツボの復習｜経絡別5問クイズ", "dictionary");
-const description = "今日の復習問題を解くか、経絡を選んで5問のクイズを始めます。保存したツボだけでも練習できます。";
+const description = "今日の復習を始めるか、経絡を選んで5問のクイズに進めます。保存したツボだけでも練習できます。";
 
 export const metadata: Metadata = {
   title,

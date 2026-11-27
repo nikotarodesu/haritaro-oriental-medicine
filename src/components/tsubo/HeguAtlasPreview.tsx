@@ -16,6 +16,7 @@ import type { AcupointDetail } from "@/data/tsubo/types";
 
 export const heguAtlasReading = {
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
+  symptomWarning: "突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。",
 };
 
 const headingClass = "atlas-section-title";
@@ -31,8 +32,9 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} />
-      <aside className="atlas-caution-priority">
-        <p>突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。</p>
+      <aside className="atlas-caution-priority" aria-label="このツボを探す前に">
+        <p className="font-semibold">症状がある場合の受診目安</p>
+        <p>{heguAtlasReading.symptomWarning}</p>
       </aside>
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">

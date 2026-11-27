@@ -21,7 +21,8 @@ export default function KikeiDetailClient({ vessel }: Props) {
         <PageBreadcrumb items={[{ href: "/kikei", name: "奇経八脈" }, { href: "/kikei/" + vessel.slug, name: vessel.name }]} hideCurrent />
         <section className="space-y-5">
           <PageIntro compact eyebrow={vessel.category} title={vessel.name} art="points" description={<><span className="block text-sm">{vessel.reading}{vessel.pointsCount ? ' ・ 固有穴 ' + vessel.pointsCount + '穴' : ''}</span><span className="mt-2 block">{vessel.nature}</span></>}>
-            <div className="page-actions"><a href="#kikei-pathway" className="page-primary-action">流注図を見る</a><a href="#kikei-quiz" className="page-secondary-action">確認問題を解く</a></div>
+            <div className="page-actions"><a href="#kikei-pathway" className="page-primary-action">流注図を見る</a><a href="#kikei-quiz" className="page-secondary-action">本文を見ながら解く</a>
+              <Link href={"/kikei/" + vessel.slug + "/quiz"} className="ui-text-link inline-flex min-h-11 items-center">答えを隠して挑戦</Link></div>
           </PageIntro>
           {/* 八脈交会穴ハイライトボックス */}
           <div id="kikei-meeting-points" className="scroll-mt-28 bg-[#FAF8F5] dark:bg-[#121920] rounded-xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-5 mt-4">

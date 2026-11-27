@@ -37,11 +37,11 @@ export default function KikeiPathwaySvg({ vessel, config }: Props) {
         <div className="flex flex-wrap items-center gap-2 text-xs">
           <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
             <span className="h-0.5 w-4" style={{ backgroundColor: primaryColor }} />
-            <span>経路</span>
+            <span>線：伝統理論の経路</span>
           </span>
           <span className="flex items-center gap-1 text-[11px] text-[#737C77] dark:text-[#8899A6]">
             <span className="w-2.5 h-2.5 rounded-full border-2" style={{ borderColor: primaryColor, backgroundColor: "white" }} />
-            <span id="kikei-landmark-legend">経路の目印</span>
+            <span id="kikei-landmark-legend">丸：図中の目印</span>
           </span>
           {config.nodes.some(node => node.code === vessel.masterPoint.code) && (
             <span className="flex items-center gap-1 text-[11px] text-muted">

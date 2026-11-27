@@ -25,10 +25,11 @@ export default function UpdatesPage() {
     <section id="notes-ended" className="page-link-card page-link-card--stack scroll-mt-28">
       <h2 className="text-lg font-semibold">マイノートの提供終了</h2>
       <p className="page-muted leading-relaxed">臨床ノートや配穴ストックの保存機能は終了しました。旧マイノートのデータの取り扱いは、お問い合わせフォームからご相談ください。端末内とクラウドのどちらに保存していたか、分かる範囲でお知らせください。</p>
+      <p className="page-muted leading-relaxed">現在の講義や確認問題の学習履歴は、利用中のブラウザーに保存されます。旧マイノートのデータとは別に扱います。</p>
       <Link href="/contact?topic=legacy-notes" className="ui-text-link">旧マイノートの保存データについて問い合わせる</Link>
     </section>
     <p className="page-muted text-sm">教材ごとの確認範囲は各ページの出典表示をご確認ください。</p>
-    <p className="page-muted text-sm">2026年11月18日のサービス終了より前の履歴には、会員サービスを提供していた当時の更新も含まれます。</p>
+    <p className="page-muted text-sm">2026年11月18日より前の更新履歴には、終了した会員サービスに関する案内も含まれます。</p>
     <ul className="space-y-4">{SITE_UPDATES.map(update => <li key={update.label} className="page-link-card page-link-card--stack">
       <time dateTime={update.date} className="page-muted text-sm">{update.date.replaceAll('-', '.')}</time>
       <h2 className="text-lg font-semibold">{update.label}</h2>

@@ -98,7 +98,7 @@ export default function ClinicalLandingPage() {
       <header className={styles.hero}>
         <div>
           <h1 id="clinical-series-heading">はり太郎の臨床演習</h1>
-          <p>鍼灸学生・鍼灸師向けの教材です。本人の訴えと四診の所見から、見立てや配穴を考えます。</p>
+          <p>鍼灸学生・鍼灸師向けの教材です。模擬症例を読み、訴えと四診の所見から、見立てとツボの組み合わせを考えます。</p>
           <CaseStudyResume studies={CASE_STUDY_DESCRIPTORS} className="mt-4" fallback={firstCaseHref && (
             <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 print:hidden">
               <Link href={firstCaseHref} className="page-primary-action">
@@ -112,7 +112,7 @@ export default function ClinicalLandingPage() {
           <Link href="/symptoms" className="ui-text-link mt-2 inline-flex min-h-11 items-center text-sm">症状から受診の目安を探す（一般向け）</Link>
         </div>
         <figure className={styles.casePreview}>
-          <figcaption>短い症例演習の例</figcaption>
+          <figcaption>最初に読む短い症例</figcaption>
           <dl>
             {casePreview.map(({ label, text, icon: Icon }) => (
               <div key={label}>
@@ -128,8 +128,8 @@ export default function ClinicalLandingPage() {
         <div className={styles.caseCourseIntro}>
           <div>
             <p className="text-sm font-semibold">連続演習</p>
-            <h2 id="headache-course-heading" className={styles.sectionTitle}>相談から7日後まで追う：頭痛の架空症例</h2>
-            <p>夕方の頭痛で仕事や家事に支障が出ている43歳の女性の事例です。6段階の記録を読み、痛みと普段の生活の変化を考えます。</p>
+            <h2 id="headache-course-heading" className={styles.sectionTitle}>頭痛の別症例を、初回相談から7日後まで追う</h2>
+            <p>最初の短い症例では、受診を急ぐ所見と見立てを考えます。連続演習は、夕方の頭痛で仕事や家事に支障がある別の43歳の女性の事例です。6段階の記録を読み、痛みと普段の生活の変化を比べます。</p>
           </div>
           <Link href={headacheCourseIntroHref} className="page-secondary-action">
             連続演習の進め方を読む<ArrowRight size={16} aria-hidden="true" />
@@ -138,7 +138,7 @@ export default function ClinicalLandingPage() {
         <ol className={styles.caseCourseStages} role="list">
           {headacheCourseStages.map(({ href, label }, index) => (
             <li key={href}>
-              <Link href={href} prefetch={false} className={styles.caseCourseStage}>
+              <Link href={href} prefetch={false} className={styles.caseCourseStage} aria-label={`第${index + 1}段階：${label}`}>
                 <span className={styles.caseCourseNumber} aria-hidden="true">{index + 1}</span>
                 <span>{label}</span>
                 <ArrowRight aria-hidden="true" />

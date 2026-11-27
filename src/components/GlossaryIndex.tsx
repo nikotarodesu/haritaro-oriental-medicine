@@ -58,7 +58,7 @@ export default function GlossaryIndex({ terms }: { terms: Array<GlossaryTerm & {
           {linkedTerm === term.term && <a href="#glossary-search" className="ui-text-link text-sm"><ArrowUp size={16} aria-hidden="true" />用語の検索に戻る</a>}
           {term.readingLink && <Link href={term.readingLink.href} className="ui-text-link">{term.readingLink.label} <ArrowRight size={16} aria-hidden="true" /></Link>}
           <details>
-            <summary className={`min-h-11 cursor-pointer py-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC] ${focusClass}`}><BookOpen aria-hidden="true" className="mr-2 inline h-4 w-4" />詳しい意味と注意点</summary>
+            <summary aria-label={`${term.displayTerm || term.term}：詳しい意味と注意点`} className={`min-h-11 cursor-pointer py-2 text-sm font-semibold text-[#184F49] dark:text-[#9CCBBC] ${focusClass}`}><BookOpen aria-hidden="true" className="mr-2 inline h-4 w-4" />詳しい意味と注意点</summary>
             <div className="space-y-2 pb-2"><p className="whitespace-pre-line text-base leading-[1.75]">{term.summary}</p>{term.relatedLectureHref && <Link href={term.relatedLectureHref} className={`inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4 ${focusClass}`}>{term.relatedLectureTitle || `${term.term}を扱う講義`} <ArrowRight aria-hidden="true" className="ml-2 h-4 w-4" /></Link>}</div>
           </details>
         </section>)}</div>

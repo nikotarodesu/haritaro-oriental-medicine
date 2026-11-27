@@ -78,7 +78,7 @@ export default async function SymptomGuidePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getSymptomGuideJsonLd(guide)).replace(/</g, '\\u003c') }} />
       <header className="atlas-guide-heading">
         <div>
-          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/tsubo">ツボ図鑑</Link><span aria-hidden="true">/</span><Link href="/symptoms">一般向けの症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.title}</span></nav>
+          <nav aria-label="パンくず" className="atlas-breadcrumb"><Link href="/">ホーム</Link><span aria-hidden="true">/</span><Link href="/symptoms">症状別ガイド</Link><span aria-hidden="true">/</span><span aria-current="page">{guide.title}</span></nav>
           <h1>{guide.title}</h1>
           <p>{content.summary}</p>
         </div>

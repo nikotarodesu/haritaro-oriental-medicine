@@ -7,6 +7,7 @@ import { shuffledIndices } from "@/utils/learningReview";
 
 interface Props {
   vessel: KikeiVessel;
+  standalone?: boolean;
 }
 
 // 初回はサーバー・ブラウザで同じ並びにし、再挑戦時だけ種を進める。
@@ -18,7 +19,10 @@ function focusHeading(node: HTMLElement | null) {
   node?.focus();
 }
 
-export default function KikeiQuizSection({ vessel }: Props) {
+export default function KikeiQuizSection({ vessel, standalone = false }: Props) {
+  const Title = standalone ? "h1" : "h2";
+  const FeedbackHeading = standalone ? "h2" : "h3";
+  const readingHref = standalone ? "/kikei/" + vessel.slug : "";
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
@@ -42,7 +46,7 @@ export default function KikeiQuizSection({ vessel }: Props) {
       },
       {
         id: "q2",
-        question: `${vessel.name}の通穴は${vessel.masterPoint.name}です。伝統的な使い方では、どのツボと組にしますか？`,
+        question: `${vessel.name}に対応する通穴と組み合わせるツボはどれですか？`,
         options: shuffleArray([
           { text: `${vessel.couplePoint.name}（${vessel.couplePoint.meridian}）`, isCorrect: true },
           { text: "足三里（足陽明胃経）", isCorrect: false },
@@ -101,9 +105,9 @@ export default function KikeiQuizSection({ vessel }: Props) {
       <div className="flex items-center justify-between border-b border-[#E5DEC9] dark:border-[#2A3B4A] pb-3">
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-[#B86924]" />
-          <h2 className="font-serif text-base sm:text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">
+          <Title className={"font-serif font-bold " + (standalone ? "text-2xl sm:text-3xl" : "text-base sm:text-lg")}>
             {vessel.name}の確認問題
-          </h2>
+          </Title>
         </div>
       </div>
 
@@ -199,11 +203,11 @@ export default function KikeiQuizSection({ vessel }: Props) {
                   : "bg-rose-50/90 dark:bg-rose-950/30 border-rose-300 dark:border-rose-700/60"
               }`}
             >
-              <h3 ref={focusHeading} tabIndex={-1} className="quiz-explanation-title scroll-mt-28 text-base font-bold">
+              <FeedbackHeading ref={focusHeading} tabIndex={-1} className="quiz-explanation-title scroll-mt-28 text-base font-bold">
                 {isSelectedCorrect ? "正解です" : "不正解です"}
-              </h3>
+              </FeedbackHeading>
               <p className="quiz-explanation-body text-sm leading-relaxed">{currentQ.explanation}</p>
-              <a className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline underline-offset-4" href={currentIdx === 2 ? "#kikei-classic" : "#kikei-meeting-points"}>
+              <a className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline underline-offset-4" href={readingHref + (currentIdx === 2 ? "#kikei-classic" : "#kikei-meeting-points")}>
                 {currentIdx === 2 ? "古典の原文と訳を読む" : "八脈交会穴の組み合わせを見る"}
               </a>
 
@@ -236,9 +240,9 @@ export default function KikeiQuizSection({ vessel }: Props) {
             <Award className="w-7 h-7" />
           </div>
           <div className="space-y-1.5">
-            <h3 tabIndex={-1} ref={focusHeading} className="scroll-mt-28 font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
+            <FeedbackHeading tabIndex={-1} ref={focusHeading} className="scroll-mt-28 font-serif text-lg sm:text-xl font-bold text-[#232826] dark:text-[#FAF8F5]">
               {questions.length}問中{score}問正解
-            </h3>
+            </FeedbackHeading>
           </div>
           <div className="pt-2">
             <button

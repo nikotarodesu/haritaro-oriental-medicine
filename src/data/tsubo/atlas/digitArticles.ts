@@ -14,6 +14,7 @@ interface DigitCopy {
   cautions: string;
   expert: string;
   safetyWarning?: string;
+  pointWarning?: string;
   relatedPoints: AcupointAtlasArticle["relatedPoints"];
   symptomLink?: { href: string; label: string };
   sources: Source[];
@@ -63,7 +64,8 @@ function digitArticle(code: DigitCode, copy: DigitCopy): AcupointAtlasArticle {
     meridianReading: copy.meridianReading,
     regionLabel: side,
     lead: copy.lead,
-    safetyWarning: copy.safetyWarning,
+    safetyWarning: copy.safetyWarning ?? copy.pointWarning,
+    pointWarning: copy.pointWarning,
     location: copy.location,
     traditionalTitle: "名前の意味と近くのツボ",
     traditional: [copy.traditional],
@@ -232,7 +234,7 @@ export const digitArticles = {
     selfCare: "このページでは、小指のどちらに位置するかを図で確かめるところまでにしましょう。逆子を直す目的で自分で押したり、市販のお灸や熱いものを爪のきわに当てたりしないでください。足元が見えにくいときに、無理に体をかがめる必要もありません。",
     cautions: "妊娠中の出血や、いつもより胎動が少ないと感じたときは、ツボを探さず産科へすぐ連絡してください。小指の爪が靴に当たって傷がある場合も、そこへの刺激を避けましょう。",
     expert: "至陰は膀胱経の井穴（せいけつ、手足の末端に配されるツボの分類）です。BL67はこの経絡の最終番号で、直前の足通谷（あしのつうこく・BL66）は、小指の付け根寄りの外側に位置します。",
-    safetyWarning: "妊娠中に逆子のことで調べている方は、自己流のお灸や指圧を始める前に、かかりつけの産科に相談してください。",
+    pointWarning: "妊娠中に逆子のことで調べている方は、自己流のお灸や指圧を始める前に、かかりつけの産科に相談してください。",
     relatedPoints: [{ code: "BL66", text: "同じ小指の外側を、指の付け根へ戻ったところにあります。" }, { code: "GB44", text: "隣の第4趾にある足竅陰と探し分けられます。" }],
     sources: [nailCare,
       { name: "英国産婦人科医協会（RCOG）の骨盤位の患者向け資料", url: "https://www.rcog.org.uk/for-the-public/browse-our-patient-information/breech-baby-at-the-end-of-pregnancy/", scope: "骨盤位への対応と、お灸について医療者の指導が必要とする記載を参照。" },

@@ -42,24 +42,21 @@ export default function LearnGuidePage() {
         readingUnits.map(({ href, title }) => ({ href, name: title })),
       ) }} />
       <div className="learning-guide-intro">
-        <PageIntro title={heading} description={introduction} art="study">
-          <a href="#learn-courses-heading" className="ui-text-link mt-1 inline-flex min-h-11 items-center">
-            講義の目次へ<ArrowDown size={16} aria-hidden="true" />
-          </a>
-        </PageIntro>
+        <PageIntro title={heading} description={introduction} art="study" />
         <nav aria-label="学び方を選ぶ" className={`learning-options ${styles.options}`}>
           <PublicReadingStart firstHref={readingUnits[0].href} className={`learning-option ${styles.primaryOption}`} />
-          <Link href={ACUPUNCTURE_GUIDE.href} className="learning-option">
-            <span className="learning-option-icon"><LibraryBig size={21} aria-hidden="true" /></span>
-            <span className="learning-option-label"><strong>{ACUPUNCTURE_GUIDE.label}</strong><span>はり・お灸の道具と施術の流れ</span></span>
-            <ArrowRight size={18} aria-hidden="true" />
-          </Link>
-          <Link href="/learn/essentials" className="learning-option">
+          <a href="#learn-courses-heading" className={`learning-option ${styles.secondaryOption}`}>
             <span className="learning-option-icon"><List size={21} aria-hidden="true" /></span>
-            <span className="learning-option-label"><strong>用語の要点を読む</strong><span>陰陽や気・血・津液を図で確認</span></span>
+            <span className="learning-option-label"><strong>講義から選ぶ</strong><span>全{readingUnits.length}講の目次</span></span>
+            <ArrowDown size={18} aria-hidden="true" />
+          </a>
+          <Link href="/learn/essentials" className={`learning-option ${styles.secondaryOption}`}>
+            <span className="learning-option-icon"><LibraryBig size={21} aria-hidden="true" /></span>
+            <span className="learning-option-label"><strong>要点を図で見る</strong><span>陰陽や気・血・津液の要点</span></span>
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </nav>
+        <Link href="/learn/review" className={`ui-text-link ${styles.reviewLink}`}>確認問題と復習<ArrowRight aria-hidden="true" /></Link>
       </div>
 
       <section id="learn-courses-heading" aria-labelledby="reading-topics" className={styles.contents}>
@@ -97,6 +94,7 @@ export default function LearnGuidePage() {
         </ul>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
           <Link href="/articles" className="ui-text-link">図解記事を一覧で見る<ArrowRight aria-hidden="true" /></Link>
+          <Link href={ACUPUNCTURE_GUIDE.href} className="ui-text-link">{ACUPUNCTURE_GUIDE.label}<ArrowRight aria-hidden="true" /></Link>
           <Link href={ACUPUNCTURE_RESEARCH.href} className="ui-text-link">{ACUPUNCTURE_RESEARCH.title}<ArrowRight aria-hidden="true" /></Link>
         </div>
       </section>
@@ -117,7 +115,6 @@ export default function LearnGuidePage() {
 
       <div className={styles.resources}>
         <nav aria-label="学んだことを確かめる" className="page-actions">
-          <Link href="/learn/review" className="page-secondary-action">講義の確認問題を復習する</Link>
           <Link href="/clinical" className="page-secondary-action">臨床演習へ進む</Link>
         </nav>
 
@@ -126,7 +123,7 @@ export default function LearnGuidePage() {
           <Link href="/glossary" className="ui-text-link">用語集</Link>
           <Link href="/library" className="ui-text-link">古典・論文</Link>
           <Link href="/editorial-policy" className="ui-text-link">出典の確認方法と監修状況</Link>
-          <Link href="/curriculum" className="ui-text-link">3シリーズの読み物・演習の全目次<ArrowRight aria-hidden="true" /></Link>
+          <Link href="/curriculum" className="ui-text-link">講義・読み物・演習の全目次<ArrowRight aria-hidden="true" /></Link>
         </nav>
       </div>
     </div>

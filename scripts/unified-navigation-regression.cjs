@@ -93,6 +93,7 @@ function component(relative, name = 'default') {
       if (id === '@/config/acupunctureLearning') return load('src/config/acupunctureLearning');
       if (id === '@/config/series') return load('src/config/series');
       if (id === '@/utils/siteMenu') return menu;
+      if (id === '@/utils/globalSearchHistory') return load('src/utils/globalSearchHistory');
       if (id === '@/utils/atlasReturnPosition') return load('src/utils/atlasReturnPosition');
       if (id === '@/utils/atlasDictionaryPosition') return load('src/utils/atlasDictionaryPosition');
       if (id === '@/utils/analytics') return { setAnalyticsDisabled() {} };

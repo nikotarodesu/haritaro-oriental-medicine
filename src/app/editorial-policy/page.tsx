@@ -21,7 +21,7 @@ export default function EditorialPolicyPage() {
     </PageIntro>
     <p className="leading-relaxed">伝統的な分類、現代医学の研究結果、理解を助ける比喩を区別します。文献が存在することと、教材の説明がその文献で支持されることは別々に確認します。</p>
     <section id="current-review" className="scroll-mt-28 space-y-3"><h2 className="text-xl font-bold">現在の確認状況</h2>
-      <p>文献ライブラリに登録した{PAPERS_DATABASE.length}件を照合し、{VERIFIED_PAPERS.length}件で論文名・著者・掲載誌などが一致しました。撤回された論文や、書誌・原典を確認できなかった論文は、文献ライブラリの研究一覧とその検索対象から外しています。</p>
+      <p>候補となった論文{PAPERS_DATABASE.length}件を照合し、{VERIFIED_PAPERS.length}件で題名・著者・掲載誌などを確認できました。撤回された論文や、書誌・原典を確認できなかった論文は、文献ライブラリの研究一覧とその検索対象から外しています。</p>
       <p>書誌が一致した論文のうち{checkedPapers.length}件は、抄録または本文の一部も参照しました。研究の対象・比較・結果をまとめ、参照した箇所と日付を論文ごとに示しています。ツボ図鑑や症状別ガイドで直接紹介する研究は、各ページで出典を確認できます。</p>
       <p>古典{CLASSICAL_TEXTS.filter(classic => classic.verifiedQuotation).length}件では、電子本文から確認した箇所を引用し、以前掲載した文章との字句の違いを項目ごとに説明しています。引用の出典は電子本文です。底本の画像を調べる場合は、原典側の資料をご覧ください。</p>
       <Link href="/safety" className="underline">受診の目安・安全性の出典と確認範囲</Link>

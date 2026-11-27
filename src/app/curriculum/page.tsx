@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import PublicLectureIndex from "@/components/curriculum/PublicLectureIndex";
 import PageIntro from "@/components/design/PageIntro";
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import { getPublicLectureArticle } from "@/data/publicLectures";
-import { getLectureIndexGroups, readingPartHref } from "@/data/publicLectures/readingUnits";
+import { getLectureIndexGroups, readingPartHref, readingUnits } from "@/data/publicLectures/readingUnits";
 import { legacyLectureViewParams, resolveLegacyLectureId } from "@/utils/curriculumLegacyPaths";
 
 const origin = "https://www.haritaro.jp";
 const items = getLectureIndexGroups().flatMap(group => group.entries);
-const title = seriesPageTitle(`東洋医学・経絡・鍼灸演習の全${items.length}本の目次`, "reading");
+const heading = "講義・読み物・演習の全目次";
+const title = seriesPageTitle(heading, "reading");
 const description = "陰陽、気・血・津液（気血水）、経絡の読み物や、架空症例で所見を整理する演習をテーマから選べます。";
 
 export const metadata: Metadata = {
@@ -51,7 +53,12 @@ export default async function CurriculumPage({ searchParams }: { searchParams: P
   return (
     <div className="page-layout space-y-7">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
-      <PageIntro title="東洋医学の読み物・鍼灸演習の目次" description={description} art="study" />
+      <PageIntro title={heading} description={description} art="study" compact>
+        <nav aria-label="講義と復習" className="page-actions">
+          <Link href={readingUnits[0].href} className="page-secondary-action">第1講を読む</Link>
+          <Link href="/learn/review" className="ui-text-link min-h-11">確認問題と復習</Link>
+        </nav>
+      </PageIntro>
       <div id="curriculum-chapters" className="scroll-mt-28"><PublicLectureIndex /></div>
     </div>
   );

@@ -13,9 +13,9 @@ import { PLATFORM_DESCRIPTION, SERIES } from "@/config/series";
 
 const SERIES_ENTRIES = Object.values(SERIES);
 const SERIES_ACTIONS = {
-  "/tsubo": { label: "ツボを調べる", description: "位置と目印を図で確認", analytics: "home_atlas", art: "points" },
-  "/learn": { label: "講義を読む", description: "陰陽などの基本から", analytics: "home_reading", art: "study" },
-  "/clinical": { label: "症例で練習する", description: "架空の相談で考える", analytics: "home_clinical", art: "practice" },
+  "/tsubo": { label: "ツボを調べる", description: "位置と目印を図で見る", analytics: "home_atlas", art: "points" },
+  "/learn": { label: "講義を読む", description: "陰陽や経絡を図で学ぶ", analytics: "home_reading", art: "study" },
+  "/clinical": { label: "症例で練習する", description: "訴えと所見から見立てる", analytics: "home_clinical", art: "practice" },
 } satisfies Record<(typeof SERIES_ENTRIES)[number]["href"], {
   label: string; description: string; analytics: string; art: PageArtKind;
 }>;

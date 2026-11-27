@@ -79,7 +79,7 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
       {
         term: "気・血・津液",
         question: "気・血・津液は何を表す？",
-        answer: "伝統理論で、体の働き・養い・潤いを呼び分ける言葉です。",
+        answer: "伝統理論では、体を動かす、養う、潤すという働きを区別する言葉です。",
         example: "散歩で体を動かすこと、食べて体を養うこと、口が潤うことを思い浮かべると、三つの違いをたどれます。",
         lectureId: "lecture-qiblood-1",
         diagram: {
@@ -92,12 +92,12 @@ const groups: readonly { id: string; title: string; topics: readonly Topic[] }[]
         term: "五臓と六腑",
         question: "五臓と六腑はどう違う？",
         answer: "伝統理論では、蓄えて働きを支える役割を五臓、受け入れて通す役割を六腑と呼びます。",
-        example: "朝食の場面では、胃が飲食を受け、脾が得られたものを変えて運ぶと考えます。",
+        example: "伝統理論では、胃が飲食物を受け入れ、脾がそこから得たものを変えて運ぶと考えます。",
         lectureId: "lecture-zangfu-1",
         diagram: {
           title: "飲食の説明に出てくる一組",
           layout: "compare",
-          items: [["胃・六腑", "飲食物を受け入れる。"], ["脾・五臓", "得られたものを変えて運ぶ。"]],
+          items: [["胃・六腑", "飲食物を受け入れる。"], ["脾・五臓", "飲食物から得たものを変えて運ぶ。"]],
         },
       },
       {
@@ -207,7 +207,7 @@ export default function EssentialsPage() {
   return (
     <div className="page-layout essentials-page">
       <div className="learning-guide-intro">
-        <Link href="/learn" className="reader-back"><ArrowLeft aria-hidden="true" />はり太郎の東洋医学</Link>
+        <Link href="/learn" className="reader-back"><ArrowLeft aria-hidden="true" />東洋医学の学習案内へ</Link>
         <PageIntro title={heading} description={description} />
         <nav className="essentials-index" aria-label="要点のテーマ">
           {groups.map(group => (
@@ -241,8 +241,9 @@ export default function EssentialsPage() {
       ))}
 
       <nav aria-label="講義で学ぶ" className="reader-navigation">
-        <Link href={readingUnits[0].href} className="page-primary-action"><BookOpen aria-hidden="true" />最初の講義から学ぶ</Link>
-        <Link href="/learn#learn-courses-heading" className="page-secondary-action">講義の目次</Link>
+        <Link href={readingUnits[0].href} className="page-primary-action"><BookOpen aria-hidden="true" />第1講を読む</Link>
+        <Link href="/learn#learn-courses-heading" className="page-secondary-action">講義から選ぶ</Link>
+        <Link href="/learn/review" className="ui-text-link min-h-11">確認問題と復習</Link>
       </nav>
     </div>
   );

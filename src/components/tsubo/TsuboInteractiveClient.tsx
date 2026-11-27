@@ -81,6 +81,7 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
   const firstUrlSync = useRef(true);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const resultsRef = useRef<HTMLElement | null>(null);
+  const composingSearch = useRef(false);
 
   const restoreUrl = useCallback((query: string) => {
     const position = takeAtlasDictionaryRestore(window, firstUrlSync.current);
@@ -254,7 +255,7 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
   };
   const searchExample = (term: string) => {
     setShowBodyMap(false);
-    updateFilters({ searchQuery: term, currentPage: 1 });
+    updateFilters({ ...DEFAULT_SELECTION, searchQuery: term, currentPage: 1 });
     resultsRef.current?.focus();
   };
   const resetAllFilters = () => {
@@ -284,6 +285,7 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
       <Suspense fallback={null}><TsuboUrlSync restore={restoreUrl} /></Suspense>
       <form action="/search" role="search" aria-label="ツボ図鑑内の検索" className="atlas-search-panel" onSubmit={event => {
         event.preventDefault();
+        if (composingSearch.current) return;
         const results = resultsRef.current;
         if (!results) return;
         const disclosure = results.closest("details");
@@ -304,6 +306,8 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
             enterKeyHint="search"
             autoComplete="off"
             value={searchQuery}
+            onCompositionStart={() => { composingSearch.current = true; }}
+            onCompositionEnd={() => { composingSearch.current = false; }}
             onChange={event => {
               const value = event.target.value;
               if (!searchQuery.trim() && value.trim()) setShowBodyMap(false);
@@ -352,9 +356,9 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
         </div>
         <nav aria-label="一覧と比較" className="dictionary-search-shortcuts">
           <a href="#tsubo-list" className="atlas-search-index-link">{browsingWithoutFilters ? `全${allPoints.length}穴を見る` : "絞り込み結果を見る"}</a>
-          {nearbyComparisons && <a href="#nearby-comparisons" className="atlas-search-index-link">近いツボを比べる</a>}
-          <Link href="/tsubo/compare?empty=1" className="atlas-search-index-link">ツボを選んで比べる</Link>
-          <Link href="/tsubo/pairs" className="atlas-search-index-link">ツボの組み合わせを見る</Link>
+          {nearbyComparisons && <a href="#nearby-comparisons" className="dictionary-comparison-link"><span>近いツボを比べる</span><small>同じ部位の目印を図で見分ける</small></a>}
+          <Link href="/tsubo/compare?empty=1" className="dictionary-comparison-link"><span>ツボを選んで比べる</span><small>名前や番号で2〜3穴を選ぶ</small></Link>
+          <Link href="/tsubo/pairs" className="dictionary-comparison-link"><span>ツボの組み合わせを見る</span><small>古典や研究に出た配穴を読む</small></Link>
         </nav>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{selectedFilters.join("・")}</p>}
       </form>
@@ -462,7 +466,7 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
               onChange={event => updateFilters({ sortOption: event.target.value as SortOption, currentPage: 1 })}
               className="bg-white dark:bg-[#17212A] border border-[#D8CFC0] dark:border-[#2A3B4A] rounded-lg px-2.5 py-1 text-xs text-[#333835] dark:text-[#C5D2DB]"
             >
-              <option value="meridian">{searchTopic ? "一致を優先" : "流注順（経絡順）"}</option>
+              <option value="meridian">{searchTopic ? "一致を優先" : "経絡順（流注順）"}</option>
               <option value="kana">五十音順</option>
               <option value="detailed">主要経穴を先に表示</option>
             </select>
@@ -496,16 +500,12 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
           <div className="rounded-2xl border border-[#E5DEC9] bg-white px-4 py-8 text-center dark:border-[#2A3B4A] dark:bg-[#17212A]">
             <Search aria-hidden="true" className="mx-auto h-7 w-7 text-[#737C77] dark:text-[#8899A6]" />
             <h3 className="mt-3 text-lg font-bold text-[#232826] dark:text-[#FAF8F5]">条件に合う経穴が見つかりませんでした</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">
-              {hasSelectionFilters ? "検索条件を外すと、ほかの部位や経絡のツボも探せます。" : "部位や名前を短く入れると探しやすくなります。下の例でも検索できます。"}
-            </p>
+            <p className="mt-2 text-sm leading-relaxed text-muted">名前・部位・番号のいずれかで探せます。</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {hasSearchQuery && !hasSelectionFilters && EXAMPLE_SEARCH_TERMS.map(term => (
+              <button type="button" onClick={resetAllFilters} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-[#2B6958]">検索語と条件をクリア</button>
+              {EXAMPLE_SEARCH_TERMS.map(term => (
                 <button key={term} type="button" onClick={() => searchExample(term)} className="ui-button ui-button-outline text-sm">「{term}」で探す</button>
               ))}
-              {hasSearchQuery && hasSelectionFilters && <button type="button" onClick={resetSelectionFilters} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">同じ検索語で条件を解除</button>}
-              {hasSearchQuery && <button type="button" onClick={() => searchInputRef.current?.focus()} className="min-h-11 rounded-xl border border-[#C5DED4] px-4 py-2 text-sm font-semibold text-[#1E3D34] hover:bg-[#EBF3EF] focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-[#2A5243] dark:text-[#83BEA8] dark:hover:bg-[#182823]">検索語を編集する</button>}
-              <button type="button" onClick={resetAllFilters} className="min-h-11 rounded-xl bg-[#1E3D34] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2B5A46] focus-visible:outline-2 focus-visible:outline-offset-2 dark:bg-[#2B6958]">検索・条件を解除して全{allPoints.length}穴を表示</button>
             </div>
           </div>
         ) : viewMode === "grid" ? (

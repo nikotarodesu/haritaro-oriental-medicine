@@ -37,21 +37,32 @@ export interface SearchableItem {
   relatedQueryNote?: { term: string; text: string };
 }
 export type SearchItemType = 'article' | 'acupoint' | 'lecture' | 'case' | 'tool' | 'glossary' | 'kokushi' | 'classic' | 'paper' | 'symptom';
-export type SearchCategory = 'all' | 'article' | 'acupoint' | 'lecture' | 'kokushi' | 'case' | 'library' | 'glossary' | 'symptom' | 'tool';
+export type SearchCategory = 'all' | 'symptom' | 'atlas' | 'reading' | 'practice';
 export const SEARCH_CATEGORIES: ReadonlyArray<{ id: SearchCategory; label: string }> = [
   { id: 'all', label: 'すべて' },
-  { id: 'article', label: '解説記事' },
-  { id: 'acupoint', label: '経穴' },
-  { id: 'lecture', label: '講義・コース' },
-  { id: 'glossary', label: '専門用語' },
-  { id: 'symptom', label: '一般向け症状ガイド' },
-  { id: 'library', label: '論文・古典' },
-  { id: 'case', label: '症例教材' },
-  { id: 'tool', label: 'ツール' },
+  { id: 'symptom', label: '一般向けガイド' },
+  { id: 'atlas', label: '図鑑' },
+  { id: 'reading', label: '講義・研究' },
+  { id: 'practice', label: '演習' },
 ];
 
-export function matchesSearchCategory(type: SearchItemType, category: SearchCategory): boolean {
-  return category === 'all' || (category === 'library' ? type === 'classic' || type === 'paper' : type === category);
+export function parseSearchCategory(value: unknown): SearchCategory {
+  return SEARCH_CATEGORIES.find(category => category.id === value)?.id ?? 'all';
+}
+
+export function matchesSearchCategory(item: { type: SearchItemType; url: string }, category: SearchCategory): boolean {
+  if (category === 'all') return true;
+  if (item.type === 'symptom' || /^\/safety(?:[?#]|$)/.test(item.url)) return category === 'symptom';
+  if (item.type === 'case' || /^\/(?:clinical|simulator|practice|diagnosis|learn\/review|tsubo\/practice)(?:[/?#]|$)/.test(item.url)) return category === 'practice';
+  if (item.type === 'acupoint' || /^\/(?:tsubo|kikei)(?:[/?#]|$)/.test(item.url)) return category === 'atlas';
+  return category === 'reading';
+}
+
+export function searchResultsHref(query: string, category: SearchCategory, page = 1): string {
+  const params = new URLSearchParams({ q: query });
+  if (category !== 'all') params.set('category', category);
+  if (page > 1) params.set('page', String(page));
+  return '/search?' + params.toString();
 }
 
 /** Prepare once per query, rather than normalize again for every indexed item. */
@@ -95,12 +106,17 @@ export function scoreSearchItem(index: ReturnType<typeof prepareSearchItem>, que
 /** Explain hidden-field matches without revealing exercise answers from indexed tags. */
 export function searchMatchHint(index: ReturnType<typeof prepareSearchItem>, query: ReturnType<typeof prepareSearchQuery>): string | null {
   if (!query.tokens.length) return null;
-  if (index.code && index.code === query.normalized) return '経穴コードが一致';
+  if (index.code && index.code === query.normalized) return '経穴コードが一致「' + index.item.exactCode?.toUpperCase() + '」';
   const note = index.item.relatedQueryNote;
   if (note && query.tokens.includes(normalizeSearchText(note.term))) return note.text;
   if (index.exactTerms.includes(query.normalized) && !index.title.includes(query.normalized)) {
-    return '名前・読み方・別名に一致';
+    const term = index.item.exactTerms?.[index.exactTerms.indexOf(query.normalized)];
+    return term ? '索引の名前・読み方「' + term + '」に一致' : null;
   }
-  if (query.tokens.some(token => !index.title.includes(token) && !index.subtitle.includes(token))) return '関連語に一致';
-  return null;
+  const missing = query.tokens.filter(token => !index.title.includes(token) && !index.subtitle.includes(token));
+  const terms = [...new Set(missing.map(token => {
+    const exactIndex = index.tags.indexOf(token);
+    return index.item.tags?.[exactIndex >= 0 ? exactIndex : index.tags.findIndex(tag => tag.includes(token))];
+  }).filter(Boolean))];
+  return terms.length ? '索引語「' + terms.join('」「') + '」に一致' : null;
 }
