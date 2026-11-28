@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ACUPUNCTURE_TRIAL_COMPARISON_HREF, RADIATION_DRY_MOUTH_RESEARCH_HREF, SYMPTOM_RESEARCH_LINKS, URINARY_INCONTINENCE_RESEARCH_HREF, acupunctureResearchHref } from "@/config/acupunctureLearning";
-import { BookOpen, FlaskConical, GitMerge } from "lucide-react";
+import { BookOpen, FlaskConical } from "lucide-react";
 import { getAcupointByCode } from "@/data/tsubo";
 import { EXTRA_POINTS } from "@/data/tsubo/extraPoints";
-import { getAcupointStudies, getAtlasStudyPoint, getClassicalCombinations, getStudyPointRole, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
+import { getAcupointStudies, getAtlasStudyPoint, getStudyPointRole, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import type { AtlasStudy } from "@/data/tsubo/atlas/types";
@@ -43,6 +43,7 @@ function StudyPointNote({ text }: { text: string }) {
 }
 
 export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; currentCode?: string }) {
+  const Heading = currentCode ? "h4" : "h3";
   const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
   const reading = studyReadingLinks[study.id];
   const label = getStudyScopeLabel(study, currentCode);
@@ -57,7 +58,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
   return (
     <article className="atlas-study-card atlas-target" id={study.id}>
       <p className="atlas-study-kind"><FlaskConical size={16} aria-hidden="true" />{label}</p>
-      <h3>{study.topic}</h3>
+      <Heading>{study.topic}</Heading>
       <dl className="atlas-study-findings">
         <div><dt>結果</dt><dd>{study.result}</dd></div>
         <div className="atlas-study-limit"><dt>この研究の限界</dt><dd>{study.limits}</dd></div>
@@ -108,9 +109,10 @@ function AtlasStudyList({ studies, code }: { studies: readonly AtlasStudy[]; cod
   );
 }
 
-export default function AcupointResearch({ point, context }: {
+export default function AcupointResearch({ point, context, anchorId }: {
   point: AcupointDetail;
   context?: { title: string; paragraphs: readonly string[] };
+  anchorId?: string;
 }) {
   const studies = getAcupointStudies(point.codeLower);
   const firstStudies = studies.slice(0, 3);
@@ -119,17 +121,16 @@ export default function AcupointResearch({ point, context }: {
     const link = guide ? SYMPTOM_RESEARCH_LINKS[guide] : undefined;
     return link ? [link] : [];
   });
-  const combinations = getClassicalCombinations(point.codeLower);
   const background = point.codeLower === "li4" || point.codeLower === "st36" ? point.researchEvidence : undefined;
   const searched = Object.hasOwn(ATLAS_LITERATURE_SEARCH_COUNTS, point.codeLower);
 
   return (
     <HashTargetDetails
       key={point.codeLower}
-      id={TRADITIONAL_POINT_USES[point.codeLower] ? "acupoint-study-overview" : "acupoint-traditional"}
+      id={anchorId ?? (TRADITIONAL_POINT_USES[point.codeLower] ? "acupoint-study-overview" : "acupoint-traditional")}
       analytics={studies.length ? { kind: "research", studyIds: studies.map(study => study.id) } : undefined}
       className="atlas-disclosure atlas-evidence-disclosure atlas-target"
-      summary={<h2 id="acupoint-research-title"><BookOpen size={17} aria-hidden="true" />研究と古典の配穴</h2>}
+      summary={<h3 id="acupoint-research-title">{studies.length ? `研究で調べたこと（${studies.length}件）` : "研究の掲載状況"}</h3>}
     >
     <section id="acupoint-research" className="atlas-evidence atlas-target" aria-labelledby="acupoint-research-title">
       {studies.some(study => study.kind === "combination") && (
@@ -167,18 +168,6 @@ export default function AcupointResearch({ point, context }: {
       <p className="atlas-evidence-empty">
         <Link href={ACUPUNCTURE_TRIAL_COMPARISON_HREF} className="atlas-source-link">ツボ一つを調べた試験と、複数を組み合わせた試験の違い</Link>
       </p>
-      {combinations.length > 0 && (
-        <div className="atlas-classical-combinations">
-          <h3><GitMerge size={17} aria-hidden="true" />古典に書かれた組み合わせ</h3>
-          {combinations.map(combination => (
-            <div key={combination.points.join("-")} className="atlas-classical-combination">
-              <PointLinks codes={combination.points} currentCode={point.codeLower} />
-              <p>{combination.explanation}</p>
-              <a className="atlas-source-link" href={combination.source.url}>{combination.source.label}</a>
-            </div>
-          ))}
-        </div>
-      )}
       {background && (
         <details className="atlas-disclosure atlas-background-research">
           <summary>{point.codeLower === "li4" ? "補足研究・健常者の脳画像" : "補足研究・マウスでの基礎研究"}</summary>
@@ -195,7 +184,7 @@ export default function AcupointResearch({ point, context }: {
       )}
       {context && context.paragraphs.length > 0 && (
         <div className="atlas-study-details">
-          <h3 className="font-semibold">{context.title}</h3>
+          <h4 className="font-semibold">{context.title}</h4>
           {context.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
         </div>
       )}

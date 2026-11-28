@@ -1,4 +1,4 @@
-import { BookOpen, ChevronRight, FlaskConical } from "lucide-react";
+import { ChevronRight, FlaskConical } from "lucide-react";
 import { ATLAS_STUDIES, getAtlasStudyPoint, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 
@@ -13,7 +13,7 @@ export function AcupointTraditionalUses({ code }: { code: string }) {
 
   return (
     <section id="acupoint-traditional" className="atlas-target atlas-use-card atlas-traditional-use" data-use-kind="traditional" aria-labelledby="atlas-traditional-title">
-      <h2 id="atlas-traditional-title" className="atlas-section-title"><BookOpen size={19} aria-hidden="true" />伝統的な使われ方</h2>
+      <h3 id="atlas-traditional-title" className="atlas-section-title">伝統資料に記された症状</h3>
       <ul className="atlas-use-topics">
         {traditional.labels.map(label => <li key={label}>{label}</li>)}
       </ul>
@@ -29,7 +29,7 @@ export default function AcupointUses({ code }: { code: string }) {
   return (
     <section id={TRADITIONAL_POINT_USES[code] ? "acupoint-study-overview" : "acupoint-traditional"} className="atlas-target atlas-point-uses" aria-labelledby="atlas-use-research-title">
       <div className="atlas-use-card" data-use-kind="research">
-        <h2 id="atlas-use-research-title" className="atlas-section-title"><FlaskConical size={19} aria-hidden="true" />研究で調べたこと</h2>
+        <h3 id="atlas-use-research-title" className="atlas-section-title"><FlaskConical size={19} aria-hidden="true" />研究で調べたこと</h3>
         {studies.length > 0 ? (
           <ul className="atlas-use-studies">
             {studies.map(study => (

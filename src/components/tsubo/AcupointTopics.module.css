@@ -1,0 +1,112 @@
+.nav {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 0 .25rem;
+  padding-inline: .4rem;
+  border-radius: .4rem;
+  background: var(--atlas-soft);
+}
+
+.nav a {
+  flex: 1 1 auto;
+  display: grid;
+  place-items: center;
+  min-height: 2.875rem;
+  padding: .45rem .55rem;
+  color: var(--atlas-accent);
+  font-weight: 650;
+  font-size: .9375rem;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 48%, transparent);
+  text-underline-offset: .25em;
+}
+
+.nav a:hover { text-decoration-thickness: 2px; }
+
+.chapter {
+  display: grid;
+  min-width: 0;
+  gap: clamp(.875rem, 2vw, 1.375rem);
+  padding-block-start: clamp(1rem, 3vw, 1.6rem);
+  border-block-start: 1px solid var(--atlas-accent);
+}
+
+.chapter > * { min-width: 0; }
+
+.chapter:has(> .whoLink) {
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+}
+.chapter > .whoLink {
+  align-self: center;
+  justify-self: end;
+  text-align: end;
+}
+.chapter:has(> .whoLink) > :not(.title, .whoLink) { grid-column: 1 / -1; }
+
+.chapter > .title {
+  margin: 0;
+  color: var(--atlas-ink);
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", var(--font-serif);
+  font-size: clamp(1.4rem, 3.3vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.chapter :global(.atlas-study-card) h4 { font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
+.chapter:focus-visible {
+  outline: 2px solid var(--atlas-accent);
+  outline-offset: .25rem;
+}
+
+.chapter h3:global(.atlas-section-title) {
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.chapter :global(.atlas-evidence-disclosure) {
+  padding-inline: 0;
+  border: 0;
+  border-block: 1px solid var(--atlas-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.chapter :global(.atlas-point-compare-grid) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin-top: 0;
+}
+
+.chapter :global(.atlas-point-compare-card) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .15rem 1rem;
+  padding: .625rem 0 .875rem;
+  border: 0;
+  border-bottom: 1px solid var(--atlas-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.chapter :global(.atlas-point-compare-card) > p { grid-column: 1 / -1; }
+.chapter :global(.atlas-point-compare-card) h4 a {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem;
+  min-height: 2.75rem;
+  color: var(--atlas-accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.chapter :global(.atlas-point-compare-card) h4 span { font-size: .8125rem; }
+.chapter :global(.atlas-point-compare-action) { grid-column: 2; grid-row: 1; }
+
+@media (max-width: 23rem) {
+  .nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav:not(:has(a:nth-child(4))) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nav a { padding-inline: .25rem; }
+}

@@ -22,7 +22,8 @@ import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
-import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
+import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "@/components/tsubo/AcupointPairNotes";
+import { AcupointTopic, AcupointTopicNav } from "@/components/tsubo/AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import HeguAtlasPreview, { heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
@@ -32,7 +33,7 @@ import { POINT_ILLUSTRATIONS } from "@/data/tsubo/atlas/illustrations";
 import { ACUPOINT_LOCATION_IMAGES } from "@/data/tsubo/atlas/locationImages";
 import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
-import { FEATURED_ACUPOINT_PAIRS_ANCHOR, getFeaturedPairs } from "@/data/tsubo/atlas/featuredPairs";
+import { getFeaturedPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { getAcupointName } from "@/data/tsubo/names";
 import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
@@ -40,13 +41,10 @@ import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
 import { 
   Compass, 
-  Layers, 
   BookOpen, 
   Sparkles, 
   ArrowLeft, 
   ArrowRight, 
-  FileText,
-  ShieldCheck,
   GitCompare,
   SlidersHorizontal
 } from "lucide-react";
@@ -125,10 +123,6 @@ export default async function AcupointDetailPage({ params }: Props) {
 
   const isDetailed = isDetailedAcupoint(point.codeLower);
   const individualModel = Boolean(DETAILED_ACUPOINTS[point.codeLower]?.crossSection);
-  const featuredPairs = getFeaturedPairs(point.codeLower);
-  const otherTraditionalPairs = (point.goldenPairs ?? []).filter(({ partnerCode }) =>
-    !featuredPairs.some(({ pointIds }) => pointIds.includes(partnerCode.toLowerCase())),
-  );
 
   // 同経脈の経穴リスト（前後の経穴導線用）
   const meridianPoints = getMeridianPoints(point.meridianId);
@@ -306,6 +300,14 @@ export default async function AcupointDetailPage({ params }: Props) {
       ...(nextPoint ? [{ code: nextPoint.code, text: `${point.meridianShort}で${point.name}の一つ後` }] : []),
     ];
 
+  const featuredPairs = getFeaturedPairs(point.codeLower);
+  const otherTraditionalPairs = (point.goldenPairs ?? []).filter(({ partnerCode }) =>
+    !featuredPairs.some(({ pointIds }) => pointIds.includes(partnerCode.toLowerCase())),
+  );
+  const hasNearby = nearby.length > 0 || featuredPairs.some(({ kind }) => kind === "name");
+  const hasPairs = hasPointPairs(point);
+  const showPairs = hasPairs || otherTraditionalPairs.length > 0;
+
   return (
     <div className="reading-page acupoint-page page-layout atlas-page min-h-screen [overflow-wrap:anywhere]">
       {/* 構造化データ埋め込み */}
@@ -428,214 +430,222 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         </div>
 
-        <nav aria-label="この経穴のページ内目次" className="acupoint-section-nav">
-          <a href="#acupoint-location"><Compass aria-hidden="true" className="h-4 w-4" />位置</a>
-          {(illustration || !!point.crossSection?.svgElements?.length) && (
-            <a href="#acupoint-diagram"><Layers aria-hidden="true" className="h-4 w-4" />図</a>
-          )}
-          <a href="#acupoint-cautions"><ShieldCheck aria-hidden="true" className="h-4 w-4" />注意点</a>
-          {nearby.length > 0 && <a href="#acupoint-compare"><GitCompare aria-hidden="true" className="h-4 w-4" />近くのツボ</a>}
-          {featuredPairs.length > 0 && <a href={`#${FEATURED_ACUPOINT_PAIRS_ANCHOR}`}>配穴</a>}
-          <a href="#acupoint-research"><BookOpen aria-hidden="true" className="h-4 w-4" />{featuredPairs.length > 0 ? "研究" : "研究・配穴"}</a>
-          <a href="#acupoint-sources"><FileText aria-hidden="true" className="h-4 w-4" />出典</a>
-        </nav>
+        <AcupointTopicNav topics={[
+          "location",
+          "uses",
+          ...(hasNearby ? ["nearby"] as const : []),
+          ...(showPairs ? ["pairs"] as const : []),
+        ]} />
 
-        {/* 2. 取穴・位置セクション（一般向け vs WHO標準） */}
-        <section id="acupoint-location" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
-          <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-            <Compass className="w-5 h-5" />
-            <h2>標準の位置と目印</h2>
+        <AcupointTopic topic="location">
+          <div id="acupoint-location" tabIndex={-1} className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
+            <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+              <Compass className="w-5 h-5" />
+              <h3>標準の位置と目印</h3>
+            </div>
+
+            <WhoPointLocation code={point.codeLower} pointName={point.name} />
+            <AcupointStudyLinks code={point.code} />
+
+            {/* 取穴手順ステップ */}
+            {illustration && atlasMarker && (
+              <div id="acupoint-diagram" className="atlas-target">
+                <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={illustration} marker={atlasMarker} />
+              </div>
+            )}
+            {point.howToLocate && point.howToLocate.length > 0 && (
+              <div className="space-y-3 pt-2">
+                <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
+                  位置を確認する手順
+                </h3>
+                <ol className="space-y-2 text-base text-[#404743] dark:text-[#C5D2DB]">
+                  {point.howToLocate.map((step, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <span className="w-5 h-5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-white text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        {idx + 1}
+                      </span>
+                      <span className="leading-relaxed">{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
+            {point.palpationLandmarks && (
+              <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
+                <h3 className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">目印になる骨や腱</h3>
+                <ul className="list-disc list-inside space-y-1 text-[#59615D] dark:text-[#A0B0BC] text-base">
+                  {point.palpationLandmarks.map((lm, i) => (
+                    <li key={i}>{lm}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
-          <WhoPointLocation code={point.codeLower} pointName={point.name} />
-          <AcupointStudyLinks code={point.code} />
+          {point.crossSection?.svgElements?.length ? (
+            <details id={illustration && atlasMarker ? "acupoint-cross-section" : "acupoint-diagram"} className="atlas-disclosure atlas-reading-details atlas-target">
+              <summary>体の内側の模式図</summary>
+              <CrossSectionViewer
+                model={getPublicCrossSectionModel(point.crossSection)}
+                pointName={point.name}
+                pointCode={point.code}
+                individualModel={individualModel}
+              />
+            </details>
+          ) : null}
+        </AcupointTopic>
 
-          {/* 取穴手順ステップ */}
-          {illustration && atlasMarker && (
-            <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={illustration} marker={atlasMarker} />
-          )}
-          {point.howToLocate && point.howToLocate.length > 0 && (
-            <div className="space-y-3 pt-2">
-              <h3 className="font-serif text-sm font-bold text-[#232826] dark:text-[#FAF8F5]">
-                位置を確認する手順
-              </h3>
-              <ol className="space-y-2 text-base text-[#404743] dark:text-[#C5D2DB]">
-                {point.howToLocate.map((step, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5">
-                    <span className="w-5 h-5 rounded-full bg-[#1E3D34] dark:bg-[#2B6958] text-white text-sm font-bold flex items-center justify-center shrink-0 mt-0.5">
-                      {idx + 1}
-                    </span>
-                    <span className="leading-relaxed">{step}</span>
-                  </li>
-                ))}
-              </ol>
+        <AcupointTopic topic="uses">
+          <AcupointCautions priority={<>
+            {isPregnancyBan && !caution.includes("妊娠") && (
+              <p>妊娠中は部位を問わず強い刺激を避け、施術を受ける前に担当の医療機関に相談してください。</p>
+            )}
+            {isPneumoRisk && !caution.includes("119") && (
+              <p><strong>胸郭周囲では鍼で肺などが傷つくおそれがあります。</strong> 施術後に強い息苦しさが出たら、すぐ119番へ連絡してください。胸の痛みや息苦しさが出た場合は、すぐに医療機関を受診してください。</p>
+            )}
+            <p>{caution}</p>
+          </>}>
+            {isNeedleBan && <p><strong>古典に刺鍼を禁じる記載がある部位です。</strong> 施術については、はり師・きゅう師に相談してください。</p>}
+            {isMoxaBan && <p><strong>古典にお灸を禁じたり、注意を求めたりする記載があります。</strong> 熱傷などのおそれがあるため、自己判断でお灸をしないでください。</p>}
+            <p>押したときの痛みや響きだけでツボの位置を判断しないでください。</p>
+            <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
+          </AcupointCautions>
+
+          <section id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
+            <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
+              <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
+              <h3>伝統的な使われ方</h3>
             </div>
-          )}
 
-          {point.palpationLandmarks && (
-            <div className="p-3.5 rounded-xl bg-[#FAF8F5] dark:bg-[#121920] border border-[#E8E1D1] dark:border-[#22303D] space-y-1.5">
-              <h3 className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">目印になる骨や腱</h3>
-              <ul className="list-disc list-inside space-y-1 text-[#59615D] dark:text-[#A0B0BC] text-base">
-                {point.palpationLandmarks.map((lm, i) => (
-                  <li key={i}>{lm}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </section>
-
-        <AcupointCautions priority={<>
-          {isPregnancyBan && !caution.includes("妊娠") && (
-            <p>妊娠中は部位を問わず強い刺激を避け、施術を受ける前に担当の医療機関に相談してください。</p>
-          )}
-          {isPneumoRisk && !caution.includes("119") && (
-            <p><strong>胸郭周囲では鍼で肺などが傷つくおそれがあります。</strong> 施術後に強い息苦しさが出たら、すぐ119番へ連絡してください。胸の痛みや息苦しさが出た場合は、すぐに医療機関を受診してください。</p>
-          )}
-          <p>{caution}</p>
-        </>}>
-          {isNeedleBan && <p><strong>古典に刺鍼を禁じる記載がある部位です。</strong> 施術については、はり師・きゅう師に相談してください。</p>}
-          {isMoxaBan && <p><strong>古典にお灸を禁じたり、注意を求めたりする記載があります。</strong> 熱傷などのおそれがあるため、自己判断でお灸をしないでください。</p>}
-          <p>押したときの痛みや響きだけでツボの位置を判断しないでください。</p>
-          <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
-        </AcupointCautions>
-
-        <AcupointLocationComparison point={point} related={nearby} />
-
-        {/* 伝統的な主治・配穴例・古典 */}
-        <section id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
-          <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-            <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-            <h2>伝統的な使われ方</h2>
-          </div>
-
-          {/* 主治症タグ一覧 */}
-          <div className="space-y-2">
-            <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
-              伝統資料で関連づけられる症状：
-            </span>
-            <div className="flex flex-wrap gap-1.5 sm:gap-2">
-              {point.indications.map((ind, i) => (
-                <span
-                  key={i}
-                  className="dictionary-indication"
-                >
-                  {ind}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* 臨床応用・取穴のポイント */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-[#EBF3EF] dark:bg-[#162A24] border border-[#C5DED4] dark:border-[#2A5243] space-y-2">
-            <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-              <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
-              <span>学習上の補足</span>
-            </div>
-            <p className="text-base text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
-              {point.clinicalNote}
-            </p>
-            <p className="text-base text-[#59615D] dark:text-[#AFBDC8] pt-1">
-              伝統的な主治の一覧は、この経穴単独の治療効果や個人への施術適応を示すものではありません。
-            </p>
-          </div>
-
-          {/* 図付きで紹介している組み合わせは、下の配穴欄に掲載する。 */}
-          {otherTraditionalPairs.length > 0 && (
-            <details className="atlas-disclosure atlas-reading-details dictionary-golden-pairs">
-              <summary>伝統的な配穴例</summary>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                {otherTraditionalPairs.map((pair, idx) => {
-                  const partner = getAcupointByCode(pair.partnerCode);
-                  return (
-                  <div
-                    key={idx}
-                    className="dictionary-golden-pair space-y-1.5 flex flex-col justify-between"
+            {/* 主治症タグ一覧 */}
+            <div className="space-y-2">
+              <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
+                伝統資料で関連づけられる症状：
+              </span>
+              <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                {point.indications.map((ind, i) => (
+                  <span
+                    key={i}
+                    className="dictionary-indication"
                   >
-                    <div>
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
-                          【{pair.prescriptionName}】
-                        </span>
-                        {partner ? <Link
-                          href={`/tsubo/${partner.codeLower}`}
-                          className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1"
-                        >
-                          <span>＋ {pair.partnerName}（{pair.partnerCode}）</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </Link> : <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
-                          ＋ {pair.partnerName}（{pair.partnerCode}）
-                        </span>}
+                    {ind}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 臨床応用・取穴のポイント */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#EBF3EF] dark:bg-[#162A24] border border-[#C5DED4] dark:border-[#2A5243] space-y-2">
+              <div className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                <Sparkles className="w-4 h-4 text-[#B86924] dark:text-[#E6C387]" />
+                <span>学習上の補足</span>
+              </div>
+              <p className="text-base text-[#232826] dark:text-[#E6EFEA] leading-relaxed">
+                {point.clinicalNote}
+              </p>
+              <p className="text-base text-[#59615D] dark:text-[#AFBDC8] pt-1">
+                伝統的な主治の一覧は、この経穴単独の治療効果や個人への施術適応を示すものではありません。
+              </p>
+            </div>
+
+            {/* 古典原典の引用 */}
+            {point.classicalReferences && point.classicalReferences.length > 0 && (
+              <details className="atlas-disclosure atlas-reading-details">
+                <summary>古典での記載</summary>
+                <div className="space-y-2">
+                  {point.classicalReferences.map((cr, idx) => (
+                    <div
+                      key={idx}
+                      className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm space-y-1"
+                    >
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-[#1E3D34] dark:text-[#74BA9E] font-bold">
+                        <span>{cr.book}</span>
                       </div>
-                      <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mt-1">
-                        {pair.effect}
+                      <p className="font-serif italic text-[#404743] dark:text-[#C5D2DB] text-base">
+                        「{cr.quote}」
+                      </p>
+                      <p className="text-base text-[#59615D] dark:text-[#AFBDC8]">
+                        現代語要約：{cr.meaning}
                       </p>
                     </div>
-                  </div>
-                  );
-                })}
-              </div>
-            </details>
-          )}
+                  ))}
+                </div>
+              </details>
+            )}
 
-          {/* 古典原典の引用 */}
-          {point.classicalReferences && point.classicalReferences.length > 0 && (
-            <details className="atlas-disclosure atlas-reading-details">
-              <summary>古典での記載</summary>
-              <div className="space-y-2">
-                {point.classicalReferences.map((cr, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-xl bg-[#FAF8F5] dark:bg-[#10171F] border border-[#E8E1D1] dark:border-[#22303D] text-sm space-y-1"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-[#1E3D34] dark:text-[#74BA9E] font-bold">
-                      <span>{cr.book}</span>
-                    </div>
-                    <p className="font-serif italic text-[#404743] dark:text-[#C5D2DB] text-base">
-                      「{cr.quote}」
-                    </p>
-                    <p className="text-base text-[#59615D] dark:text-[#AFBDC8]">
-                      現代語要約：{cr.meaning}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </details>
-          )}
+            {relatedReading.length > 0 && (
+              <nav className="dictionary-related-reading" aria-label="関連する症状ガイド・症例">
+                <h3>関連して読む</h3>
+                <ul>
+                  {relatedReading.map((item) => (
+                    <li key={item.href}>
+                      <Link href={item.href}><span>{item.kind}</span><strong>{item.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+                    </li>
+                  ))}
+                </ul>
+                <div className="dictionary-more-links">
+                  {relatedSymptoms.length > 0 && <Link href="/symptoms">症状ガイド一覧</Link>}
+                  {relatedCases.length > 0 && <Link href="/cases">症例一覧</Link>}
+                </div>
+              </nav>
+            )}
 
-          {relatedReading.length > 0 && (
-            <nav className="dictionary-related-reading" aria-label="関連する症状ガイド・症例">
-              <h3>関連して読む</h3>
-              <ul>
-                {relatedReading.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href}><span>{item.kind}</span><strong>{item.title}</strong><ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
-                  </li>
-                ))}
-              </ul>
-              <div className="dictionary-more-links">
-                {relatedSymptoms.length > 0 && <Link href="/symptoms">症状ガイド一覧</Link>}
-                {relatedCases.length > 0 && <Link href="/cases">症例一覧</Link>}
-              </div>
-            </nav>
-          )}
+          </section>
 
-        </section>
+          <AcupointResearch point={point} anchorId="acupoint-study-overview" />
+        </AcupointTopic>
 
-        <FeaturedAcupointPairs pointCode={point.codeLower} />
-        <AcupointResearch point={point} />
+        {hasNearby && (
+          <AcupointTopic topic="nearby">
+            <AcupointLocationComparison point={point} related={nearby} />
+            <AcupointNameComparison point={point} />
+          </AcupointTopic>
+        )}
+
+        {showPairs && (
+          <AcupointTopic topic="pairs">
+            {hasPairs && <AcupointPairNotes point={point} />}
+            {otherTraditionalPairs.length > 0 && (
+              <details className="atlas-disclosure atlas-reading-details dictionary-golden-pairs">
+                <summary>伝統的な配穴例</summary>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  {otherTraditionalPairs.map((pair, idx) => {
+                    const partner = getAcupointByCode(pair.partnerCode);
+                    return (
+                      <div
+                        key={idx}
+                        className="dictionary-golden-pair space-y-1.5 flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <span className="text-sm font-bold text-[#B86924] dark:text-[#E6C387]">
+                              【{pair.prescriptionName}】
+                            </span>
+                            {partner ? <Link
+                              href={`/tsubo/${partner.codeLower}`}
+                              className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E] hover:underline inline-flex items-center gap-1"
+                            >
+                              <span>＋ {pair.partnerName}（{pair.partnerCode}）</span>
+                              <ArrowRight className="w-3 h-3" />
+                            </Link> : <span className="text-sm font-bold text-[#1E3D34] dark:text-[#74BA9E]">
+                              ＋ {pair.partnerName}（{pair.partnerCode}）
+                            </span>}
+                          </div>
+                          <p className="text-base text-[#59615D] dark:text-[#A0B0BC] leading-relaxed mt-1">
+                            {pair.effect}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </details>
+            )}
+          </AcupointTopic>
+        )}
+
         <AcupointNameGuide code={point.codeLower} />
-
-        {point.crossSection?.svgElements?.length ? (
-          <details id={illustration && atlasMarker ? "acupoint-cross-section" : "acupoint-diagram"} className="atlas-disclosure atlas-reading-details atlas-target">
-            <summary>体の内側の模式図</summary>
-            <CrossSectionViewer
-              model={getPublicCrossSectionModel(point.crossSection)}
-              pointName={point.name}
-              pointCode={point.code}
-              individualModel={individualModel}
-            />
-          </details>
-        ) : null}
 
         {relatedLectures.length > 0 && (
           <section className="dictionary-related-lectures" aria-labelledby="related-lectures-title">

@@ -16,8 +16,9 @@ export interface AcupointAtlasArticle {
   pointWarning?: string;
   symptomWarning?: string;
   location: readonly string[];
-  traditionalTitle?: string;
   traditional: readonly string[];
+  researchNotes?: readonly string[];
+  comparisonNotes?: { title: string; paragraphs: readonly string[] };
   selfCare: readonly string[];
   cautions: readonly string[];
   expert: readonly string[];

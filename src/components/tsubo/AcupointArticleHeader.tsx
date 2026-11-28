@@ -3,15 +3,6 @@ import { atlasLocationWithoutUnitNote } from "@/data/tsubo/friendlyLocations";
 import AtlasDictionaryReturnLink from "./AtlasDictionaryReturnLink";
 import { AcupointKeyPointLinks } from "./AcupointArticleLinks";
 
-export function AcupointLocationActions() {
-  return (
-    <nav aria-label="ツボの位置" className="atlas-point-location-actions">
-      <a href="#acupoint-location" className="atlas-text-action">位置図へ</a>
-      <a href="#acupoint-who-location" className="atlas-text-action">WHOの位置と出典</a>
-    </nav>
-  );
-}
-
 export default function AcupointArticleHeader({ point, folio = false }: {
   point: AcupointDetail;
   folio?: boolean;
@@ -38,7 +29,6 @@ export default function AcupointArticleHeader({ point, folio = false }: {
       <p className="atlas-point-meta"><a href={`/tsubo#meridian-${indexMeridianId}`} className="atlas-source-link">{point.meridian}のツボ一覧</a> <span aria-hidden="true">·</span> {point.bodyPart}</p>
       {folio && classification}
       <p className="atlas-point-lead">{atlasLocationWithoutUnitNote(point.locationSimple)}</p>
-      {!folio && <AcupointLocationActions />}
     </header>
   );
 }

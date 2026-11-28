@@ -329,7 +329,11 @@ for (const guide of SYMPTOMS) {
 assert.deepEqual(getAcupointGuideLinks('pc4', ATLAS_ARTICLES.pc4.symptomLinks)[0], ATLAS_ARTICLES.pc4.symptomLinks[0],
   'A curated safety link retains priority');
 function checkArticleLocationCopy(article, code) {
-  const body = [article.lead, ...article.location, ...article.traditional, ...article.selfCare, ...article.cautions, article.safetyWarning, ...article.expert, ...article.relatedPoints.map(point => point.text)].join('');
+  const body = [
+    article.lead, ...article.location, ...article.traditional, ...(article.researchNotes ?? []),
+    ...(article.comparisonNotes?.paragraphs ?? []), ...article.selfCare, ...article.cautions, article.safetyWarning,
+    ...article.expert, ...article.relatedPoints.map(point => point.text),
+  ].join('');
   assert(article.location.length >= 2 && article.location.every(paragraph => paragraph.trim()), code + ' has step-by-step location details');
   assert(article.cautions.some(paragraph => paragraph.trim()), code + ' has local precautions');
   assert(body.length <= 900, code + ' article remains concise');

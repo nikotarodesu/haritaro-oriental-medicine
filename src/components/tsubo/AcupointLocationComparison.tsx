@@ -19,18 +19,18 @@ export default function AcupointLocationComparison({ point, related, children }:
   return (
     <section id="acupoint-compare" tabIndex={-1} className="atlas-target" aria-labelledby="acupoint-compare-title">
       <div className="atlas-point-compare-heading">
-        <h2 className="atlas-section-title" id="acupoint-compare-title">位置を見比べるツボ</h2>
+        <h3 className="atlas-section-title" id="acupoint-compare-title">それぞれの位置と目印</h3>
         {entries.length > 0 && <a href="#acupoint-location" className="atlas-text-action"><ArrowUp aria-hidden="true" size={15} />{point.name}の位置図に戻る</a>}
       </div>
       {entries.length > 0 && (
         <ul className="atlas-point-compare-grid" role="list">
           {entries.map(({ other, text }) => (
             <li key={other.codeLower} className="atlas-point-compare-card">
-              <h3>
+              <h4>
                 <Link href={`/tsubo/${other.codeLower}#acupoint-location`} prefetch={false}>
                   {other.name} <span>{other.code}</span><ArrowUpRight aria-hidden="true" size={14} />
                 </Link>
-              </h3>
+              </h4>
               <p>{atlasLocationWithoutUnitNote(other.locationSimple)}</p>
               {text && <p className="atlas-point-compare-relation">{text}</p>}
               <Link

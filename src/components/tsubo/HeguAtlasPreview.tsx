@@ -1,6 +1,6 @@
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "@/components/tsubo/AcupointAnatomy";
-import AcupointArticleHeader, { AcupointLocationActions } from "@/components/tsubo/AcupointArticleHeader";
+import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointReferences, { AcupointPointBasics } from "@/components/tsubo/AcupointReferences";
@@ -8,7 +8,8 @@ import { AcupointStudyLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
 import { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
-import FeaturedAcupointPairs from "@/components/tsubo/FeaturedAcupointPairs";
+import { AcupointPairNotes } from "./AcupointPairNotes";
+import { AcupointTopic, AcupointTopicNav } from "./AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
@@ -19,8 +20,6 @@ export const heguAtlasReading = {
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
   symptomWarning: "突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。",
 };
-
-const headingClass = "atlas-section-title";
 
 export const heguSources = [
   { name: "WHO標準経穴部位（2008年、2009年改訂再版、p.35ほか）", url: "https://iris.who.int/server/api/core/bitstreams/d98c1c98-3fbf-4e4e-8c9a-1bbe72ccd00e/content#page=44", scope: "標準部位と経絡上の順序" },
@@ -38,40 +37,46 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
           <p className="font-semibold">症状がある場合の受診目安</p>
           <p>{heguAtlasReading.symptomWarning}</p>
         </aside>
-        <AcupointLocationActions />
+        <AcupointTopicNav topics={["location", "uses", "nearby", "pairs"]} />
       </div>
 
-      <section id="acupoint-location" tabIndex={-1} className="atlas-target">
-        <h2 className={headingClass}>場所と見つけ方</h2>
-        <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
-          <WhoPointLocation code={point.codeLower} pointName={point.name} />
-        </AcupointAtlasDiagrams>
-        <div className="atlas-location-links">
-          <AcupointStudyLinks code={point.code} />
+      <AcupointTopic topic="location" whoLink>
+        <div id="acupoint-location" tabIndex={-1} className="atlas-target">
+          <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
+            <WhoPointLocation code={point.codeLower} pointName={point.name} />
+          </AcupointAtlasDiagrams>
+          <div className="atlas-location-links">
+            <AcupointStudyLinks code={point.code} />
+          </div>
         </div>
-      </section>
+        <AcupointAnatomy point={point} />
+      </AcupointTopic>
 
-      <AcupointAnatomy point={point} />
+      <AcupointTopic topic="uses">
+        <AcupointTraditionalUses code={point.codeLower} />
+        <AcupointCautions priority={<p>{heguAtlasReading.caution}</p>}>
+          <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
+          <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
+          <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
+          <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
+        </AcupointCautions>
+        <AcupointSelfCare code={point.codeLower} />
+        <AcupointResearch point={point} />
+      </AcupointTopic>
 
-      <AcupointCautions priority={<p>{heguAtlasReading.caution}</p>}>
-        <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
-        <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
-        <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
-        <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
-      </AcupointCautions>
+      <AcupointTopic topic="nearby">
+        <AcupointLocationComparison point={point} related={[
+          { code: "LI3", text: "同じ経絡で、合谷より人差し指の先に近いツボです。" },
+          { code: "LI5", text: "同じ経絡で、合谷より手首に近いツボです。" },
+        ]} />
+      </AcupointTopic>
 
-      <AcupointLocationComparison point={point} related={[
-        { code: "LI3", text: "同じ経絡で、合谷より人差し指の先に近いツボです。" },
-        { code: "LI5", text: "同じ経絡で、合谷より手首に近いツボです。" },
-        { code: "LR3", text: "手の甲と足の甲で、目印になる骨が違います。" },
-      ]} />
+      <AcupointTopic topic="pairs">
+        <AcupointPairNotes point={point} />
+      </AcupointTopic>
 
-      <AcupointTraditionalUses code={point.codeLower} />
-      <AcupointSelfCare code={point.codeLower} />
       <div className="atlas-secondary-sections">
         <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
-        <FeaturedAcupointPairs pointCode={point.codeLower} />
-        <AcupointResearch point={point} />
         <AcupointReferences
           point={point}
           editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]}
