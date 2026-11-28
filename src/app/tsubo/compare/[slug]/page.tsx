@@ -3,14 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import AtlasDictionaryReturnLink from "@/components/tsubo/AtlasDictionaryReturnLink";
-import NearbyComparisonArtwork from "@/components/tsubo/atlas/NearbyComparisonArtwork";
+import { ComparisonGuideFigure } from "@/components/tsubo/atlas/ComparisonGuideFigure";
 import { SERIES } from "@/config/series";
 import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
 import { getAcupointByCode } from "@/data/tsubo";
-import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
-import { comparisonSize, NEARBY_COMPARISONS } from "@/data/tsubo/atlas/nearbyComparisons";
+import { NEARBY_COMPARISONS } from "@/data/tsubo/atlas/nearbyComparisons";
 import { ATLAS_COMPARISON_GUIDES, ATLAS_COMPARISON_GUIDES_REVISED_AT } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { WHO_ATLAS_PDF, whoAtlasPages } from "@/data/tsubo/atlas/whoAtlasPages";
+import { comparisonSelectionHref } from "../selection";
 import styles from "./comparison-guide.module.css";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -41,12 +41,11 @@ export default async function ComparisonGuidePage({ params }: Props) {
   const comparison = NEARBY_COMPARISONS.find(entry => entry.id === guide.id);
   if (!comparison) notFound();
 
-  const points = comparison.points.flatMap(position => {
-    const point = getAcupointByCode(position.code);
-    const distance = guide.id === "shin" ? ATLAS_POINT_MARKERS[position.code]?.boneCun : undefined;
-    return point ? [{ ...position, name: point.name, codeLabel: point.code, distance }] : [];
+  const points = comparison.points.flatMap(({ code }) => {
+    const point = getAcupointByCode(code);
+    return point ? [{ code, name: point.name, codeLabel: point.code }] : [];
   });
-  const { width, height } = comparison.size ?? comparisonSize;
+  const pointNotes: Readonly<Partial<Record<string, string>>> | undefined = guide.pointNotes;
   const sourcePoints = [
     ...points,
     ...(comparison.referenceCodes ?? []).flatMap(code => {
@@ -94,36 +93,19 @@ export default async function ComparisonGuidePage({ params }: Props) {
           <span aria-current="page">ツボの比較</span>
         </nav>
         <h1>{guide.title}</h1>
-        <p>{guide.summary}</p>
       </header>
 
-      <figure className={styles.figure}>
-        <div className="atlas-comparison-figure">
-          <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={comparison.figureLabel} data-atlas-comparison-figure={comparison.id}>
-            <NearbyComparisonArtwork id={comparison.id} />
-            {points.map(({ code, position: [x, y], leader: [endX, endY], button: [labelX, labelY], name, distance }) => (
-              <g key={code} className="atlas-comparison-marker" data-selected="true">
-                <path d={`M${x} ${y}L${endX} ${endY}`} />
-                <circle cx={x} cy={y} r="4.5" />
-                <rect className={styles.labelBox} x={labelX} y={labelY - (distance ? 22 : 13)} width="60" height={distance ? 44 : 26} rx="6" />
-                <text className={styles.label} x={labelX + 30} y={labelY + (distance ? -3 : 5)} textAnchor="middle">{name}</text>
-                {distance != null && <text x={labelX + 30} y={labelY + 15} textAnchor="middle">{distance}寸</text>}
-              </g>
-            ))}
-          </svg>
-        </div>
-        <figcaption>{guide.caption}</figcaption>
-      </figure>
+      <ComparisonGuideFigure guide={guide} />
 
       <section aria-labelledby="compared-points">
-        <h2 id="compared-points" className="atlas-section-title">ツボごとの位置</h2>
-        <ul className={styles.points}>
-          {points.map(({ code, codeLabel, name, difference }) => (
+        <h2 id="compared-points" className="atlas-section-title">詳しい位置図</h2>
+        <ul className={styles.points} role="list">
+          {points.map(({ code, codeLabel, name }) => (
             <li key={code}>
               <Link href={`/tsubo/${code}#acupoint-location`} className={styles.pointLink} prefetch={false}>
-                <strong>{name}</strong><span>{codeLabel}</span><ArrowRight size={16} aria-hidden="true" />
+                <span><strong>{name}</strong><small>{codeLabel}</small></span><ArrowRight size={16} aria-hidden="true" />
               </Link>
-              <p>{difference}</p>
+              {pointNotes?.[code] && <p>{pointNotes[code]}</p>}
             </li>
           ))}
         </ul>
@@ -132,9 +114,19 @@ export default async function ComparisonGuidePage({ params }: Props) {
       <section className={styles.landmarks} aria-labelledby="comparison-landmarks">
         <h2 id="comparison-landmarks" className="atlas-section-title">{guide.landmarkHeading}</h2>
         <p>{guide.landmark}</p>
-        <p>{guide.note}</p>
+        {guide.note && <p>{guide.note}</p>}
         {(guide.id === "forearm" || guide.id === "shin") && <Link href="/tsubo/basics/bone-cun#bone-cun-table" className="atlas-text-action">寸の測り方を見る</Link>}
       </section>
+
+      <nav className={styles.related} aria-labelledby="comparison-related">
+        <h2 id="comparison-related" className="atlas-section-title">続けて比べる</h2>
+        <ul role="list">
+          <li><Link href={comparisonSelectionHref(points.map(({ code }) => code))} className="atlas-text-action" prefetch={false}>この3穴の注意点・経絡を比べる</Link></li>
+          {ATLAS_COMPARISON_GUIDES.filter(({ id }) => id !== guide.id).map(({ href, title }) => (
+            <li key={href}><Link href={href} className="atlas-text-action" prefetch={false}>{title}</Link></li>
+          ))}
+        </ul>
+      </nav>
 
       <section className={styles.sources} aria-labelledby="comparison-sources">
         <h2 id="comparison-sources" className="atlas-section-title">位置の出典</h2>

@@ -17,7 +17,8 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
     name: "後渓と申脈",
     kind: "classic",
     summary: "古典では、手の小指側にある後渓と、外くるぶしの下にある申脈を、首すじや肩の不調に結びつけています。",
-    evidenceSummary: "頸椎症の試験では、通常の鍼に二穴を加えた群で直後の痛みが軽くなりました。二穴だけの効果や、改善が続く期間は分かりません。",
+    evidenceSummary: "頸椎症の試験では、通常の鍼に二穴を加えた群で、施術直後の首の痛みと日常生活への影響を示す得点が低くなりました。",
+    limits: "二穴だけの効果や、改善が続く期間は分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -25,8 +26,8 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
         sources: [eightVessels],
       },
       {
-        label: "研究で調べたこと",
-        text: "頸椎症の70人を、通常の鍼を受ける群と、それに左右の後渓・申脈を加える群に分けました。施術直後の首の痛みと、日常生活への影響を評価した得点は、二穴を加えた群でより低くなりました。",
+        label: "試験の方法",
+        text: "70人を2群に分け、追加する群は左右両側の後渓と申脈を使いました。",
         sources: [
           { label: "張ほか · 上海針灸雑誌（2018）", url: "https://www.acumoxj.com/uploads/20210929/63b56f08d4451380cb744a5813088d23.pdf" },
         ],
@@ -39,7 +40,8 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
     name: "外関と足臨泣",
     kind: "classic",
     summary: "前腕の外関と足の甲の足臨泣は、古典で目尻や耳の後ろ、首から肩にかけての不調に関連づけられています。",
-    evidenceSummary: "片頭痛の試験では、外関と足臨泣を含む鍼の群で、内服薬の群より痛みの点数が低くなりました。二穴だけでの効果は、この試験では分かりません。",
+    evidenceSummary: "片頭痛の試験では、外関と足臨泣を含む鍼の群で、内服薬の群より痛みの点数が低くなりました。",
+    limits: "7種類のツボを使った試験で、外関と足臨泣だけの効果は分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -61,7 +63,8 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
     name: "列欠と照海",
     kind: "classic",
     summary: "古典では、親指側の手首近くにある列欠と、内くるぶしの下にある照海を、のどや胸の不調に関連づけています。",
-    evidenceSummary: "慢性咽炎の試験では二穴を含む鍼と漢方薬を一緒に追加したため、列欠と照海だけで症状が和らぐかは分かりません。",
+    evidenceSummary: "慢性咽炎の試験では、通常のケアに二穴を含む鍼と漢方薬を追加した場合を調べました。",
+    limits: "鍼と漢方薬を一緒に追加したため、列欠と照海だけで症状が和らぐかは分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -70,7 +73,7 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
       },
       {
         label: "研究で調べたこと",
-        text: "慢性咽炎のうち、伝統医学で脾気虚弱型にあたる68人の試験です。両群が同じトローチを使い、一方の群に列欠・照海など6種類のツボへの鍼と、漢方薬を加えました。",
+        text: "伝統医学で脾気虚弱型にあたる慢性咽炎の68人が対象です。両群が同じトローチを使い、鍼を追加した群では6種類のツボを使いました。",
         sources: [
           { label: "何・譚 · 広州中医薬大学学報（2024）", url: "https://www.tcmjc.com/doi/pdf/C4CF41C485204A57A7FAF9E1FC68FD47#page=8" },
         ],
@@ -83,7 +86,8 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
     name: "支溝と照海",
     kind: "classic",
     summary: "古典には、便が出にくいときに支溝と照海をあわせて使う記述があります。",
-    evidenceSummary: "機能性便秘の試験では天枢も加えた鍼の群で症状が改善したと報告されました。支溝と照海だけの効果は分かりません。",
+    evidenceSummary: "機能性便秘の試験では、天枢・支溝・照海への鍼の群で、内服薬の群よりいきみや残便感などの症状スコアが改善しました。",
+    limits: "天枢も使った試験で、支溝と照海だけの効果は分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -91,8 +95,8 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
         sources: [jadeDragon],
       },
       {
-        label: "研究で調べたこと",
-        text: "機能性便秘の80人を、天枢・支溝・照海への鍼を受ける群と、モサプリドを内服する群に分けました。いきみや残便感、便の硬さなどの症状スコアは、鍼の群でより改善しました。",
+        label: "試験の方法",
+        text: "80人を対象に、鍼とモサプリドの内服を比べました。症状スコアには便の硬さなども含まれます。",
         sources: [
           { label: "孫ほか · 江蘇中医薬（2016）", url: "https://www.jstcm.cn/cn/article/pdf/preview/20161227.pdf" },
         ],
@@ -104,8 +108,9 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
     pointIds: ["sp9", "gb34"],
     name: "陰陵泉と陽陵泉",
     kind: "classic",
-    summary: "陰陵泉はひざ下の内側、陽陵泉は外側にあります。古典では、ひざの腫れにこの二穴を組み合わせています。",
-    evidenceSummary: "変形性膝関節症の試験では、両方を含む電気鍼で刺激の強さを比較しました。二穴だけでひざの腫れが引くかは分かりません。",
+    summary: "古典では、ひざの腫れにこの二穴を組み合わせています。",
+    evidenceSummary: "変形性膝関節症の試験では、電気鍼の刺激が強い群で、弱い群よりひざのこわばりと動作のしづらさが減ったと報告されています。",
+    limits: "二穴を含む6種類のツボを使った試験です。この二穴だけでひざの腫れが引くかは分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -113,8 +118,8 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
         sources: [jadeDragon],
       },
       {
-        label: "研究で調べたこと",
-        text: "80人が参加した変形性膝関節症の試験では、両群とも陰陵泉と陽陵泉を含む6種類のツボに電気鍼を受けました。刺激を強くした群で、弱い群よりひざのこわばりと動作のしづらさが減ったと報告されています。",
+        label: "試験の方法",
+        text: "80人が参加した試験で、両群に同じツボを使い、電気刺激の強さを変えました。",
         sources: [
           { label: "Ju ほか · International Journal of Clinical and Experimental Medicine（2015）", url: "https://pubmed.ncbi.nlm.nih.gov/26770523/" },
         ],
@@ -126,17 +131,18 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
     pointIds: ["lu5", "li11"],
     name: "尺沢と曲池",
     kind: "classic",
-    summary: "ひじの前にある尺沢と、外側にある曲池をあわせます。古典では、ひじが痛くて動かしにくいときに使うと記されています。",
-    evidenceSummary: "ひじの外側の痛みを扱った試験で両方が使われました。比べたのは別の鍼の手法を加えるかどうかで、尺沢と曲池だけの効果は分かりません。",
+    summary: "古典では、ひじが痛くて動かしにくいときに使うと記されています。",
+    evidenceSummary: "ひじの外側の痛みを扱った試験では、両群で尺沢・曲池・手三里などを使いました。",
+    limits: "火鍼を追加するかどうかを比べた試験で、尺沢と曲池だけの効果は分かりません。",
     details: [
       {
         label: "古典での使われ方",
-        text: "『鍼灸大成』の「玉龍賦」では、ひじのこわばりと痛みに対して尺沢と曲池を組み合わせています。",
+        text: "この組み合わせは『鍼灸大成』の「玉龍賦」に記されています。",
         sources: [jadeDragon],
       },
       {
-        label: "研究で調べたこと",
-        text: "上腕骨外側上顆炎の38人の試験では、両群とも尺沢・曲池・手三里などへの鍼を受け、一方の群に火鍼を追加しました。",
+        label: "試験の対象",
+        text: "上腕骨外側上顆炎の38人を対象にした試験です。",
         sources: [
           { label: "Wu ほか · Medicine（2019）", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6709153/" },
         ],
@@ -150,6 +156,7 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
     kind: "classic",
     summary: "ひざ裏の中央にある委中と、ふくらはぎの後ろにある承山をあわせます。古典では、どちらも腰痛に用いるツボとして記されています。",
     evidenceSummary: "腰部脊柱管狭窄症の試験で、二穴を含む鍼は偽鍼より日常生活の困難さの改善が1.3点大きく、臨床的に意味のある差の目安（2〜3点）を下回りました。",
+    limits: "5種類のツボを使った試験で、委中と承山だけの効果は分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -160,7 +167,7 @@ export const featuredClassicPairs: readonly FeaturedPair[] = [
       },
       {
         label: "研究で調べたこと",
-        text: "腰部脊柱管狭窄症によって歩くと脚の痛みなどが出る196人の試験です。委中と承山を含む同じ5種類のツボを使う鍼と偽鍼を、6週後の日常生活の困難さ（0〜24点）で比べました。委中と承山だけの効果は分かりません。",
+        text: "腰部脊柱管狭窄症によって歩くと脚の痛みなどが出る196人の試験です。6週後の日常生活の困難さを0〜24点の尺度で比べました。",
         sources: [
           { label: "Zhu ほか · Annals of Internal Medicine（2024）", url: "https://pubmed.ncbi.nlm.nih.gov/38950397/" },
           { label: "試験で使用したツボ（ClinicalTrials.gov）", url: "https://clinicaltrials.gov/study/NCT03784729" },

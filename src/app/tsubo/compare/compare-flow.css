@@ -27,17 +27,19 @@
 .tsubo-compare-page .tsubo-compare-position-key { margin-bottom: .75rem; font-size: .875rem; color: var(--atlas-muted); }
 .tsubo-compare-page .tsubo-compare-position-grid {
   display: grid;
-  gap: .625rem;
-  margin-bottom: 1.25rem;
+  gap: clamp(.375rem, 1.4vw, .625rem);
+  margin-bottom: 1rem;
   grid-template-columns: minmax(0, 1fr);
 }
+.tsubo-compare-page .tsubo-compare-position-grid[data-points="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.tsubo-compare-page .tsubo-compare-position-grid[data-points="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .tsubo-compare-page .tsubo-compare-position { min-width: 0; }
 .tsubo-compare-page .tsubo-compare-position-link {
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   gap: .45rem;
   height: 100%;
-  padding: clamp(.625rem, 2.5vw, 1rem);
+  padding: clamp(.45rem, 1.8vw, 1rem);
   border: 1px solid var(--atlas-line);
   border-radius: .875rem;
   background: var(--atlas-paper);
@@ -45,14 +47,54 @@
 }
 .tsubo-compare-page .tsubo-compare-position-link:hover { border-color: var(--atlas-accent); }
 .tsubo-compare-page .tsubo-compare-position-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: .125rem .45rem; }
-.tsubo-compare-page .tsubo-compare-position-title h3 { font-family: var(--font-serif); font-size: clamp(1.125rem, 3vw, 1.45rem); font-weight: 700; }
-.tsubo-compare-page .tsubo-compare-position-title small { font-family: var(--font-sans); font-size: .875rem; color: var(--atlas-muted); }
+.tsubo-compare-page .tsubo-compare-position-title h3 { font-family: var(--font-serif); font-size: clamp(1rem, 2.8vw, 1.45rem); font-weight: 700; }
+.tsubo-compare-page .tsubo-compare-position-title small { font-size: .8125rem; color: var(--atlas-muted); }
 .tsubo-compare-page .tsubo-compare-position-title span { font-size: .8125rem; color: var(--atlas-muted); }
 .tsubo-compare-page .tsubo-compare-position .tsubo-compare-location-figure { margin: 0; border: 0; background: var(--bg-washi); }
-.tsubo-compare-page .tsubo-compare-position .tsubo-compare-location-figure svg { height: clamp(7.25rem, 32vw, 12rem); }
+.tsubo-compare-page .tsubo-compare-position .tsubo-compare-location-figure svg { height: clamp(5.5rem, 24vw, 12rem); }
+.tsubo-compare-page .tsubo-compare-position [data-point-marker] { r: 12px; stroke-width: 3; }
 .tsubo-compare-page .tsubo-compare-position-link p { font-size: .9375rem; line-height: 1.65; }
 .tsubo-compare-page .tsubo-compare-position-link .tsubo-compare-detail-link { min-height: 2rem; gap: .25rem; }
 .tsubo-compare-page .tsubo-compare-detail-link svg { flex: none; }
+.tsubo-compare-page .tsubo-compare-position-grid[data-shared] { margin-block: .625rem 0; }
+.tsubo-compare-page .tsubo-compare-position-grid[data-shared] .tsubo-compare-position-link {
+  grid-template: 1fr / minmax(0, 1fr) auto;
+  align-items: center;
+  min-height: 2.75rem;
+  gap: .25rem;
+}
+.tsubo-compare-page .tsubo-compare-position-arrow { color: var(--atlas-accent); }
+.tsubo-compare-page .tsubo-compare-guide-link { min-height: 2.75rem; margin-block: .125rem .5rem; }
+.tsubo-compare-page .tsubo-compare-position-grid[data-compact] .tsubo-compare-position-link {
+  grid-template: auto auto / minmax(0, 1fr) auto;
+  align-items: start;
+}
+.tsubo-compare-page .tsubo-compare-position-grid[data-compact] .tsubo-compare-location-figure { grid-area: 2 / 1 / 3 / -1; }
+.tsubo-compare-page .tsubo-compare-position-grid[data-compact] .tsubo-compare-position-arrow { grid-area: 1 / 2 / 2 / 3; margin-top: .25rem; }
+.tsubo-compare-page .tsubo-compare-location-notes { margin-block: -.375rem 1rem; font-size: .875rem; line-height: 1.6; }
+.tsubo-compare-page .tsubo-compare-location-notes > div {
+  display: grid;
+  grid-template-columns: minmax(3.5rem, auto) minmax(0, 1fr);
+  gap: .625rem;
+  padding-block: .5rem;
+  border-bottom: 1px solid var(--atlas-line);
+}
+.tsubo-compare-page .tsubo-compare-location-notes dt { font-weight: 700; overflow-wrap: anywhere; }
+
+.tsubo-compare-page .tsubo-compare-notices { display: grid; gap: .75rem; margin-block: .5rem 1rem; }
+.tsubo-compare-page .tsubo-compare-notices > section {
+  min-width: 0;
+  padding: .625rem .75rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .625rem;
+  background: var(--atlas-paper);
+}
+.tsubo-compare-page .tsubo-compare-notices h3 { color: var(--notice-ink); font-weight: 700; }
+.tsubo-compare-page .tsubo-compare-notice-list { display: grid; gap: .45rem; margin-top: .375rem; font-size: .875rem; line-height: 1.6; }
+.tsubo-compare-page .tsubo-compare-notice-list dt { color: var(--atlas-ink); font-weight: 700; }
+.tsubo-compare-page .tsubo-compare-notice-list:empty { display: none; }
+.tsubo-compare-page .tsubo-compare-notice-links { display: flex; flex-wrap: wrap; column-gap: .75rem; }
+.tsubo-compare-page .tsubo-compare-shared-meridian { margin-block: 0 .75rem; font-size: .875rem; }
 
 .tsubo-compare-page .tsubo-compare-facts[open] { padding-bottom: .75rem; }
 .tsubo-compare-page .tsubo-compare-case { margin-top: .75rem; }
@@ -95,17 +137,16 @@
 .tsubo-compare-swap-options svg { flex: none; }
 .tsubo-compare-swap-cancel { justify-self: end; padding-inline: .625rem; text-decoration: underline; }
 
-@media (min-width: 540px) {
-  .tsubo-compare-page .tsubo-compare-position-grid[data-points="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 479px) {
+  .tsubo-compare-page .tsubo-compare-position-grid[data-compact] .tsubo-compare-position-title :is(span, small) { flex-basis: 100%; }
 }
 
 @media (min-width: 680px) {
-  .tsubo-compare-page .tsubo-compare-position-grid[data-points="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tsubo-compare-page .tsubo-compare-notices { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
 }
 
 @media print {
-  .tsubo-compare-page .tsubo-compare-position-grid[data-points="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tsubo-compare-page .tsubo-compare-position-grid[data-points="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .tsubo-compare-page .tsubo-compare-position { break-inside: avoid; }
+  .tsubo-compare-page :is(.tsubo-compare-position, .tsubo-compare-notices > section) { break-inside: avoid; }
+  .tsubo-compare-page .tsubo-compare-guide-link { display: none; }
   .tsubo-compare-page .tsubo-compare-facts::details-content { content-visibility: visible; }
 }

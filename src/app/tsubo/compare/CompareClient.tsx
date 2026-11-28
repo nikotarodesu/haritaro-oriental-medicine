@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef, useTransition } from "react";
+import React, { useState, useMemo, useEffect, useRef, useTransition, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Search,
   X,
   Plus,
-  AlertTriangle,
   ArrowRight,
   Pencil,
   Printer,
@@ -31,43 +30,18 @@ export type ComparisonPoint = ComparisonChoice & Pick<Tsubo, "bodyPart" | "locat
   locationFigure: React.ReactNode;
 };
 
+type SharedForearmNotices = { caution: string; symptomWarning: string; codes: readonly string[] };
+
 type CompareProps = {
   choices: readonly ComparisonChoice[];
   selectedTsubos: readonly ComparisonPoint[];
   origin?: ComparisonPairOrigin;
   unavailableCount?: number;
+  sharedDiagram?: { figure: ReactNode; guideHref: string; guideLabel: string };
+  sharedForearmNotices?: SharedForearmNotices;
 };
 
 const COMPARISON_FIELDS = [
-  {
-    label: "ツボごとの注意",
-    emphasis: "caution",
-    content: (point: ComparisonPoint) => (
-      <>
-        <p className="tsubo-compare-caution"><AlertTriangle aria-hidden="true" size={15} /><span>{point.caution}</span></p>
-        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-cautions`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">詳しい注意点</Link>
-      </>
-    ),
-  },
-  {
-    label: "症状がある場合の受診目安",
-    emphasis: "caution",
-    content: (point: ComparisonPoint) => (
-      <>
-        {point.symptomWarning && <p>{point.symptomWarning}</p>}
-        <Link href="/safety" className="tsubo-compare-detail-link">受診の目安を読む</Link>
-      </>
-    ),
-  },
-  {
-    label: "所属経絡",
-    content: (point: ComparisonPoint) => (
-      <>
-        <strong>{point.meridian}</strong>
-        <span className="tsubo-compare-secondary">部位：{point.bodyPart}</span>
-      </>
-    ),
-  },
   {
     label: "要穴の分類",
     content: (point: ComparisonPoint) => point.category.length > 0 ? (
@@ -90,7 +64,40 @@ const COMPARISON_FIELDS = [
   },
 ];
 
-export default function CompareClient({ choices, selectedTsubos, origin, unavailableCount = 0 }: CompareProps) {
+function groupNoticeText(points: readonly ComparisonPoint[], field: "caution" | "symptomWarning") {
+  const groups = new Map<string, string[]>();
+  for (const point of points) {
+    const message = point[field];
+    if (!message) continue;
+    const names = groups.get(message) ?? [];
+    names.push(point.name);
+    groups.set(message, names);
+  }
+  return [...groups];
+}
+
+function renderNotices(points: readonly ComparisonPoint[], field: "caution" | "symptomWarning", shared?: SharedForearmNotices) {
+  const groups = groupNoticeText(points, field);
+  const sharedNames = shared && points.filter(point => shared.codes.includes(point.code)).map(point => point.name);
+  return (
+    <dl className="tsubo-compare-notice-list">
+      {shared && sharedNames && (
+        <div>
+          <dt>{sharedNames.length === points.length ? `${points.length}穴に共通` : `${sharedNames.join("・")}に共通`}</dt>
+          <dd>{shared[field]}</dd>
+        </div>
+      )}
+      {groups.map(([message, names]) => (
+        <div key={message}>
+          <dt>{names.length === points.length && names.length > 1 ? `${names.length}穴に共通` : names.join("・")}</dt>
+          <dd>{message}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+export default function CompareClient({ choices, selectedTsubos, origin, unavailableCount = 0, sharedDiagram, sharedForearmNotices }: CompareProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const focusResultsAfterNavigation = useRef(false);
@@ -116,8 +123,14 @@ export default function CompareClient({ choices, selectedTsubos, origin, unavail
   const selectedCodes = selectedTsubos.map(point => point.code);
   const learningPair = getAtlasLearningPair(selectedCodes);
   const pickerLabel = selectedCodes.length === 0 ? "比べるツボを選ぶ"
-    : selectedCodes.length === 1 ? "比べるツボを追加・変更"
+    : selectedCodes.length < 3 ? "比べるツボを追加・変更"
     : "比べるツボを変更";
+  const separateLocationNotes = !sharedDiagram && selectedTsubos.length === 3;
+  const sharedMeridian = selectedTsubos.length > 1 && selectedTsubos.every(point => point.meridian === selectedTsubos[0].meridian);
+  const fields = sharedMeridian ? COMPARISON_FIELDS : [
+    { label: "所属経絡", content: (point: ComparisonPoint) => <strong>{point.meridian}</strong> },
+    ...COMPARISON_FIELDS,
+  ];
 
   // 検索ヒットツボ一覧
   const searchResults = useMemo(() => {
@@ -267,9 +280,11 @@ export default function CompareClient({ choices, selectedTsubos, origin, unavail
             <div className="tsubo-compare-result-heading">
               <h2 id="tsubo-compare-result-title" className="atlas-target" tabIndex={-1}>場所と目印</h2>
             </div>
-            <p className="tsubo-compare-position-key">図の丸印がツボの位置です。</p>
+            {!sharedDiagram && <p className="tsubo-compare-position-key">図の丸印がツボの位置です。</p>}
             {learningPair && <p className="tsubo-compare-position-key">{learningPair.comparisonPrompt}</p>}
-            <ul className="tsubo-compare-position-grid" data-points={selectedTsubos.length} role="list" aria-label="ツボの位置を見比べる">
+            {sharedDiagram?.figure}
+            <ul className="tsubo-compare-position-grid" data-points={selectedTsubos.length}
+              data-shared={sharedDiagram ? "" : undefined} data-compact={separateLocationNotes ? "" : undefined} role="list" aria-label="ツボの位置を見比べる">
               {selectedTsubos.map(point => (
                 <li className="tsubo-compare-position" key={point.id}>
                   <Link
@@ -280,22 +295,48 @@ export default function CompareClient({ choices, selectedTsubos, origin, unavail
                     data-analytics-action="compare_atlas"
                   >
                     <div className="tsubo-compare-position-title">
-                      <h3>{point.name} <small>（{point.figureRegion ?? point.bodyPart}）</small></h3>
+                      <h3>{point.name}</h3>
                       <span>{point.code}</span>
+                      {!sharedDiagram && <small>{point.figureRegion ?? point.bodyPart}</small>}
                     </div>
-                    {point.locationFigure && <div className="tsubo-compare-location-figure">{point.locationFigure}</div>}
-                    <p>{point.locationSimple}</p>
-                    <span className="tsubo-compare-detail-link">場所を見る<ArrowRight aria-hidden="true" size={15} /></span>
+                    {!sharedDiagram && point.locationFigure && <div className="tsubo-compare-location-figure">{point.locationFigure}</div>}
+                    {!sharedDiagram && !separateLocationNotes && <p>{point.locationSimple}</p>}
+                    {sharedDiagram || separateLocationNotes ? <ArrowRight className="tsubo-compare-position-arrow" aria-hidden="true" size={15} />
+                      : <span className="tsubo-compare-detail-link">詳しい位置図<ArrowRight aria-hidden="true" size={15} /></span>}
                   </Link>
                 </li>
               ))}
             </ul>
+            {separateLocationNotes && (
+              <dl className="tsubo-compare-location-notes" aria-label="ツボごとの目印">
+                {selectedTsubos.map(point => <div key={point.id}><dt>{point.name}</dt><dd>{point.locationSimple}</dd></div>)}
+              </dl>
+            )}
+            {sharedDiagram && <Link href={sharedDiagram.guideHref} className="tsubo-compare-guide-link atlas-text-action">{sharedDiagram.guideLabel}<ArrowRight aria-hidden="true" size={15} /></Link>}
             <details className="tsubo-compare-facts atlas-disclosure">
               <summary id="tsubo-compare-facts-title">注意点・経絡・出典を比べる</summary>
-              <p id="tsubo-compare-scroll-hint" className="tsubo-compare-scroll-hint">ツボごとの注意、症状がある場合の受診目安、所属経絡、要穴の分類、研究の出典をまとめています。</p>
-              <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-labelledby="tsubo-compare-facts-title" aria-describedby="tsubo-compare-scroll-hint">
+              <div className="tsubo-compare-notices">
+                <section aria-labelledby="tsubo-compare-triage-title">
+                  <h3 id="tsubo-compare-triage-title">受診の目安</h3>
+                  {renderNotices(selectedTsubos, "symptomWarning", sharedForearmNotices)}
+                  <Link href="/safety" className="tsubo-compare-detail-link">受診の目安を詳しく読む</Link>
+                </section>
+                <section aria-labelledby="tsubo-compare-caution-title">
+                  <h3 id="tsubo-compare-caution-title">ツボごとの注意</h3>
+                  {renderNotices(selectedTsubos, "caution", sharedForearmNotices)}
+                  <ul className="tsubo-compare-notice-links" aria-label="ツボごとの詳しい注意">
+                    {selectedTsubos.map(point => (
+                      <li key={point.id}>
+                        <Link href={`/tsubo/${point.code.toLowerCase()}#acupoint-cautions`} className="tsubo-compare-detail-link" data-analytics-action="compare_atlas">{point.name}の注意点</Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+              {sharedMeridian && <p className="tsubo-compare-shared-meridian"><strong>{selectedTsubos.length}穴に共通する経絡</strong> {selectedTsubos[0].meridian}</p>}
+              <div className="tsubo-compare-scroll" tabIndex={0} role="region" aria-label="経絡・要穴の分類・出典の比較">
                 <table className="tsubo-compare-table" role="table" data-points={selectedTsubos.length}>
-                  <caption className="sr-only">ツボごとの注意・受診目安・経絡・要穴・出典の比較</caption>
+                  <caption className="sr-only">ツボごとの分類と出典</caption>
                   <thead role="rowgroup">
                     <tr role="row">
                       <th scope="col" role="columnheader">比較項目</th>
@@ -308,8 +349,8 @@ export default function CompareClient({ choices, selectedTsubos, origin, unavail
                     </tr>
                   </thead>
                   <tbody role="rowgroup">
-                    {COMPARISON_FIELDS.map(field => (
-                      <tr role="row" key={field.label} data-emphasis={field.emphasis}>
+                    {fields.map(field => (
+                      <tr role="row" key={field.label}>
                         <th scope="row" role="rowheader">{field.label}</th>
                         {selectedTsubos.map(point => (
                           <td role="cell" key={point.id}>

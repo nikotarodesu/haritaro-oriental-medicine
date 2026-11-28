@@ -1,6 +1,7 @@
 import { pageSocialMetadata, seriesPageTitle } from "@/config/seo";
 import AtlasDictionaryReturnLink from "@/components/tsubo/AtlasDictionaryReturnLink";
 import { heguAtlasReading } from "@/components/tsubo/HeguAtlasPreview";
+import { ComparisonGuideFigure } from "@/components/tsubo/atlas/ComparisonGuideFigure";
 import HeguHandDiagram from "@/components/tsubo/atlas/HeguHandDiagram";
 import { PointAtlasThumbnail } from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import { ALL_ACUPOINTS, DETAILED_ACUPOINTS } from "@/data/tsubo";
@@ -10,6 +11,8 @@ import { atlasLocationWithoutUnitNote } from "@/data/tsubo/friendlyLocations";
 import { getAcupointStudies } from "@/data/tsubo/atlas/evidence";
 import { ACUPOINT_PAIRS_PATH, featuredPairAnchor, featuredPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { ATLAS_POINT_MARKERS } from "@/data/tsubo/atlas/markers";
+import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
+import { findNearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import { getAtlasSafetyNotices } from "@/data/tsubo/atlas/safetyNotices";
 import { getAcupointKeyPointTypes } from "@/data/tsubo/keyPointTypes";
@@ -36,6 +39,21 @@ const comparisonChoices: ComparisonChoice[] = ALL_ACUPOINTS.map(
 );
 const pointsByCode = new Map(ALL_ACUPOINTS.map(point => [point.code, point]));
 
+const commonForearmNotices = {
+  caution: "腕に傷や腫れがあるときは押さず、指先にしびれが出たら刺激をやめてください。",
+  symptomWarning: "胸の痛みや動悸、脈の乱れを感じるときは、ツボ押しより先に医療機関に相談してください。急な激しい胸の痛みや息苦しさがあるときは、すぐに119番へ連絡してください。",
+};
+
+// These three points share the same advice. Keep the extra circumstances for each point.
+const remainingForearmNotices: Readonly<Partial<Record<string, Pick<ComparisonPoint, "caution" | "symptomWarning">>>> = {
+  PC4: { caution: "二本のすじを強く押して探したり、熱いものを肌に当てたりしないでください。指先に響く痛みが出たら手を離してください。" },
+  PC5: { caution: "二本のすじを見分けにくいときは、つまんだり強く押したりせず、図で確かめてください。" },
+  PC6: {
+    caution: "発疹のある場所は押さず、指先に電気が走るような痛みが出たら、すぐに手を離してください。",
+    symptomWarning: "動悸に胸の痛みや気が遠くなる感じを伴うときも、すぐに119番へ連絡してください。",
+  },
+};
+
 function comparisonCategories(point: AcupointMaster) {
   const categories = [...new Set(point.categories)];
   if (!categories.includes("兪土穴・原穴")) return categories;
@@ -45,12 +63,13 @@ function comparisonCategories(point: AcupointMaster) {
   return [stream.label, "原穴", ...categories.filter(category => !["兪土穴・原穴", "兪土穴", "輸土穴", "原穴"].includes(category))];
 }
 
-function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
+function getComparisonPoint(point: AcupointMaster, useSharedNotices: boolean): ComparisonPoint {
   const { legacyId, code, codeLower, name, kana, romaji, meridian, meridianShort, bodyPart, locationSimple } = point;
   const article = ATLAS_ARTICLES[codeLower];
   const { pointWarning, symptomWarning } = code === "LI4"
     ? { pointWarning: heguAtlasReading.caution, symptomWarning: heguAtlasReading.symptomWarning }
     : getAtlasSafetyNotices(article);
+  const remainingNotices = useSharedNotices ? remainingForearmNotices[code] : undefined;
   const marker = ATLAS_POINT_MARKERS[codeLower];
   const locationFigure = code === "LI4"
     ? <HeguHandDiagram thumbnail />
@@ -60,8 +79,8 @@ function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
     figureRegion: code === "LI4" ? "手の甲" : code === "LR3" ? "足の甲" : bodyPart,
     locationSimple: atlasLocationWithoutUnitNote(locationSimple),
     traditional: TRADITIONAL_POINT_USES[codeLower]?.labels.join("、"),
-    caution: pointWarning ?? article.cautions[0],
-    symptomWarning,
+    caution: remainingNotices?.caution ?? pointWarning ?? article.cautions[0],
+    symptomWarning: remainingNotices ? remainingNotices.symptomWarning : symptomWarning,
     category: comparisonCategories(point),
     hasResearch: getAcupointStudies(codeLower).length > 0 || Boolean(DETAILED_ACUPOINTS[codeLower]?.researchEvidence),
     locationFigure,
@@ -71,11 +90,15 @@ function getComparisonPoint(point: AcupointMaster): ComparisonPoint {
 export default async function TsuboComparePage({ searchParams }: { searchParams: Promise<ComparisonSearchParams> }) {
   const params = await searchParams;
   const { codes: selectedCodes, unavailableCount } = resolveComparisonSelection(params, comparisonChoices);
+  const forearmCodes = selectedCodes.filter(code => Object.hasOwn(remainingForearmNotices, code));
+  const shareForearmNotices = forearmCodes.length > 1;
+  const matchingComparison = findNearbyComparison(selectedCodes);
+  const guide = matchingComparison && getAtlasComparisonGuide(matchingComparison.id);
   const requestedOrigin = comparisonPairOrigin(params);
   const origin = requestedOrigin && featuredPairs.some(pair => pair.id === requestedOrigin.pairId) ? requestedOrigin : undefined;
   const selectedTsubos = selectedCodes.flatMap(code => {
     const point = pointsByCode.get(code);
-    return point ? [getComparisonPoint(point)] : [];
+    return point ? [getComparisonPoint(point, shareForearmNotices)] : [];
   });
 
   return (
@@ -89,7 +112,18 @@ export default async function TsuboComparePage({ searchParams }: { searchParams:
           <h1>ツボを比べる</h1>
         </header>
       </div>
-      <CompareClient choices={comparisonChoices} selectedTsubos={selectedTsubos} origin={origin} unavailableCount={unavailableCount} />
+      <CompareClient
+        choices={comparisonChoices}
+        selectedTsubos={selectedTsubos}
+        origin={origin}
+        unavailableCount={unavailableCount}
+        sharedDiagram={guide ? {
+          figure: <ComparisonGuideFigure guide={guide} />,
+          guideHref: guide.href,
+          guideLabel: "この図の目印・出典を見る",
+        } : undefined}
+        sharedForearmNotices={shareForearmNotices ? { ...commonForearmNotices, codes: forearmCodes } : undefined}
+      />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { NearbyComparison } from "./nearbyComparisons";
 
-export const ATLAS_COMPARISON_GUIDES_REVISED_AT = "2026-11-25";
+export const ATLAS_COMPARISON_GUIDES_REVISED_AT = "2026-11-28";
 
 export const ATLAS_COMPARISON_GUIDES = [
   {
@@ -8,35 +8,37 @@ export const ATLAS_COMPARISON_GUIDES = [
     slug: "pc6-pc5-pc4",
     title: "内関・間使・郄門の違い",
     description: "内関（PC6）・間使（PC5）・郄門（PC4）は、手のひら側の前腕に並ぶツボ。手首のしわからひじへ2寸・3寸・5寸の違いを一枚の図で比べます。",
-    summary: "手首のしわからひじに向かって、内関は2寸、間使は3寸、郄門は5寸。3穴とも、手のひら側の前腕にある二本の腱の間です。",
-    caption: "手のひら側から見た前腕。目盛りの両端が、手首とひじのしわです。",
+    caption: "手のひらを上に向けた図。手首のしわからひじへ測ります。",
     landmarkHeading: "手首のしわから測る",
-    landmark: "手のひらを上に向け、手首とひじの横じわの間を12等分します。その1区切りがこの部位の1寸です。二本のすじは長掌筋の腱と橈側手根屈筋の腱です。",
-    note: "長掌筋の腱がない場合は、橈側手根屈筋の腱の小指側が目印です。この場合も、手首から内関は2寸、間使は3寸、郄門は5寸です。",
+    landmark: "手首とひじのしわの間を12等分し、1区切りを1寸とします。3穴とも長掌筋の腱と橈側手根屈筋の腱の間にあります。",
+    note: "長掌筋の腱がない場合は、同じ高さで橈側手根屈筋の腱の小指側を目印にします。",
   },
   {
     id: "elbow",
     slug: "li11-lu5-pc3",
     title: "曲池・尺沢・曲沢の違い",
     description: "曲池（LI11）・尺沢（LU5）・曲沢（PC3）の位置を一枚の図で比較。ひじの外側の骨と、力こぶから続く腱の親指側・小指側を見分けます。",
-    summary: "ひじの前で、尺沢は力こぶから続く腱の親指側、曲沢は小指側にあります。曲池は尺沢より親指側で、ひじの外側に出ている骨との中間です。",
-    caption: "手のひらを上に向けたときのひじ。図の左が親指側、右が小指側です。",
-    landmarkHeading: "尺沢と曲沢は腱、曲池はひじの外側の骨が目印",
-    landmark: "尺沢と曲沢は、ひじの前にある横じわ上のくぼみです。力こぶ（上腕二頭筋）から続く腱をはさんで、親指側が尺沢、小指側が曲沢です。",
-    note: "曲池は、尺沢とひじ外側の骨の出っ張り（上腕骨外側上顆）の中間です。ひじを深く曲げると、横じわの外側の端にできるくぼみが目印になります。",
+    caption: "手のひらを上に向けたときのひじ。",
+    landmarkHeading: "ひじを曲げたときの目印",
+    landmark: "尺沢と曲沢は、ひじの前のしわにあるくぼみです。図の外側の骨は上腕骨外側上顆です。ひじを深く曲げると、曲池はしわの外側の端にできるくぼみを目印にできます。",
+    pointNotes: {
+      li11: "尺沢と外側の骨の中間",
+      lu5: "力こぶの腱の親指側",
+      pc3: "力こぶの腱の小指側",
+    } satisfies Readonly<Record<string, string>>,
   },
   {
     id: "shin",
     slug: "st36-st37-st38",
     title: "足三里・上巨虚・条口の違い",
     description: "足三里（ST36）・上巨虚（ST37）・条口（ST38）の位置を一枚の図で比較。ひざ下の外側のくぼみから足首へ3寸・6寸・8寸の位置を、目盛りで確認できます。",
-    summary: "3穴とも、ひざ下の外側のくぼみと足首の前の中央を結ぶ線上にあります。ひざに近い方から、足三里、上巨虚、条口の順です。",
-    caption: "右脚を前から見た図。線の両端の丸印が、ひざと足首の目印です。",
+    caption: "右脚を前から見た図。ひざ下のくぼみから足首へ測ります。",
     landmarkHeading: "ひざ下のくぼみから測る",
-    landmark: "ひざを曲げたとき、お皿の下にある太いすじの外側のくぼみが犢鼻（ST35）です。そこから足首の前の中央のくぼみ（解谿・ST41）までを直線で結びます。",
-    note: "図では、この線を16等分して1目盛りを1寸としています。3穴とも、すねの骨の外側にある前脛骨筋の上に並びます。",
+    landmark: "ひざを曲げると、お皿の下の太いすじの外側に犢鼻（ST35）のくぼみができます。そこから足首の前の解谿（ST41）までの線を16等分し、1目盛りを1寸とします。3穴とも、すねの骨の外側にある前脛骨筋の上です。",
   },
 ].map(guide => ({ ...guide, href: `/tsubo/compare/${guide.slug}` }));
+
+export type AtlasComparisonGuide = (typeof ATLAS_COMPARISON_GUIDES)[number];
 
 export function getAtlasComparisonGuide(id: NearbyComparison["id"]) {
   return ATLAS_COMPARISON_GUIDES.find(guide => guide.id === id);

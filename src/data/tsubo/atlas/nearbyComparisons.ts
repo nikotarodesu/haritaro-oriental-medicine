@@ -201,6 +201,13 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
   },
 ];
 
+export function findNearbyComparison(codes: readonly string[]) {
+  const selected = new Set(codes.map(code => code.toLowerCase()));
+  return NEARBY_COMPARISONS.find(({ points }) =>
+    points.length === codes.length && points.every(({ code }) => selected.has(code)),
+  );
+}
+
 export function getNearbyComparisons(code: string) {
   return NEARBY_COMPARISONS.filter(group =>
     group.referenceCodes?.includes(code) || group.points.some(point => point.code === code),

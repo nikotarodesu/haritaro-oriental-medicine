@@ -64,7 +64,7 @@ export default function HeguHandDiagram({ thumbnail = false }: { thumbnail?: boo
   return (
     <svg viewBox="12 10 186 255" role="img" aria-label="手の甲の合谷。人差し指につながる骨の中央から、少し親指側にあります。" className="platform-hand">
       {hand}
-      <circle cx={marker.x} cy={marker.y} r="6" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
+      <circle data-point-marker="" cx={marker.x} cy={marker.y} r="6" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
     </svg>
   );
 }

@@ -31,7 +31,7 @@ export default function AcupointPairsPage() {
         <div>
           <PageBreadcrumb items={[{ href: "/tsubo", name: "はり太郎のツボ図鑑" }, { href: ACUPOINT_PAIRS_PATH, name: title }]} />
           <h1>{title}</h1>
-          <p>図の丸印がツボの位置です。古典の記述や試験結果も読めます。試験によっては、掲載したツボと別のツボを一緒に使っています。</p>
+          <p>図の茶色い丸がツボの位置です。古典の記述、診療録での使用例、試験の結果とその範囲を読めます。</p>
         </div>
       </header>
       <FeaturedAcupointPairs directory />

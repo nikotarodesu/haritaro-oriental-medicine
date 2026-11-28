@@ -114,8 +114,12 @@ assert.equal(new Set(featuredPairs.map(pair => pair.id)).size, featuredPairs.len
 assert.equal(new Set(featuredPairs.map(pair => [...pair.pointIds].sort().join('+'))).size, featuredPairs.length, 'A pair is listed once');
 for (const pair of featuredPairs) {
   assert(pair.summary && pair.evidenceSummary, pair.id + ' describes use and evidence');
+  if (pair.kind === 'research' || pair.kind === 'observational') {
+    assert(pair.limits, pair.id + ' states the limits beside the results');
+  }
   assert(pair.pointIds.every(code => code === 'li4' || (ATLAS_POINT_MARKERS[code] && ATLAS_ARTICLES[code])), pair.id + ' has both location figures');
   assert(pair.details.length && pair.details.every(detail => detail.sources.length && detail.sources.every(source => new URL(source.url).protocol === 'https:')), pair.id + ' has public sources');
+  if (pair.limits) assert(!pair.details.some(detail => detail.text.includes(pair.limits)), pair.id + ' does not repeat the same limit in its methods');
 }
 const { KIKEI_VESSELS } = load('src/data/kikeiData');
 const revisedThisRound = new Set([

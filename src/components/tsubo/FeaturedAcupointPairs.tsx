@@ -14,16 +14,16 @@ import { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
 import styles from "./FeaturedAcupointPairs.module.css";
 
 const evidenceGroups = [
-  { id: "clinical-studies", label: "臨床試験で使われた組み合わせ", kind: "research" },
-  { id: "practice-records", label: "診療録で確認できた組み合わせ", kind: "observational" },
-  { id: "classical-texts", label: "古典に出てくる組み合わせ", kind: "classic" },
-  { id: "similar-names", label: "名前が似ているツボ", kind: "name" },
+  { id: "clinical-studies", label: "臨床試験で使われた組み合わせ", shortLabel: "臨床試験", countUnit: "組", kind: "research" },
+  { id: "practice-records", label: "診療録で確認できた組み合わせ", shortLabel: "診療録", countUnit: "組", kind: "observational" },
+  { id: "classical-texts", label: "古典に出てくる組み合わせ", shortLabel: "古典", countUnit: "組", kind: "classic" },
+  { id: "similar-names", label: "名前が似ているツボ", shortLabel: "似た名前", countUnit: "件", kind: "name" },
 ] as const;
 const evidenceLabel = {
-  name: "名前と使われ方",
+  name: "名前と位置の違い",
   classic: "古典での使われ方",
-  research: "試験で調べたこと",
-  observational: "診療での使われ方",
+  research: "調べたこと",
+  observational: "診療録での使用例",
 };
 
 function PairPointLink({ point }: { point: AcupointMaster }) {
@@ -59,7 +59,12 @@ export function PairCard({ pair, compact = false, initiallyOpen, children }: {
   const hasClassic = pair.details.some(detail => detail.label.includes("古典"));
   const hasStudy = pair.details.some(detail => !detail.label.includes("古典"));
   const detailsLabel = hasClassic && hasStudy ? "古典の記述・研究の詳細と出典"
-    : hasClassic ? "古典の記述と出典" : "研究の詳細と出典";
+    : hasClassic ? "古典の記述と出典"
+    : pair.kind === "observational" ? "診療録の詳細と出典"
+    : "研究の詳細と出典";
+  const resultLabel = pair.kind === "observational" ? "記録から分かる範囲"
+    : pair.kind === "research" ? "結果"
+    : hasStudy ? "研究の概要" : "資料から分かる範囲";
 
   const content = (
     <>
@@ -67,33 +72,37 @@ export function PairCard({ pair, compact = false, initiallyOpen, children }: {
         <PairPointLink point={first} />
         <PairPointLink point={second} />
       </div>
-      {pair.evidenceHighlights ? <>
-        <p>{pair.summary}</p>
-        <h4 className="font-semibold text-accent">研究結果とその限界</h4>
-        <dl className={styles.takeaways}>
-          {pair.evidenceHighlights.map(({ label, text, sources }) => (
+      <PairComparisonLink pairId={pair.id} codes={pair.pointIds} label={`${first.name}と${second.name}の位置を並べて見る`} />
+      {pair.evidenceHighlights && <p>{pair.summary}</p>}
+      <dl className={styles.takeaways}>
+        {pair.evidenceHighlights ? (
+          pair.evidenceHighlights.map(({ label, text }) => (
             <div key={label}>
               <dt>{label}</dt>
-              <dd>
-                <p>{text}</p>
-                {sources.map(source => (
-                  <a key={source.url} href={source.url} className="atlas-source-link" data-analytics-action="atlas_source">{source.label}</a>
-                ))}
-              </dd>
+              <dd>{text}</dd>
             </div>
-          ))}
-        </dl>
-      </> : <dl className={styles.takeaways}>
-        <div>
-          <dt>{evidenceLabel[pair.kind]}</dt>
-          <dd>{pair.summary}</dd>
-        </div>
-        <div>
-          <dt>研究結果とその限界</dt>
-          <dd>{pair.evidenceSummary}</dd>
-        </div>
-      </dl>}
-      <PairComparisonLink pairId={pair.id} codes={pair.pointIds} label={`${first.name}と${second.name}の位置を並べて見る`} />
+          ))
+        ) : (
+          <>
+            <div>
+              <dt>{evidenceLabel[pair.kind]}</dt>
+              <dd>{pair.summary}</dd>
+            </div>
+            {pair.evidenceSummary && (
+              <div>
+                <dt>{resultLabel}</dt>
+                <dd>{pair.evidenceSummary}</dd>
+              </div>
+            )}
+          </>
+        )}
+        {pair.limits && (
+          <div className={styles.limits}>
+            <dt>この結果の範囲</dt>
+            <dd>{pair.limits}</dd>
+          </div>
+        )}
+      </dl>
       {pair.details.length > 0 && (
         <details className={`${styles.details} atlas-disclosure`}>
           <summary>{detailsLabel}</summary>
@@ -144,15 +153,17 @@ export default function FeaturedAcupointPairs({ directory = false }: {
   if (!pairs.length) return null;
 
   if (directory) {
-    const sections = evidenceGroups.map(({ id, label, kind }) => ({
+    const sections = evidenceGroups.map(({ id, label, shortLabel, countUnit, kind }) => ({
       id,
       label,
+      shortLabel,
+      countUnit,
       entries: pairs.filter(pair => pair.kind === kind).map(pair => ({
         anchor: featuredPairAnchor(pair.id),
         name: pair.name,
         codes: pair.pointIds,
         searchText: normalizeSearchText([
-          pair.name, pair.summary, pair.evidenceSummary, ...(pair.evidenceHighlights ?? []).map(({ text }) => text),
+          pair.name, pair.summary, pair.evidenceSummary, pair.limits, ...(pair.evidenceHighlights ?? []).map(({ text }) => text),
           ...pair.pointIds.map(code => getAcupointByCode(code)?.kana),
         ].join(" ")),
         card: <PairCard pair={pair} />,

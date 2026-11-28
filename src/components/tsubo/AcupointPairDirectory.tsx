@@ -18,6 +18,8 @@ type DirectoryEntry = {
 export type AcupointPairDirectorySection = {
   id: string;
   label: string;
+  shortLabel: string;
+  countUnit: "組" | "件";
   entries: readonly DirectoryEntry[];
 };
 
@@ -75,7 +77,7 @@ export default function AcupointPairDirectory({ sections }: {
     url.searchParams.delete("return");
     if (value.trim()) url.searchParams.set("q", value);
     else url.searchParams.delete("q");
-    if (url.hash.startsWith("#featured-acupoint-pair-")) url.hash = "";
+    if (url.hash.startsWith("#featured-acupoint-pair-") || sections.some(({ id }) => url.hash === `#${id}`)) url.hash = "";
     try {
       if (url.searchParams.has("q")) setAnalyticsDisabled(true);
       window.history.replaceState({ ...window.history.state, [queryKey]: value }, "", url);
@@ -123,28 +125,46 @@ export default function AcupointPairDirectory({ sections }: {
             }}>絞り込みを解除</button>
           )}
         </div>
-        <p role="status">{terms.length ? `該当：${count}組` : `全${count}組`}</p>
+        <p role="status">
+          {count === 0 ? "該当 0件。ツボ名や経穴コード（LI4など）に変えてお試しください。"
+            : terms.length > 0 ? `該当 ${count}件` : `全${count}件`}
+        </p>
       </div>
 
       {count > 0 && (
-        <details className={`${styles.directoryIndex} atlas-disclosure`}>
-          <summary>組み合わせの索引</summary>
-          <nav className={styles.directory} aria-label="組み合わせの索引">
-            {filteredSections.map(({ id, label, entries }) => (
-              <div key={id}>
-                <a href={`#${id}`} className={styles.groupLink}>{label}<ArrowRight size={16} aria-hidden="true" /></a>
-                <ul role="list">
-                  {entries.map(entry => <li key={entry.anchor}><a href={`#${entry.anchor}`}>{entry.name}</a></li>)}
-                </ul>
-              </div>
-            ))}
+        <div className={styles.navigation}>
+          <nav aria-label="分類から探す">
+            <ul className={styles.groupLinks} role="list">
+              {filteredSections.map(({ id, label, shortLabel, countUnit, entries }) => (
+                <li key={id}>
+                  <a href={`#${id}`} className={styles.groupLink} aria-label={`${label} ${entries.length}${countUnit}`}>
+                    <span>{shortLabel}</span>
+                    <span className={styles.groupCount}>{entries.length}{countUnit}</span>
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </nav>
-        </details>
+          <details className={`${styles.directoryIndex} atlas-disclosure`}>
+            <summary>名前から探す索引</summary>
+            <nav className={styles.directory} aria-label="名前から探す索引">
+              {filteredSections.map(({ id, label, entries }) => (
+                <div key={id}>
+                  <p>{label}</p>
+                  <ul role="list">
+                    {entries.map(entry => <li key={entry.anchor}><a href={`#${entry.anchor}`}>{entry.name}</a></li>)}
+                  </ul>
+                </div>
+              ))}
+            </nav>
+          </details>
+        </div>
       )}
 
       {filteredSections.map(({ id, label, entries }) => (
         <section key={id} aria-labelledby={id}>
-          <h2 id={id} className="atlas-section-title atlas-target">{label}</h2>
+          <h2 id={id} className="atlas-section-title atlas-target" tabIndex={-1}>{label}</h2>
           <div className={styles.cards}>
             {entries.map(entry => <Fragment key={entry.anchor}>{entry.card}</Fragment>)}
           </div>

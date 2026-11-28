@@ -90,10 +90,58 @@
   .filter { display: none; }
 }
 
+.navigation {
+  display: grid;
+  gap: .5rem;
+}
+
+.groupLinks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .4rem;
+}
+
+.groupLink {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  min-height: 2.75rem;
+  padding: .25rem .45rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .55rem;
+  color: var(--atlas-accent);
+  font-size: .875rem;
+  font-weight: 700;
+}
+
+.groupLink:hover {
+  border-color: var(--atlas-accent);
+  text-decoration: underline;
+  text-underline-offset: .18em;
+}
+
+.groupCount {
+  margin-inline-start: auto;
+  color: var(--atlas-muted);
+  white-space: nowrap;
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+.groupLink svg { flex-shrink: 0; }
+
+.directoryIndex {
+  padding-block: 0;
+  border: 0;
+  border-block-end: 1px solid var(--atlas-line);
+  border-radius: 0;
+}
+
 .directory {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
   gap: .75rem;
+  padding-block-end: .75rem;
 }
 
 .directory > div {
@@ -104,18 +152,10 @@
   background: var(--atlas-paper);
 }
 
-.groupLink {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .5rem;
-  min-height: 2.75rem;
+.directory p {
   color: var(--atlas-accent);
+  font-size: .875rem;
   font-weight: 700;
-}
-
-.groupLink svg {
-  flex-shrink: 0;
 }
 
 .directory ul {
@@ -169,12 +209,6 @@
   border-color: var(--atlas-accent);
 }
 
-.featuredCard dd > a {
-  display: inline-flex;
-  align-items: center;
-  min-block-size: 2.75rem;
-}
-
 .points {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -211,6 +245,11 @@
   height: clamp(4.8rem, 18vw, 6rem);
 }
 
+.points .figure [data-point-marker] {
+  r: 10px;
+  stroke-width: 3px;
+}
+
 .pointLabel {
   display: flex;
   flex-wrap: wrap;
@@ -231,6 +270,7 @@
   color: var(--atlas-muted);
   font-size: .8125rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .takeaways, .evidence {
@@ -259,6 +299,10 @@
   color: var(--atlas-accent);
   font-size: .875rem;
   font-weight: 700;
+}
+
+.takeaways > .limits {
+  border-inline-start-color: var(--atlas-accent);
 }
 
 .compare {
@@ -309,7 +353,7 @@
   text-underline-offset: .18em;
 }
 
-.directoryPage { gap: clamp(1.5rem, 4vw, 3rem); }
+.directoryPage { gap: clamp(1rem, 3vw, 2rem); }
 
 .directoryPage :is(.directoryIndex, .directory > div, .card, .point .figure, .takeaways > div + div) {
   background: transparent;
@@ -318,7 +362,7 @@
 .directoryPage .card { border-color: var(--atlas-line); gap: .75rem; }
 .directoryPage .card h3 { font-family: var(--font-serif); }
 .directoryPage .point .figure svg text { display: none; }
-.directoryPage .takeaways > div + div { border-inline-start-color: var(--atlas-line); }
+.directoryPage .takeaways > div + div:not(.limits) { border-inline-start-color: var(--atlas-line); }
 
 header.directoryHeader {
   padding: 0 0 .875rem;
@@ -328,7 +372,7 @@ header.directoryHeader {
   background: transparent;
 }
 
-@media (max-width: 479px) {
-  .directoryPage .points { grid-template-columns: minmax(0, 1fr); }
-  .directoryPage .point .figure svg { height: 6rem; }
+@media (min-width: 46rem) {
+  .groupLinks { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .groupLink { padding-inline: .65rem; }
 }

@@ -13,11 +13,12 @@ const { STANDARD_NAMES } = load('src/data/tsubo/names/standardNames');
 const { NAME_READINGS } = load('src/data/tsubo/names/nameReadings');
 const { CHARACTER_MEANINGS } = load('src/data/tsubo/names/characterMeanings');
 const { getAcupointNameCharacter, acupointNameIndexHref, NAME_INDEX_EXAMPLES } = load('src/data/tsubo/names/characterIndex');
-const { NEARBY_COMPARISONS, getNearbyComparisons, comparisonSize, comparisonTransforms } = load('src/data/tsubo/atlas/nearbyComparisons');
-const { getAtlasComparisonGuide } = load('src/data/tsubo/atlas/nearbyComparisonGuides');
+const { NEARBY_COMPARISONS, findNearbyComparison, getNearbyComparisons, comparisonSize, comparisonTransforms } = load('src/data/tsubo/atlas/nearbyComparisons');
+const { ATLAS_COMPARISON_GUIDES, getAtlasComparisonGuide } = load('src/data/tsubo/atlas/nearbyComparisonGuides');
+const { WHO_ATLAS_PDF, whoAtlasPages } = load('src/data/tsubo/atlas/whoAtlasPages');
 const { ATLAS_POINT_MARKERS, shinEndpoints, volarForearmGeometry } = load('src/data/tsubo/atlas/markers');
 const { getAcupointStudies, getClassicalCombinations } = load('src/data/tsubo/atlas/evidence');
-const { featuredPairAnchor, getFeaturedPairs } = load('src/data/tsubo/atlas/featuredPairs');
+const { ACUPOINT_PAIRS_PATH, featuredPairAnchor, getFeaturedPairs } = load('src/data/tsubo/atlas/featuredPairs');
 const { getAtlasSafetyNotices } = load('src/data/tsubo/atlas/safetyNotices');
 const { getTraditionalUseSource, TRADITIONAL_POINT_USES } = load('src/data/tsubo/atlas/traditionalUses');
 const { getTraditionalSymptom, traditionalSymptomPath, TRADITIONAL_SYMPTOMS, TSUBO_SYMPTOM_INDEX_PATH } = load('src/data/tsubo/atlas/traditionalSymptomIndex');
@@ -149,6 +150,13 @@ for (const [index, point] of shin.points.entries()) {
 assert.deepEqual(Array.from(getNearbyComparisons('pc6'), group => group.id), ['wrist', 'forearm']);
 const forearm = getNearbyComparisons('pc4')[0];
 assert.deepEqual(Array.from(forearm.points, point => point.code), ['pc6', 'pc5', 'pc4']);
+for (const guide of ATLAS_COMPARISON_GUIDES) {
+  const { points } = NEARBY_COMPARISONS.find(({ id }) => id === guide.id);
+  const codes = Array.from(points, ({ code }) => code.toUpperCase()).reverse();
+  assert.equal(findNearbyComparison(codes)?.id, guide.id, `${guide.id}: all selected points in any order use the dedicated figure`);
+  assert.equal(findNearbyComparison(codes.slice(1))?.id === guide.id, false, `${guide.id}: a partial selection has no unrelated point markers`);
+  assert.equal(findNearbyComparison([...codes, codes[0]]), undefined, `${guide.id}: the comparison must be an exact match`);
+}
 const { wristY, elbowY, units } = volarForearmGeometry;
 for (const [index, point] of forearm.points.entries()) {
   const amount = [2, 3, 5][index];
@@ -523,9 +531,63 @@ function checkBuiltTraditionalSymptoms(buildDir) {
   console.log(`Built symptom reverse lookup: ${TRADITIONAL_SYMPTOMS.length} linked, prerendered pages with exact results and canonical sitemap URLs.`);
 }
 
+function checkBuiltComparisonGuides(buildDir) {
+  for (const guide of ATLAS_COMPARISON_GUIDES) {
+    const html = fs.readFileSync(path.join(buildDir, 'server', 'app', guide.href.slice(1) + '.html'), 'utf8');
+    const content = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '');
+    const figure = content.match(/<svg\b[^>]*data-atlas-comparison-figure[^>]*>[\s\S]*?<\/svg>/)?.[0];
+    const comparison = NEARBY_COMPARISONS.find(({ id }) => id === guide.id);
+    assert(figure?.includes(`data-atlas-comparison-figure="${guide.id}"`), `${guide.id}: dedicated comparison has an initial SVG`);
+    assert.equal([...figure.matchAll(/\bdata-comparison-point=/g)].length, comparison.points.length, `${guide.id}: one marker per compared point`);
+    for (const { code } of comparison.points) {
+      const amount = ATLAS_POINT_MARKERS[code]?.boneCun;
+      const marker = figure.match(new RegExp(`<g[^>]*data-comparison-point="${code}"[\\s\\S]*?</g>`))?.[0];
+      assert(marker?.includes(`>${points.getAcupointByCode(code).name}</tspan>`), `${code}: the SVG marker identifies the point`);
+      if (amount !== undefined) assert(marker.includes(`>${amount}寸</tspan>`), `${code}: the distance is labelled on the SVG`);
+      assert(content.includes(`href="/tsubo/${code}#acupoint-location"`), `${code}: the full location diagram stays reachable`);
+    }
+    if (guide.id === 'elbow') assert(figure.includes('data-comparison-landmark="lateral-epicondyle"'), 'Elbow: the outer bone has a visible label');
+    for (const { code } of comparison.points.concat((comparison.referenceCodes ?? []).map(code => ({ code })))) {
+      assert(content.includes(`href="${WHO_ATLAS_PDF}#page=${whoAtlasPages[code]}"`), `${code}: exact WHO source retained`);
+    }
+    const parameters = new URLSearchParams(comparison.points.map(({ code }, index) => [['a', 'b', 'c'][index], code]));
+    assert(content.includes(`href="/tsubo/compare?${parameters.toString().replaceAll('&', '&amp;')}"`), `${guide.id}: free comparison preserves the selected points`);
+    for (const related of ATLAS_COMPARISON_GUIDES) {
+      if (guide.id !== related.id) assert(content.includes(`href="${related.href}"`), `${guide.id}: another comparison is reachable in the article`);
+    }
+  }
+}
+
+function checkBuiltPairDirectory(buildDir) {
+  const html = fs.readFileSync(path.join(buildDir, 'server', 'app', ACUPOINT_PAIRS_PATH.slice(1) + '.html'), 'utf8');
+  const content = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '');
+  const cards = readContainers(content, 'article', 'id');
+  const groupNavigation = content.match(/<nav\b[^>]*aria-label="分類から探す"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+  assert.equal((groupNavigation?.match(/href="#/g) ?? []).length, 4, 'All four categories are reachable near the search');
+  for (const pair of getFeaturedPairs()) {
+    const card = cards.get(featuredPairAnchor(pair.id));
+    assert(card, `${pair.id}: its original card anchor is present`);
+    const compareAt = card.markup.indexOf('>位置を並べて見る');
+    const detailsAt = card.markup.indexOf('<details');
+    assert(compareAt > 0 && compareAt < detailsAt, `${pair.id}: the figure comparison precedes the evidence details`);
+    if (pair.limits) {
+      const limitAt = card.markup.indexOf(pair.limits);
+      assert(limitAt > compareAt && limitAt < detailsAt, `${pair.id}: the limits appear beside the findings while methods are closed`);
+    }
+    const sources = new Set(pair.details.flatMap(detail => detail.sources.map(source => source.url)));
+    for (const source of sources) {
+      const href = `href="${source.replaceAll('&', '&amp;')}"`;
+      assert.equal(card.markup.indexOf(href), card.markup.lastIndexOf(href), `${pair.id}: each source link appears only once`);
+      assert(card.markup.indexOf(href) > detailsAt, `${pair.id}: the original source is still available with the method`);
+    }
+  }
+}
+
 if (process.argv.includes('--build-output')) {
   const option = process.argv.find(arg => arg.startsWith('--build-dir='));
   const buildDir = path.resolve(__dirname, '..', option?.slice('--build-dir='.length) || '.next');
   checkBuiltPointPages(buildDir);
   checkBuiltTraditionalSymptoms(buildDir);
+  checkBuiltComparisonGuides(buildDir);
+  checkBuiltPairDirectory(buildDir);
 }

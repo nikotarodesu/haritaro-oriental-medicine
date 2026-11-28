@@ -15,59 +15,65 @@
   line-height: 1.35;
 }
 
-.figure {
-  width: 100%;
-  max-width: 33rem;
-  margin: 0;
-}
-
-.figure figcaption {
-  margin-top: .4rem;
-  color: var(--atlas-muted);
-  font-size: .875rem;
-}
-
-.figure .labelBox {
-  fill: var(--atlas-paper);
-  stroke: var(--atlas-line);
-}
-
-.figure g .label {
-  fill: var(--atlas-ink);
-  font-weight: 700;
-}
-
 .points {
   display: grid;
-  gap: .5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .375rem;
 }
 
 .points li {
   min-width: 0;
-  padding: .35rem .75rem .65rem;
+  padding-inline: clamp(.375rem, 1.8vw, .75rem);
   border: 1px solid var(--atlas-line);
   border-radius: .65rem;
   background: var(--atlas-paper);
 }
 
 .pointLink {
-  display: inline-flex;
+  display: flex;
   min-height: 2.75rem;
   align-items: center;
-  gap: .4rem;
+  justify-content: space-between;
+  gap: .25rem;
   color: var(--atlas-accent);
   text-decoration: underline;
   text-underline-offset: .2em;
 }
 
 .pointLink span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: .375rem;
+  line-height: 1.35;
+}
+
+.pointLink small {
   color: var(--atlas-muted);
-  font-size: .875rem;
+  font-size: .75rem;
 }
 
 .pointLink svg { flex: none; }
 
+.points p {
+  margin-block: .125rem .5rem;
+  font-size: .875rem;
+  line-height: 1.5;
+}
+
 .landmarks p + p { margin-top: .5rem; }
+
+.related ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
+}
+
+.related a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+}
 
 .sources {
   padding-top: 1rem;
@@ -77,8 +83,4 @@
 .sources p {
   color: var(--atlas-muted);
   font-size: .875rem;
-}
-
-@media (min-width: 640px) {
-  .points { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

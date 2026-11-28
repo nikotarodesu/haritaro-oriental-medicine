@@ -1,0 +1,30 @@
+.figure {
+  width: 100%;
+  max-width: 33rem;
+  margin: 0;
+}
+
+.figure figcaption {
+  margin-top: .375rem;
+  color: var(--atlas-muted);
+  font-size: .875rem;
+}
+
+.labelBox {
+  fill: var(--atlas-paper);
+  stroke: var(--atlas-line);
+}
+
+.figure :global(.atlas-comparison-figure) svg text {
+  font-size: 16px;
+}
+
+.figure svg .label {
+  fill: var(--atlas-ink);
+  font-weight: 700;
+}
+
+.figure svg .distance {
+  fill: var(--atlas-accent);
+  font-weight: 700;
+}

@@ -19,7 +19,8 @@ export type FeaturedPair = {
   kind: "name" | "research" | "classic" | "observational";
   summary: string;
   evidenceSummary: string;
-  evidenceHighlights?: readonly FeaturedPairDetail[];
+  limits?: string;
+  evidenceHighlights?: readonly Pick<FeaturedPairDetail, "label" | "text">[];
   details: readonly FeaturedPairDetail[];
 };
 
@@ -29,8 +30,9 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
     pointIds: ["li10", "st36"],
     name: "手三里と足三里",
     kind: "name",
-    summary: "手三里はひじの外側より少し手首寄り、足三里はひざ下のすねの外側にあります。古典では、食事に関わるお腹の不調に一緒に使う記述があります。",
-    evidenceSummary: "建里なども加えた試験があり、手三里と足三里だけでどの程度変わるかは分かりません。",
+    summary: "手三里はひじの外側より少し手首寄り、足三里はひざ下のすねの外側にあります。",
+    evidenceSummary: "みぞおちの張りを調べた試験では、手三里・足三里・建里を基本にした鍼の群で、漢方薬の群より治療後の症状スコアが低かったと報告されました。",
+    limits: "症状に応じてツボを追加した試験で、手三里と足三里だけの効果は分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -40,8 +42,8 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
         ],
       },
       {
-        label: "研究で調べたこと",
-        text: "みぞおちの張りが繰り返す60人の試験では、手三里・足三里・建里を基本にした鍼の群で、漢方薬の群より治療後の症状スコアが低かったと報告されました。症状に応じてツボを追加しているため、手三里と足三里だけの効果は分かりません。",
+        label: "試験の対象",
+        text: "みぞおちの張りが繰り返す60人を対象に、鍼と漢方薬を比べた試験です。",
         sources: [
           { label: "馬克 · 香港中醫雜誌（2026）", url: "https://www.hkjtcm.org/journals/2026年第二十一卷第一期/18.%20針刺手三里、足三里、建裡組穴治療脾胃虛弱型痞滿患者的臨床效果觀察.pdf" },
         ],
@@ -54,11 +56,12 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
     name: "手三里と曲池",
     kind: "research",
     summary: "長引くひじの外側の痛みがある人を対象に、この組み合わせへの鍼を調べています。",
-    evidenceSummary: "96人の試験で、偽レーザーの群より腕や手の使いにくさが改善しました。各ツボを単独で使った場合との差は調べていません。",
+    evidenceSummary: "鍼を受けた群では、レーザー照射を模した施術の群より腕や手の使いにくさが改善しました。",
+    limits: "各ツボを単独で使った場合との差は調べていません。",
     details: [
       {
-        label: "研究で分かったこと",
-        text: "96人を、手三里と曲池に鍼を受ける群と、同じ二穴でレーザー照射を模した施術を受ける群に分けました。主な評価は、治療終了3週間後の腕・肩・手の使いにくさです。各ツボを単独で使った場合との差は調べていません。",
+        label: "試験の方法",
+        text: "96人を2群に分け、どちらの施術も同じ二穴に行いました。主な評価は、治療終了3週間後の腕・肩・手の使いにくさです。",
         sources: [
           { label: "Gadau ほか · European Journal of Pain（2020）", url: "https://onlinelibrary.wiley.com/doi/abs/10.1002/ejp.1574" },
         ],
@@ -72,25 +75,15 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
     kind: "research",
     summary: "左右の合谷と太衝を合わせて「四関穴」と呼びます。",
     evidenceSummary: "診療録での使用例と、肝陽上亢型の片頭痛を対象にした臨床試験があります。",
+    limits: "診療録は併用の件数を示します。各穴を単独で使った場合、指圧、別のタイプの片頭痛への効果は、臨床試験の対象外です。",
     evidenceHighlights: [
       {
         label: "診療録での使用例",
-        text: "韓国の韓医学診療所7か所の外来診療録423例を振り返って調べた研究では、94例で合谷と太衝が一緒に使われていました。",
-        sources: [
-          { label: "Yoon ほか（2026）・診療録の研究", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC13593149/" },
-        ],
+        text: "韓国の韓医学診療所7か所の外来診療録423例のうち、94例で合谷と太衝が一緒に使われていました。",
       },
       {
         label: "臨床試験の比較",
-        text: "伝統医学で「肝陽上亢」と分類された片頭痛の患者110人を、四関穴への電気鍼を受ける群と、フルナリジンを内服する群に分けました。電気鍼の群では治療後と1・3・6か月後に、内服薬の群より痛みの点数が低く、発作日数が少なかったと報告されました。",
-        sources: [
-          { label: "Cai ほか（2022）・片頭痛の比較試験", url: "https://pubmed.ncbi.nlm.nih.gov/35543939/" },
-        ],
-      },
-      {
-        label: "この研究では分からないこと",
-        text: "診療録の件数は、併用された回数です。臨床試験からは、各穴を単独で使った場合、指圧をした場合、別のタイプの片頭痛での効果は分かりません。",
-        sources: [],
+        text: "「肝陽上亢」と分類された片頭痛の試験で、四関穴への電気鍼の群は、フルナリジンの内服群より痛みの点数が低く、発作日数も少ないと報告されました。評価は治療後、1・3・6か月後です。",
       },
     ],
     details: [
@@ -116,7 +109,8 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
     name: "内関と公孫",
     kind: "classic",
     summary: "古典では、前腕の内関と足の公孫を胸や胃の領域に結びつけています。",
-    evidenceSummary: "2穴を含む鍼治療を調べた試験では、偽鍼より食後の胃もたれなどが改善しました。2穴だけの効果は分かりません。",
+    evidenceSummary: "食後の胃もたれなどを調べた試験では、4週後に症状全体が改善した割合の推定値は、鍼の群で83.0％、偽鍼の群で51.6％でした。",
+    limits: "複数のツボを使った施術の結果で、内関と公孫だけの効果は分かりません。",
     details: [
       {
         label: "古典での使われ方",
@@ -126,8 +120,8 @@ export const featuredPairPreview: readonly FeaturedPair[] = [
         ],
       },
       {
-        label: "研究で分かったこと",
-        text: "食後の胃もたれなどがある278人の試験では、4週後に症状全体が改善した割合の推定値は、鍼の群で83.0％、偽鍼の群で51.6％でした。内関と公孫を含む複数のツボを使った施術の結果で、この二穴だけの効果は分かりません。",
+        label: "試験の対象と比較方法",
+        text: "食後の胃もたれなどがある278人を対象に、複数のツボへの鍼と偽鍼を比べました。",
         sources: [
           { label: "Yang ほか · Annals of Internal Medicine（2020）", url: "https://pubmed.ncbi.nlm.nih.gov/32422066/" },
           { label: "試験で使用したツボ（研究計画書）", url: "https://link.springer.com/article/10.1186/s13063-018-3051-3" },

@@ -96,10 +96,10 @@ function ShinArtwork() {
         <circle className="atlas-comparison-bone" cx={ankle.x} cy={ankle.y} r="4.5" data-comparison-reference="st41" />
       </g>
       <path className="atlas-comparison-detail" d={`M132 62H149L${knee.x + x - 5} ${knee.y + y}M${ankle.x + x + 5} ${ankle.y + y}H211`} />
-      <text x="18" y="45">ひざ下のくぼみ</text>
+      <text x="18" y="41">ひざ下のくぼみ</text>
       <text x="18" y="63">犢鼻（ST35）</text>
-      <text x="321" y="231" textAnchor="end">足首の前の中央</text>
-      <text x="321" y="249" textAnchor="end">解谿（ST41）</text>
+      <text x="321" y="229" textAnchor="end">足首の前の中央</text>
+      <text x="321" y="251" textAnchor="end">解谿（ST41）</text>
     </>
   );
 }
@@ -124,7 +124,7 @@ function ShoulderArtwork() {
   );
 }
 
-function ElbowArtwork() {
+function ElbowArtwork({ showElbowBoneLabel }: { showElbowBoneLabel?: boolean }) {
   const { outline, features } = armViews.forearmPalm;
 
   return (
@@ -140,6 +140,12 @@ function ElbowArtwork() {
       <text x="324" y="28" textAnchor="end">小指側</text>
       <path className="atlas-comparison-detail" d="M151 82l21-34V34" />
       <text x="172" y="28" textAnchor="middle">力こぶの腱</text>
+      {showElbowBoneLabel && (
+        <g>
+          <path className="atlas-comparison-detail" d="M75 99L63 62" />
+          <text data-comparison-landmark="lateral-epicondyle" x="20" y="56">外側の骨</text>
+        </g>
+      )}
     </>
   );
 }
@@ -163,13 +169,13 @@ function MedialKneeArtwork() {
   );
 }
 
-export default function NearbyComparisonArtwork({ id }: { id: NearbyComparison["id"] }) {
+export default function NearbyComparisonArtwork({ id, showElbowBoneLabel }: { id: NearbyComparison["id"]; showElbowBoneLabel?: boolean }) {
   if (id === "ear") return <EarOutline />;
   if (id === "wrist") return <WristArtwork />;
   if (id === "shin") return <ShinArtwork />;
   if (id === "forearm") return <ForearmArtwork />;
   if (id === "shoulder") return <ShoulderArtwork />;
-  if (id === "elbow") return <ElbowArtwork />;
+  if (id === "elbow") return <ElbowArtwork showElbowBoneLabel={showElbowBoneLabel} />;
   if (id === "medial-knee") return <MedialKneeArtwork />;
   return <AnkleArtwork />;
 }
