@@ -100,12 +100,11 @@ assert.equal(styles.get('--mobile-nav-height'), '84px', 'Larger labels update th
 assert.equal(customLinks(), '/clinical,/practice/haiketsu,/tsubo,/library', 'Rotation and font changes preserve all four custom slots');
 bottom.unmount();
 
-// Reuse exactly the published anatomy filter; an undrawn layer and the withheld needle
-// cannot become new structure-name controls merely because they are in the model.
-const structure = (id, name) => ({ id, name, description: `${name}の説明`, dangerLevel: 'safe' });
+// Published labels and keyboard selection both come from anatomy drawn in the SVG.
+const structure = (id, name, category = 'muscle') => ({ id, name, category, description: `${name}の説明`, dangerLevel: 'safe' });
 const model = {
   id: 'test', title: '検証用の断面', axes: { horizontal: ['左','右'], vertical: ['表','深'] },
-  layers: [structure('skin','皮膚'), structure('muscle','筋'), structure('undrawn','非描画の構造'), structure('needle-indicator','非公開の針')],
+  layers: [structure('skin','皮膚','skin'), structure('muscle','筋'), structure('undrawn','非描画の構造'), structure('needle-indicator','非公開の針')],
   boundaries: [], adjacentStructures: [], references: [],
   svgElements: [
     { elementId: 'skin-shape', layerId: 'skin', shapeType: 'rect', x: 0, y: 0, width: 80, height: 20, label: '皮膚' },
@@ -114,28 +113,39 @@ const model = {
     { elementId: 'withheld', layerId: 'needle-indicator', shapeType: 'path', d: 'M0,0L50,50', label: '非公開の針' },
   ],
 };
-const anatomy = client('src/components/tsubo/CrossSectionViewer.tsx');
+const layouts = load('src/data/tsubo/atlas/crossSectionCallouts');
+const anatomy = client('src/components/tsubo/CrossSectionViewer.tsx', { '@/data/tsubo/atlas/crossSectionCallouts': layouts });
 const anatomyProps = { model, pointName: '検証', pointCode: 'TEST' };
 anatomy.render(anatomyProps);
-const picker = () => nodes(anatomy.tree()).find(node => node.props?.className === 'anatomy-structure-picker');
-assert.equal(nodes(picker()).filter(node => node.type === 'button').map(text).join(','), '皮膚,筋', 'Only drawn public structures have one large native control each');
-assert(!text(picker()).includes('非描画') && !text(anatomy.tree()).includes('非公開の針'));
-anatomy.button('筋').props.onClick(); anatomy.render(anatomyProps);
-assert(anatomy.button('筋').props['aria-pressed']);
+const figureLabels = () => nodes(anatomy.tree()).filter(node => node.props['data-anatomy-callout']);
+const shape = id => nodes(anatomy.tree()).find(node => node.props?.id === id);
+assert.equal(figureLabels().map(text).join(','), '筋', 'The muscle name is already visible on the drawing');
+assert(!text(anatomy.tree()).includes('非描画') && !text(anatomy.tree()).includes('非公開の針'));
+assert(!text(anatomy.tree()).includes('構造名から選ぶ'));
+nodes(figureLabels()[0]).find(node => node.type === 'text').props.onClick(); anatomy.render(anatomyProps);
+assert(shape('muscle-shape').props['aria-pressed']);
 assert(text(anatomy.tree()).includes('筋の説明'));
 const selectedSvg = nodes(anatomy.tree()).filter(node => ['rect','circle'].includes(node.type) && node.props['aria-pressed']);
 assert.equal(selectedSvg.length, 2, 'All SVG shapes for the selected structure stay synchronized');
-anatomy.button('筋').props.onClick(); anatomy.render(anatomyProps);
-assert.equal(anatomy.button('筋').props['aria-pressed'], false, 'Pressing the same native control clears selection');
-const skinShape = nodes(anatomy.tree()).find(node => node.props?.id === 'skin-shape');
+shape('muscle-shape').props.onClick(); anatomy.render(anatomyProps);
+assert.equal(shape('muscle-shape').props['aria-pressed'], false, 'Pressing the same structure clears selection');
 let prevented = false;
-skinShape.props.onKeyDown({ key: 'Enter', preventDefault() { prevented = true; } }); anatomy.render(anatomyProps);
-assert(prevented); assert(anatomy.button('皮膚').props['aria-pressed'], 'The existing keyboard SVG selection updates the new control');
-picker().props.onKeyDown({ key: 'Escape' }); anatomy.render(anatomyProps);
-assert.equal(anatomy.button('皮膚').props['aria-pressed'], false);
-anatomy.button('皮膚').props.onClick(); anatomy.render(anatomyProps);
+shape('skin-shape').props.onKeyDown({ key: 'Enter', preventDefault() { prevented = true; } }); anatomy.render(anatomyProps);
+assert(prevented); assert(shape('skin-shape').props['aria-pressed'], 'A structure without a printed label is still keyboard accessible');
+shape('skin-shape').props.onKeyDown({ key: 'Escape' }); anatomy.render(anatomyProps);
+assert.equal(shape('skin-shape').props['aria-pressed'], false);
+shape('skin-shape').props.onClick(); anatomy.render(anatomyProps);
 anatomy.button('選択解除').props.onClick(); anatomy.render(anatomyProps);
-assert(!nodes(picker()).filter(node => node.type === 'button').some(node => node.props['aria-pressed']));
+assert(!nodes(anatomy.tree()).some(node => node.props['aria-pressed']));
+
+const crossSections = load('src/data/tsubo/crossSectionsData').CROSS_SECTIONS;
+const publishedLandmarks = load('src/data/tsubo/atlas/sharedAnatomyLandmarks').getSharedAnatomyLandmarks;
+const heguLabels = layouts.crossSectionCallouts(crossSections.li4, safety.getPublicCrossSectionElements(crossSections.li4), publishedLandmarks('li4'), false).labels;
+assert.deepEqual(Array.from(heguLabels, label => label.name).sort(), ['① 第2中手骨','② 第1中手骨','母指内転筋','第1背側骨間筋'].sort());
+const regionalSections = load('src/data/tsubo/regionalSections/index');
+const { model: regionalModel, landmarks } = regionalSections.createRegionalSectionModel('lu3', regionalSections.getRegionalSection('lu3'));
+const regionalLabels = layouts.crossSectionCallouts(regionalModel, safety.getPublicCrossSectionElements(regionalModel), landmarks, true).labels;
+assert.deepEqual(Array.from(regionalLabels, label => label.name).sort(), ['上腕三頭筋','上腕二頭筋','上腕骨'].sort());
 
 // Compare markup keeps row/column semantics and all original selection behavior.
 const atlasLocations = load('src/data/tsubo/friendlyLocations');

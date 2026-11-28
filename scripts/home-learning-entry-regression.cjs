@@ -61,14 +61,15 @@ for (const [[href, name], action] of destinationPairs.map((pair, index) => [pair
 }
 assert(home.includes('href="/symptoms"'));
 assert.doesNotMatch(home, />\s*知\s*</);
-assert.match(home, /<h1[^>]*>東洋医学を学ぶ<\/h1>/);
+assert.match(home, /<h1[^>]*><span>東洋医学を、<\/span><span>図から学ぶ。<\/span><\/h1>/);
 assert(home.includes('href="/learn/acupuncture"'), 'The acupuncture guide remains available from home');
-assert(home.indexOf('role="search"') < home.indexOf('class="platform-series-grid"'));
-assert(home.indexOf('class="platform-series-grid"') < home.indexOf('href="/symptoms"'), 'The general guide follows the main paths');
-assert(home.indexOf('href="/symptoms"') < home.indexOf('href="/tsubo/li4#acupoint-location"'), 'The featured figure follows the choices in DOM order');
+assert(home.indexOf('role="search"') < home.indexOf('href="/symptoms"'));
+assert(home.indexOf('href="/symptoms"') < home.indexOf('class="platform-series-grid"'), 'The general guide follows search and precedes the learning paths');
+assert(home.indexOf('class="platform-series-grid"') < home.indexOf('href="/tsubo/li4#acupoint-location"'), 'The featured figure follows the learning paths in DOM order');
 const collection = JSON.parse(home.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);
 assert.equal(collection.name, '東洋医学を学ぶ');
-assert(home.includes(collection.description), 'The homepage description matches the visible introduction');
+assert.match(home, /361のツボを図で調べ、講義と模擬症例で学べます。/);
+assert.equal(collection.description, load('src/config/series').PLATFORM_DESCRIPTION, 'The collection keeps the existing site description');
 assert.equal(collection.isPartOf['@id'], 'https://www.haritaro.jp/#website');
 assert.deepEqual(collection.mainEntity.itemListElement.map(item => [new URL(item.url).pathname, item.name]), destinationPairs);
 assert(home.indexOf('id="platform-series-title"') < home.indexOf('id="platform-index-title"'));

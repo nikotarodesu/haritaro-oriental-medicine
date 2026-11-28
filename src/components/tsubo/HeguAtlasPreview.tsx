@@ -36,6 +36,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <p>{heguAtlasReading.symptomWarning}</p>
       </aside>
 
+      <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
       <AcupointTopic topic="location">
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
           <AcupointAtlasDiagrams point={point} />
@@ -74,7 +75,6 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
       </AcupointTopic>
 
       <div className="atlas-secondary-sections">
-        <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
         <AcupointReferences
           point={point}
           editorialLinks={[{ href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの症状ガイド" }]}

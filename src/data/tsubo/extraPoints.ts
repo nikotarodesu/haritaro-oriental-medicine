@@ -17,6 +17,11 @@ export const EXTRA_POINTS = [
     code: "EX-HN3",
     alternateCodes: ["GV24+"],
     pinyin: "Yìntáng",
+    nameNote: {
+      text: "「印堂」は、中国の人相学で左右の眉の間を指す言葉です。",
+      source: "台湾教育部『國語辭典簡編本』「印堂」",
+      href: "https://dict.concised.moe.edu.tw/dictView.jsp?ID=42197&la=0&powerMode=1",
+    },
     bodyPart: "眉間",
     description: "印堂は、左右の眉頭のちょうど中間にあるくぼみです。顔を正面から見た図で場所を確かめます。",
     landmark: "左右の眉頭",
@@ -43,6 +48,11 @@ export const EXTRA_POINTS = [
     code: "EX-HN5",
     alternateCodes: [],
     pinyin: "Tàiyáng",
+    nameNote: {
+      text: "英国の鍼治療理学療法士協会は、このツボの名前を「大いなる太陽」（Great Sun）と英訳しています。",
+      source: "AACP『Point Location Manual』奇穴の名称（PDF）",
+      href: "https://www.aacp.org.uk/assets/ckfinder_library/files/Point%20Location%20Manual.pdf",
+    },
     bodyPart: "こめかみ",
     description: "太陽は、眉尻と目尻の中間から耳の方に寄った、こめかみのくぼみです。顔を横から見た図で位置を確かめます。",
     landmark: "眉尻と目尻",

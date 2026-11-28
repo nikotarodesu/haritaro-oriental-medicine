@@ -19,12 +19,31 @@ const { ATLAS_POINT_MARKERS, shinEndpoints, volarForearmGeometry } = load('src/d
 const { getAcupointStudies, getClassicalCombinations } = load('src/data/tsubo/atlas/evidence');
 const { getFeaturedPairs } = load('src/data/tsubo/atlas/featuredPairs');
 const { getAtlasSafetyNotices } = load('src/data/tsubo/atlas/safetyNotices');
-const { TRADITIONAL_POINT_USES } = load('src/data/tsubo/atlas/traditionalUses');
+const { getTraditionalUseSource, TRADITIONAL_POINT_USES } = load('src/data/tsubo/atlas/traditionalUses');
+const { getTraditionalSymptom, traditionalSymptomPath, TRADITIONAL_SYMPTOMS, TSUBO_SYMPTOM_INDEX_PATH } = load('src/data/tsubo/atlas/traditionalSymptomIndex');
 const { EXTRA_POINTS } = load('src/data/tsubo/extraPoints');
 const { regionalSectionGroups, getRegionalSection, createRegionalSectionModel } = load('src/data/tsubo/regionalSections/index');
 const dimensions = text => Array.from(text.matchAll(/\d+(?:\.\d+)?寸/g), match => match[0]);
 
 assert.equal(points.ALL_ACUPOINTS.length, 361);
+assert.deepEqual(Array.from(TRADITIONAL_POINT_USES.pc6.labels), ['吐き気', '嘔吐', '胸のつかえ'], 'Neiguan links to each of its three individually sourced symptoms');
+assert.deepEqual(Array.from(getTraditionalSymptom('nausea').points, point => point.code), ['PC6'], 'Curated nausea requires a record for nausea itself');
+assert.deepEqual(Array.from(getTraditionalSymptom('vomiting').points, point => point.code), ['KI20', 'KI25', 'KI27', 'PC3', 'PC6']);
+assert.deepEqual(Array.from(getTraditionalSymptom('chest-tightness').points, point => point.code), ['PC6'], 'Chest tightness does not expand to swelling or chest pain');
+assert.equal(getTraditionalSymptom('unknown-symptom'), undefined, 'Unknown symptoms have no route');
+assert.equal(new Set(TRADITIONAL_SYMPTOMS.map(({ slug }) => slug)).size, TRADITIONAL_SYMPTOMS.length, 'Each symptom has a distinct slug');
+for (const { label, slug, href, points: matches } of TRADITIONAL_SYMPTOMS) {
+  assert(matches.length > 0 && new Set(matches.map(({ code }) => code)).size === matches.length, `${label}: only distinct, recorded points`);
+  assert.match(slug, /^[a-z]+(?:-[a-z]+)*$/, `${label}: stable readable ASCII slug`);
+  assert.equal(href, `${TSUBO_SYMPTOM_INDEX_PATH}/${slug}`, `${label}: one canonical path`);
+}
+for (const [code, use] of Object.entries(TRADITIONAL_POINT_USES)) {
+  for (const label of use.labels) {
+    const symptom = getTraditionalSymptom(traditionalSymptomPath(label).split('/').at(-1));
+    const match = symptom.points.find(point => point.code.toLowerCase() === code);
+    assert.equal(match.source.url, getTraditionalUseSource(use, label).url, `${code} ${label}: reverse lookup leads back to the point and its source`);
+  }
+}
 assert.equal(new Set(points.ALL_ACUPOINTS.map(point => point.code)).size, 361);
 const allCodes = Array.from(points.ALL_ACUPOINTS, point => point.codeLower).sort();
 for (const code of allCodes.filter(code => code !== 'li4')) {
@@ -283,6 +302,11 @@ function checkBuiltPointPages(buildDir) {
     for (const [, id] of markup.matchAll(/<[^>]*\sid="([^"]+)"/g)) sectionIds.set(id, (sectionIds.get(id) ?? 0) + 1);
     const topics = readContainers(markup, 'section', 'data-point-topic');
     const details = readContainers(markup, 'details', 'id');
+    const basics = details.get('acupoint-basics');
+    const name = details.get('acupoint-name');
+    assert(basics && name && basics.index + basics.markup.length <= name.index, `${route}: basic information and point name in separate disclosures`);
+    assert(name.index + name.markup.length <= topics.get('location').index, `${route}: the name precedes the location chapter`);
+    for (const item of [basics, name]) assert(!/\sopen(?:=|\s|>)/.test(item.opening), `${route}: introductory details start closed`);
     const wantPairs = !extra && hasPublishedPairs(code);
     if (wantPairs) paired++;
     const order = ['location', 'uses', 'nearby'];
@@ -330,6 +354,15 @@ function checkBuiltPointPages(buildDir) {
     assert(anatomy.markup.includes('id="acupoint-anatomy-diagram"'), `${route}: original anatomy anchor opens the separate anatomy row`);
     assert(!lectureHref.test(location) && !caseHref.test(location), `${route}: study links do not interrupt the location chapter`);
     assert(uses.includes('id="acupoint-traditional"'), `${route}: traditional content or its original fallback target`);
+    const traditionalUse = TRADITIONAL_POINT_USES[code];
+    if (traditionalUse) {
+      assert.match(uses, /id="point-topic-uses-title"[^>]*>伝統的な使われ方<\/h2>/, `${route}: traditional chapter has the requested heading`);
+      const chips = uses.match(/class="atlas-use-topics"[^>]*>([\s\S]*?)<\/ul>/)?.[1];
+      assert(chips, `${route}: traditional uses are linked symptom tiles`);
+      for (const label of traditionalUse.labels) {
+        assert(chips.includes(`href="${traditionalSymptomPath(label)}"`), `${route}: direct reverse lookup from ${label}`);
+      }
+    }
     if (!extra) {
       assert(appendix.markup.includes('id="acupoint-who-location"'), `${route}: WHO citation inside the same disclosure`);
       assert(appendix.markup.includes('atlas-figure--overview') && appendix.markup.includes('atlas-figure--meridian'), `${route}: body map and meridian view inside the same disclosure`);
@@ -378,8 +411,29 @@ function checkBuiltPointPages(buildDir) {
   console.log(`Built acupoint HTML: ${routes.length} detail pages, ordered topics without front-loaded shortcuts, separate closed location and anatomy disclosures, preserved study links and anchors, and ${paired} non-empty pair chapters.`);
 }
 
+function checkBuiltTraditionalSymptoms(buildDir) {
+  const app = path.join(buildDir, 'server', 'app');
+  const sitemap = fs.readFileSync(path.join(app, 'sitemap.xml.body'), 'utf8');
+  const index = fs.readFileSync(path.join(app, TSUBO_SYMPTOM_INDEX_PATH.slice(1) + '.html'), 'utf8');
+  const origin = 'https://www.haritaro.jp';
+  assert(sitemap.includes(`<loc>${origin}${TSUBO_SYMPTOM_INDEX_PATH}</loc>`), 'The reverse index is in the sitemap');
+  for (const { label, href, points: matches } of TRADITIONAL_SYMPTOMS) {
+    const routeFile = path.join(app, href.slice(1) + '.html');
+    const html = fs.readFileSync(routeFile, 'utf8');
+    const links = html.match(/aria-label="該当するツボ"[^>]*>([\s\S]*?)<\/ul>/)?.[1];
+    assert(index.includes(`href="${href}"`), `${label}: one direct link from the symptom index`);
+    assert(sitemap.includes(`<loc>${origin}${href}</loc>`), `${label}: reverse lookup destination is in the sitemap`);
+    assert(html.includes(`rel="canonical" href="${origin}${href}"`), `${label}: one canonical metadata URL`);
+    assert(links, `${label}: result links are available in generated HTML`);
+    const resultHrefs = Array.from(links.matchAll(/href="(\/tsubo\/[^"]+)"/g), match => match[1]);
+    assert.deepEqual(resultHrefs, Array.from(matches, point => point.href), `${label}: no false matches in rendered results`);
+  }
+  console.log(`Built symptom reverse lookup: ${TRADITIONAL_SYMPTOMS.length} linked, prerendered pages with exact results and canonical sitemap URLs.`);
+}
+
 if (process.argv.includes('--build-output')) {
   const option = process.argv.find(arg => arg.startsWith('--build-dir='));
   const buildDir = path.resolve(__dirname, '..', option?.slice('--build-dir='.length) || '.next');
   checkBuiltPointPages(buildDir);
+  checkBuiltTraditionalSymptoms(buildDir);
 }

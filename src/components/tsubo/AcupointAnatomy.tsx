@@ -31,9 +31,9 @@ export default function AcupointAnatomy({ point, paragraphs = [] }: {
 
   return (
     <AcupointAnatomyDetails key={point.code} kind="individual">
+      <CrossSectionViewer model={model} pointName={point.name} pointCode={point.code} individualModel sharedLandmarks={getSharedAnatomyLandmarks(point.codeLower)} />
       {preview && <p>{preview}</p>}
       <WhoMeasurementFigures measures={forearmHeight} pointName={point.name} />
-      <CrossSectionViewer model={model} pointName={point.name} pointCode={point.code} individualModel sharedLandmarks={getSharedAnatomyLandmarks(point.codeLower)} />
       {paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
     </AcupointAnatomyDetails>
   );

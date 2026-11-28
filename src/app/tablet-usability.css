@@ -141,15 +141,12 @@
 .tsubo-compare-page :is(button, input), .anatomy-viewer :is(button, a) { min-height: 44px; }
 .tsubo-compare-page button:has(> svg:only-child), .anatomy-viewer button:has(> svg:only-child) { min-width: 44px; display: inline-flex; align-items: center; justify-content: center; }
 .anatomy-viewer :is(button, a):focus-visible { outline: 2px solid var(--accent-readable); outline-offset: 3px; }
-.anatomy-structure-picker > p { margin-bottom: 10px; font-size: .875rem; font-weight: 600; }
-.anatomy-structure-picker > div { display: flex; flex-wrap: wrap; gap: 8px; }
-.anatomy-structure-picker button { padding: 8px 12px; border: 1px solid var(--border-washi); border-radius: 8px; color: var(--text-secondary); background: var(--bg-card); font-size: .875rem; text-align: left; overflow-wrap: anywhere; }
-.anatomy-structure-picker button[aria-pressed="true"] { border-color: var(--accent-readable); color: var(--accent-readable); background: var(--tokiwa-light); font-weight: 600; }
+.anatomy-viewer svg [role="button"]:focus-visible { outline: 0; stroke: var(--warm-readable); stroke-width: 4; }
 @media print {
   .tsubo-compare-scroll { max-height: none; overflow: visible; }
   .tsubo-compare-table { table-layout: fixed; font-size: 10pt; }
   .tsubo-compare-table :is(th, td) { padding: 6pt; min-width: 0; overflow-wrap: anywhere; }
   .tsubo-compare-table thead th, .tsubo-compare-table tr > :first-child { position: static; }
   .tsubo-compare-picker, .tsubo-compare-presets, .tsubo-compare-print, .tsubo-compare-scroll-hint,
-  .tsubo-compare-detail-link, .tsubo-compare-column-link, .anatomy-structure-picker { display: none; }
+  .tsubo-compare-detail-link, .tsubo-compare-column-link { display: none; }
 }

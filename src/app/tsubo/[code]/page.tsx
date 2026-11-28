@@ -20,7 +20,7 @@ import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
 import { AcupointKeyPointLinks, AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
-import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
+import { AcupointPointBasics } from "@/components/tsubo/AcupointReferences";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "@/components/tsubo/AcupointPairNotes";
 import { AcupointAnatomyDetails, AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
@@ -386,12 +386,6 @@ export default async function AcupointDetailPage({ params }: Props) {
                 <AcupointKeyPointLinks code={point.codeLower} />
               </div>
 
-              {point.aliases && point.aliases.length > 0 && (
-                <p className="text-base text-[#59615D] dark:text-[#AFBDC8]">
-                  別名：{point.aliases.join("、")}
-                </p>
-              )}
-
               <dl className="grid gap-4 pt-2 text-base leading-relaxed" aria-label={`${point.name}の位置`}>
                 <div>
                   <dt className="flex items-center gap-2 text-sm font-bold text-[#1E3D34] dark:text-[#83BEA8]"><Compass aria-hidden="true" className="h-4 w-4" />位置の目安</dt>
@@ -430,6 +424,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         </div>
 
+        <AcupointPointBasics point={point} />
         <AcupointTopic topic="location">
           <div id="acupoint-location" tabIndex={-1} className="atlas-target space-y-4">
             {illustration && atlasMarker && (
@@ -636,7 +631,6 @@ export default async function AcupointDetailPage({ params }: Props) {
           </AcupointTopic>
         )}
 
-        <AcupointNameGuide code={point.codeLower} />
         <AcupointReadingLinks code={point.codeLower} />
 
         {relatedLectures.length > 0 && (

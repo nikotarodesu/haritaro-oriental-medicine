@@ -17,6 +17,7 @@ import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
 import { ACUPOINT_LOCATION_IMAGES } from "@/data/tsubo/atlas/locationImages";
 import { ACUPOINT_PAIRS_PATH } from "@/data/tsubo/atlas/featuredPairs";
 import { ATLAS_COMPARISON_GUIDES, ATLAS_COMPARISON_GUIDES_REVISED_AT } from "@/data/tsubo/atlas/nearbyComparisonGuides";
+import { TRADITIONAL_SYMPTOMS, TSUBO_SYMPTOM_INDEX_PATH } from "@/data/tsubo/atlas/traditionalSymptomIndex";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_ORIGIN;
@@ -177,6 +178,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [
+    { url: baseUrl + TSUBO_SYMPTOM_INDEX_PATH },
+    ...TRADITIONAL_SYMPTOMS.map(({ href }) => ({ url: baseUrl + href })),
     ...SYMPTOMS.map(guide => ({ url: `${baseUrl}${symptomGuidePath(guide)}`, lastModified: new Date(SYMPTOM_GUIDES_REVISED_AT) })),
     ...CLINICAL_COMPLAINTS.map(item => ({ url: `${baseUrl}/clinical/symptoms/${item.slug}`, lastModified: new Date('2026-10-04') })),
     { url: `${baseUrl}/glossary`, lastModified: new Date(SITE_REVISED_AT) },

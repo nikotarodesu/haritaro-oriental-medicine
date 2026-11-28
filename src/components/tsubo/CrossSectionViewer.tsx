@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import { getPublicCrossSectionElements, getPublicAnatomyDescription } from "@/data/medicalSafety";
+import { crossSectionCallouts } from "@/data/tsubo/atlas/crossSectionCallouts";
 import type { SharedAnatomyLandmark } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
 import type {
   CrossSectionModel,
   ReferenceLedgerItem
 } from "@/data/tsubo/types";
 import { 
-  Layers, 
   BookOpen, 
   ExternalLink, 
   X, 
@@ -44,16 +44,14 @@ export default function CrossSectionViewer({
 
   const activeStructure = selectedLayer || selectedBoundary || selectedAdjacent;
   const publicElements = getPublicCrossSectionElements(model);
-  const visibleIds = new Set(publicElements.map(element => element.layerId));
+  const publicStructureIds = new Set([...model.layers, ...model.boundaries ?? [], ...model.adjacentStructures ?? []].map(structure => structure.id));
   const numberedLandmarks = sharedLandmarks.filter(({ layerId, elementId }) =>
     publicElements.some(element => element.layerId === layerId && element.elementId === elementId),
   );
-  const numbersByStructure = new Map(numberedLandmarks.map(({ layerId, number }) => [layerId, number]));
   const landmarkSummaryId = `${pointCode.toLowerCase()}-anatomy-landmark-summary`;
   const surfacePointId = model.surfacePoint ? `${pointCode.toLowerCase()}-anatomy-surface-description` : undefined;
   const diagramDescriptions = [surfacePointId, !regional && numberedLandmarks.length ? landmarkSummaryId : undefined].filter(Boolean).join(" ");
-  const structures = [...model.layers, ...(model.boundaries || []), ...(model.adjacentStructures || [])];
-  const selectableStructures = structures.filter((structure, index) => visibleIds.has(structure.id) && structures.findIndex(item => item.id === structure.id) === index);
+  const callouts = crossSectionCallouts(model, publicElements, numberedLandmarks, regional);
   const selectStructure = (id: string) => setSelectedStructureId(current => current === id ? null : id);
 
   // キーボード操作ハンドラー
@@ -66,55 +64,16 @@ export default function CrossSectionViewer({
     }
   };
 
-  // 一瞬で部位・側別・観察面が分かる明快な表示ラベル
-  const getBodyPartSideLabel = () => {
-    if (model.bodySide) {
-      if (model.bodySide.includes("手") && !model.bodySide.includes("前腕")) return `${model.bodySide}（手背視）`;
-      if (model.bodySide.includes("前腕")) return `${model.bodySide}（掌側視）`;
-      if (model.bodySide.includes("下腿")) return `${model.bodySide}・すね（前面視）`;
-      return `${model.bodySide}（横断面）`;
-    }
-    return "標準断面モデル";
-  };
-
-  const summaryText = regional ? model.level : "周辺の組織の関係を学ぶための模式図です。図の構造・配置は専門家確認待ちで、個人の刺入経路や安全域を示しません。";
-
   return (
     <section 
       aria-label={regional ? `${pointName}周辺の断面解剖` : `${pointName}の局所深浅・断面解剖モデル`}
-      className="anatomy-viewer bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-7 shadow-sm space-y-5 transition-colors"
+      className="anatomy-viewer bg-[#FFFFFF] dark:bg-[#15202B] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-2.5 sm:p-5 shadow-sm space-y-5 transition-colors"
     >
-      {/* 1. ヘッダー部：タイトル、1文要約、資料台帳ボタン */}
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-[#F2ECE0] dark:border-[#22303D] pb-4">
-        <div className="space-y-1.5">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#1E3D34] dark:text-[#74BA9E]">
-            <div className="flex items-center gap-1.5">
-              <Layers className="w-4 h-4 text-[#1E3D34] dark:text-[#74BA9E]" />
-              <span>{regional ? "部位の断面模式図" : "局所深浅・断面解剖モデル"}</span>
-            </div>
-            <span className="font-mono text-[11px] px-2 py-0.5 rounded-full bg-[#FAF8F5] dark:bg-[#1C2833] border border-[#E8E1D1] dark:border-[#2B3C4E] text-[#737C77] dark:text-[#9FB1C1]">
-              {pointCode}
-            </span>
-            {/* 一瞬で部位・側別が分かるハイライトバッジ */}
-            {!regional && <span className="font-bold text-xs px-2.5 py-0.5 rounded-lg bg-[#1E3D34] text-white dark:bg-[#2B6958] shadow-xs flex items-center gap-1">
-              <span>📍</span>
-              <span>{getBodyPartSideLabel()}</span>
-            </span>}
-          </div>
-
-          <h3 className="font-serif text-lg sm:text-2xl font-bold text-[#232826] dark:text-[#FAF8F5]">
-            {model.title}
-          </h3>
-
-          {/* 1文要約 */}
-          {summaryText && (
-            <p className="text-sm text-[#59615D] dark:text-[#A0B0BC] leading-relaxed pt-1">
-              {summaryText}
-            </p>
-          )}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h3 className="text-lg font-semibold">{regional ? model.title : pointName + "の断面図"}</h3>
+          <p className="atlas-muted">{model.bodySide && model.bodySide + " · "}{model.level}</p>
         </div>
-
-        {/* 根拠資料台帳ボタン */}
         {!regional && <button
           type="button"
           onClick={() => setIsReferenceLedgerOpen(!isReferenceLedgerOpen)}
@@ -209,24 +168,21 @@ export default function CrossSectionViewer({
       )}
 
       {/* 2. メイン図エリア：SVG断面図（主役） */}
-      {!regional && <p className="rounded-xl bg-[#EBF3EF] dark:bg-[#182823] p-3 text-xs leading-relaxed text-[#404743] dark:text-[#C5D2DB]">
-        <strong>{individualModel ? '個別に編集した教育用模式図' : '部位別の共通模式図'}</strong>：層の関係を学ぶための図です。縮尺・深度・境界は個人の画像計測値ではなく、刺鍼の安全域や経路の決定には使用できません。
-      </p>}
-      <figure className="anatomy-figure w-full rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-3 shadow-inner sm:rounded-3xl sm:p-6 dark:border-[#22303D] dark:bg-[#10171F]">
+      <figure className="anatomy-figure w-full rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-2 sm:rounded-3xl sm:p-4 dark:border-[#22303D] dark:bg-[#10171F]">
         <p className="anatomy-axis anatomy-axis--vertical">↑ {model.axes.vertical[0]}</p>
 
         {/* SVG断面図 */}
         <svg
-          viewBox={model.diagramViewBox ?? "0 0 500 270"}
-          className="w-full h-auto max-h-[380px] my-2 select-none"
+          viewBox={callouts.viewBox}
+          className="mx-auto my-2 block h-auto w-full max-w-[32rem]"
           preserveAspectRatio="xMidYMid meet"
-          role="img"
+          role="group"
           aria-label={regional ? `${model.title}の断面模式図` : `${pointName}の横断面解剖図`}
           aria-describedby={diagramDescriptions || undefined}
         >
           {/* 断面要素描画 */}
           {publicElements.map((el) => {
-            const interactive = regional ? el.layerId !== "outline" : el.layerId !== "needle-indicator";
+            const interactive = publicStructureIds.has(el.layerId);
             const isSelected = selectedStructureId === el.layerId;
             const opacity = interactive && selectedStructureId && !isSelected ? 0.35 : 1;
             const stroke = isSelected ? "#B86924" : el.stroke || "none";
@@ -238,11 +194,11 @@ export default function CrossSectionViewer({
               stroke,
               strokeWidth,
               opacity,
-              tabIndex: interactive ? 0 : -1,
+              tabIndex: interactive ? 0 : undefined,
               role: interactive ? "button" : undefined,
               "aria-label": interactive ? el.label : undefined,
               "aria-pressed": interactive ? isSelected : undefined,
-              className: interactive ? "transition-all duration-200 cursor-pointer outline-none focus:stroke-[#B86924] focus:stroke-[3.5] hover:opacity-90" : "pointer-events-none",
+              className: interactive ? "transition-all duration-200 cursor-pointer hover:opacity-90" : "pointer-events-none",
               onClick: interactive ? () => selectStructure(el.layerId) : undefined,
               onKeyDown: interactive ? (e: React.KeyboardEvent) => handleKeyDown(e, el.layerId) : undefined,
             };
@@ -261,33 +217,46 @@ export default function CrossSectionViewer({
                 {el.shapeType === "rect" && el.x !== undefined && el.y !== undefined && (
                   <rect {...commonProps} x={el.x} y={el.y} width={el.width || 40} height={el.height || 20} rx={el.rx || 0} />
                 )}
-                {el.labelPos && (
+                {el.shapeType === "polygon" && el.points && (
+                  <polygon {...commonProps} points={el.points} />
+                )}
+                {el.layerId === "point-marker-layer" && el.labelPos && (
                   <text
                     x={el.labelPos.x}
                     y={el.labelPos.y}
                     textAnchor={el.labelPos.anchor || "middle"}
-                    fill={isSelected ? "#9C5417" : "#111827"}
+                    fill="#7F3520"
                     stroke="#FFFFFF"
                     strokeWidth={3.5}
                     strokeLinejoin="round"
                     style={{ paintOrder: "stroke fill" }}
-                    className={`text-[11px] sm:text-xs font-sans font-extrabold pointer-events-none select-none transition-colors ${
-                      isSelected ? "fill-[#9C5417] font-black" : "fill-[#111827]"
-                    }`}
+                    fontSize="21"
+                    fontWeight="700"
+                    className="pointer-events-none"
                   >
-                    {el.label}
+                    {pointName}
                   </text>
                 )}
               </g>
             );
           })}
-          {numberedLandmarks.map(({ number, layerId, sectionBadge: [x, y], leaderTo }) => (
-            <g key={layerId} data-landmark-number={number} aria-hidden="true" className="pointer-events-none">
-              {leaderTo && <path d={`M${x} ${y}L${leaderTo.join(" ")}`} fill="none" stroke="#7F3520" strokeWidth="2" />}
-              <circle cx={x} cy={y} r="13" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
-              <text x={x} y={y} fill="#FFF9F0" fontSize="16" fontWeight="700" textAnchor="middle" dominantBaseline="central">{number}</text>
-            </g>
-          ))}
+          {callouts.labels.map(({ element, name, x, y, edge, origin, lines }) => {
+            const path = `M${origin.x} ${origin.y}L${x} ${edge}`;
+            const active = selectedStructureId === element.layerId;
+            return (
+              <g key={element.elementId} aria-hidden="true" data-anatomy-callout={name} className="text-[var(--text-sumi)]">
+                <g className="pointer-events-none">
+                  <path d={path} fill="none" stroke="var(--bg-card)" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+                  <path d={path} fill="none" stroke={active ? "var(--warm-readable)" : "currentColor"} strokeWidth="1" vectorEffect="non-scaling-stroke" />
+                  <circle cx={origin.x} cy={origin.y} r="4" fill="currentColor" stroke="var(--bg-card)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+                </g>
+                <text x={x} y={y} fill={active ? "var(--warm-readable)" : "currentColor"} fontSize={callouts.fontSize} fontWeight="700"
+                  textAnchor="middle" className="cursor-pointer sm:[font-size:20px]" onClick={() => selectStructure(element.layerId)}>
+                  {lines.map((line, index) => <tspan key={index} x={x} dy={index === 0 ? 0 : "1.25em"}>{line}</tspan>)}
+                </text>
+              </g>
+            );
+          })}
           {model.surfacePoint && (
             <g aria-hidden="true" className="pointer-events-none">
               <text x={model.surfacePoint.x} y={model.surfacePoint.y - 25} textAnchor="middle" fill="#7F3520" stroke="#FFF9F0" strokeWidth="4" strokeLinejoin="round" style={{ paintOrder: "stroke fill" }} fontSize="23" fontWeight="700">
@@ -306,35 +275,21 @@ export default function CrossSectionViewer({
         <figcaption className="mt-2 flex items-start gap-2 border-t border-[#E8E1D1] pt-2.5 text-sm leading-relaxed text-[#59615D] dark:border-[#22303D] dark:text-[#A0B0BC]">
           <HelpCircle aria-hidden="true" className="mt-1 h-3.5 w-3.5 shrink-0 text-[#B86924]" />
           <div className="min-w-0 space-y-1">
+            {!regional && <p>{individualModel ? "このツボの教育用模式図です。" : "部位別の共通模式図です。"}組織の配置は専門家による確認前です。刺鍼の安全域や経路の決定には使用できません。</p>}
             {model.surfacePoint && <p id={surfacePointId}>
               <strong>丸印は体表の位置です。</strong> {model.surfacePoint.description}
               {" "}{model.surfacePoint.diagramNote}
             </p>}
             {!regional && numberedLandmarks.length > 0 && <p id={landmarkSummaryId}>
-              位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。{" "}
-              <a href="#acupoint-location" className="atlas-source-link inline-flex min-h-11 items-center">体表の位置図に戻る</a>
+              <span className="sr-only">位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。</span>
+              <a href="#acupoint-location" className="atlas-source-link inline-flex min-h-11 items-center">同じ目印を位置図で見る</a>
             </p>}
-            <p>図の中の部位か、下の一覧から名前を選ぶと、説明が表示されます。</p>
+            <p>図の部位を選ぶと、説明を読めます。</p>
           </div>
         </figcaption>
       </figure>
 
-      {selectableStructures.length > 0 && <div className="anatomy-structure-picker" role="group" aria-label="断面図の構造を名前から選ぶ" onKeyDown={event => { if (event.key === 'Escape') setSelectedStructureId(null); }}>
-        <p>構造名から選ぶ</p>
-        <div>{selectableStructures.map(structure => {
-          const number = numbersByStructure.get(structure.id);
-          return (
-            <button type="button" key={structure.id} aria-pressed={selectedStructureId === structure.id} onClick={() => selectStructure(structure.id)}
-              data-landmark-control={number}
-              className={number ? "inline-flex min-h-11 items-center gap-2" : undefined}>
-              {number && <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-[#7F3520] text-xs font-bold text-[#FFF9F0]">{number}</span>}
-              {structure.name}
-            </button>
-          );
-        })}</div>
-      </div>}
-
-      {/* 3. タップされた組織のインスペクターカード（選択時に図の直下にスマートに表示） */}
+      <p role="status" className="sr-only">{activeStructure ? `${activeStructure.name}を選択しました。` : ""}</p>
       {activeStructure && (
         <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF8F5] dark:bg-[#16222C] border-2 border-[#B86924] dark:border-[#E6C387] shadow-sm space-y-3 animate-in fade-in duration-150">
           <div className="flex items-start justify-between gap-3">

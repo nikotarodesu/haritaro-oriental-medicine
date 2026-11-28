@@ -1,7 +1,12 @@
 type TraditionalPointUse = {
   labels: readonly string[];
   source: { label: string; url: string };
+  sourcesByLabel?: Readonly<Partial<Record<string, TraditionalPointUse["source"]>>>;
 };
+
+export function getTraditionalUseSource(use: TraditionalPointUse, label: string) {
+  return use.sourcesByLabel?.[label] ?? use.source;
+}
 
 const zhenjiuDacheng = "https://jicheng.tw/tcm/book/針灸大成/index.html";
 
@@ -93,13 +98,19 @@ export const TRADITIONAL_POINT_USES: Readonly<Partial<Record<string, Traditional
   ki27: classicalUse("巻六", "兪府", "◎俞府：", ["せき", "嘔吐", "おなかの張り"]),
   pc1: classicalUse("巻七", "天池", "◎天池", ["頭痛", "腕の痛み"]),
   pc2: classicalUse("巻七", "天泉", "◎天泉", ["胸・脇腹の張り", "腕の内側の痛み"]),
-  pc3: classicalUse("巻七", "曲沢", "◎曲澤：", ["吐き気・嘔吐", "口の乾き"]),
+  pc3: classicalUse("巻七", "曲沢", "◎曲澤：", ["嘔吐", "口の乾き"]),
   pc5: classicalUse("巻七", "間使", "◎間使：", ["ひじのこわばり", "のどのつかえ"]),
   pc6: {
-    labels: ["吐き気・嘔吐", "胸のつかえ"],
+    labels: ["吐き気", "嘔吐", "胸のつかえ"],
     source: {
       label: "台北市の中医学資料「内関」",
       url: "https://www-ws.gov.taipei/001/Upload/519/relfile/23395/138847/202ba89c-eeec-4d45-9a8c-9fc40409daca.pdf",
+    },
+    sourcesByLabel: {
+      "胸のつかえ": {
+        label: "台北市立連合病院の中医学資料「内関」",
+        url: "https://www-ws.gov.taipei/001/Upload/519/relfile/23395/111396/13e1f6ce-639b-4899-aba5-f8060c5e779e.pdf#page=2",
+      },
     },
   },
   pc7: classicalUse("巻七", "大陵", "◎大陵：", ["ひじ・腕の痛み", "手のひらのほてり"]),

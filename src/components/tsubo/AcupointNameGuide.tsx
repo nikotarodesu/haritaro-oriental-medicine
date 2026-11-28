@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AcupointIntroDetails from "./AcupointIntroDetails";
 import { getAcupointName } from "@/data/tsubo/names";
 import { acupointNameIndexHref, getAcupointNameCharacter } from "@/data/tsubo/names/characterIndex";
 
@@ -7,9 +8,8 @@ export default function AcupointNameGuide({ code }: { code: string }) {
   if (!name) return null;
 
   return (
-    <section id="acupoint-name" className="atlas-target atlas-name-guide" aria-labelledby="acupoint-name-heading">
-      <h2 id="acupoint-name-heading" className="atlas-section-title">名前の由来</h2>
-      <div className="atlas-name-panel">
+    <AcupointIntroDetails id="acupoint-name" summary="名前の由来">
+      <div className="atlas-name-panel atlas-name-guide">
         <dl className="atlas-name-identity">
           <div>
             <dt>中国語（簡体字）</dt>
@@ -60,6 +60,6 @@ export default function AcupointNameGuide({ code }: { code: string }) {
           <li><a href={name.nomenclatureUrl} className="atlas-source-link">WHOの経穴名称資料（PDF）</a></li>
         </ul>
       </div>
-    </section>
+    </AcupointIntroDetails>
   );
 }

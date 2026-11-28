@@ -7,6 +7,7 @@ import PageBreadcrumb from "@/components/design/PageBreadcrumb";
 import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
 import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import RegionalPointAnatomy from "@/components/tsubo/RegionalPointAnatomy";
+import AcupointIntroDetails from "@/components/tsubo/AcupointIntroDetails";
 import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
 import { EXTRA_POINTS, EXTRA_POINTS_PATH, EXTRA_POINTS_REVISED_AT } from "@/data/tsubo/extraPoints";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
@@ -73,13 +74,22 @@ export default async function ExtraPointPage({ params }: Props) {
           <h1>{point.name}<small>{point.kana}</small></h1>
           <span className={styles.code}>{point.code}</span>
         </div>
-        <p>奇穴（きけつ）の図鑑 <span aria-hidden="true">·</span> {point.bodyPart} <span aria-hidden="true">·</span> 中国語の発音（ピンイン） <span lang="zh-Latn">{point.pinyin}</span></p>
-        <p>
-          {point.classification ?? `WHOの名称案では奇穴「${point.code}」と表記されています。`}{" "}
-          <a href={namingSource.href} className="atlas-source-link">WHOの名称資料（PDF）</a>
-          {point.classification && <>{" "}<a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
-        </p>
+        <p>奇穴 <span aria-hidden="true">·</span> {point.bodyPart}</p>
       </header>
+
+      <div className="atlas-intro-details">
+        <AcupointIntroDetails id="acupoint-basics" summary="基本情報">
+          <p>{point.classification ?? `WHOの名称案では奇穴「${point.code}」と表記されています。`}</p>
+          <p>
+            <a href={namingSource.href} className="atlas-source-link">WHOの名称資料（PDF）</a>
+            {point.classification && <> · <a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
+          </p>
+        </AcupointIntroDetails>
+        <AcupointIntroDetails id="acupoint-name" summary="名前の意味と読み">
+          <p>中国語の読みは <span lang="zh-Latn-pinyin">{point.pinyin}</span> です。{point.nameNote.text}</p>
+          <p><a href={point.nameNote.href} className="atlas-source-link">{point.nameNote.source}</a></p>
+        </AcupointIntroDetails>
+      </div>
 
       <AcupointTopic topic="location">
         <div id="extra-point-location" tabIndex={-1} className={`atlas-target ${styles.location}`}>

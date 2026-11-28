@@ -14,6 +14,7 @@ import { ACUPUNCTURE_GUIDE, ACUPUNCTURE_RESEARCH } from "@/config/acupunctureLea
 import { collectionPageJsonLd } from "@/config/seo";
 import { ATLAS_STUDIES, getAtlasStudyPoint } from "@/data/tsubo/atlas/evidence";
 import { ATLAS_LITERATURE_SEARCH_COUNTS, ATLAS_LITERATURE_SEARCH_DATE } from "@/data/tsubo/atlas/literatureSearch";
+import { TSUBO_SYMPTOM_INDEX_PATH } from "@/data/tsubo/atlas/traditionalSymptomIndex";
 import { ACUPOINT_NAME_INDEX_PATH } from "@/data/tsubo/names/characterIndex";
 import { EXTRA_POINTS_PATH } from "@/data/tsubo/extraPoints";
 import { KEY_POINT_TYPES_GUIDE } from "@/data/tsubo/keyPointTypes";
@@ -64,6 +65,7 @@ export default function TsuboPage() {
         <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
         <a href="#tsubo-index" className="atlas-search-index-link">経絡別の索引</a>
         <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
+        <Link href={TSUBO_SYMPTOM_INDEX_PATH} className="atlas-search-index-link">症状からツボを探す</Link>
         <Link href="/symptoms" className="atlas-search-index-link">症状別ガイド</Link>
         <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
         <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>

@@ -55,6 +55,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           {pointWarning && <div><p className="font-semibold">ツボごとの注意</p><p>{pointWarning}</p></div>}
         </aside>
       )}
+      <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
       <AcupointTopic topic="location">
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
           <PointAtlasLocationFigure point={point} illustration={article.illustration} marker={marker} />
@@ -128,7 +129,6 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
       {hasPairs && <AcupointTopic topic="pairs"><AcupointPairNotes point={point} /></AcupointTopic>}
 
       <div className="atlas-secondary-sections">
-        <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
         <AcupointReferences point={point} editorialLinks={article.symptomLinks} sources={article.sources} />
       </div>
       <ContentEndAd key={point.code} />

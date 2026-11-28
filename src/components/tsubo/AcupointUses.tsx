@@ -1,6 +1,8 @@
 import { ChevronRight, FlaskConical } from "lucide-react";
+import Link from "next/link";
 import { ATLAS_STUDIES, getAtlasStudyPoint, getStudyScopeLabel } from "@/data/tsubo/atlas/evidence";
-import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
+import { traditionalSymptomPath } from "@/data/tsubo/atlas/traditionalSymptomIndex";
+import { getTraditionalUseSource, TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 
 const extraStudyIds: Readonly<Partial<Record<string, readonly string[]>>> = {
   "ex-hn3": ["chronic-insomnia", "seasonal-allergic-rhinitis"],
@@ -10,12 +12,26 @@ const extraStudyIds: Readonly<Partial<Record<string, readonly string[]>>> = {
 export function AcupointTraditionalUses({ code }: { code: string }) {
   const traditional = TRADITIONAL_POINT_USES[code];
   if (!traditional) return null;
+  const sources = new Map(traditional.labels.map(label => {
+    const source = getTraditionalUseSource(traditional, label);
+    return [source.url, source.label];
+  }));
 
   return (
     <section id="acupoint-traditional" className="atlas-target atlas-use-card atlas-traditional-use" data-use-kind="traditional" aria-labelledby="atlas-traditional-title">
       <h3 id="atlas-traditional-title" className="atlas-section-title">伝統資料に記された症状</h3>
-      <p className="atlas-use-topics">{traditional.labels.join("、")}</p>
-      <a className="atlas-text-action atlas-use-source" href={traditional.source.url}>{traditional.source.label}</a>
+      <ul className="atlas-use-topics" role="list">
+        {traditional.labels.map(label => (
+          <li key={label}>
+            <Link href={traditionalSymptomPath(label)} prefetch={false}>
+              {label}<ChevronRight size={16} aria-hidden="true" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <ul className="atlas-use-sources" aria-label="伝統的な使われ方の出典" role="list">
+        {Array.from(sources, ([href, label]) => <li key={href}><a className="atlas-text-action atlas-use-source" href={href}>{label}</a></li>)}
+      </ul>
     </section>
   );
 }

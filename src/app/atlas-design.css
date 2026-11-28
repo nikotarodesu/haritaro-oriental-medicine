@@ -153,10 +153,32 @@
 }
 .atlas-use-card svg { flex: none; }
 .atlas-use-topics {
-  margin-top: .375rem;
-  color: var(--atlas-ink);
-  line-height: 1.7;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .65rem;
 }
+.atlas-use-topics li { min-width: 0; }
+.atlas-use-topics a {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  padding: .45rem .7rem;
+  border: 1px solid var(--atlas-line);
+  border-radius: .4rem;
+  background: var(--atlas-paper);
+  color: var(--atlas-accent);
+  font-size: .9375rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.atlas-use-topics a:hover {
+  border-color: var(--atlas-accent);
+  text-decoration: underline;
+  text-underline-offset: .15em;
+}
+.atlas-use-sources { display: flex; flex-wrap: wrap; gap: 0 .85rem; margin-top: .375rem; }
 .atlas-use-studies, .atlas-use-status { margin-top: .65rem; }
 .atlas-use-studies li + li { border-top: 1px solid var(--atlas-line); }
 .atlas-use-studies a {
@@ -904,7 +926,6 @@
   background: transparent;
 }
 .atlas-entry .atlas-traditional-use .atlas-section-title { margin-bottom: 0; }
-.atlas-entry .atlas-traditional-use .atlas-use-topics { margin-top: .375rem; }
 .atlas-entry .atlas-traditional-use .atlas-use-source { color: var(--atlas-muted); }
 .atlas-location-links {
   display: flex;
@@ -973,6 +994,9 @@
 .atlas-secondary-sections > .atlas-evidence-disclosure > summary, .atlas-reference-row > summary { min-height: 3.125rem; }
 .atlas-secondary-sections > .atlas-evidence-disclosure > summary h2, .atlas-reference-row > summary { font-size: 1rem; }
 .atlas-reference-content { display: grid; gap: .75rem; padding-block: .25rem 1rem; }
+.atlas-intro-details { min-width: 0; }
+.atlas-intro-details .atlas-reference-row > summary { min-height: 2.75rem; }
+.atlas-intro-details .atlas-reference-row > summary h2 { font: inherit; }
 .atlas-reference-content .atlas-name-guide .atlas-section-title { font-size: 1.0625rem; }
 .atlas-point-compare-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 .75rem; }
 .atlas-point-compare-heading > .atlas-section-title { margin-block: 0; }

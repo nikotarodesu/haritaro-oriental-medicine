@@ -4,7 +4,7 @@ import styles from "./AcupointTopics.module.css";
 
 const topics = {
   location: "場所と見つけ方",
-  uses: "伝統的な使われ方と研究",
+  uses: "伝統的な使われ方",
   nearby: "近くのツボ・位置の比較",
   pairs: "ツボの組み合わせ",
 } as const;
