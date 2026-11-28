@@ -52,8 +52,11 @@
 }
 
 .folio :global(.atlas-section-title) {
-  font-family: var(--font-serif);
   font-size: clamp(1.375rem, 3vw, 1.75rem);
+}
+
+.folio :global(#acupoint-location) > :global(.atlas-section-title) {
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", var(--font-serif);
 }
 
 .locatorIntro {
