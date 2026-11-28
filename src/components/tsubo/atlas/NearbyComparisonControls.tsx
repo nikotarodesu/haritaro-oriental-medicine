@@ -133,11 +133,10 @@ export default function NearbyComparisonControls({
             <p>図の丸印か番号を選んでください。</p>
           </div>
         ) : (
-          <p className="atlas-muted">図のツボ名を選ぶと、丸印と下の説明が強調されます。</p>
+          <p className="atlas-muted">ツボ名を選ぶと、図の丸印と下の説明が切り替わります。</p>
         )}
         <div
           className="atlas-comparison-figure"
-          style={{ aspectRatio: `${width} / ${height}` }}
           role={isQuiz ? "group" : undefined}
           aria-labelledby={isQuiz ? questionId : undefined}
         >
@@ -153,6 +152,7 @@ export default function NearbyComparisonControls({
               <g key={code} className="atlas-comparison-marker" data-selected={code === markedCode || undefined}>
                 <path d={`M${x} ${y}L${endX} ${endY}`} />
                 <circle cx={x} cy={y} r="4.5" data-quiz-dot={isQuiz && !isSolved ? index + 1 : undefined} />
+                <text x={endX} y={endY} dy=".3em" textAnchor="middle" className="atlas-comparison-figure-number" aria-hidden="true">{index + 1}</text>
               </g>
             ))}
           </svg>

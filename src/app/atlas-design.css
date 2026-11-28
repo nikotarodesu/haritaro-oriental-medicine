@@ -414,7 +414,7 @@
 .atlas-nearby { margin-top: 1.125rem; border-block: 1px solid var(--atlas-line); }
 .atlas-nearby > summary { min-height: 3rem; flex-wrap: wrap; font-size: .9375rem; }
 .atlas-nearby > summary span { color: var(--atlas-muted); font-size: .8125rem; font-weight: 400; }
-.atlas-comparison-content { display: grid; gap: .625rem; max-width: 564px; padding-block: .125rem 1rem; }
+.atlas-comparison-content { display: grid; gap: .625rem; max-width: 564px; padding-block: .125rem 1rem; container-type: inline-size; }
 .atlas-comparison-figure {
   position: relative;
   border: 1px solid var(--atlas-line);
@@ -501,6 +501,27 @@
   transform: translate(-50%, -50%);
 }
 .atlas-comparison-choice[data-quiz-choice][aria-disabled="true"] { cursor: default; }
+.atlas-comparison-figure-number { display: none; }
+@container (max-width: 15rem) {
+  .atlas-comparison-figure { display: grid; }
+  .atlas-comparison-figure .atlas-comparison-figure-number {
+    display: block;
+    fill: var(--atlas-ink);
+    stroke: var(--atlas-paper);
+    stroke-width: 4px;
+    paint-order: stroke;
+  }
+  .atlas-comparison-figure > .atlas-comparison-choice {
+    position: static;
+    width: 100%;
+    padding-inline: .5rem;
+    justify-content: start;
+    transform: none;
+    border-block-start: 1px solid var(--atlas-line);
+    border-radius: 0;
+    white-space: normal;
+  }
+}
 .atlas-comparison-marker circle[data-quiz-dot] { cursor: pointer; }
 .atlas-comparison-reading {
   display: grid;
