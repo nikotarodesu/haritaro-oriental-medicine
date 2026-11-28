@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
+import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
 import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import RegionalPointAnatomy from "@/components/tsubo/RegionalPointAnatomy";
 import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
@@ -40,7 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ExtraPointPage({ params }: Props) {
   const point = await pointFromParams(params);
-  const anatomySection = getRegionalSection(point.code.toLowerCase());
+  const code = point.code.toLowerCase();
+  const anatomySection = getRegionalSection(code);
   const [namingSource, positionSource] = point.sources;
   const url = SITE_ORIGIN + point.href;
   const schema = {
@@ -77,20 +79,11 @@ export default async function ExtraPointPage({ params }: Props) {
           <a href={namingSource.href} className="atlas-source-link">WHOの名称資料（PDF）</a>
           {point.classification && <>{" "}<a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
         </p>
-        <nav className="atlas-section-nav" aria-label="このツボのページ内を移動">
-          <a href="#acupoint-traditional">使われ方</a>
-          <a href="#extra-point-location">場所</a>
-          {anatomySection && <a href="#acupoint-anatomy">断面図</a>}
-          <a href="#acupoint-study-overview">研究</a>
-        </nav>
       </header>
 
-      <AcupointTraditionalUses code={point.code.toLowerCase()} />
-
-      <section id="extra-point-location" className="atlas-target" aria-labelledby="extra-point-location-heading">
-        <h2 id="extra-point-location-heading" className={styles.sectionTitle}>{point.name}の位置</h2>
-        <div className={styles.location}>
-          <figure className={styles.figure}>
+      <AcupointTopic topic="location">
+        <div id="extra-point-location" tabIndex={-1} className={`atlas-target ${styles.location}`}>
+          <figure id="extra-point-location-heading" className={`atlas-target ${styles.figure}`}>
             <ExtraPointDiagram point={point} />
             <figcaption>{point.figureCaption}。位置関係を示す模式図です。</figcaption>
           </figure>
@@ -100,26 +93,31 @@ export default async function ExtraPointPage({ params }: Props) {
               <li><span className={styles.keyWhite} aria-hidden="true" /><span>{point.landmark}（位置の目印）</span></li>
               <li><span className={styles.keyOrange} aria-hidden="true" /><span>{point.name}（{point.code}）</span></li>
             </ul>
-            <p className="mt-3 text-sm">
-              位置の出典 <a href={positionSource.href} className="atlas-source-link">{positionSource.title}（PDF）</a>
-            </p>
           </div>
         </div>
-      </section>
+        <AcupointLocationRows>
+          <AcupointLocationDetails>
+            <p>位置の出典　<a href={positionSource.href} className="atlas-source-link">{positionSource.title}（PDF）</a></p>
+          </AcupointLocationDetails>
+          {anatomySection && (
+            <RegionalPointAnatomy
+              code={point.code}
+              name={point.name}
+              section={anatomySection}
+              locationHref="#extra-point-location"
+              surface={<ExtraPointDiagram point={point} />}
+            />
+          )}
+        </AcupointLocationRows>
+      </AcupointTopic>
 
-      {anatomySection && (
-        <RegionalPointAnatomy
-          code={point.code}
-          name={point.name}
-          section={anatomySection}
-          locationHref="#extra-point-location"
-          surface={<ExtraPointDiagram point={point} />}
-        />
-      )}
+      <AcupointTopic topic="uses">
+        <AcupointTraditionalUses code={code} />
+        <AcupointUses code={code} />
+      </AcupointTopic>
 
-      <section className={styles.section} aria-labelledby="extra-point-nearby-heading">
-        <h2 id="extra-point-nearby-heading" className={styles.sectionTitle}>近くにあるツボ</h2>
-        <ul className={styles.nearby}>
+      <AcupointTopic topic="nearby">
+        <ul id="extra-point-nearby-heading" className={`atlas-target ${styles.nearby}`}>
           {point.nearby.map(nearby => (
             <li key={nearby.code}>
               <Link href={nearby.href}>
@@ -129,9 +127,7 @@ export default async function ExtraPointPage({ params }: Props) {
             </li>
           ))}
         </ul>
-      </section>
-
-      <AcupointUses code={point.code.toLowerCase()} />
+      </AcupointTopic>
 
       <section id="extra-point-sources" className={`atlas-target ${styles.section}`} aria-labelledby="extra-point-sources-heading">
         <h2 id="extra-point-sources-heading" className={styles.sectionTitle}>出典と確認した範囲</h2>

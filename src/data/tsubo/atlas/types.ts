@@ -16,14 +16,15 @@ export interface AcupointAtlasArticle {
   pointWarning?: string;
   symptomWarning?: string;
   location: readonly string[];
-  traditionalTitle?: string;
   traditional: readonly string[];
+  researchNotes?: readonly string[];
+  comparisonNotes?: { title: string; paragraphs: readonly string[] };
   selfCare: readonly string[];
   cautions: readonly string[];
   expert: readonly string[];
   visualOnly?: boolean;
   symptomLinks?: readonly { href: string; label: string }[];
-  relatedPoints: readonly { code: string; text: string }[];
+  relatedPoints: readonly { code: string; text: string; includeLocation?: boolean }[];
   sources: readonly { name: string; url: string; scope: string }[];
   illustration: {
     region: AtlasRegion;

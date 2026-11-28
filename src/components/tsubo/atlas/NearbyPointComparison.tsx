@@ -4,7 +4,6 @@ import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearby
 import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
 import { nearbyPracticeReview } from "@/data/tsubo/atlas/practiceReviews";
 import { getRegionalSection } from "@/data/tsubo/regionalSections";
-import { AcupointStudyLinks } from "../AcupointArticleLinks";
 import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
 import NearbyComparisonControls from "./NearbyComparisonControls";
 
@@ -50,7 +49,7 @@ export default function NearbyPointComparison({ comparison, code, anchorId, init
         {guide && <Link href={guide.href} prefetch={false} className="atlas-source-link inline-flex min-h-11 items-center">{guide.title}を図で見る</Link>}
       </>}
       relatedReading={
-        id === "medial-knee" ? <AcupointStudyLinks code={code} /> : id === "shoulder" && (
+        id === "shoulder" && (
           <p>
             肩の上にある<Link href="/tsubo/gb21#acupoint-location" prefetch={false} className="atlas-source-link">肩井（GB21）</Link>は、首の付け根と肩先を結ぶ線の中ほどです。
           </p>

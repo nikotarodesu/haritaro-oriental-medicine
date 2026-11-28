@@ -145,10 +145,7 @@
 }
 
 .figure {
-  overflow: clip;
-  border: 1px solid var(--border-washi);
-  border-radius: var(--radius-card);
-  background: var(--extra-figure);
+  min-width: 0;
 }
 
 .figure .diagram {
@@ -158,11 +155,10 @@
 }
 
 .figure figcaption {
-  padding: .5rem .875rem;
-  border-block-start: 1px solid var(--border-washi);
-  background: var(--bg-card);
+  margin-block-start: .5rem;
   color: var(--text-secondary);
   font-size: .875rem;
+  text-align: center;
 }
 
 .faceOutline {
@@ -206,10 +202,6 @@
   display: grid;
   align-content: center;
   gap: 1rem;
-  padding: clamp(.875rem, 3vw, 1.5rem);
-  border: 1px solid var(--border-washi);
-  border-radius: var(--radius-card);
-  background: var(--bg-card);
 }
 
 .position {

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { BookOpen, ClipboardList } from "lucide-react";
 import { getCaseStudyUsingAcupoint } from "@/data/cases/caseStudyCatalog";
 import { getDiagnosisStudyLinks } from "@/utils/diagnosisStudyLinks";
 import { getAcupointGuideLinks } from "@/utils/symptomGuides";
@@ -15,7 +14,7 @@ const diagnosisPointPaths = new Set(
   Object.values(getDiagnosisStudyLinks()).flatMap(({ points }) => points.map(point => point.href)),
 );
 
-export function AcupointStudyLinks({ code }: { code: string }) {
+function getStudyLinks(code: string) {
   const standardCode = code.toUpperCase();
   const route = ATLAS_STUDY_ROUTES.find(({ codes }) => codes.includes(standardCode));
   const pointType = getAcupointKeyPointTypes(code.toLowerCase())[0];
@@ -36,16 +35,7 @@ export function AcupointStudyLinks({ code }: { code: string }) {
     label: relatedStep ? "このツボが出る設問を解く" : pair?.caseLabel ?? (caseId ? "このツボが出る模擬症例を解く" : "模擬症例を探す"),
   };
 
-  return (
-    <nav aria-label="講義と模擬症例" className="atlas-study-links print:hidden">
-      <Link href={lecture.href} className="page-secondary-action" prefetch={false}>
-        <BookOpen size={16} aria-hidden="true" />{lecture.label}
-      </Link>
-      <Link href={exercise.href} className="page-secondary-action" prefetch={false}>
-        <ClipboardList size={16} aria-hidden="true" />{exercise.label}
-      </Link>
-    </nav>
-  );
+  return [lecture, exercise];
 }
 
 export function AcupointComparisonLink({ code }: { code: string }) {
@@ -90,17 +80,18 @@ export function AcupointReadingLinks({ code, editorialLinks }: {
   code: string;
   editorialLinks?: AcupointAtlasArticle["symptomLinks"];
 }) {
-  const links = getAcupointGuideLinks(code, editorialLinks);
-  const hasDiagnosisLink = diagnosisPointPaths.has(`/tsubo/${code}`);
-  if (!links.length && !hasDiagnosisLink) return null;
+  const links = new Map<string, string>();
+  for (const { href, label } of [...getStudyLinks(code), ...getAcupointGuideLinks(code, editorialLinks)]) {
+    if (!links.has(href)) links.set(href, label);
+  }
+  if (diagnosisPointPaths.has(`/tsubo/${code.toLowerCase()}`)) links.set("/diagnosis", "気血水の体質チェックで学ぶ");
 
   return (
-    <details className="atlas-disclosure atlas-reference-row">
-      <summary>関連する症状ガイド・体質チェック</summary>
+    <details id="acupoint-related-reading" className="atlas-disclosure atlas-reference-row atlas-target">
+      <summary>講義・模擬症例・症状ガイド</summary>
       <div className="atlas-reference-content">
-        <ul className="mt-2 space-y-1 text-sm">
-          {links.map(({ href, label }) => <li key={href}><Link href={href} className={linkClass}>{label}</Link></li>)}
-          {hasDiagnosisLink && <li><Link href="/diagnosis" className={linkClass}>気血水の体質チェックで学ぶ</Link></li>}
+        <ul className="text-sm">
+          {Array.from(links, ([href, label]) => <li key={href}><Link href={href} className={linkClass} prefetch={false}>{label}</Link></li>)}
         </ul>
       </div>
     </details>

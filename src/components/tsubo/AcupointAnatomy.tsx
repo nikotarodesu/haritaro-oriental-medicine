@@ -1,10 +1,10 @@
-import HashTargetDetails from "@/components/common/HashTargetDetails";
 import { getPublicCrossSectionModel } from "@/data/medicalSafety";
 import { getSharedAnatomyLandmarks } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
 import { whoLocations } from "@/data/tsubo/atlas/whoLocations";
 import { getWhoMeasurements } from "@/data/tsubo/atlas/whoMeasurements";
 import type { AcupointDetail } from "@/data/tsubo/types";
 import CrossSectionViewer from "./CrossSectionViewer";
+import { AcupointAnatomyDetails } from "./AcupointTopics";
 import WhoMeasurementFigures from "./WhoMeasurementFigures";
 
 const anatomyPreviews: Readonly<Partial<Record<string, string>>> = {
@@ -30,16 +30,11 @@ export default function AcupointAnatomy({ point, paragraphs = [] }: {
     : [];
 
   return (
-    <section id="acupoint-anatomy" data-anatomy-kind="individual" className="atlas-target" aria-labelledby="acupoint-anatomy-title">
-      <h2 id="acupoint-anatomy-title" className="atlas-section-title">詳しい解剖と位置</h2>
-      {preview && <p className="mb-3">{preview}</p>}
-      <HashTargetDetails key={point.code} analytics={{ kind: "individual" }} className="atlas-disclosure atlas-anatomy-details" summary="断面図を開く">
-        <div id="acupoint-anatomy-diagram" className="atlas-target space-y-3 pb-3">
-          <WhoMeasurementFigures measures={forearmHeight} pointName={point.name} />
-          <CrossSectionViewer model={model} pointName={point.name} pointCode={point.code} individualModel sharedLandmarks={getSharedAnatomyLandmarks(point.codeLower)} />
-          {paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-        </div>
-      </HashTargetDetails>
-    </section>
+    <AcupointAnatomyDetails key={point.code} kind="individual">
+      {preview && <p>{preview}</p>}
+      <WhoMeasurementFigures measures={forearmHeight} pointName={point.name} />
+      <CrossSectionViewer model={model} pointName={point.name} pointCode={point.code} individualModel sharedLandmarks={getSharedAnatomyLandmarks(point.codeLower)} />
+      {paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+    </AcupointAnatomyDetails>
   );
 }

@@ -1,23 +1,23 @@
-import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
+import styles from "./AcupointCautions.module.css";
 
 export default function AcupointCautions({ priority, children }: {
   priority?: ReactNode;
   children: ReactNode;
 }) {
   return (
-    <section className="space-y-2" aria-labelledby="acupoint-safety-warning">
-      {priority && <div className="atlas-caution-priority space-y-1">{priority}</div>}
+    <section className={priority ? styles.withPriority : undefined} aria-labelledby="acupoint-safety-warning">
+      {priority && <div className={styles.priority}>{priority}</div>}
       <HashTargetDetails
         id="acupoint-cautions"
-        className="atlas-cautions atlas-disclosure atlas-target"
-        summary={<><ShieldCheck aria-hidden="true" className="size-4 shrink-0" /><span id="acupoint-safety-warning">注意したいこと</span></>}
+        className="atlas-disclosure atlas-target"
+        summary={<span id="acupoint-safety-warning">注意事項</span>}
       >
-        <div className="space-y-2 text-sm leading-relaxed">
+        <div className={styles.details}>
           {children}
-          <Link href="/safety" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+          <Link href="/safety" className="atlas-source-link inline-flex min-h-11 items-center">
             受診の目安と鍼灸の安全性
           </Link>
         </div>

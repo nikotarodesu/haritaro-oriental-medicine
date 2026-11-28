@@ -15,8 +15,7 @@ import LegLandmarkRegion from "./LegLandmarkRegion";
 import LandmarkCloseUp from "./LandmarkCloseUp";
 import VolarForearmRegion from "./VolarForearmRegion";
 import ExpandedLandmarkRegion, { expandedViews } from "./expanded/ExpandedLandmarkRegion";
-import ZoomableAtlasDiagram from "./ZoomableAtlasDiagram";
-import AtlasLocationFigures from "./AtlasLocationFigures";
+import { AtlasLocationDiagram, AtlasLocationFigure, AtlasLocationSupplement } from "./AtlasLocationFigures";
 import AtlasLandmarkGuide from "./AtlasLandmarkGuide";
 import type { BodyArea } from "./expanded/views";
 
@@ -67,11 +66,19 @@ const bodyMapOverrides = {
   neckBase: { area: "neckBase", label: "首の付け根" },
 } as const;
 
-export function PointAtlasThumbnail({ point, illustration, marker }: {
+type PointLocationProps = {
   point: AcupointMaster;
   illustration: AcupointAtlasArticle["illustration"];
   marker: AtlasMarker;
-}) {
+};
+
+type PointLocationSupplementProps = PointLocationProps & {
+  meridianPoints: readonly AcupointMaster[];
+  finding?: readonly string[];
+  children?: ReactNode;
+};
+
+export function PointAtlasThumbnail({ point, illustration, marker }: PointLocationProps) {
   const { CloseUp } = regions[illustration.region];
   const { marker: position } = getAnnotatedCloseUp(point.codeLower, marker, illustration.region);
 
@@ -84,15 +91,8 @@ export function PointAtlasThumbnail({ point, illustration, marker }: {
   );
 }
 
-export default function PointAtlasDiagrams({ point, meridianPoints, illustration, marker, finding, children }: {
-  point: AcupointMaster;
-  meridianPoints: readonly AcupointMaster[];
-  illustration: AcupointAtlasArticle["illustration"];
-  marker: AtlasMarker;
-  finding?: readonly string[];
-  children?: ReactNode;
-}) {
-  const { BodyHighlight, CloseUp } = regions[illustration.region];
+export function PointAtlasLocationFigure({ point, illustration, marker }: PointLocationProps) {
+  const { CloseUp } = regions[illustration.region];
   const { marker: closeUpMarker, measurements } = getAnnotatedCloseUp(point.codeLower, marker, illustration.region);
   const measured = measurements.length > 0;
   const expandedPoint = closeUpMarker.expanded;
@@ -106,12 +106,6 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
     ? landmarks.map(landmark => ({ ...landmark, position: projectElbowCloseUp(landmark.position) }))
     : landmarks;
   const surfaceCaption = elbowPoint ? "ひじの前面・図の左が親指側" : landmarkView ? landmarkView.caption : expandedView?.name;
-  const bodyMap = point.codeLower === "gv14" ? bodyMapOverrides.neckBase
-    : occipitalPoints.has(point.codeLower) ? bodyMapOverrides.occiput : undefined;
-  const bodyArea = elbowPoint ? "elbow" : bodyMap?.area ?? expandedView?.area;
-  const bodyLabel = elbowPoint ? "ひじの前" : bodyMap?.label ?? illustration.bodyLabel;
-  const back = expandedView?.direction === "back" || Boolean(marker.legCode && legLandmarks[marker.legCode].view === "posterior");
-  const bodyDirection = back ? "背面" : "正面";
   const landmarkNames = closeUpMarker.expanded?.landmarks.map((id) => expandedView?.features[id].name.replace("／", "")).join("、");
   const closeUpAlt = expandedView
     ? `${expandedView.name}。 ${illustration.closeUpAlt} 目印は${landmarkNames}です。`
@@ -119,16 +113,11 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
   const measureAlt = measurements.map(({ measure, originLabel, level, alternative, condition }) =>
     `${alternative ? "代替位置。 " : condition ? condition + "。 " : ""}${level ? level + "の高さで、" : ""}${originLabel}から${measure.direction}${measure.token}。`
   ).join(" ");
-  const nearby = meridianPoints.filter(({ meridianOrder }) =>
-    meridianOrder >= illustration.meridianStart && meridianOrder <= illustration.meridianEnd
-  );
-  const lineLength = 300;
-  const step = lineLength / Math.max(nearby.length - 1, 1);
   const pointLabel = `${point.name} ${point.code}`;
   const diagramLabel = `${point.name}の場所と目印`;
   const landmarkArtwork = <CloseUp marker={closeUpMarker} label={pointLabel} labelled landmarkIds={expandedPoint && expandedLandmarkIds(expandedPoint, point.codeLower)} />;
   const locationDiagram = (
-    <ZoomableAtlasDiagram label={diagramLabel} pointName={point.name}>
+    <AtlasLocationDiagram pointName={point.name}>
       {surfaceLandmarks && landmarkView ? (
         <LandmarkCloseUp marker={{ x: markerX, y: markerY }} pointLabel={pointLabel} landmarks={surfaceLandmarks} left={landmarkView.left}
           numbered={elbowPoint || point.codeLower === "pc7" || point.codeLower === "lr3"}
@@ -142,26 +131,48 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
           <circle data-point-marker="" cx={closeUpMarker.x} cy={closeUpMarker.y} r="5" fill="#7F3520" stroke="#FFF9F0" strokeWidth="2" />
         </svg>
       )}
-    </ZoomableAtlasDiagram>
+    </AtlasLocationDiagram>
   );
   const code = point.codeLower;
   const guidedPoint = code === "pc4" || code === "pc5" || code === "pc6" || code === "st36" ? code : undefined;
+  const caption = !guidedPoint && illustration.closeUpCaption !== diagramLabel ? illustration.closeUpCaption : undefined;
 
   return (
-    <AtlasLocationFigures notes={children} finding={finding} primary={
+    <AtlasLocationFigure>
       <figure className={`${figureClass} ${measured ? "atlas-figure--measured" : "atlas-figure--labelled"}`}>
         {guidedPoint ? <AtlasLandmarkGuide code={guidedPoint}>{locationDiagram}</AtlasLandmarkGuide> : locationDiagram}
-        <figcaption>
-          {surfaceCaption && <span className="block text-sm font-semibold">{surfaceCaption}{" "}</span>}
-          {(measured || illustration.closeUpCaption !== diagramLabel) && illustration.closeUpCaption}
-          {measured && <>
-            <p className="atlas-dimension-guide">白丸が起点、矢印が測る方向です。{measurements.some(({ alternative }) => alternative) && "ひし形は代替位置です。"}</p>
-            <CloseUpMeasurementKey measurements={measurements} />
-          </>}
-        </figcaption>
+        {(surfaceCaption || caption || measured) && (
+          <figcaption>
+            {surfaceCaption && <span className="block text-sm font-semibold">{surfaceCaption}</span>}
+            {caption}
+            {measured && <>
+              <p className="atlas-dimension-guide">白丸が起点、矢印が測る方向です。{measurements.some(({ alternative }) => alternative) && "ひし形は代替位置です。"}</p>
+              <CloseUpMeasurementKey measurements={measurements} />
+            </>}
+          </figcaption>
+        )}
       </figure>
-    }>
+    </AtlasLocationFigure>
+  );
+}
 
+export function PointAtlasLocationSupplement({ point, meridianPoints, illustration, marker, finding, children }: PointLocationSupplementProps) {
+  const { BodyHighlight } = regions[illustration.region];
+  const expandedView = marker.expanded && expandedViews[marker.expanded.view];
+  const elbowPoint = isElbowSurfacePoint(point.codeLower);
+  const bodyMap = point.codeLower === "gv14" ? bodyMapOverrides.neckBase
+    : occipitalPoints.has(point.codeLower) ? bodyMapOverrides.occiput : undefined;
+  const bodyArea = elbowPoint ? "elbow" : bodyMap?.area ?? expandedView?.area;
+  const bodyLabel = elbowPoint ? "ひじの前" : bodyMap?.label ?? illustration.bodyLabel;
+  const back = expandedView?.direction === "back" || Boolean(marker.legCode && legLandmarks[marker.legCode].view === "posterior");
+  const bodyDirection = back ? "背面" : "正面";
+  const nearby = meridianPoints.filter(({ meridianOrder }) =>
+    meridianOrder >= illustration.meridianStart && meridianOrder <= illustration.meridianEnd
+  );
+  const step = 300 / Math.max(nearby.length - 1, 1);
+
+  return (
+    <AtlasLocationSupplement notes={children} finding={finding}>
       <figure className={`${figureClass} atlas-figure--overview`}>
         <svg viewBox="0 0 200 272" role="img" aria-label={`全身${bodyDirection}のシルエット。${bodyLabel}をオレンジで示しています。`} className="mx-auto block max-h-64 w-full">
           <circle cx="100" cy="32" r="19" fill="#D8D5C9" />
@@ -178,25 +189,23 @@ export default function PointAtlasDiagrams({ point, meridianPoints, illustration
       </figure>
 
       <figure className={`${figureClass} atlas-figure--meridian`}>
-        <ZoomableAtlasDiagram label={`${point.meridian}の並び順`}>
-          <svg viewBox="0 0 360 108" role="img" aria-label={`${point.meridian}。 ${nearby.map((entry) => `${entry.code} ${entry.name}`).join("、")}の順で、${point.name}を強調しています。`} className="mx-auto block w-full max-w-md">
-            <path d="M30 44H330" stroke="#A69B87" strokeWidth="2" />
-            {nearby.map((entry, index) => {
-              const isCurrent = entry.code === point.code;
-              return (
-                <g key={entry.code} transform={`translate(${30 + step * index} 44)`}>
-                  <circle r={isCurrent ? 10 : 5} fill={isCurrent ? "#9E4B20" : "#F9F5ED"} stroke={isCurrent ? "#7F3520" : "#82725B"} strokeWidth="2" />
-                  <text textAnchor="middle" y="30" fontSize="13" fill="#332D25" fontWeight={isCurrent ? "bold" : "normal"}>{entry.name}</text>
-                  <text textAnchor="middle" y="48" fontSize="11" fill="#524637">{entry.code}</text>
-                </g>
-              );
-            })}
-          </svg>
-        </ZoomableAtlasDiagram>
+        <svg viewBox="0 0 360 108" role="img" aria-label={`${point.meridian}。 ${nearby.map((entry) => `${entry.code} ${entry.name}`).join("、")}の順で、${point.name}を強調しています。`} className="mx-auto block w-full max-w-md">
+          <path d="M30 44H330" stroke="#A69B87" strokeWidth="2" />
+          {nearby.map((entry, index) => {
+            const isCurrent = entry.code === point.code;
+            return (
+              <g key={entry.code} transform={`translate(${30 + step * index} 44)`}>
+                <circle r={isCurrent ? 10 : 5} fill={isCurrent ? "#9E4B20" : "#F9F5ED"} stroke={isCurrent ? "#7F3520" : "#82725B"} strokeWidth="2" />
+                <text textAnchor="middle" y="30" fontSize="13" fill="#332D25" fontWeight={isCurrent ? "bold" : "normal"}>{entry.name}</text>
+                <text textAnchor="middle" y="48" fontSize="11" fill="#524637">{entry.code}</text>
+              </g>
+            );
+          })}
+        </svg>
         <figcaption>
           {point.meridian}の順序 · {illustration.meridianCaption}
         </figcaption>
       </figure>
-    </AtlasLocationFigures>
+    </AtlasLocationSupplement>
   );
 }

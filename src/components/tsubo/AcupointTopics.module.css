@@ -1,0 +1,70 @@
+.chapter {
+  display: grid;
+  min-width: 0;
+  gap: clamp(.875rem, 2vw, 1.375rem);
+  padding-block-start: clamp(1rem, 3vw, 1.6rem);
+  border-block-start: 1px solid var(--atlas-line);
+}
+
+.chapter > * { min-width: 0; }
+
+.chapter > .title {
+  margin: 0;
+  color: var(--atlas-ink);
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", var(--font-serif);
+  font-size: clamp(1.4rem, 3.3vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.chapter :global(.atlas-study-card) h4 { font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
+.chapter:focus-visible {
+  outline: 2px solid var(--atlas-accent);
+  outline-offset: .25rem;
+}
+
+.chapter h3:global(.atlas-section-title) {
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.chapter :global(.atlas-evidence-disclosure) {
+  padding-inline: 0;
+  border: 0;
+  border-block: 1px solid var(--atlas-line);
+  border-radius: 0;
+  background: transparent;
+}
+
+.locationRows {
+  min-width: 0;
+  border-block-start: 1px solid var(--atlas-line);
+}
+
+.locationDetails {
+  min-width: 0;
+  border-block-end: 1px solid var(--atlas-line);
+}
+
+.locationDetails > summary {
+  min-height: 2.75rem;
+  padding-inline: .125rem;
+  font-size: .9375rem;
+  font-weight: 600;
+}
+
+.locationContent {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding-block: .875rem 1rem;
+  border-block-start: 1px solid var(--atlas-line);
+}
+
+.locationContent :global(.atlas-who-location),
+.locationContent :global(.atlas-figure) {
+  border: 0;
+  padding-inline: 0;
+  background: transparent;
+}

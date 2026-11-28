@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
@@ -45,7 +46,7 @@ function PairPointLink({ point }: { point: AcupointMaster }) {
   );
 }
 
-function PairCard({ pair }: { pair: FeaturedPair }) {
+export function PairCard({ pair, compact = false, children }: { pair: FeaturedPair; compact?: boolean; children?: ReactNode }) {
   const [firstId, secondId] = pair.pointIds;
   const first = getAcupointByCode(firstId);
   const second = getAcupointByCode(secondId);
@@ -55,9 +56,8 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
   const detailsLabel = hasClassic && hasStudy ? "古典の記述・研究の詳細と出典"
     : hasClassic ? "古典の記述と出典" : "研究の詳細と出典";
 
-  return (
-    <article className={`${styles.card}${pair.evidenceHighlights ? ` ${styles.featuredCard}` : ""} atlas-target`} id={featuredPairAnchor(pair.id)} tabIndex={-1}>
-      <h3>{pair.name}</h3>
+  const content = (
+    <>
       <div className={styles.points}>
         <PairPointLink point={first} />
         <PairPointLink point={second} />
@@ -113,15 +113,28 @@ function PairCard({ pair }: { pair: FeaturedPair }) {
           </dl>
         </details>
       )}
+      {children}
+    </>
+  );
+  if (compact) {
+    return (
+      <HashTargetDetails id={featuredPairAnchor(pair.id)} className={`atlas-disclosure atlas-target ${styles.pointRow}`} summary={<h3>{pair.name}</h3>}>
+        <div className={styles.rowBody}>{content}</div>
+      </HashTargetDetails>
+    );
+  }
+  return (
+    <article className={`${styles.card}${pair.evidenceHighlights ? ` ${styles.featuredCard}` : ""} atlas-target`} id={featuredPairAnchor(pair.id)} tabIndex={-1}>
+      <h3>{pair.name}</h3>
+      {content}
     </article>
   );
 }
 
-export default function FeaturedAcupointPairs({ pointCode, directory = false }: {
-  pointCode?: string;
+export default function FeaturedAcupointPairs({ directory = false }: {
   directory?: boolean;
 }) {
-  const pairs = directory || pointCode ? getFeaturedPairs(pointCode) : featuredPairPreview;
+  const pairs = directory ? getFeaturedPairs() : featuredPairPreview;
   if (!pairs.length) return null;
 
   if (directory) {
@@ -150,40 +163,19 @@ export default function FeaturedAcupointPairs({ pointCode, directory = false }: 
     { id: `${FEATURED_ACUPOINT_PAIRS_ANCHOR}-combinations`, label: "ツボの組み合わせ", pairs: pairs.filter(pair => pair.kind !== "name") },
     { id: `${FEATURED_ACUPOINT_PAIRS_ANCHOR}-names`, label: "名前が似ているツボ", pairs: pairs.filter(pair => pair.kind === "name") },
   ].filter(section => section.pairs.length > 0);
-  const Heading = pointCode ? "h3" : "h2";
-  const directoryLink = (
-    <a href={ACUPOINT_PAIRS_PATH} className={`atlas-text-action ${pointCode ? "" : styles.directoryLink}`}>
-      ツボの組み合わせを見る<ArrowRight size={16} aria-hidden="true" />
-    </a>
-  );
-  const groups = (
-    <div className={styles.groups}>
-      {!pointCode && directoryLink}
-      {sections.map(({ id, label, pairs }) => (
-        <section key={id} id={id} className="atlas-target" aria-label={label}>
-          {(!pointCode || sections.length > 1) && <Heading className="atlas-section-title">{label}</Heading>}
-          <div className={styles.cards}>
-            {pairs.map(pair => <PairCard key={pair.id} pair={pair} />)}
-          </div>
-        </section>
-      ))}
-      {pointCode && directoryLink}
+  return (
+    <div id={FEATURED_ACUPOINT_PAIRS_ANCHOR} className="atlas-target">
+      <div className={styles.groups}>
+        <a href={ACUPOINT_PAIRS_PATH} className={`atlas-text-action ${styles.directoryLink}`}>ツボの組み合わせを見る<ArrowRight size={16} aria-hidden="true" /></a>
+        {sections.map(({ id, label, pairs }) => (
+          <section key={id} id={id} className="atlas-target" aria-label={label}>
+            <h2 className="atlas-section-title">{label}</h2>
+            <div className={styles.cards}>
+              {pairs.map(pair => <PairCard key={pair.id} pair={pair} />)}
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   );
-
-  if (pointCode) {
-    const title = sections.length === 1 ? sections[0].label : "ツボの組み合わせと似た名前";
-    return (
-      <HashTargetDetails
-        id={FEATURED_ACUPOINT_PAIRS_ANCHOR}
-        className="atlas-disclosure atlas-evidence-disclosure atlas-target"
-        summary={<h2>{title}</h2>}
-        open
-      >
-        {groups}
-      </HashTargetDetails>
-    );
-  }
-
-  return <div id={FEATURED_ACUPOINT_PAIRS_ANCHOR} className="atlas-target">{groups}</div>;
 }
