@@ -60,7 +60,7 @@ export default async function TsuboSymptomPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd(href, heading, description, heading, pointLinks) }} />
       <header className={styles.heading}>
         <h1>{heading}</h1>
-        <p>{points.length}穴を掲載しています。ツボ名を選ぶと、位置図や研究の掲載状況を確認できます。</p>
+        <p>該当するツボは{points.length}穴です。</p>
       </header>
       {urgent && (
         <aside className="atlas-caution-priority" aria-label="受診を急ぐ症状">
@@ -72,10 +72,16 @@ export default async function TsuboSymptomPage({ params }: Props) {
         {points.map(({ code, name, kana, bodyPart, href, source }) => (
           <li key={code} className={styles.result}>
             <Link href={href} prefetch={false} className={styles.point}>
-              <span><strong>{name}</strong> <small>{kana}・{code}</small></span><ChevronRight size={17} aria-hidden="true" />
+              <span>
+                <strong>{name}</strong> <small>{kana}・{code}</small>
+                <span className={styles.pointRegion}>{bodyPart}</span>
+              </span>
+              <ChevronRight size={17} aria-hidden="true" />
             </Link>
-            <p>{bodyPart}</p>
-            <a href={source.url} className={`atlas-source-link ${styles.source}`}>{source.label}</a>
+            <details className={styles.sourceDetails}>
+              <summary aria-label={`${name}の出典`}>出典</summary>
+              <a href={source.url} className={`atlas-source-link ${styles.source}`}>{source.label}</a>
+            </details>
           </li>
         ))}
       </ul>

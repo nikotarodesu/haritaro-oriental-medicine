@@ -72,7 +72,6 @@ function article(code: LegCode, copy: ArticleCopy): AcupointAtlasArticle {
       region: view === "sole" ? "sole" : view === "shinFront" ? "anterolateralLowerLeg" : view === "knee" || popliteal ? "knee" : "calf",
       bodyLabel: `左右の${viewName}`,
       closeUpAlt: `${viewName}の拡大図。${copy.label}の丸印が${copy.name}（${code.toUpperCase()}）。`,
-      closeUpCaption: `拡大図では、${copy.label}に${copy.name}の丸印を付けています。`,
       meridianStart: Math.max(1, order - 1), meridianEnd: Math.max(3, order + 1),
       meridianCaption: `${copy.name}（${code.toUpperCase()}）と、同じ経絡に並ぶ前後のツボです。`,
     },

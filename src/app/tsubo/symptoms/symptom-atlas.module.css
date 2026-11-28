@@ -35,6 +35,15 @@
 .filter input::placeholder, .filterStatus { color: var(--atlas-muted); }
 .filterStatus:not(:empty) { margin-top: .375rem; }
 
+.group {
+  border-block-end: 1px solid var(--atlas-line);
+}
+
+.group:first-child { border-block-start: 1px solid var(--atlas-line); }
+.group > summary { min-height: 2.75rem; }
+.group > summary small { margin-inline-start: .35rem; color: var(--atlas-muted); font-weight: 400; }
+.group > .index { padding-block-end: .75rem; }
+
 .index, .results {
   display: grid;
   gap: .5rem;
@@ -65,20 +74,56 @@
   text-decoration: underline;
   text-underline-offset: .2em;
 }
-.index small, .point small, .result p {
+.index small, .point small, .pointRegion {
   color: var(--atlas-muted);
   font-size: .875rem;
   font-weight: 400;
 }
 
-.point { grid-template-columns: minmax(0, 1fr) auto; }
-.result p, .source { margin-inline: .75rem; }
-.source {
+.result { position: relative; }
+.point {
+  grid-template-columns: minmax(0, 1fr) auto;
+  min-height: 3.5rem;
+  margin-inline-end: 3.75rem;
+}
+
+.pointRegion { display: block; margin-block-start: .075rem; }
+
+.sourceDetails summary {
+  position: absolute;
+  inset-block-start: .375rem;
+  inset-inline-end: .375rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: .35rem;
+  min-width: 2.75rem;
   min-height: 2.75rem;
-  max-width: calc(100% - 1.5rem);
+  padding-inline: .35rem;
+  color: var(--atlas-accent);
+  font-size: .8125rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.sourceDetails summary::-webkit-details-marker { display: none; }
+.sourceDetails summary::after {
+  width: .4rem;
+  height: .4rem;
+  border-inline-end: 1px solid currentColor;
+  border-block-end: 1px solid currentColor;
+  content: "";
+  transform: translateY(-.1rem) rotate(45deg);
+}
+
+.sourceDetails[open] summary::after { transform: translateY(.1rem) rotate(225deg); }
+.source {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
   padding-block: .3rem;
+  margin-inline: .75rem;
+  border-block-start: 1px solid var(--atlas-line);
   font-size: .875rem;
   overflow-wrap: anywhere;
 }

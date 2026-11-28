@@ -356,11 +356,12 @@
 .atlas-disclosure[open] > summary::after { transform: rotate(225deg); }
 
 .atlas-name-guide {
-  display: grid;
-  gap: .55rem;
   color: var(--text-sumi);
   line-height: 1.8;
 }
+.atlas-name-notation > summary { width: fit-content; }
+.atlas-name-notation > summary::after { margin-inline: .125rem; }
+.atlas-name-notation-content { display: grid; gap: .65rem; padding-block-end: .25rem; }
 .atlas-name-identity {
   display: flex;
   flex-wrap: wrap;
@@ -1007,7 +1008,7 @@
 .atlas-intro-details { min-width: 0; }
 .atlas-intro-details > summary { min-height: 2.75rem; }
 .atlas-intro-details > summary h2 { font: inherit; }
-.atlas-intro-details > .atlas-reference-content { gap: .5rem; padding-block-end: .75rem; }
+.atlas-intro-details > .atlas-reference-content { gap: .25rem; padding-block-end: .375rem; }
 .atlas-point-compare-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 .75rem; }
 .atlas-point-compare-heading > .atlas-section-title { margin-block: 0; }
 .atlas-point-compare-grid {
@@ -1029,9 +1030,9 @@
   background: var(--atlas-paper);
   overflow-wrap: anywhere;
 }
-.atlas-point-compare-card > h3 { font-size: 1rem; font-weight: 700; line-height: 1.45; }
-.atlas-point-compare-card > h3 :is(a, span) { color: var(--atlas-accent); }
-.atlas-point-compare-card > h3 a {
+.atlas-point-compare-card > :is(h3, h4) { font-size: 1rem; font-weight: 700; line-height: 1.45; }
+.atlas-point-compare-card > :is(h3, h4) :is(a, span) { color: var(--atlas-accent); }
+.atlas-point-compare-card > :is(h3, h4) a {
   display: inline-flex;
   min-height: 2.75rem;
   flex-wrap: wrap;
@@ -1041,7 +1042,7 @@
   text-decoration: underline;
   text-underline-offset: .2em;
 }
-.atlas-point-compare-card > h3 span { font-size: .8rem; }
+.atlas-point-compare-card > :is(h3, h4) span { font-size: .8rem; }
 .atlas-point-compare-card > p { font-size: .875rem; line-height: 1.6; }
 .atlas-point-compare-relation { color: var(--atlas-muted); }
 .atlas-point-compare-action {

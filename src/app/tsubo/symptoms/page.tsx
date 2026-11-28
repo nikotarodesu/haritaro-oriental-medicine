@@ -31,7 +31,7 @@ export default function TsuboSymptomIndexPage() {
         TSUBO_SYMPTOM_INDEX_PATH, heading, description, "伝統資料に記載された症状",
         TRADITIONAL_SYMPTOMS.map(({ href, label }) => ({ href, name: label })),
       ) }} />
-      <SymptomDirectory entries={TRADITIONAL_SYMPTOMS.map(({ label, href, points }) => ({ label, href, count: points.length }))} />
+      <SymptomDirectory entries={TRADITIONAL_SYMPTOMS.map(({ slug, label, href, points }) => ({ slug, label, href, count: points.length }))} />
     </article>
   );
 }

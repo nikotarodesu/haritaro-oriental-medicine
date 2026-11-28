@@ -9,7 +9,7 @@ interface DigitCopy {
   regionLabel: string;
   lead: string;
   location: string[];
-  traditional: string;
+  traditional?: string;
   selfCare: string;
   cautions: string;
   expert: string;
@@ -17,6 +17,7 @@ interface DigitCopy {
   pointWarning?: string;
   symptomWarning?: string;
   relatedPoints: AcupointAtlasArticle["relatedPoints"];
+  similarNamePoints?: AcupointAtlasArticle["similarNamePoints"];
   symptomLink?: { href: string; label: string };
   sources: Source[];
   meridianCaption: string;
@@ -70,11 +71,12 @@ function digitArticle(code: DigitCode, copy: DigitCopy): AcupointAtlasArticle {
     symptomWarning: copy.symptomWarning,
     location: copy.location,
     traditional: [],
-    comparisonNotes: { title: "名前の意味と近くのツボ", paragraphs: [copy.traditional] },
+    comparisonNotes: copy.traditional ? { title: "名前の意味と近くのツボ", paragraphs: [copy.traditional] } : undefined,
     selfCare: [copy.selfCare],
     cautions: [copy.cautions],
     expert: [standard, copy.expert],
     relatedPoints: copy.relatedPoints,
+    similarNamePoints: copy.similarNamePoints,
     symptomLinks: [copy.symptomLink ?? symptomIndex],
     sources: [
       { name: `WHO西太平洋地域事務局『WHO標準経穴部位』p.${pdfPage - 9}（PDF）`,
@@ -86,7 +88,7 @@ function digitArticle(code: DigitCode, copy: DigitCopy): AcupointAtlasArticle {
       region: part === "hand" ? "finger" : "toe",
       bodyLabel: part === "hand" ? "左右の手の指先" : "左右の足の指先",
       closeUpAlt: `${copy.name}（${code.toUpperCase()}）。①で対象の指の骨を示し、拡大図の丸印で${side}${tip ? "を示す。" : "にある爪の根元の角を示す。"}`,
-      closeUpCaption: tip ? "①は中指。丸印は中指の先端の中央です。" : `①で指を確かめたら、拡大図で${side}を見ます。丸印は爪の根元の角のすぐきわです。`,
+      closeUpCaption: "①は指を見分ける目印です。",
       meridianStart: number === 1 ? 1 : number - 2,
       meridianEnd: number === 1 ? 3 : number,
       meridianCaption: copy.meridianCaption,
@@ -216,16 +218,16 @@ export const digitArticles = {
   }),
   gb44: digitArticle("gb44", {
     name: "足竅陰", meridianReading: "あしのしょうようたんけい", regionLabel: "足の第4趾の、小指に向いた側",
-    lead: "足竅陰（あしのきょういん・GB44）は、足の小指のすぐ隣の指にあるツボです。爪の根元のうち、小指と向かい合う角を選びます。「竅陰」とつく名前は頭にもあるので、足の字とコードが見分ける手がかりです。",
+    lead: "足竅陰（あしのきょういん・GB44）は、足の小指のすぐ隣の指にあるツボです。爪の根元のうち、小指と向かい合う角を選びます。",
     location: ["足を楽に置き、小指を最初に見つけます。小指から親指の方に一つ戻った指が第4趾（だいよんし）です。足先が横からしか見えないときは、小指の陰に隠れやすいので、甲の側から二本の指を見下ろします。",
       "第4趾の爪で、小指に近い縁を根元までたどります。図の丸印は、その縁が爪の根元の線に達するところです。小指との間のすき間そのものに点があるわけではありません。角が小さく見えるときは無理に指を広げず、皮膚の上から位置を確かめます。"],
-    traditional: "胆経という伝統医学の道筋には、頭にある頭竅陰と、足にある足竅陰があります。頭痛について検索してこの名前を見つけたら、最初の「足」か「頭」かを確かめると別のツボと取り違えずに読めます。",
     safetyWarning: "突然の激しい頭痛があるときは、すぐに119番へ連絡してください。",
     selfCare: "触れる場合は足を支え、手の指の腹を爪の小指側にふわっと当てます。小さな爪なので、指の先で一点に力を集中させなくても構いません。靴ずれがあれば、その日は図で位置を見るだけにしましょう。",
     cautions: "爪が隣の指に当たって痛むときや、赤く腫れたり膿が出たりするときは、ツボ押しを控えて医療機関に相談してください。頭痛を何度も繰り返すときは、痛みの起き方や一緒に出る症状も伝えましょう。",
-    expert: "足竅陰は胆経の井穴（せいけつ、手足の先にあるツボの分類）です。GB44は足の点、GB11は頭竅陰です。足の外側は小指に向かう側をいうので、第4趾の親指側を選ばないようにします。",
+    expert: "足竅陰は胆経の井穴（せいけつ、手足の先にあるツボの分類）です。足の外側は小指に向かう側をいうので、第4趾の親指側を選ばないようにします。",
     symptomLink: { href: "/symptoms/headache-stiff-neck", label: "頭痛・首肩こりの受診の目安" },
-    relatedPoints: [{ code: "GB11", text: "似た名前の頭竅陰は耳の後ろ側にあります。" }, { code: "BL67", text: "もう一本外の、小指の爪を目印にするツボです。" }],
+    relatedPoints: [{ code: "BL67", text: "もう一本外の、小指の爪を目印にするツボです。" }],
+    similarNamePoints: [{ code: "GB11", text: "足竅陰と同じ胆経のツボで、耳の後ろにあります。「頭」「足」の字とコードが見分ける手がかりです。" }],
     sources: [nailCare, urgency], meridianCaption: "地五会（GB42）、侠渓（GB43）に続く足竅陰（GB44）が胆経の最後です。",
   }),
   bl67: digitArticle("bl67", {

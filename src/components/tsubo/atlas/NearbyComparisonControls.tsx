@@ -17,6 +17,7 @@ type PointChoice = {
   leader: readonly [number, number];
   difference: string;
   anatomyHref?: string;
+  comparisonLink?: { href: string; label: string };
 };
 
 type ComparisonCopy = Pick<NearbyComparison, "id" | "region" | "heading" | "figureLabel" | "quizFigureLabel" | "question">;
@@ -133,7 +134,7 @@ export default function NearbyComparisonControls({
             <p>図の丸印か番号を選んでください。</p>
           </div>
         ) : (
-          <p className="atlas-muted">ツボ名を選ぶと、図の丸印と下の説明が切り替わります。</p>
+          <p className="atlas-muted">ツボ名を選ぶと、図の丸印と下の行が強調されます。</p>
         )}
         <div
           className="atlas-comparison-figure"
@@ -194,26 +195,28 @@ export default function NearbyComparisonControls({
         )}
         {(!isQuiz || isSolved) && (
           <ol className="atlas-comparison-reading" role="list" aria-label="ツボごとの位置と詳しい図">
-            {points.map(({ code, name, difference, anatomyHref }, index) => (
+            {points.map(({ code, name, difference, anatomyHref, comparisonLink }, index) => (
               <li key={code} data-selected={code === markedCode || undefined}>
                 <span className="atlas-comparison-number" aria-hidden="true">{index + 1}</span>
                 <div>
                   <div className="atlas-comparison-links">
-                    <Link
+                    {code === initialCode ? <strong className="inline-flex min-h-11 items-center gap-1.5">{name} <span className="atlas-comparison-code">{code.toUpperCase()}</span></strong> : <Link
                       href={`/tsubo/${code}#acupoint-location`}
                       prefetch={false}
                       className="atlas-comparison-link"
                       aria-label={`${name}の詳しい図を見る（${code.toUpperCase()}）`}
                     >
                       {name} <span className="atlas-comparison-code">{code.toUpperCase()}</span>
-                    </Link>
-                    {anatomyHref && (
+                    </Link>}
+                    {code !== initialCode && anatomyHref && (
                       <a href={anatomyHref} className="atlas-comparison-link atlas-comparison-anatomy-link" aria-label={`${name}の断面図を見る`}>
                         <Layers size={16} aria-hidden="true" />断面図
                       </a>
                     )}
                   </div>
                   <p>{difference}</p>
+                  {comparisonLink && <Link href={comparisonLink.href} prefetch={false} className="atlas-point-compare-action"
+                    aria-label={comparisonLink.label} data-analytics-action="atlas_compare">並べて見る</Link>}
                 </div>
               </li>
             ))}

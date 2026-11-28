@@ -15,14 +15,14 @@ export default function AcupointCautions({ priority, children }: {
     >
       {priority && (
         <>
-          <h3 id="acupoint-safety-warning" className={`atlas-target ${styles.heading}`}>注意事項</h3>
+          <h2 id="acupoint-safety-warning" className={`atlas-target ${styles.heading}`}>注意事項</h2>
           <div className={styles.priority}>{priority}</div>
         </>
       )}
       <HashTargetDetails
         triggerScopeId="acupoint-cautions"
         className="atlas-disclosure"
-        summary={priority ? "そのほかの注意を読む" : <span id="acupoint-safety-warning">注意事項</span>}
+        summary={priority ? "そのほかの注意を読む" : <h2 id="acupoint-safety-warning">注意事項</h2>}
       >
         <div className={styles.details}>
           {children}

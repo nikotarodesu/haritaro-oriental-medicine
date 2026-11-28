@@ -23,7 +23,7 @@ import AcupointLocationComparison from "@/components/tsubo/AcupointLocationCompa
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "@/components/tsubo/AcupointPairNotes";
-import { AcupointAnatomyDetails, AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
+import { AcupointAnatomyDetails, AcupointCareAndResearch, AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import HeguAtlasPreview, { heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
@@ -484,27 +484,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         </AcupointTopic>
 
         <AcupointTopic topic="uses">
-          <AcupointCautions priority={<>
-            {isPregnancyBan && !caution.includes("妊娠") && (
-              <p>妊娠中は部位を問わず強い刺激を避け、施術を受ける前に担当の医療機関に相談してください。</p>
-            )}
-            {isPneumoRisk && !caution.includes("119") && (
-              <p><strong>胸郭周囲では鍼で肺などが傷つくおそれがあります。</strong> 施術後に強い息苦しさが出たら、すぐ119番へ連絡してください。胸の痛みや息苦しさが出た場合は、すぐに医療機関を受診してください。</p>
-            )}
-            <p>{caution}</p>
-          </>}>
-            {isNeedleBan && <p><strong>古典に刺鍼を禁じる記載がある部位です。</strong> 施術については、はり師・きゅう師に相談してください。</p>}
-            {isMoxaBan && <p><strong>古典にお灸を禁じたり、注意を求めたりする記載があります。</strong> 熱傷などのおそれがあるため、自己判断でお灸をしないでください。</p>}
-            <p>押したときの痛みや響きだけでツボの位置を判断しないでください。</p>
-            <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
-          </AcupointCautions>
-
-          <section id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
-            <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-              <Sparkles className="w-5 h-5 text-[#B86924] dark:text-[#E6C387]" />
-              <h3>伝統的な使われ方</h3>
-            </div>
-
+          <div id="acupoint-traditional" className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
             {/* 主治症タグ一覧 */}
             <div className="space-y-2">
               <span className="text-sm font-semibold text-[#59615D] dark:text-[#AFBDC8] block">
@@ -578,10 +558,26 @@ export default async function AcupointDetailPage({ params }: Props) {
               </nav>
             )}
 
-          </section>
-
-          <AcupointResearch point={point} anchorId="acupoint-study-overview" />
+          </div>
         </AcupointTopic>
+
+        <AcupointCareAndResearch>
+          <AcupointCautions priority={<>
+            {isPregnancyBan && !caution.includes("妊娠") && (
+              <p>妊娠中は部位を問わず強い刺激を避け、施術を受ける前に担当の医療機関に相談してください。</p>
+            )}
+            {isPneumoRisk && !caution.includes("119") && (
+              <p><strong>胸郭周囲では鍼で肺などが傷つくおそれがあります。</strong> 施術後に強い息苦しさが出たら、すぐ119番へ連絡してください。胸の痛みや息苦しさが出た場合は、すぐに医療機関を受診してください。</p>
+            )}
+            <p>{caution}</p>
+          </>}>
+            {isNeedleBan && <p><strong>古典に刺鍼を禁じる記載がある部位です。</strong> 施術については、はり師・きゅう師に相談してください。</p>}
+            {isMoxaBan && <p><strong>古典にお灸を禁じたり、注意を求めたりする記載があります。</strong> 熱傷などのおそれがあるため、自己判断でお灸をしないでください。</p>}
+            <p>押したときの痛みや響きだけでツボの位置を判断しないでください。</p>
+            <p>{PROCEDURE_PUBLICATION_NOTICE}</p>
+          </AcupointCautions>
+          <AcupointResearch point={point} anchorId="acupoint-study-overview" />
+        </AcupointCareAndResearch>
 
         {hasNearby && (
           <AcupointTopic topic="nearby">
@@ -594,7 +590,7 @@ export default async function AcupointDetailPage({ params }: Props) {
           <AcupointTopic topic="pairs">
             {hasPairs && <AcupointPairNotes point={point} />}
             {otherTraditionalPairs.length > 0 && (
-              <details className="atlas-disclosure atlas-reading-details dictionary-golden-pairs">
+              <details className="atlas-disclosure atlas-reading-details dictionary-golden-pairs" open>
                 <summary>伝統的な配穴例</summary>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                   {otherTraditionalPairs.map((pair, idx) => {

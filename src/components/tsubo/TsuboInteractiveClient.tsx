@@ -63,10 +63,11 @@ function TsuboUrlSync({ restore }: { restore: (query: string) => void | (() => v
   return null;
 }
 
-export default function TsuboInteractiveClient({ featuredPoints, nearbyComparisons, indexLinks }: {
+export default function TsuboInteractiveClient({ featuredPoints, nearbyComparisons, indexLinks, symptomSearch }: {
   featuredPoints?: ReactNode;
   nearbyComparisons?: ReactNode;
   indexLinks?: ReactNode;
+  symptomSearch?: ReactNode;
 } = {}) {
   const allPoints = useMemo(() => getAllAcupoints(), []);
   const publishedCount = useMemo(() => getPublishedAcupoints().length, []);
@@ -354,11 +355,11 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
           <button type="button" onClick={() => setShowFilters(!showFilters)} aria-expanded={showFilters} aria-controls="tsubo-detail-filters" className="tsubo-filter-toggle"><SlidersHorizontal aria-hidden="true" className="h-4 w-4" /><span>詳細条件{hasSelectionFilters && `（${selectedFilters.length}件）`}</span><ChevronDown aria-hidden="true" className="tsubo-toggle-chevron h-4 w-4" /></button>
           {hasSelectionFilters && <button type="button" className="tsubo-filter-toggle" onClick={resetSelectionFilters}>条件を解除</button>}
         </div>
-        <nav aria-label="一覧と比較" className="dictionary-search-shortcuts">
+        <nav aria-label="症状・一覧・比較" className="dictionary-search-shortcuts">
+          {symptomSearch}
           <a href="#tsubo-list" className="atlas-search-index-link">{browsingWithoutFilters ? `全${allPoints.length}穴を見る` : "絞り込み結果を見る"}</a>
           {nearbyComparisons && <a href="#nearby-comparisons" className="dictionary-comparison-link"><span>近いツボを比べる</span><small>同じ部位の目印を図で見分ける</small></a>}
           <Link href="/tsubo/compare?empty=1" className="dictionary-comparison-link"><span>ツボを選んで比べる</span><small>名前や番号で2〜3穴を選ぶ</small></Link>
-          <Link href="/tsubo/pairs" className="dictionary-comparison-link"><span>ツボの組み合わせを見る</span><small>古典や研究に出た配穴を読む</small></Link>
         </nav>
         {hasSelectionFilters && <p className="tsubo-active-filters">選択中：{selectedFilters.join("・")}</p>}
       </form>
@@ -452,7 +453,9 @@ export default function TsuboInteractiveClient({ featuredPoints, nearbyCompariso
         <div className="tsubo-results-toolbar">
           <div className="min-w-0 space-y-1">
             <p role="status" aria-live="polite" aria-atomic="true" className="tsubo-result-count">
-              {hasSearchQuery ? `「${searchQuery.trim()}」：` : hasSelectionFilters ? '該当：' : '全'}<strong>{totalItems}</strong>穴
+              {showResults && <>
+                {hasSearchQuery ? `「${searchQuery.trim()}」：` : hasSelectionFilters ? "該当：" : "全"}<strong>{totalItems}</strong>穴
+              </>}
               {searchTopic !== normalizedQuery && <span className="block text-sm">「{searchTopic}」で検索</span>}
             </p>
             {hasSelectionFilters && totalItems > 0 && <div className="tsubo-reset-actions">{hasSearchQuery && <button type="button" onClick={resetSelectionFilters}>検索語を保って条件を解除</button>}<button type="button" onClick={resetAllFilters}><RotateCcw aria-hidden="true" className="h-4 w-4" />検索・条件をすべて解除</button></div>}

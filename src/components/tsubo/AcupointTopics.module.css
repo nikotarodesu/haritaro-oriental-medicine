@@ -18,18 +18,25 @@
   text-wrap: balance;
 }
 
-.chapter :global(.atlas-study-card) h4 { font-size: 1.0625rem; font-weight: 700; line-height: 1.5; }
 .chapter:focus-visible {
   outline: 2px solid var(--atlas-accent);
   outline-offset: .25rem;
 }
 
-.chapter h3:global(.atlas-section-title) {
+.careAndResearch h2:global(.atlas-section-title) {
   font-size: 1.0625rem;
   line-height: 1.55;
 }
 
-.chapter :global(.atlas-evidence-disclosure) {
+.careAndResearch {
+  display: grid;
+  min-width: 0;
+  gap: clamp(.875rem, 2vw, 1.375rem);
+}
+
+.careAndResearch > * { min-width: 0; }
+
+.careAndResearch :global(.atlas-evidence-disclosure) {
   padding-inline: 0;
   border: 0;
   border-block: 1px solid var(--atlas-line);

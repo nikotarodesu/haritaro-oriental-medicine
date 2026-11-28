@@ -9,7 +9,7 @@ import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
 import { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import { AcupointPairNotes } from "./AcupointPairNotes";
-import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "./AcupointTopics";
+import { AcupointCareAndResearch, AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "./AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams, { AcupointAtlasLocationSupplement } from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
@@ -49,6 +49,9 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
 
       <AcupointTopic topic="uses">
         <AcupointTraditionalUses code={point.codeLower} />
+      </AcupointTopic>
+
+      <AcupointCareAndResearch>
         <AcupointCautions priority={<>
           <p>{heguAtlasReading.symptomWarning}</p>
           <p>{heguAtlasReading.caution}</p>
@@ -56,11 +59,10 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
           <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
           <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
           <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>
-          <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
         </AcupointCautions>
         <AcupointSelfCare code={point.codeLower} />
         <AcupointResearch point={point} />
-      </AcupointTopic>
+      </AcupointCareAndResearch>
 
       <AcupointTopic topic="nearby">
         <AcupointLocationComparison point={point} related={[

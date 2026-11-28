@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { comparisonSelectionHref } from "@/app/tsubo/compare/selection";
 import { DETAILED_ACUPOINTS, getAcupointByCode } from "@/data/tsubo";
 import { comparisonSize, type NearbyComparison } from "@/data/tsubo/atlas/nearbyComparisons";
 import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
@@ -7,18 +8,24 @@ import { getRegionalSection } from "@/data/tsubo/regionalSections";
 import NearbyComparisonArtwork from "./NearbyComparisonArtwork";
 import NearbyComparisonControls from "./NearbyComparisonControls";
 
-export default function NearbyPointComparison({ comparison, code, anchorId, initiallyOpen }: {
+export default function NearbyPointComparison({ comparison, code, anchorId, initiallyOpen, pairedCodes }: {
   comparison: NearbyComparison;
   code: string;
   anchorId: string;
   initiallyOpen?: boolean;
+  pairedCodes: readonly string[];
 }) {
+  const current = getAcupointByCode(code);
   const points = comparison.points.flatMap(position => {
     const point = getAcupointByCode(position.code);
     if (!point) return [];
     const anatomyHref = DETAILED_ACUPOINTS[point.codeLower]?.crossSection || getRegionalSection(point.codeLower)
       ? `/tsubo/${point.codeLower}#acupoint-anatomy-diagram` : undefined;
-    return [{ ...position, name: point.name, anatomyHref }];
+    const comparisonLink = current && pairedCodes.includes(point.codeLower) ? {
+      href: comparisonSelectionHref([code, point.codeLower]),
+      label: `${current.name}と${point.name}の位置を並べて見る`,
+    } : undefined;
+    return [{ ...position, name: point.name, anatomyHref, comparisonLink }];
   });
   if (points.length < 2) return null;
   const { id, region, heading, figureLabel, quizFigureLabel, question } = comparison;

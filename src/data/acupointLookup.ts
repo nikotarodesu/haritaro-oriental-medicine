@@ -1573,7 +1573,7 @@ export const ACUPOINT_LOOKUP = [
     "name": "内関",
     "code": "PC6",
     "meridianShort": "心包経",
-    "locationSimple": "手のひら側の手首のしわから、ひじまでの長さの6分の1だけ進んだ、二本のすじの間。"
+    "locationSimple": "手のひら側で、手首のしわからひじまでの長さの6分の1の高さ。二本のすじの間です。"
   },
   {
     "id": "pc7",

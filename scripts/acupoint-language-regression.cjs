@@ -17,10 +17,11 @@ const { NEARBY_COMPARISONS, getNearbyComparisons, comparisonSize, comparisonTran
 const { getAtlasComparisonGuide } = load('src/data/tsubo/atlas/nearbyComparisonGuides');
 const { ATLAS_POINT_MARKERS, shinEndpoints, volarForearmGeometry } = load('src/data/tsubo/atlas/markers');
 const { getAcupointStudies, getClassicalCombinations } = load('src/data/tsubo/atlas/evidence');
-const { getFeaturedPairs } = load('src/data/tsubo/atlas/featuredPairs');
+const { featuredPairAnchor, getFeaturedPairs } = load('src/data/tsubo/atlas/featuredPairs');
 const { getAtlasSafetyNotices } = load('src/data/tsubo/atlas/safetyNotices');
 const { getTraditionalUseSource, TRADITIONAL_POINT_USES } = load('src/data/tsubo/atlas/traditionalUses');
 const { getTraditionalSymptom, traditionalSymptomPath, TRADITIONAL_SYMPTOMS, TSUBO_SYMPTOM_INDEX_PATH } = load('src/data/tsubo/atlas/traditionalSymptomIndex');
+const { findSymptomsInDirectory, groupSymptomDirectory } = load('src/app/tsubo/symptoms/directoryEntries');
 const { EXTRA_POINTS } = load('src/data/tsubo/extraPoints');
 const { regionalSectionGroups, getRegionalSection, createRegionalSectionModel } = load('src/data/tsubo/regionalSections/index');
 const dimensions = text => Array.from(text.matchAll(/\d+(?:\.\d+)?寸/g), match => match[0]);
@@ -32,6 +33,18 @@ assert.deepEqual(Array.from(getTraditionalSymptom('vomiting').points, point => p
 assert.deepEqual(Array.from(getTraditionalSymptom('chest-tightness').points, point => point.code), ['PC6'], 'Chest tightness does not expand to swelling or chest pain');
 assert.equal(getTraditionalSymptom('unknown-symptom'), undefined, 'Unknown symptoms have no route');
 assert.equal(new Set(TRADITIONAL_SYMPTOMS.map(({ slug }) => slug)).size, TRADITIONAL_SYMPTOMS.length, 'Each symptom has a distinct slug');
+const directoryEntries = TRADITIONAL_SYMPTOMS.map(({ slug, label, href, points }) => ({ slug, label, href, count: points.length }));
+const symptomGroups = groupSymptomDirectory(directoryEntries);
+assert.equal(symptomGroups.length, 8, 'The symptom directory groups the published index without a catch-all');
+assert.deepEqual(Array.from(symptomGroups.flatMap(({ entries }) => entries.map(({ slug }) => slug))).sort(),
+  Array.from(directoryEntries, ({ slug }) => slug).sort(), 'Every original symptom is in exactly one directory category');
+const searchSymptomSlugs = query => Array.from(findSymptomsInDirectory(directoryEntries, query), entry => entry.slug);
+assert.deepEqual(searchSymptomSlugs('食欲不振'), ['reduced-appetite']);
+assert.deepEqual(searchSymptomSlugs('ズツウ'), ['headache']);
+assert.deepEqual(searchSymptomSlugs('はきけ'), ['nausea']);
+assert.deepEqual(searchSymptomSlugs('おうと'), ['vomiting']);
+assert(searchSymptomSlugs('肘').length >= 5);
+assert.deepEqual(searchSymptomSlugs('肘'), searchSymptomSlugs('ひじ'));
 for (const { label, slug, href, points: matches } of TRADITIONAL_SYMPTOMS) {
   assert(matches.length > 0 && new Set(matches.map(({ code }) => code)).size === matches.length, `${label}: only distinct, recorded points`);
   assert.match(slug, /^[a-z]+(?:-[a-z]+)*$/, `${label}: stable readable ASCII slug`);
@@ -306,11 +319,18 @@ function checkBuiltPointPages(buildDir) {
     assert(!sectionIds.has('acupoint-basics'), `${route}: the basic information panel is removed`);
     assert(name && /\sopen(?:=|\s|>)/.test(name.opening), `${route}: the name disclosure starts open`);
     assert.match(name.markup, /<summary><h2 id="acupoint-name-heading">名前の由来<\/h2><\/summary>/, `${route}: one named, closable introduction with its original anchor`);
-    assert(name.markup.indexOf('<p>') > 0 && name.markup.indexOf('<p>') < name.markup.indexOf('lang="zh-Latn-pinyin"'), `${route}: name explanation before pinyin`);
+    const notation = details.get('acupoint-name-notation');
+    assert(notation && name.markup.includes(notation.markup), `${route}: notation and sources are part of the name introduction`);
+    assert(!/\sopen(?:=|\s|>)/.test(notation.opening), `${route}: notation and sources start closed`);
+    assert.match(notation.markup, /<summary>表記と出典<\/summary>/, `${route}: notation names the additional details`);
+    assert(notation.markup.includes('lang="zh-Latn-pinyin"') && notation.markup.includes('href="https://'), `${route}: pinyin and source links remain available`);
+    assert(name.markup.indexOf('<p>') > 0 && name.markup.indexOf('<p>') < name.markup.indexOf(notation.markup), `${route}: the explanation is visible before the optional details`);
     assert(name.index + name.markup.length <= topics.get('location').index, `${route}: the name precedes the location chapter`);
     const wantPairs = !extra && hasPublishedPairs(code);
     if (wantPairs) paired++;
-    const order = ['location', 'uses', 'nearby'];
+    const traditionalUse = TRADITIONAL_POINT_USES[code];
+    const hasTraditional = Boolean(traditionalUse) || Boolean(ATLAS_ARTICLES[code]?.traditional.length);
+    const order = hasTraditional ? ['location', 'uses', 'nearby'] : ['location', 'nearby'];
     if (wantPairs) order.push('pairs');
     assert.deepEqual([...topics.keys()], order, `${route}: complete ordered topics and no empty pairs chapter`);
     for (const [topic, { opening, markup: content }] of topics) {
@@ -324,7 +344,8 @@ function checkBuiltPointPages(buildDir) {
 
     const location = topics.get('location').markup;
     assert(!location.includes('図を拡大する'), `${route}: location chapter has no zoom launcher`);
-    const uses = topics.get('uses').markup;
+    const uses = topics.get('uses')?.markup ?? '';
+    assert.equal(sectionIds.get('point-topic-uses'), 1, `${route}: the existing uses bookmark has a single destination`);
     const nearby = topics.get('nearby').markup;
     const legacyTargets = extra
       ? ['extra-point-location', 'acupoint-anatomy', 'acupoint-traditional', 'acupoint-study-overview', 'extra-point-nearby-heading', 'extra-point-sources']
@@ -349,6 +370,7 @@ function checkBuiltPointPages(buildDir) {
     } else {
       assert.match(anatomy.opening, /data-anatomy-kind="individual"/, `${route}: recognized section type`);
       assert.match(anatomy.markup, /<circle\b[^>]*\bdata-anatomy-surface-point/, `${route}: the individual model marks the point on its surface`);
+      assert.match(anatomy.markup, /<circle\b[^>]*\bdata-anatomy-point-ring/, `${route}: the point is differentiated from anatomical dots by an outer ring`);
     }
     const primaryLocation = `id="${extra ? 'extra-point-location' : 'acupoint-location'}"`;
     const visiblePosition = location.slice(0, location.indexOf(appendix.markup));
@@ -363,13 +385,22 @@ function checkBuiltPointPages(buildDir) {
     }
     assert(appendix.index + appendix.markup.length <= anatomy.index, `${route}: anatomy follows location sources without being nested in them`);
     assert.match(appendix.markup, /<summary><h3>位置の資料<\/h3><\/summary>/, `${route}: location disclosure names its own content`);
+    if (!extra) {
+      assert(appendix.markup.includes('WHO標準の位置と出典'), `${route}: standard position and citation are grouped`);
+      assert.doesNotMatch(appendix.markup, /ツボを探すときの補足|位置図の補足/, `${route}: location notes have distinct headings`);
+    }
+    assert(!anatomy.markup.includes('aria-label="位置の距離を示す図"'), `${route}: surface measurements are grouped with the position sources`);
     assert.match(anatomy.markup, /<summary><h3 id="acupoint-anatomy-title">断面図<\/h3><\/summary>/, `${route}: anatomy disclosure has a short label`);
     assert(anatomy.markup.includes('id="acupoint-anatomy-diagram"'), `${route}: original anatomy anchor opens the separate anatomy row`);
     assert(!lectureHref.test(location) && !caseHref.test(location), `${route}: study links do not interrupt the location chapter`);
-    assert(uses.includes('id="acupoint-traditional"'), `${route}: traditional content or its original fallback target`);
-    const traditionalUse = TRADITIONAL_POINT_USES[code];
+    if (hasTraditional) {
+      assert.match(uses, /id="point-topic-uses-title"[^>]*>伝統的な使われ方<\/h2>/, `${route}: traditional chapter names its content`);
+      for (const id of ['acupoint-cautions', 'acupoint-self-care', 'acupoint-research', 'acupoint-study-overview']) {
+        assert(!uses.includes(`id="${id}"`), `${route}: ${id} is independent of traditional uses`);
+      }
+    }
     if (traditionalUse) {
-      assert.match(uses, /id="point-topic-uses-title"[^>]*>伝統的な使われ方<\/h2>/, `${route}: traditional chapter has the requested heading`);
+      assert(uses.includes('id="acupoint-traditional"'), `${route}: traditional use bookmark points to symptom tiles`);
       const chips = uses.match(/class="atlas-use-topics"[^>]*>([\s\S]*?)<\/ul>/)?.[1];
       assert(chips, `${route}: traditional uses are linked symptom tiles`);
       for (const label of traditionalUse.labels) {
@@ -390,26 +421,26 @@ function checkBuiltPointPages(buildDir) {
         const href = `href="${guide.href}"`;
         assert(nearby.includes(href) && markup.split(href).length === 2, `${route}: one comparison guide link, inside the nearby chapter`);
       }
-      for (const id of ['acupoint-cautions', 'acupoint-research']) assert(uses.includes(`id="${id}"`), `${route}: preserved ${id} in the uses chapter`);
       if (TRADITIONAL_POINT_USES[code]) assert.equal(sectionIds.get('acupoint-study-overview'), 1, `${route}: legacy research overview fragment`);
       assert(nearby.includes('id="acupoint-compare"'), `${route}: position comparison belongs in the nearby chapter`);
-      const caution = readContainers(uses, 'section', 'id').get('acupoint-cautions');
+      const caution = readContainers(markup, 'section', 'id').get('acupoint-cautions');
       assert(caution?.opening.includes('aria-labelledby="acupoint-safety-warning"'), `${route}: one named caution block`);
+      assert(caution.index > (topics.get('uses') ?? topics.get('location')).index && caution.index < topics.get('nearby').index, `${route}: precautions follow the introductory chapters and precede nearby comparisons`);
       const foldedContentAt = caution.markup.indexOf('<details');
       assert(foldedContentAt > 0, `${route}: detailed precautions remain in a disclosure`);
       assert.doesNotMatch(caution.markup.slice(foldedContentAt).split('>')[0], /\sopen(?:=|\s|$)/, `${route}: details start closed`);
       assert(caution.markup.includes('href="/safety"'), `${route}: general safety link remains in the caution block`);
-      const selfCareAt = uses.indexOf('id="acupoint-self-care"');
+      const selfCareAt = markup.indexOf('id="acupoint-self-care"');
       if (selfCareAt >= 0) assert(caution.index < selfCareAt, `${route}: visible warnings precede self-care`);
       const notices = ATLAS_ARTICLES[code] && getAtlasSafetyNotices(ATLAS_ARTICLES[code]);
       const priorityCopy = code === 'li4'
         ? ['突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。', '妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。']
         : [notices?.symptomWarning, notices?.pointWarning].filter(Boolean);
       if (priorityCopy.length) {
-        assert.match(caution.markup.slice(0, foldedContentAt), /<h3 id="acupoint-safety-warning"[^>]*>注意事項<\/h3>/, `${route}: visible warnings live under the caution heading`);
+        assert.match(caution.markup.slice(0, foldedContentAt), /<h2 id="acupoint-safety-warning"[^>]*>注意事項<\/h2>/, `${route}: visible warnings live under the caution heading`);
         assert(caution.markup.includes('<summary>そのほかの注意を読む</summary>'), `${route}: additional advice opens separately within the block`);
       } else {
-        assert(caution.markup.includes('<summary><span id="acupoint-safety-warning">注意事項</span></summary>'), `${route}: the disclosure identifies its precautions in the absence of priority notices`);
+        assert(caution.markup.includes('<summary><h2 id="acupoint-safety-warning">注意事項</h2></summary>'), `${route}: the disclosure identifies its precautions in the absence of priority notices`);
       }
       for (const message of priorityCopy) {
         assert(caution.markup.slice(0, foldedContentAt).includes(message), `${route}: priority warning is readable without opening details`);
@@ -417,16 +448,22 @@ function checkBuiltPointPages(buildDir) {
       }
     } else {
       assert(appendix.markup.includes(`href="${positionSource}"`), `${route}: extra-point position source inside its location disclosure`);
-      assert(uses.includes('id="acupoint-study-overview"'), `${route}: extra-point evidence belongs in the uses chapter`);
+      assert(markup.includes('id="acupoint-study-overview"'), `${route}: extra-point evidence has its own target`);
       assert(nearby.includes('id="extra-point-nearby-heading"'), `${route}: preserve the old nearby heading fragment in its chapter`);
     }
     if (wantPairs) {
       const pairs = topics.get('pairs').markup;
       assert(pairs.includes('id="featured-acupoint-pairs"'), `${route}: existing combination fragment`);
       assert(pairs.includes('href="/tsubo/pairs"'), `${route}: combination directory remains reachable`);
-      for (const { id } of publishedPairStudies(code)) {
+      const pairStudies = publishedPairStudies(code);
+      if (pairStudies.length) assert.match(pairs, /<details[^>]*\sopen(?:=""|\s|>)[^>]*><summary>複数のツボを扱った研究/, `${route}: study combinations are visible on arrival`);
+      for (const { id } of getFeaturedPairs(code).filter(pair => pair.kind !== 'name')) {
+        const pair = details.get(featuredPairAnchor(id));
+        assert(pair && /\sopen(?:=|\s|>)/.test(pair.opening), `${route}: the ${id} combination starts open`);
+      }
+      for (const { id } of pairStudies) {
         assert(pairs.includes(`href="#${id}"`), `${route}: pair study links back to its evidence`);
-        assert(uses.includes(`id="${id}"`), `${route}: pair study points to a real target in the uses chapter`);
+        assert(markup.includes(`id="${id}"`), `${route}: pair study points to a real research target`);
       }
     }
     if (getFeaturedPairs(code).some(pair => pair.kind === 'name')) {
@@ -437,6 +474,21 @@ function checkBuiltPointPages(buildDir) {
       assert.match(topics.get('pairs').markup, /四関穴/, 'Taichong retains its Four Gates combination');
     }
     if (code === 'st36') assert(nearby.includes('/tsubo/st37#acupoint-location'), 'A legitimate nearby comparison remains even when there is pairing evidence');
+    if (code === 'pc6') {
+      const illustratedComparison = readContainers(nearby, 'details', 'data-nearby-comparison');
+      for (const [neighbor, region] of [['pc7', 'wrist'], ['pc5', 'forearm']]) {
+        const compare = `href="/tsubo/compare?a=pc6&amp;b=${neighbor}"`;
+        assert.equal(nearby.split(`href="/tsubo/${neighbor}#acupoint-location"`).length, 2, `PC6: ${neighbor} is described in one place`);
+        assert.equal(nearby.split(compare).length, 2, `PC6: ${neighbor} has one side-by-side action`);
+        assert(illustratedComparison.get(region)?.markup.includes(compare), `PC6: the ${neighbor} action is on the illustrated row`);
+      }
+    }
+    if (code === 'gb44') {
+      const locationComparison = readContainers(nearby, 'div', 'id');
+      assert(!locationComparison.get('acupoint-compare').markup.includes('/tsubo/gb11'), 'An ear point does not belong in the foot location comparison');
+      const byName = locationComparison.get('acupoint-similar-names').markup;
+      assert(byName.includes('/tsubo/gb11#acupoint-location') && byName.includes('/tsubo/compare?a=gb44&amp;b=gb11'), 'The similar-name comparison keeps both location and comparison links');
+    }
   }
   console.log(`Built acupoint HTML: ${routes.length} detail pages, ordered topics without front-loaded shortcuts, separate closed location and anatomy disclosures, preserved study links and anchors, and ${paired} non-empty pair chapters.`);
 }
@@ -445,8 +497,12 @@ function checkBuiltTraditionalSymptoms(buildDir) {
   const app = path.join(buildDir, 'server', 'app');
   const sitemap = fs.readFileSync(path.join(app, 'sitemap.xml.body'), 'utf8');
   const index = fs.readFileSync(path.join(app, TSUBO_SYMPTOM_INDEX_PATH.slice(1) + '.html'), 'utf8');
+  const atlas = fs.readFileSync(path.join(app, 'tsubo.html'), 'utf8');
   const origin = 'https://www.haritaro.jp';
   assert(sitemap.includes(`<loc>${origin}${TSUBO_SYMPTOM_INDEX_PATH}</loc>`), 'The reverse index is in the sitemap');
+  const shortcuts = atlas.match(/class="dictionary-search-shortcuts"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+  assert(shortcuts?.includes(`href="${TSUBO_SYMPTOM_INDEX_PATH}"`), 'Symptom lookup is visible beside the dictionary search');
+  assert(atlas.includes('href="/symptoms">受診の目安を調べる</a>'), 'The medical guidance link describes its destination');
   for (const { label, href, points: matches } of TRADITIONAL_SYMPTOMS) {
     const routeFile = path.join(app, href.slice(1) + '.html');
     const html = fs.readFileSync(routeFile, 'utf8');
@@ -457,6 +513,12 @@ function checkBuiltTraditionalSymptoms(buildDir) {
     assert(links, `${label}: result links are available in generated HTML`);
     const resultHrefs = Array.from(links.matchAll(/href="(\/tsubo\/[^"]+)"/g), match => match[1]);
     assert.deepEqual(resultHrefs, Array.from(matches, point => point.href), `${label}: no false matches in rendered results`);
+    const resultRows = [...links.matchAll(/<li\b[^>]*>[\s\S]*?<\/li>/g)];
+    matches.forEach(({ name, source }, rowIndex) => {
+      const row = resultRows[rowIndex]?.[0];
+      assert(row?.includes(`aria-label="${name}の出典"`), `${label}: ${name} has its own compact source disclosure`);
+      assert(row.includes(`href="${source.url.replaceAll('&', '&amp;')}"`), `${label}: ${name} retains the exact source URL`);
+    });
   }
   console.log(`Built symptom reverse lookup: ${TRADITIONAL_SYMPTOMS.length} linked, prerendered pages with exact results and canonical sitemap URLs.`);
 }

@@ -43,7 +43,6 @@ function StudyPointNote({ text }: { text: string }) {
 }
 
 export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; currentCode?: string }) {
-  const Heading = currentCode ? "h4" : "h3";
   const role = currentCode ? getStudyPointRole(study, currentCode) : undefined;
   const reading = studyReadingLinks[study.id];
   const label = getStudyScopeLabel(study, currentCode);
@@ -58,7 +57,7 @@ export function AtlasStudyCard({ study, currentCode }: { study: AtlasStudy; curr
   return (
     <article className="atlas-study-card atlas-target" id={study.id}>
       <p className="atlas-study-kind"><FlaskConical size={16} aria-hidden="true" />{label}</p>
-      <Heading>{study.topic}</Heading>
+      <h3>{study.topic}</h3>
       <dl className="atlas-study-findings">
         <div><dt>結果</dt><dd>{study.result}</dd></div>
         <div className="atlas-study-limit"><dt>この研究の限界</dt><dd>{study.limits}</dd></div>
@@ -130,7 +129,7 @@ export default function AcupointResearch({ point, context, anchorId }: {
       id={anchorId ?? (TRADITIONAL_POINT_USES[point.codeLower] ? "acupoint-study-overview" : "acupoint-traditional")}
       analytics={studies.length ? { kind: "research", studyIds: studies.map(study => study.id) } : undefined}
       className="atlas-disclosure atlas-evidence-disclosure atlas-target"
-      summary={<h3 id="acupoint-research-title">{studies.length ? `研究で調べたこと（${studies.length}件）` : "研究の掲載状況"}</h3>}
+      summary={<h2 id="acupoint-research-title">{studies.length ? `研究で調べたこと（${studies.length}件）` : "研究の掲載状況"}</h2>}
     >
     <section id="acupoint-research" className="atlas-evidence atlas-target" aria-labelledby="acupoint-research-title">
       {studies.some(study => study.kind === "combination") && (

@@ -54,7 +54,7 @@ export function AcupointPairNotes({ point }: { point: AcupointMaster }) {
       {featured.length > 0 && (
         <div id={`${FEATURED_ACUPOINT_PAIRS_ANCHOR}-combinations`} className="atlas-target">
           {featured.map(pair => (
-            <PairCard key={pair.id} pair={pair} compact>
+            <PairCard key={pair.id} pair={pair} compact initiallyOpen>
               {classical.filter(entry => match(entry, pair.pointIds)).map(entry => <ClassicalRecord key={entry.source.url} entry={entry} />)}
             </PairCard>
           ))}
@@ -78,7 +78,7 @@ export function AcupointPairNotes({ point }: { point: AcupointMaster }) {
         </div>
       )}
       {studies.length > 0 && (
-        <details className={`atlas-disclosure ${styles.pointRow}`} open={studies.length <= 3 && !featured.length && !classical.length}>
+        <details className={`atlas-disclosure ${styles.pointRow}`} open>
           <summary>複数のツボを扱った研究（{studies.length}件）</summary>
           <ul className={styles.studyRows}>
             {studies.map(study => (

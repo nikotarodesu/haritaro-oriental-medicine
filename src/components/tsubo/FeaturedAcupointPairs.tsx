@@ -46,7 +46,12 @@ function PairPointLink({ point }: { point: AcupointMaster }) {
   );
 }
 
-export function PairCard({ pair, compact = false, children }: { pair: FeaturedPair; compact?: boolean; children?: ReactNode }) {
+export function PairCard({ pair, compact = false, initiallyOpen, children }: {
+  pair: FeaturedPair;
+  compact?: boolean;
+  initiallyOpen?: boolean;
+  children?: ReactNode;
+}) {
   const [firstId, secondId] = pair.pointIds;
   const first = getAcupointByCode(firstId);
   const second = getAcupointByCode(secondId);
@@ -118,7 +123,8 @@ export function PairCard({ pair, compact = false, children }: { pair: FeaturedPa
   );
   if (compact) {
     return (
-      <HashTargetDetails id={featuredPairAnchor(pair.id)} className={`atlas-disclosure atlas-target ${styles.pointRow}`} summary={<h3>{pair.name}</h3>}>
+      <HashTargetDetails id={featuredPairAnchor(pair.id)} className={`atlas-disclosure atlas-target ${styles.pointRow}`}
+        open={initiallyOpen} summary={<h3>{pair.name}</h3>}>
         <div className={styles.rowBody}>{content}</div>
       </HashTargetDetails>
     );

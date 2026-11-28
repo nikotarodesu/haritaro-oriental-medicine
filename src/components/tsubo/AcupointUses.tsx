@@ -18,9 +18,8 @@ export function AcupointTraditionalUses({ code }: { code: string }) {
   }));
 
   return (
-    <section id="acupoint-traditional" className="atlas-target atlas-use-card atlas-traditional-use" data-use-kind="traditional" aria-labelledby="atlas-traditional-title">
-      <h3 id="atlas-traditional-title" className="atlas-section-title">伝統資料に記された症状</h3>
-      <ul className="atlas-use-topics" role="list">
+    <div id="acupoint-traditional" className="atlas-target atlas-use-card atlas-traditional-use" data-use-kind="traditional">
+      <ul className="atlas-use-topics" aria-label="伝統資料に記された症状" role="list">
         {traditional.labels.map(label => (
           <li key={label}>
             <Link href={traditionalSymptomPath(label)} prefetch={false}>
@@ -32,7 +31,7 @@ export function AcupointTraditionalUses({ code }: { code: string }) {
       <ul className="atlas-use-sources" aria-label="伝統的な使われ方の出典" role="list">
         {Array.from(sources, ([href, label]) => <li key={href}><a className="atlas-text-action atlas-use-source" href={href}>{label}</a></li>)}
       </ul>
-    </section>
+    </div>
   );
 }
 
@@ -43,7 +42,7 @@ export default function AcupointUses({ code }: { code: string }) {
   return (
     <section id={TRADITIONAL_POINT_USES[code] ? "acupoint-study-overview" : "acupoint-traditional"} className="atlas-target atlas-point-uses" aria-labelledby="atlas-use-research-title">
       <div className="atlas-use-card" data-use-kind="research">
-        <h3 id="atlas-use-research-title" className="atlas-section-title"><FlaskConical size={19} aria-hidden="true" />研究で調べたこと</h3>
+        <h2 id="atlas-use-research-title" className="atlas-section-title"><FlaskConical size={19} aria-hidden="true" />研究で調べたこと</h2>
         {studies.length > 0 ? (
           <ul className="atlas-use-studies">
             {studies.map(study => (

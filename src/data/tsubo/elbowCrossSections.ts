@@ -104,7 +104,7 @@ function elbowSection({ code, name, x, location }: {
     id: `cs-${code.toLowerCase()}`,
     procedureReviewStatus: "pending_expert_review",
     title: `${name}（${code}）の断面図`,
-    level: "右ひじの前の横じわ付近を模式化",
+    level: "ひじの前のしわの高さ",
     bodySide: "右ひじ",
     diagramViewBox: "42 12 416 220",
     axes: {

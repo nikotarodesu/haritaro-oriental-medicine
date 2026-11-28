@@ -19,6 +19,7 @@ export interface AcupointAtlasArticle {
   traditional: readonly string[];
   researchNotes?: readonly string[];
   comparisonNotes?: { title: string; paragraphs: readonly string[] };
+  similarNamePoints?: readonly { code: string; text: string }[];
   selfCare: readonly string[];
   cautions: readonly string[];
   expert: readonly string[];
@@ -30,7 +31,7 @@ export interface AcupointAtlasArticle {
     region: AtlasRegion;
     bodyLabel: string;
     closeUpAlt: string;
-    closeUpCaption: string;
+    closeUpCaption?: string;
     meridianStart: number;
     meridianEnd: number;
     meridianCaption: string;

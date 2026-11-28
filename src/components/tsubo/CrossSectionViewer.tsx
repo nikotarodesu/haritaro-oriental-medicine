@@ -266,10 +266,11 @@ export default function CrossSectionViewer({
               })}
               {surfacePoint && (
                 <g aria-hidden="true" className="pointer-events-none">
-                  <text data-anatomy-point-name="" x={surfacePoint.x} y={surfacePoint.y - 22} textAnchor="middle" fill="var(--warm-readable)" stroke="var(--bg-card)" strokeWidth="4" strokeLinejoin="round" style={{ paintOrder: "stroke fill" }} fontSize="25" fontWeight="700">
+                  <text data-anatomy-point-name="" x={surfacePoint.x} y={surfacePoint.y - 24} textAnchor="middle" fill="var(--warm-readable)" stroke="var(--bg-card)" strokeWidth="4" strokeLinejoin="round" style={{ paintOrder: "stroke fill" }} fontSize="25" fontWeight="700">
                     {surfacePoint.label}
                   </text>
-                  <circle data-anatomy-surface-point="" cx={surfacePoint.x} cy={surfacePoint.y} r="11" fill="#7F3520" stroke="#FFF9F0" strokeWidth="3" />
+                  <circle data-anatomy-point-ring="" cx={surfacePoint.x} cy={surfacePoint.y} r="16" fill="#FFF9F0" stroke="#7F3520" strokeWidth="2.5" />
+                  <circle data-anatomy-surface-point="" cx={surfacePoint.x} cy={surfacePoint.y} r="9" fill="#7F3520" />
                 </g>
               )}
             </svg>
@@ -286,7 +287,7 @@ export default function CrossSectionViewer({
           <div className="min-w-0 space-y-1">
             {!regional && <p>{individualModel ? "このツボの教育用模式図です。" : "部位別の共通模式図です。"}組織の配置は専門家による確認前です。刺鍼の安全域や経路の決定には使用できません。</p>}
             {surfacePoint && <p id={surfacePointId}>
-              <strong>丸印は{pointName}の体表での位置です。</strong>
+              <strong>二重丸は{pointName}の体表での位置です。</strong>
               {surfacePoint.description && ` ${surfacePoint.description}`}
               {surfacePoint.diagramNote && ` ${surfacePoint.diagramNote}`}
             </p>}

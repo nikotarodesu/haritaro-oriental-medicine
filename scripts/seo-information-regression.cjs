@@ -470,7 +470,7 @@ for (const [code, distance, page] of [['st37', 6, 64], ['st38', 8, 65], ['st39',
   assert.equal(marker.boneCun, distance, code);
   for (const axis of ['x', 'y']) assert.equal((marker[axis] - knee[axis]) / (ankle[axis] - knee[axis]), distance / 16, code);
   assert(article.sources.some(source => source.url.endsWith('#page=' + (page + 9)) && source.name.includes('p.' + page)), code);
-  assert(article.expert.join('').includes(distance + '寸'), code);
+  assert(whoLocations[code].includes(distance + '寸'), code);
   assert(article.illustration.meridianStart <= Number(code.slice(2)) && Number(code.slice(2)) <= article.illustration.meridianEnd, code);
 }
 console.log('Passed: canonical AI guidance, 361 public acupoint URLs, symptom URLs, consistent public learning notes and location FAQ safety.');

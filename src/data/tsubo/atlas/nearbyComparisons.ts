@@ -55,7 +55,7 @@ const shinPoints = [
 ] as const;
 
 const forearmPoints = [
-  { code: "pc6", button: [249, 195], leader: [231, 195], difference: "手首のしわからひじへ2寸。3穴のうち、最も手首寄りです。" },
+  { code: "pc6", button: [249, 195], leader: [231, 195], difference: "手首のしわからひじへ2寸。間使より1寸、手首側です。" },
   { code: "pc5", button: [45, 168], leader: [112, 168], difference: "手首のしわからひじへ3寸。手首とひじのしわの間の4分の1の高さです。" },
   { code: "pc4", button: [249, 128], leader: [231, 128], difference: "手首のしわからひじへ5寸。3穴のうち、最もひじ寄りです。" },
 ] as const;
@@ -85,8 +85,8 @@ export const NEARBY_COMPARISONS: readonly NearbyComparison[] = [
     points: [
       { code: "pc6", position: project({ x: 114.5, y: wristProximalY }, palm), button: [27, 83], leader: [97, 83], difference: "手のひら側の手首のしわからひじへ2寸で、二本のすじの間です。" },
       { code: "pc7", position: project({ x: 114.5, y: forearmWristCreaseY }, palm), button: [27, 158], leader: [97, 158], difference: "内関と同じ二本のすじの間で、手のひら側の手首のしわに沿った位置です。" },
-      { code: "te5", position: project({ x: 114.5, y: wristProximalY }, back), button: [197, 83], leader: [267, 83], difference: "手の甲側の手首のしわからひじへ2寸で、前腕に並ぶ二本の骨の間です。" },
-      { code: "te4", position: project({ x: 118, y: forearmWristCreaseY }, back), button: [197, 158], leader: [267, 158], difference: "手の甲側の手首のしわで、指を伸ばすときに動くすじの小指側です。" },
+      { code: "te5", position: project({ x: 114.5, y: wristProximalY }, back), button: [197, 83], leader: [267, 83], difference: "手の甲側の手首のしわからひじへ2寸で、前腕に並ぶ二本の骨の間です。三焦経では陽池の次に並びます。" },
+      { code: "te4", position: project({ x: 118, y: forearmWristCreaseY }, back), button: [197, 158], leader: [267, 158], difference: "手の甲側の手首のしわで、指を伸ばすときに動くすじの小指側です。三焦経では外関の手前に並びます。" },
     ],
     question: {
       prompt: "手のひら側で、手首のしわの高さにあるのはどれですか？",

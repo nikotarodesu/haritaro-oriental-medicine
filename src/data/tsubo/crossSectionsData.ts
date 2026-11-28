@@ -14,7 +14,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
     id: "cs-li4",
     procedureReviewStatus: "pending_expert_review",
     title: "合谷（LI4）局所深浅・断面解剖モデル",
-    level: "第2中手骨中点レベル水平横断（手背部）",
+    level: "人差し指につながる骨の中央の高さ",
     bodySide: "右手",
     posture: "軽度回内位（手背を上に向けて軽く握った自然肢位）",
     cuttingPlane: {
@@ -467,7 +467,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
     id: "cs-pc6",
     procedureReviewStatus: "pending_expert_review",
     title: "内関（PC6）局所深浅・断面解剖モデル",
-    level: "手関節掌側横紋の上方2寸レベル前腕水平横断",
+    level: "手のひら側の手首のしわから、ひじへ2寸の高さ",
     bodySide: "右前腕",
     posture: "前腕回外・軽度伸展位（掌面を上に向けて手首を安定させた肢位）",
     cuttingPlane: {
@@ -974,7 +974,7 @@ export const CROSS_SECTIONS: Record<string, CrossSectionModel> = {
     id: "cs-st36",
     procedureReviewStatus: "pending_expert_review",
     title: "足三里（ST36）局所深浅・断面解剖モデル",
-    level: "犢鼻の下方3寸レベル下腿水平横断",
+    level: "ひざの外下のくぼみから、足首へ3寸の高さ",
     bodySide: "右下腿",
     posture: "膝関節90度屈曲・足底接地座位（または仰臥位）",
     cuttingPlane: {

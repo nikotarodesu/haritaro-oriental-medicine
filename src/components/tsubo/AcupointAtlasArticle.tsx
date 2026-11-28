@@ -10,7 +10,7 @@ import AcupointNameGuide from "./AcupointNameGuide";
 import AcupointReferences from "./AcupointReferences";
 import AcupointResearch from "./AcupointResearch";
 import AcupointSelfCare from "./AcupointSelfCare";
-import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "./AcupointTopics";
+import { AcupointCareAndResearch, AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "./AcupointTopics";
 import { AcupointTraditionalUses } from "./AcupointUses";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
@@ -40,12 +40,19 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 }) {
   const { comparisonNotes, researchNotes } = article;
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
+  const illustratedNeighbors = article.relatedPoints.flatMap(({ code }) => {
+    const neighbor = code.toLowerCase();
+    const comparison = nearbyComparisons.find(group => group.points.some(point => point.code === neighbor));
+    return comparison ? [{ code: neighbor, comparisonId: comparison.id }] : [];
+  });
+  const nearbyCards = article.relatedPoints.filter(({ code }) => !illustratedNeighbors.some(neighbor => neighbor.code === code.toLowerCase()));
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
   const locationNotes = article.expert.filter((paragraph) => paragraph !== whoLocationNotes[point.codeLower]);
   const { pointWarning, symptomWarning } = getAtlasSafetyNotices(article);
   const hasPairs = hasPointPairs(point);
-  const researchOnly = !TRADITIONAL_POINT_USES[point.codeLower] && article.traditional.length === 0;
+  const hasSymptomTiles = Boolean(TRADITIONAL_POINT_USES[point.codeLower]);
+  const hasTraditional = hasSymptomTiles || article.traditional.length > 0;
 
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
@@ -57,17 +64,11 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </div>
         <AcupointLocationRows>
           <AcupointLocationDetails>
-            <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
+            <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={[...article.location, ...locationNotes]}>
               <WhoPointLocation code={point.codeLower} pointName={point.name} />
-              {!hasIndividualAnatomy && locationNotes.length > 0 && (
-                <div className="atlas-location-expert">
-                  <h3>位置図の補足</h3>
-                  <Paragraphs paragraphs={locationNotes} />
-                </div>
-              )}
             </PointAtlasLocationSupplement>
           </AcupointLocationDetails>
-          {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
+          {hasIndividualAnatomy && <AcupointAnatomy point={point} />}
           {regionalSection && (
             <RegionalPointAnatomy
               code={point.code}
@@ -80,30 +81,32 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         </AcupointLocationRows>
       </AcupointTopic>
 
-      <AcupointTopic topic="uses" researchOnly={researchOnly}>
-        <AcupointTraditionalUses code={point.codeLower} />
-        {article.traditional.length > 0 && (
-          <div className="atlas-study-details">
-            <h3 className="font-semibold">使われ方の補足</h3>
-            <Paragraphs paragraphs={article.traditional} />
-          </div>
-        )}
+      {hasTraditional && (
+        <AcupointTopic topic="uses">
+          <AcupointTraditionalUses code={point.codeLower} />
+          {article.traditional.length > 0 && (
+            <div id={hasSymptomTiles ? undefined : "acupoint-traditional"} className="atlas-target">
+              <Paragraphs paragraphs={article.traditional} />
+            </div>
+          )}
+        </AcupointTopic>
+      )}
+
+      <AcupointCareAndResearch preserveUsesAnchor={!hasTraditional}>
         <AcupointCautions priority={(symptomWarning || pointWarning) && <>
           {symptomWarning && <p>{symptomWarning}</p>}
           {pointWarning && <p>{pointWarning}</p>}
         </>}>
           <Paragraphs paragraphs={article.cautions} />
           {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
-          {hasIndividualAnatomy && (
-            <p>断面図は、周りの骨や筋を学ぶための図です。鍼を刺す深さや向きは図から判断できません。</p>
-          )}
         </AcupointCautions>
         <AcupointSelfCare code={point.codeLower} />
-        <AcupointResearch point={point} context={researchNotes && { title: "出典に挙げた研究", paragraphs: researchNotes }} />
-      </AcupointTopic>
+        <AcupointResearch point={point} anchorId={hasTraditional ? "acupoint-study-overview" : undefined}
+          context={researchNotes && { title: "出典に挙げた研究", paragraphs: researchNotes }} />
+      </AcupointCareAndResearch>
 
       <AcupointTopic topic="nearby">
-        <AcupointLocationComparison point={point} related={article.relatedPoints}>
+        <AcupointLocationComparison point={point} related={nearbyCards}>
           {nearbyComparisons.map((comparison, index) => (
             <NearbyPointComparison
               key={`${point.codeLower}-${comparison.id}`}
@@ -111,6 +114,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
               code={point.codeLower}
               anchorId={nearbyComparisonAnchor(point.codeLower, comparison.id)}
               initiallyOpen={index === 0}
+              pairedCodes={illustratedNeighbors.filter(neighbor => neighbor.comparisonId === comparison.id).map(neighbor => neighbor.code)}
             />
           ))}
           <AcupointComparisonLink code={point.code} />
@@ -121,6 +125,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
             <Paragraphs paragraphs={comparisonNotes.paragraphs} />
           </div>
         )}
+        {article.similarNamePoints && <AcupointLocationComparison point={point} related={article.similarNamePoints} byName />}
         <AcupointNameComparison point={point} />
       </AcupointTopic>
 

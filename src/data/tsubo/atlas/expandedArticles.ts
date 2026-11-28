@@ -138,7 +138,6 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
     illustration: {
       region: "expanded", bodyLabel: view.label,
       closeUpAlt: `${point.name}（${point.code}）の拡大図。${profile.location}に丸印。`,
-      closeUpCaption: `${point.name}の場所と目印`,
       meridianStart,
       meridianEnd,
       meridianCaption: `${point.name}は${point.meridianOrder}番目`,

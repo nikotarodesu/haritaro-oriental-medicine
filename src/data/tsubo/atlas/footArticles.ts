@@ -80,7 +80,6 @@ function article(code: FootCode, copy: Copy): AcupointAtlasArticle {
       region: anklePoints.has(code) ? "ankle" : "dorsalFoot",
       bodyLabel: `左右の${anklePoints.has(code) ? "足首まわり" : viewLabels[view]}`,
       closeUpAlt: `${copy.name}（${code.toUpperCase()}）の位置。丸印は${copy.region}。`,
-      closeUpCaption: `${copy.region}にある丸印が${copy.name}です。`,
       meridianStart: nearFirst, meridianEnd: nearFirst + 2,
       meridianCaption: `${copy.name}（${code.toUpperCase()}）と、同じ経絡の前後の番号を示します。`,
     },

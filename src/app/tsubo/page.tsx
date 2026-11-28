@@ -60,13 +60,12 @@ export default function TsuboPage() {
   );
   const indexLinks = (
     <details className="atlas-disclosure dictionary-index-links">
-      <summary>索引・症状から探す</summary>
+      <summary>索引・ガイド</summary>
       <nav aria-label="ツボ図鑑の索引">
         <a href="#illustrated-points" className="atlas-search-index-link">部位別の索引</a>
         <a href="#tsubo-index" className="atlas-search-index-link">経絡別の索引</a>
         <a href="#atlas-research-index" className="atlas-search-index-link">研究から探す</a>
-        <Link href={TSUBO_SYMPTOM_INDEX_PATH} className="atlas-search-index-link">症状からツボを探す</Link>
-        <Link href="/symptoms" className="atlas-search-index-link">症状別ガイド</Link>
+        <Link href="/symptoms" className="atlas-search-index-link">受診の目安を調べる</Link>
         <Link href={KEY_POINT_TYPES_GUIDE} className="atlas-text-action"><ListFilter size={16} aria-hidden="true" />要穴の分類</Link>
         <Link href={EXTRA_POINTS_PATH} className="atlas-text-action"><MapPinned size={16} aria-hidden="true" />奇穴（太陽・印堂）</Link>
       </nav>
@@ -87,7 +86,11 @@ export default function TsuboPage() {
         <AtlasOverviewArt />
       </header>
 
-      <TsuboInteractiveClient indexLinks={indexLinks} featuredPoints={
+      <TsuboInteractiveClient indexLinks={indexLinks} symptomSearch={
+        <Link href={TSUBO_SYMPTOM_INDEX_PATH} className="dictionary-comparison-link">
+          <span>症状からツボを探す</span><small>伝統資料の記載を調べる</small>
+        </Link>
+      } featuredPoints={
         <nav aria-label="代表的なツボ" className="atlas-directory-featured">
           <h2>代表的なツボ</h2>
           <ul>

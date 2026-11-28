@@ -8,16 +8,8 @@ export default function AcupointNameGuide({ code }: { code: string }) {
   if (!name) return null;
 
   return (
-    <AcupointIntroDetails>
-      <div className="atlas-name-guide">
-        <p>{name.reading}</p>
-        {name.history && (
-          <p className="atlas-name-history">
-            {name.history.text}{" "}
-            <a href={name.history.url} className="atlas-source-link">{name.history.source}</a>
-          </p>
-        )}
-
+    <AcupointIntroDetails notation={
+      <>
         <dl className="atlas-name-identity">
           <div>
             <dt>中国語（簡体字）</dt>
@@ -59,7 +51,15 @@ export default function AcupointNameGuide({ code }: { code: string }) {
           <li><a href={name.standardUrl} className="atlas-source-link">中国の国家標準（表記と読み、PDF）</a></li>
           <li><a href={name.nomenclatureUrl} className="atlas-source-link">WHOの経穴名称資料（PDF）</a></li>
         </ul>
-      </div>
+        {name.history && (
+          <p className="atlas-name-history">
+            {name.history.text}{" "}
+            <a href={name.history.url} className="atlas-source-link">{name.history.source}</a>
+          </p>
+        )}
+      </>
+    }>
+      <p>{name.reading}</p>
     </AcupointIntroDetails>
   );
 }

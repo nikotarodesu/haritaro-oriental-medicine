@@ -77,10 +77,15 @@ export default async function ExtraPointPage({ params }: Props) {
         <p>奇穴 <span aria-hidden="true">·</span> {point.bodyPart}</p>
       </header>
 
-      <AcupointIntroDetails>
+      <AcupointIntroDetails notation={
+        <>
+          <dl className="atlas-name-identity">
+            <div><dt>ピンイン</dt><dd lang="zh-Latn-pinyin">{point.pinyin}</dd></div>
+          </dl>
+          <p><a href={point.nameNote.href} className="atlas-source-link">{point.nameNote.source}</a></p>
+        </>
+      }>
         <p>{point.nameNote.text}</p>
-        <p>中国語の読みは <span lang="zh-Latn-pinyin">{point.pinyin}</span> です。</p>
-        <p><a href={point.nameNote.href} className="atlas-source-link">{point.nameNote.source}</a></p>
       </AcupointIntroDetails>
 
       <AcupointTopic topic="location">
@@ -115,8 +120,9 @@ export default async function ExtraPointPage({ params }: Props) {
 
       <AcupointTopic topic="uses">
         <AcupointTraditionalUses code={code} />
-        <AcupointUses code={code} />
       </AcupointTopic>
+
+      <AcupointUses code={code} />
 
       <AcupointTopic topic="nearby">
         <ul id="extra-point-nearby-heading" className={`atlas-target ${styles.nearby}`}>

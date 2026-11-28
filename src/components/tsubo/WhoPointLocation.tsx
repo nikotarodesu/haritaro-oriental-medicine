@@ -20,8 +20,8 @@ export default function WhoPointLocation({ code, pointName }: { code: string; po
 
   return (
     <section id="acupoint-who-location" className="atlas-who-location cun-guide-target">
-      <h3>WHO標準の位置 <span>日本語要約</span></h3>
-      {usedUnits.has("寸") && <p className="text-sm">ここでの「寸」は、決められた二つの目印の間を等分した単位です。</p>}
+      <h3>WHO標準の位置と出典 <span>日本語要約</span></h3>
+      {usedUnits.has("寸") && <p className="text-sm">骨度法（こつどほう）では、決められた二つの目印の間を等分して「寸」を測ります。</p>}
       <p>{location}</p>
       <WhoMeasurementFigures measures={measures} pointName={pointName} />
       {note && <p className="atlas-who-note">{note}</p>}

@@ -7,7 +7,7 @@ export default function AcupointSelfCare({ code }: { code: string }) {
 
   return (
     <section id="acupoint-self-care" className="atlas-target atlas-self-care" aria-labelledby="atlas-self-care-heading">
-      <h3 id="atlas-self-care-heading" className="atlas-section-title">セルフケアの目安</h3>
+      <h2 id="atlas-self-care-heading" className="atlas-section-title">セルフケアの目安</h2>
       <div className="atlas-self-care-grid">
         {methods.map(({ kind, title, context, timing, instructions, source }) => (
           <div className="atlas-use-card atlas-care-method" key={kind}>
