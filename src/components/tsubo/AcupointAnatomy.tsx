@@ -30,16 +30,20 @@ export default function AcupointAnatomy({ point, paragraphs = [] }: {
     : [];
 
   return (
-    <section id="acupoint-anatomy" data-anatomy-kind="individual" className="atlas-target" aria-labelledby="acupoint-anatomy-title">
-      <h3 id="acupoint-anatomy-title" className="atlas-section-title">詳しい解剖と位置</h3>
-      {preview && <p className="mb-3">{preview}</p>}
-      <HashTargetDetails key={point.code} analytics={{ kind: "individual" }} className="atlas-disclosure atlas-anatomy-details" summary="断面図を開く">
-        <div id="acupoint-anatomy-diagram" className="atlas-target space-y-3 pb-3">
-          <WhoMeasurementFigures measures={forearmHeight} pointName={point.name} />
-          <CrossSectionViewer model={model} pointName={point.name} pointCode={point.code} individualModel sharedLandmarks={getSharedAnatomyLandmarks(point.codeLower)} />
-          {paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-        </div>
-      </HashTargetDetails>
-    </section>
+    <HashTargetDetails
+      key={point.code}
+      id="acupoint-anatomy"
+      data-anatomy-kind="individual"
+      analytics={{ kind: "individual" }}
+      className="atlas-target atlas-disclosure atlas-anatomy-details"
+      summary={<h3 id="acupoint-anatomy-title">断面図で周囲の組織を見る</h3>}
+    >
+      <div id="acupoint-anatomy-diagram" className="atlas-target space-y-3 pb-3">
+        {preview && <p>{preview}</p>}
+        <WhoMeasurementFigures measures={forearmHeight} pointName={point.name} />
+        <CrossSectionViewer model={model} pointName={point.name} pointCode={point.code} individualModel sharedLandmarks={getSharedAnatomyLandmarks(point.codeLower)} />
+        {paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+      </div>
+    </HashTargetDetails>
   );
 }

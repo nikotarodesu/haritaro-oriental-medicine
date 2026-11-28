@@ -17,13 +17,13 @@ import {
 } from "@/data/tsubo";
 import CrossSectionViewer from "@/components/tsubo/CrossSectionViewer";
 import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
-import { AcupointKeyPointLinks, AcupointStudyLinks } from "@/components/tsubo/AcupointArticleLinks";
+import { AcupointKeyPointLinks, AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "@/components/tsubo/AcupointPairNotes";
-import { AcupointTopic, AcupointTopicNav } from "@/components/tsubo/AcupointTopics";
+import { AcupointLocationDetails, AcupointTopic } from "@/components/tsubo/AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import HeguAtlasPreview, { heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
@@ -35,7 +35,7 @@ import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas
 import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
 import { getFeaturedPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { getAcupointName } from "@/data/tsubo/names";
-import PointAtlasDiagrams from "@/components/tsubo/atlas/PointAtlasDiagrams";
+import { PointAtlasLocationFigure, PointAtlasLocationSupplement } from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
@@ -430,28 +430,10 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         </div>
 
-        <AcupointTopicNav topics={[
-          "location",
-          "uses",
-          ...(hasNearby ? ["nearby"] as const : []),
-          ...(showPairs ? ["pairs"] as const : []),
-        ]} />
-
         <AcupointTopic topic="location">
-          <div id="acupoint-location" tabIndex={-1} className="scroll-mt-28 bg-[#FFFFFF] dark:bg-[#17212A] rounded-2xl sm:rounded-3xl border border-[#E5DEC9] dark:border-[#2A3B4A] p-4 sm:p-8 shadow-sm space-y-6 transition-colors">
-            <div className="flex items-center gap-2 text-base sm:text-lg font-serif font-bold text-[#1E3D34] dark:text-[#74BA9E] border-b border-[#F2ECE0] dark:border-[#22303D] pb-3">
-              <Compass className="w-5 h-5" />
-              <h3>標準の位置と目印</h3>
-            </div>
-
-            <WhoPointLocation code={point.codeLower} pointName={point.name} />
-            <AcupointStudyLinks code={point.code} />
-
-            {/* 取穴手順ステップ */}
+          <div id="acupoint-location" tabIndex={-1} className="atlas-target space-y-4">
             {illustration && atlasMarker && (
-              <div id="acupoint-diagram" className="atlas-target">
-                <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={illustration} marker={atlasMarker} />
-              </div>
+              <PointAtlasLocationFigure point={point} illustration={illustration} marker={atlasMarker} />
             )}
             {point.howToLocate && point.howToLocate.length > 0 && (
               <div className="space-y-3 pt-2">
@@ -483,17 +465,22 @@ export default async function AcupointDetailPage({ params }: Props) {
             )}
           </div>
 
-          {point.crossSection?.svgElements?.length ? (
-            <details id={illustration && atlasMarker ? "acupoint-cross-section" : "acupoint-diagram"} className="atlas-disclosure atlas-reading-details atlas-target">
-              <summary>体の内側の模式図</summary>
-              <CrossSectionViewer
-                model={getPublicCrossSectionModel(point.crossSection)}
-                pointName={point.name}
-                pointCode={point.code}
-                individualModel={individualModel}
-              />
-            </details>
-          ) : null}
+          <AcupointLocationDetails label={point.crossSection?.svgElements?.length ? "位置の資料と断面図" : "位置の資料"}>
+            <WhoPointLocation code={point.codeLower} pointName={point.name} />
+            {point.crossSection?.svgElements?.length ? (
+              <div id={illustration && atlasMarker ? "acupoint-cross-section" : "acupoint-diagram"} className="atlas-target">
+                <CrossSectionViewer
+                  model={getPublicCrossSectionModel(point.crossSection)}
+                  pointName={point.name}
+                  pointCode={point.code}
+                  individualModel={individualModel}
+                />
+              </div>
+            ) : null}
+            {illustration && atlasMarker && (
+              <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={illustration} marker={atlasMarker} />
+            )}
+          </AcupointLocationDetails>
         </AcupointTopic>
 
         <AcupointTopic topic="uses">
@@ -646,6 +633,7 @@ export default async function AcupointDetailPage({ params }: Props) {
         )}
 
         <AcupointNameGuide code={point.codeLower} />
+        <AcupointReadingLinks code={point.codeLower} />
 
         {relatedLectures.length > 0 && (
           <section className="dictionary-related-lectures" aria-labelledby="related-lectures-title">

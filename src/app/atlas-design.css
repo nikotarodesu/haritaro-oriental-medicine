@@ -153,19 +153,9 @@
 }
 .atlas-use-card svg { flex: none; }
 .atlas-use-topics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .4rem;
-  margin-top: .75rem;
-}
-.atlas-use-topics li {
-  padding: .32rem .65rem;
-  border-radius: .45rem;
-  background: var(--atlas-soft);
+  margin-top: .375rem;
   color: var(--atlas-ink);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.45;
+  line-height: 1.7;
 }
 .atlas-use-studies, .atlas-use-status { margin-top: .65rem; }
 .atlas-use-studies li + li { border-top: 1px solid var(--atlas-line); }

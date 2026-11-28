@@ -24,7 +24,7 @@ export interface AcupointAtlasArticle {
   expert: readonly string[];
   visualOnly?: boolean;
   symptomLinks?: readonly { href: string; label: string }[];
-  relatedPoints: readonly { code: string; text: string }[];
+  relatedPoints: readonly { code: string; text: string; includeLocation?: boolean }[];
   sources: readonly { name: string; url: string; scope: string }[];
   illustration: {
     region: AtlasRegion;

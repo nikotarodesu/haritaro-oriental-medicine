@@ -4,14 +4,13 @@ import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointReferences, { AcupointPointBasics } from "@/components/tsubo/AcupointReferences";
-import { AcupointStudyLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
 import { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import { AcupointPairNotes } from "./AcupointPairNotes";
-import { AcupointTopic, AcupointTopicNav } from "./AcupointTopics";
+import { AcupointLocationDetails, AcupointTopic } from "./AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
-import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
+import AcupointAtlasDiagrams, { AcupointAtlasLocationSupplement } from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
 import type { AcupointDetail } from "@/data/tsubo/types";
 import styles from "./HeguAtlasPreview.module.css";
@@ -32,24 +31,21 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className={`quiet-atlas page-layout atlas-page atlas-entry ${styles.folio}`}>
       <AcupointArticleHeader point={point} folio />
-      <div className={styles.locatorIntro}>
-        <aside className="atlas-caution-priority" aria-label="このツボを探す前に">
-          <p className="font-semibold">症状がある場合の受診目安</p>
-          <p>{heguAtlasReading.symptomWarning}</p>
-        </aside>
-        <AcupointTopicNav topics={["location", "uses", "nearby", "pairs"]} />
-      </div>
+      <aside className="atlas-caution-priority" aria-label="このツボを探す前に">
+        <p className="font-semibold">症状がある場合の受診目安</p>
+        <p>{heguAtlasReading.symptomWarning}</p>
+      </aside>
 
-      <AcupointTopic topic="location" whoLink>
+      <AcupointTopic topic="location">
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
-          <AcupointAtlasDiagrams point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
-            <WhoPointLocation code={point.codeLower} pointName={point.name} />
-          </AcupointAtlasDiagrams>
-          <div className="atlas-location-links">
-            <AcupointStudyLinks code={point.code} />
-          </div>
+          <AcupointAtlasDiagrams point={point} />
         </div>
-        <AcupointAnatomy point={point} />
+        <AcupointLocationDetails>
+          <AcupointAtlasLocationSupplement point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
+            <WhoPointLocation code={point.codeLower} pointName={point.name} />
+            <AcupointAnatomy point={point} />
+          </AcupointAtlasLocationSupplement>
+        </AcupointLocationDetails>
       </AcupointTopic>
 
       <AcupointTopic topic="uses">

@@ -1,0 +1,23 @@
+.withPriority {
+  padding-inline-start: .75rem;
+  border-inline-start: 2px solid var(--notice-line);
+}
+
+.priority,
+.details {
+  display: grid;
+  font-size: .875rem;
+  line-height: 1.7;
+}
+
+.priority {
+  gap: .25rem;
+}
+
+.details {
+  gap: .5rem;
+}
+
+.details a {
+  justify-self: start;
+}

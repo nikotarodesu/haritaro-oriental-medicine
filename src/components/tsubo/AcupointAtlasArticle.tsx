@@ -1,8 +1,7 @@
-import Link from "next/link";
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "./AcupointAnatomy";
 import RegionalPointAnatomy from "./RegionalPointAnatomy";
-import { AcupointComparisonLink, AcupointStudyLinks } from "./AcupointArticleLinks";
+import { AcupointComparisonLink } from "./AcupointArticleLinks";
 import AcupointArticleHeader from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
@@ -10,12 +9,11 @@ import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "./Acup
 import AcupointReferences, { AcupointPointBasics } from "./AcupointReferences";
 import AcupointResearch from "./AcupointResearch";
 import AcupointSelfCare from "./AcupointSelfCare";
-import { AcupointTopic, AcupointTopicNav } from "./AcupointTopics";
+import { AcupointLocationDetails, AcupointTopic } from "./AcupointTopics";
 import { AcupointTraditionalUses } from "./AcupointUses";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
-import PointAtlasDiagrams, { PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
-import { getAtlasComparisonGuide } from "@/data/tsubo/atlas/nearbyComparisonGuides";
+import { PointAtlasLocationFigure, PointAtlasLocationSupplement, PointAtlasThumbnail } from "./atlas/PointAtlasDiagrams";
 import { getNearbyComparisons, nearbyComparisonAnchor } from "@/data/tsubo/atlas/nearbyComparisons";
 import { TRADITIONAL_POINT_USES } from "@/data/tsubo/atlas/traditionalUses";
 import { whoLocationNotes } from "@/data/tsubo/atlas/whoLocations";
@@ -41,8 +39,6 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
 }) {
   const { comparisonNotes, researchNotes } = article;
   const nearbyComparisons = getNearbyComparisons(point.codeLower);
-  const comparisonGuide = nearbyComparisons.map(({ id }) => getAtlasComparisonGuide(id)).find(Boolean);
-  const firstComparison = nearbyComparisons[0];
   const hasIndividualAnatomy = individualModel && !!point.crossSection;
   const regionalSection = hasIndividualAnatomy ? undefined : getRegionalSection(point.codeLower);
   const locationNotes = article.expert.filter((paragraph) => paragraph !== whoLocationNotes[point.codeLower]);
@@ -59,11 +55,12 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           {pointWarning && <div><p className="font-semibold">ツボごとの注意</p><p>{pointWarning}</p></div>}
         </aside>
       )}
-      <AcupointTopicNav topics={["location", "uses", "nearby", ...(hasPairs ? ["pairs" as const] : [])]} researchOnly={researchOnly} />
-
-      <AcupointTopic topic="location" whoLink>
+      <AcupointTopic topic="location">
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
-          <PointAtlasDiagrams point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
+          <PointAtlasLocationFigure point={point} illustration={article.illustration} marker={marker} />
+        </div>
+        <AcupointLocationDetails label={hasIndividualAnatomy || regionalSection ? "位置の資料と断面図" : "位置の資料"}>
+          <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
             <WhoPointLocation code={point.codeLower} pointName={point.name} />
             {!hasIndividualAnatomy && locationNotes.length > 0 && (
               <div className="atlas-location-expert">
@@ -71,31 +68,18 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
                 <Paragraphs paragraphs={locationNotes} />
               </div>
             )}
-          </PointAtlasDiagrams>
-          <div className="atlas-location-links">
-            {comparisonGuide ? (
-              <Link className="atlas-source-link inline-flex min-h-11 items-center" href={comparisonGuide.href} prefetch={false}>
-                {comparisonGuide.title}を見る
-              </Link>
-            ) : firstComparison && (
-              <a className="atlas-source-link inline-flex min-h-11 items-center" href={`#${nearbyComparisonAnchor(point.codeLower, firstComparison.id)}`}>
-                近いツボを同じ図で比べる
-              </a>
+            {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
+            {regionalSection && (
+              <RegionalPointAnatomy
+                code={point.code}
+                name={point.name}
+                section={regionalSection}
+                locationHref="#acupoint-location"
+                surface={<PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />}
+              />
             )}
-            <AcupointStudyLinks code={point.code} />
-          </div>
-        </div>
-
-        {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
-        {regionalSection && (
-          <RegionalPointAnatomy
-            code={point.code}
-            name={point.name}
-            section={regionalSection}
-            locationHref="#acupoint-location"
-            surface={<PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />}
-          />
-        )}
+          </PointAtlasLocationSupplement>
+        </AcupointLocationDetails>
       </AcupointTopic>
 
       <AcupointTopic topic="uses" researchOnly={researchOnly}>

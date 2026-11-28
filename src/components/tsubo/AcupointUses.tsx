@@ -14,9 +14,7 @@ export function AcupointTraditionalUses({ code }: { code: string }) {
   return (
     <section id="acupoint-traditional" className="atlas-target atlas-use-card atlas-traditional-use" data-use-kind="traditional" aria-labelledby="atlas-traditional-title">
       <h3 id="atlas-traditional-title" className="atlas-section-title">伝統資料に記された症状</h3>
-      <ul className="atlas-use-topics">
-        {traditional.labels.map(label => <li key={label}>{label}</li>)}
-      </ul>
+      <p className="atlas-use-topics">{traditional.labels.join("、")}</p>
       <a className="atlas-text-action atlas-use-source" href={traditional.source.url}>{traditional.source.label}</a>
     </section>
   );

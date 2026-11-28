@@ -1,33 +1,38 @@
 import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 
-import AtlasLocationFigures from "./atlas/AtlasLocationFigures";
+import { AtlasLocationFigure, AtlasLocationSupplement } from "./atlas/AtlasLocationFigures";
 import AtlasLandmarkGuide from "./atlas/AtlasLandmarkGuide";
 import HeguHandDiagram from "./atlas/HeguHandDiagram";
 import ZoomableAtlasDiagram from "./atlas/ZoomableAtlasDiagram";
 
-export default function AcupointAtlasDiagrams({ point, meridianPoints, children }: {
-  point: AcupointMaster;
-  meridianPoints: AcupointMaster[];
-  children: ReactNode;
-}) {
+export default function AcupointAtlasDiagrams({ point }: { point: AcupointMaster }) {
   if (point.codeLower !== "li4") return null;
-  const nearby = meridianPoints.slice(0, 6);
 
   return (
-    <AtlasLocationFigures notes={children} primary={
+    <AtlasLocationFigure>
       <figure className="atlas-figure atlas-figure--labelled">
         <AtlasLandmarkGuide code="li4" controlsFirst>
           <ZoomableAtlasDiagram label="合谷の場所と目印" pointName={point.name}>
             <HeguHandDiagram />
           </ZoomableAtlasDiagram>
         </AtlasLandmarkGuide>
-        <figcaption>
-          <span className="block text-sm font-semibold">右手の甲を上に向けた図</span>
-          ①人差し指につながる骨の中央から、②親指につながる骨の方へ少し寄ったところです。
-        </figcaption>
+        <figcaption>右手の甲</figcaption>
       </figure>
-    }>
+    </AtlasLocationFigure>
+  );
+}
+
+export function AcupointAtlasLocationSupplement({ point, meridianPoints, children }: {
+  point: AcupointMaster;
+  meridianPoints: readonly AcupointMaster[];
+  children?: ReactNode;
+}) {
+  if (point.codeLower !== "li4") return null;
+  const nearby = meridianPoints.slice(0, 6);
+
+  return (
+    <AtlasLocationSupplement notes={children}>
       <figure className="atlas-figure atlas-figure--overview">
         <svg viewBox="0 0 200 272" role="img" aria-label="全身正面のシルエット。左右の手をオレンジで囲んでいます。" className="mx-auto block max-h-64 w-full">
           <circle cx="100" cy="32" r="19" fill="#D8D5C9" />
@@ -56,6 +61,6 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints, children 
         </ZoomableAtlasDiagram>
         <figcaption>{point.meridian}の順序 · 人差し指から前腕まで</figcaption>
       </figure>
-    </AtlasLocationFigures>
+    </AtlasLocationSupplement>
   );
 }

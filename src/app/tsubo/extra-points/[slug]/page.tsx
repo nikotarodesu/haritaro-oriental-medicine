@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
-import { AcupointTopic, AcupointTopicNav } from "@/components/tsubo/AcupointTopics";
+import { AcupointLocationDetails, AcupointTopic } from "@/components/tsubo/AcupointTopics";
 import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import RegionalPointAnatomy from "@/components/tsubo/RegionalPointAnatomy";
 import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
@@ -80,7 +80,6 @@ export default async function ExtraPointPage({ params }: Props) {
           {point.classification && <>{" "}<a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
         </p>
       </header>
-      <AcupointTopicNav topics={["location", "uses", "nearby"]} />
 
       <AcupointTopic topic="location">
         <div id="extra-point-location" tabIndex={-1} className={`atlas-target ${styles.location}`}>
@@ -94,20 +93,20 @@ export default async function ExtraPointPage({ params }: Props) {
               <li><span className={styles.keyWhite} aria-hidden="true" /><span>{point.landmark}（位置の目印）</span></li>
               <li><span className={styles.keyOrange} aria-hidden="true" /><span>{point.name}（{point.code}）</span></li>
             </ul>
-            <p className="mt-3 text-sm">
-              位置の出典 <a href={positionSource.href} className="atlas-source-link">{positionSource.title}（PDF）</a>
-            </p>
           </div>
         </div>
-        {anatomySection && (
-          <RegionalPointAnatomy
-            code={point.code}
-            name={point.name}
-            section={anatomySection}
-            locationHref="#extra-point-location"
-            surface={<ExtraPointDiagram point={point} />}
-          />
-        )}
+        <AcupointLocationDetails label={anatomySection ? "位置の出典と断面図" : "位置の出典"}>
+          <p>位置の出典　<a href={positionSource.href} className="atlas-source-link">{positionSource.title}（PDF）</a></p>
+          {anatomySection && (
+            <RegionalPointAnatomy
+              code={point.code}
+              name={point.name}
+              section={anatomySection}
+              locationHref="#extra-point-location"
+              surface={<ExtraPointDiagram point={point} />}
+            />
+          )}
+        </AcupointLocationDetails>
       </AcupointTopic>
 
       <AcupointTopic topic="uses">

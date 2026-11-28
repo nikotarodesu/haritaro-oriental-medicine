@@ -14,6 +14,7 @@ const { NAME_READINGS } = load('src/data/tsubo/names/nameReadings');
 const { CHARACTER_MEANINGS } = load('src/data/tsubo/names/characterMeanings');
 const { getAcupointNameCharacter, acupointNameIndexHref, NAME_INDEX_EXAMPLES } = load('src/data/tsubo/names/characterIndex');
 const { NEARBY_COMPARISONS, getNearbyComparisons, comparisonSize, comparisonTransforms } = load('src/data/tsubo/atlas/nearbyComparisons');
+const { getAtlasComparisonGuide } = load('src/data/tsubo/atlas/nearbyComparisonGuides');
 const { ATLAS_POINT_MARKERS, shinEndpoints, volarForearmGeometry } = load('src/data/tsubo/atlas/markers');
 const { getAcupointStudies, getClassicalCombinations } = load('src/data/tsubo/atlas/evidence');
 const { getFeaturedPairs } = load('src/data/tsubo/atlas/featuredPairs');
@@ -234,23 +235,25 @@ assert.equal(kikei.HACHIMYAKU_PAIRS.length, 4);
 assert(!/即効性があります|絶大な効果|自律神経をリセット|素晴らしい効果|第一選択です/.test(JSON.stringify(kikei)));
 console.log(`Acupoint language: 361 sourced explanations and index entries, ${compared.size} points in ${NEARBY_COMPARISONS.length} comparisons, preserved cun values, WHO positions, and scoped evidence and procedure filters.`);
 
-function readTopicSections(markup) {
-  const sections = new Map();
+function readContainers(markup, tagName, keyAttribute) {
+  const containers = new Map();
   const stack = [];
-  for (const tag of markup.matchAll(/<\/?section\b[^>]*>/g)) {
+  const tags = new RegExp(`<\\/?${tagName}\\b[^>]*>`, 'g');
+  const attribute = new RegExp(`\\b${keyAttribute}="([^"]+)"`);
+  for (const tag of markup.matchAll(tags)) {
     if (tag[0].startsWith('</')) {
       const start = stack.pop();
-      if (start?.topic) sections.get(start.topic).markup = markup.slice(start.index, tag.index + tag[0].length);
+      if (start?.key) containers.get(start.key).markup = markup.slice(start.index, tag.index + tag[0].length);
       continue;
     }
-    const topic = tag[0].match(/\bdata-point-topic="([^"]+)"/)?.[1];
-    stack.push({ topic, index: tag.index });
-    if (topic) {
-      assert(!sections.has(topic), `Duplicate topic ${topic}`);
-      sections.set(topic, { opening: tag[0], index: tag.index });
+    const key = tag[0].match(attribute)?.[1];
+    stack.push({ key, index: tag.index });
+    if (key) {
+      assert(!containers.has(key), `Duplicate ${tagName} target ${key}`);
+      containers.set(key, { opening: tag[0], index: tag.index });
     }
   }
-  return sections;
+  return containers;
 }
 
 function publishedPairStudies(code) {
@@ -264,18 +267,22 @@ function hasPublishedPairs(code) {
 }
 
 function checkBuiltPointPages(buildDir) {
+  const lectureHref = /href="\/(?:learn\/lectures\/|curriculum\/|tsubo\/basics\/key-point-types#)/;
+  const caseHref = /href="\/cases(?:[/#"])/;
   const routes = [
     ...allCodes.map(code => ({ code, route: `/tsubo/${code}` })),
-    ...Array.from(EXTRA_POINTS, point => ({ code: point.code.toLowerCase(), route: point.href, extra: true })),
+    ...Array.from(EXTRA_POINTS, point => ({ code: point.code.toLowerCase(), route: point.href, positionSource: point.sources[1].href })),
   ];
   let paired = 0;
-  for (const { code, route, extra } of routes) {
+  for (const { code, route, positionSource } of routes) {
+    const extra = Boolean(positionSource);
     const raw = fs.readFileSync(path.join(buildDir, 'server', 'app', route.slice(1) + '.html'), 'utf8');
     const markup = raw.replace(/<!--[\s\S]*?-->|<script\b[^>]*>[\s\S]*?<\/script>/g, '');
     assert.equal((markup.match(/<h1\b/g) ?? []).length, 1, `${route}: one page heading`);
     const sectionIds = new Map();
     for (const [, id] of markup.matchAll(/<[^>]*\sid="([^"]+)"/g)) sectionIds.set(id, (sectionIds.get(id) ?? 0) + 1);
-    const topics = readTopicSections(markup);
+    const topics = readContainers(markup, 'section', 'data-point-topic');
+    const details = readContainers(markup, 'details', 'id');
     const wantPairs = !extra && hasPublishedPairs(code);
     if (wantPairs) paired++;
     const order = ['location', 'uses', 'nearby'];
@@ -287,8 +294,7 @@ function checkBuiltPointPages(buildDir) {
       assert(opening.includes(`id="${id}"`) && opening.includes(`aria-labelledby="${id}-title"`) && opening.includes('tabindex="-1"'), `${route}: focusable, named ${topic} chapter`);
       assert(content.includes(`id="${id}-title"`), `${route}: heading for ${topic}`);
     }
-    const nav = markup.match(/<nav\b[^>]*\baria-label="このツボのページ内目次"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? '';
-    assert.deepEqual([...nav.matchAll(/href="#point-topic-([^"]+)"/g)].map(match => match[1]), order, `${route}: topic links match rendered sections`);
+    assert(!markup.includes('aria-label="このツボのページ内目次"'), `${route}: no front-loaded topic shortcuts`);
 
     const location = topics.get('location').markup;
     const uses = topics.get('uses').markup;
@@ -296,14 +302,34 @@ function checkBuiltPointPages(buildDir) {
     const legacyTargets = extra
       ? ['extra-point-location', 'acupoint-anatomy', 'acupoint-traditional', 'acupoint-study-overview', 'extra-point-nearby-heading', 'extra-point-sources']
       : ['acupoint-location', 'acupoint-anatomy', 'acupoint-who-location', 'acupoint-traditional', 'acupoint-cautions', 'acupoint-research', 'acupoint-compare', 'acupoint-sources'];
-    for (const id of legacyTargets) assert.equal(sectionIds.get(id), 1, `${route}: existing fragment #${id}`);
+    for (const id of [...legacyTargets, 'acupoint-anatomy-diagram', 'acupoint-location-resources']) {
+      assert.equal(sectionIds.get(id), 1, `${route}: reachable fragment #${id}`);
+    }
     for (const id of [extra ? 'extra-point-location' : 'acupoint-location', 'acupoint-anatomy']) {
       assert(location.includes(`id="${id}"`), `${route}: ${id} belongs in the location chapter`);
     }
+    const appendix = details.get('acupoint-location-resources');
+    assert(appendix && location.includes(appendix.markup), `${route}: one shared location disclosure after the main diagram`);
+    const primaryLocation = `id="${extra ? 'extra-point-location' : 'acupoint-location'}"`;
+    assert(location.indexOf(appendix.markup) > location.indexOf(primaryLocation) && !appendix.markup.includes(primaryLocation), `${route}: the main position remains outside and before the disclosure`);
+    assert(!/\sopen(?:=|\s|>)/.test(appendix.opening), `${route}: location details start closed`);
+    assert(appendix.markup.includes('id="acupoint-anatomy-diagram"'), `${route}: original anatomy anchor opens inside the shared location details`);
+    assert(!lectureHref.test(location) && !caseHref.test(location), `${route}: study links do not interrupt the location chapter`);
     assert(uses.includes('id="acupoint-traditional"'), `${route}: traditional content or its original fallback target`);
     if (!extra) {
-      assert(location.includes('id="acupoint-who-location"'), `${route}: WHO citation beside the location`);
-      assert(location.includes('href="#acupoint-who-location"'), `${route}: reach the WHO citation from the location chapter`);
+      assert(appendix.markup.includes('id="acupoint-who-location"'), `${route}: WHO citation inside the same disclosure`);
+      assert(appendix.markup.includes('atlas-figure--overview') && appendix.markup.includes('atlas-figure--meridian'), `${route}: body map and meridian view inside the same disclosure`);
+      const reading = details.get('acupoint-related-reading');
+      assert(reading && reading.index > topics.get(order.at(-1)).index, `${route}: related reading follows the topic chapters`);
+      assert(!/\sopen(?:=|\s|>)/.test(reading.opening), `${route}: related reading starts closed`);
+      const readingLists = [...reading.markup.matchAll(/<ul\b[^>]*>([\s\S]*?)<\/ul>/g)];
+      assert.equal(readingLists.length, 1, `${route}: one flat list under related reading`);
+      assert(lectureHref.test(readingLists[0][1]) && caseHref.test(readingLists[0][1]), `${route}: lecture and case links remain available in that list`);
+      const guide = getNearbyComparisons(code).map(({ id }) => getAtlasComparisonGuide(id)).find(Boolean);
+      if (guide) {
+        const href = `href="${guide.href}"`;
+        assert(nearby.includes(href) && markup.split(href).length === 2, `${route}: one comparison guide link, inside the nearby chapter`);
+      }
       for (const id of ['acupoint-cautions', 'acupoint-research']) assert(uses.includes(`id="${id}"`), `${route}: preserved ${id} in the uses chapter`);
       if (TRADITIONAL_POINT_USES[code]) assert.equal(sectionIds.get('acupoint-study-overview'), 1, `${route}: legacy research overview fragment`);
       assert(nearby.includes('id="acupoint-compare"'), `${route}: position comparison belongs in the nearby chapter`);
@@ -313,6 +339,7 @@ function checkBuiltPointPages(buildDir) {
         assert(warningAt >= 0 && warningAt < topics.get('location').index, `${route}: priority warning remains visible before the position figure`);
       }
     } else {
+      assert(appendix.markup.includes(`href="${positionSource}"`), `${route}: extra-point position source inside its location disclosure`);
       assert(uses.includes('id="acupoint-study-overview"'), `${route}: extra-point evidence belongs in the uses chapter`);
       assert(nearby.includes('id="extra-point-nearby-heading"'), `${route}: preserve the old nearby heading fragment in its chapter`);
     }
@@ -334,7 +361,7 @@ function checkBuiltPointPages(buildDir) {
     }
     if (code === 'st36') assert(nearby.includes('/tsubo/st37#acupoint-location'), 'A legitimate nearby comparison remains even when there is pairing evidence');
   }
-  console.log(`Built acupoint HTML: ${routes.length} detail pages, ordered and linked topics, ${paired} non-empty pair chapters, preserved warnings and anchors, and scoped nearby comparisons.`);
+  console.log(`Built acupoint HTML: ${routes.length} detail pages, ordered topics without front-loaded shortcuts, a shared closed location disclosure, preserved study links and anchors, and ${paired} non-empty pair chapters.`);
 }
 
 if (process.argv.includes('--build-output')) {

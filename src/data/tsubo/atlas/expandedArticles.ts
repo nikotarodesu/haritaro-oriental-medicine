@@ -120,9 +120,10 @@ function makeArticle(point: AcupointMaster): AcupointAtlasArticle {
       : [{ href: "/symptoms", label: "症状から探す" }],
     relatedPoints: related.map((other) => ({
       code: other.codeLower,
+      includeLocation: true,
       text: adjacent.includes(other)
-        ? `${point.meridianShort}で${point.name}の一つ${other.meridianOrder < point.meridianOrder ? "前" : "後"}`
-        : `${view.label}の図で比較できる点`,
+        ? `${point.meridianShort}で${point.name}の一つ${other.meridianOrder < point.meridianOrder ? "前" : "後"}。`
+        : "",
     })),
     sources: [
       {
