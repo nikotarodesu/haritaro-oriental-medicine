@@ -36,19 +36,21 @@ const guidance = {
   },
 } as const;
 
-export default function AtlasLandmarkGuide({ code, children }: {
+export default function AtlasLandmarkGuide({ code, children, controlsFirst = false }: {
   code: keyof typeof guidance;
   children: ReactNode;
+  controlsFirst?: boolean;
 }) {
   const id = useId();
   const descriptions = { all: "「目印→ツボ」を選ぶと、図に矢印が出ます。", ...guidance[code] };
+  const diagram = <div id={`${id}-diagram`}>{children}</div>;
 
   return (
     <div className={styles.guide} data-atlas-landmark-guide="">
-      <div id={`${id}-diagram`}>{children}</div>
+      {!controlsFirst && diagram}
       <fieldset className={styles.controls}>
         <legend className="sr-only">ツボの探し方</legend>
-        <div className={styles.choices}>
+        <div className={styles.choices} data-atlas-guide-choices="">
           {choices.map(({ value, label }) => (
             <label key={value}>
               <input
@@ -72,6 +74,7 @@ export default function AtlasLandmarkGuide({ code, children }: {
           ))}
         </div>
       </fieldset>
+      {controlsFirst && diagram}
     </div>
   );
 }

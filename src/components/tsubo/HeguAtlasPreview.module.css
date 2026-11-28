@@ -1,0 +1,162 @@
+.folio:global(.atlas-entry) {
+  --atlas-ink: var(--folio-ink, var(--text-sumi));
+  --atlas-muted: var(--folio-muted, var(--text-secondary));
+  --atlas-accent: var(--folio-accent, var(--accent-readable));
+  --atlas-soft: var(--folio-plate, var(--accent-soft));
+  --atlas-paper: var(--folio-surface, var(--bg-card));
+  --atlas-line: var(--folio-rule, var(--border-washi));
+  --border-control: var(--folio-control, var(--border-washi));
+  max-width: 48.25rem;
+  padding-inline: clamp(1rem, 4vw, 1.5rem);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  color: var(--atlas-ink);
+  background: var(--folio-paper, var(--bg-washi));
+  line-height: 1.75;
+}
+
+.folio:global(.atlas-entry) :global(.atlas-point-header) {
+  gap: .375rem;
+}
+
+.folio :global(.atlas-point-identity) h1 {
+  font-size: clamp(2rem, 4.5vw, 2.875rem);
+}
+
+.folio :global(.atlas-code) {
+  padding: 0;
+  color: var(--atlas-muted);
+  background: transparent;
+}
+
+.folio :global(.atlas-point-meta) {
+  font-size: .875rem;
+}
+
+.folio :global(#acupoint-classifications) li a {
+  text-decoration: underline;
+  text-underline-offset: .22em;
+}
+
+.folio :global(#acupoint-classifications) li a span {
+  padding-inline: .125rem;
+  color: inherit;
+  background: none;
+  white-space: normal;
+}
+
+.folio:global(.atlas-entry) :global(.atlas-point-lead) {
+  max-width: 42em;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.folio :global(.atlas-section-title) {
+  font-family: var(--font-serif);
+  font-size: clamp(1.375rem, 3vw, 1.75rem);
+}
+
+.locatorIntro {
+  display: grid;
+  gap: .75rem;
+}
+
+.folio .locatorIntro :global(.atlas-caution-priority) {
+  padding: .625rem 0 .625rem .875rem;
+  border-inline-start-width: 3px;
+}
+
+.folio :global(.atlas-location-figure) {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.folio :global(.atlas-location-figure) > :global(.atlas-figure) {
+  max-width: 27rem;
+}
+
+.folio :global(.atlas-location-figure) [data-atlas-landmark-guide] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .75rem;
+  container-type: inline-size;
+}
+
+.folio :global(.atlas-location-figure) fieldset {
+  min-width: 0;
+  width: 100%;
+  margin-block: 0;
+}
+
+.folio [data-atlas-guide-choices] {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .375rem;
+}
+
+.folio [data-atlas-guide-choices] label > span {
+  padding-inline: .25rem;
+  border-color: var(--border-control);
+  background: var(--atlas-paper);
+}
+
+.folio [data-atlas-guide-choices] input:checked + span {
+  color: var(--atlas-accent);
+  background: var(--atlas-soft);
+  border-color: var(--atlas-accent);
+}
+
+@container (max-width: 21rem) {
+  .folio [data-atlas-guide-choices] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.folio :global(.atlas-location-figure) [role="group"] > div:last-child {
+  padding: .5rem;
+  border-radius: var(--folio-radius, .625rem);
+  background: var(--atlas-soft);
+}
+
+.folio :global(.atlas-location-figure) [role="group"] > div:last-child:not([role="region"]) > svg {
+  max-width: 25rem;
+}
+
+.folio :global(.atlas-location-figure) :global(.atlas-zoom-toggle) {
+  margin-inline: 0;
+  padding-inline: .75rem;
+  color: var(--atlas-accent);
+  border-color: var(--border-control);
+  background: var(--atlas-paper);
+  text-decoration: none;
+}
+
+.folio :global(.atlas-location-figure) :global(.atlas-zoom-toggle):hover {
+  background: var(--atlas-soft);
+}
+
+.folio :global(.atlas-location-figure) :global(.atlas-landmark-overlay) {
+  --landmark-line: var(--atlas-accent);
+  --landmark-point: var(--folio-terracotta, var(--warm-readable));
+}
+
+.folio :global(.atlas-location-figure) svg [stroke="#B86A38"] {
+  stroke: #98502d;
+}
+
+.folio :global(.atlas-location-figure) svg [stroke="#9B8D7D"] {
+  stroke: #7c6f60;
+}
+
+:global(.dark) .folio :global(.atlas-location-figure) svg [fill="#F4E8D8"] {
+  fill: #d4bca3;
+}
+
+:global(.dark) .folio :global(.atlas-location-figure) svg [stroke="#9B8D7D"] {
+  stroke: #c3ae99;
+}
+
+.folio :global(.atlas-location-figure) figcaption {
+  margin-top: .75rem;
+}

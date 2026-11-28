@@ -17,7 +17,7 @@ export default function AcupointAtlasDiagrams({ point, meridianPoints, children 
   return (
     <AtlasLocationFigures notes={children} primary={
       <figure className="atlas-figure atlas-figure--labelled">
-        <AtlasLandmarkGuide code="li4">
+        <AtlasLandmarkGuide code="li4" controlsFirst>
           <ZoomableAtlasDiagram label="合谷の場所と目印" pointName={point.name}>
             <HeguHandDiagram />
           </ZoomableAtlasDiagram>

@@ -38,54 +38,63 @@ function pointThumbnail(code: string, label: string, Diagram: typeof LowerLegReg
 
 export default function HomePage() {
   return (
-    <div className="platform-home">
+    <div className="platform-home quiet-atlas">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: collectionPageJsonLd("/", HOME_HEADING, PLATFORM_DESCRIPTION, "目的から探す", SERIES_ENTRIES) }} />
-      <section className="platform-container platform-intro" aria-labelledby="platform-title">
-        <div className="platform-hero-grid">
-          <div className="platform-hero-copy">
-            <div className="platform-hero-heading">
-              <h1 id="platform-title" className="platform-title">{HOME_HEADING}</h1>
-              <p className="platform-intro-text">{PLATFORM_DESCRIPTION}</p>
-            </div>
-            <PlatformSearchForm placeholder="合谷、肩こり、陰陽" />
+      <section className="platform-container platform-hero-grid" aria-labelledby="platform-title">
+        <div className="platform-hero-copy">
+          <div>
+            <h1 id="platform-title" className="platform-title"><span>東洋医学を、</span><span>図から学ぶ。</span></h1>
+            <p className="platform-intro-text">361のツボを図で調べ、講義と模擬症例で学べます。</p>
           </div>
-          <nav className="platform-series" aria-labelledby="platform-series-title">
-            <h2 id="platform-series-title" className="sr-only">目的から探す</h2>
-            <ul className="platform-series-grid">
-              {SERIES_ENTRIES.map(({ href }) => {
-                const { label, description, analytics, art } = SERIES_ACTIONS[href];
-                return (
-                  <li key={href} className="platform-series-card">
-                    <h3>
-                      <Link href={href} className="platform-series-action" data-analytics-action={analytics}>
-                        <span className="platform-series-icon" aria-hidden="true"><PageSymbol kind={art} /></span>
-                        <span className="platform-series-label">{label}</span>
-                        <ArrowRight aria-hidden="true" />
-                      </Link>
-                    </h3>
-                    <p>{description}</p>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
-          <div className="platform-home-resources">
-            <Link href="/symptoms" className="ui-text-link">症状から受診の目安を探す <ArrowRight size={16} aria-hidden="true" /></Link>
-            <Link href={ACUPUNCTURE_GUIDE.href} className="ui-text-link">{ACUPUNCTURE_GUIDE.label}</Link>
-          </div>
-          <Link href="/tsubo/li4#acupoint-location" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">
-            <span className="platform-feature-art"><HeguHandDiagram thumbnail /></span>
-            <span className="platform-feature-copy">
-              <span className="platform-feature-meta"><span>LI4</span> 手の甲</span>
-              <strong id="platform-feature-name" className="platform-feature-name">合谷<span>ごうこく</span></strong>
-              <span id="platform-feature-action" className="platform-feature-link">位置図を見る <ArrowRight aria-hidden="true" /></span>
+          <PlatformSearchForm placeholder="合谷、肩こり、陰陽" />
+          <Link href="/symptoms" className="platform-general-guide">
+            <span className="platform-general-copy">
+              <span className="platform-general-label">一般向け</span>
+              <span>症状から受診の目安を探す</span>
             </span>
+            <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </div>
+
+        <nav className="platform-series" aria-labelledby="platform-series-title">
+          <h2 id="platform-series-title">目的から探す</h2>
+          <ul className="platform-series-grid">
+            {SERIES_ENTRIES.map(({ href }) => {
+              const { label, description, analytics, art } = SERIES_ACTIONS[href];
+              return (
+                <li key={href} className="platform-series-card">
+                  <Link href={href} className="platform-series-action" data-analytics-action={analytics} aria-labelledby={analytics + "-title"} aria-describedby={analytics + "-description"}>
+                    <span className="platform-series-icon" aria-hidden="true"><PageSymbol kind={art} /></span>
+                    <div className="platform-series-copy">
+                      <h3 id={analytics + "-title"} className="platform-series-label">{label}</h3>
+                      <p id={analytics + "-description"} className="platform-series-description">{description}</p>
+                    </div>
+                    <ArrowRight aria-hidden="true" />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <Link href="/tsubo/li4#acupoint-location" className="platform-feature" aria-labelledby="platform-feature-name platform-feature-action">
+          <span className="platform-feature-meta" aria-hidden="true"><span className="platform-feature-number">図 01</span><span>LI4</span></span>
+          <span className="platform-feature-art"><HeguHandDiagram thumbnail /></span>
+          <span className="platform-feature-copy">
+            <span className="platform-feature-label">
+              <strong id="platform-feature-name" className="platform-feature-name">合谷</strong>
+              <span className="platform-feature-reading">ごうこく</span>
+            </span>
+            <span id="platform-feature-action" className="platform-feature-link">位置図を見る <ArrowRight aria-hidden="true" /></span>
+          </span>
+        </Link>
       </section>
 
       <section className="platform-container platform-index" aria-labelledby="platform-index-title">
-        <h2 id="platform-index-title">身近なツボを図で見る</h2>
+        <div className="platform-index-heading">
+          <h2 id="platform-index-title">身近なツボを図で見る</h2>
+          <Link href={ACUPUNCTURE_GUIDE.href} className="ui-text-link">{ACUPUNCTURE_GUIDE.label}</Link>
+        </div>
         <ul>
           {POINTS.map(point => (
             <li key={point.code}>

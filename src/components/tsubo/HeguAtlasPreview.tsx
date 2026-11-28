@@ -1,6 +1,6 @@
 import ContentEndAd from "@/components/ads/ContentEndAd";
 import AcupointAnatomy from "@/components/tsubo/AcupointAnatomy";
-import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
+import AcupointArticleHeader, { AcupointLocationActions } from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
 import AcupointReferences, { AcupointPointBasics } from "@/components/tsubo/AcupointReferences";
@@ -13,6 +13,7 @@ import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
 import type { AcupointDetail } from "@/data/tsubo/types";
+import styles from "./HeguAtlasPreview.module.css";
 
 export const heguAtlasReading = {
   caution: "妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。",
@@ -30,12 +31,15 @@ export const heguSources = [
 
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
-    <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
-      <AcupointArticleHeader point={point} />
-      <aside className="atlas-caution-priority" aria-label="このツボを探す前に">
-        <p className="font-semibold">症状がある場合の受診目安</p>
-        <p>{heguAtlasReading.symptomWarning}</p>
-      </aside>
+    <article data-atlas-point={point.code} className={`quiet-atlas page-layout atlas-page atlas-entry ${styles.folio}`}>
+      <AcupointArticleHeader point={point} folio />
+      <div className={styles.locatorIntro}>
+        <aside className="atlas-caution-priority" aria-label="このツボを探す前に">
+          <p className="font-semibold">症状がある場合の受診目安</p>
+          <p>{heguAtlasReading.symptomWarning}</p>
+        </aside>
+        <AcupointLocationActions />
+      </div>
 
       <section id="acupoint-location" tabIndex={-1} className="atlas-target">
         <h2 className={headingClass}>場所と見つけ方</h2>

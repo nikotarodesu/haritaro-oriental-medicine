@@ -1,0 +1,27 @@
+/* Pilot palette for the homepage and the LI4 article. */
+.quiet-atlas {
+  --folio-paper: #f7f3ea;
+  --folio-surface: #fffdf8;
+  --folio-ink: #202c2a;
+  --folio-muted: #505c54;
+  --folio-accent: #24483e;
+  --folio-accent-text: #fffdf8;
+  --folio-plate: #e5eee6;
+  --folio-terracotta: #884534;
+  --folio-rule: #d2d7cf;
+  --folio-control: #778679;
+  --folio-radius: .625rem;
+}
+
+.dark .quiet-atlas {
+  --folio-paper: #171f1c;
+  --folio-surface: #202b25;
+  --folio-ink: #f3efe6;
+  --folio-muted: #bdccc3;
+  --folio-accent: #b5d8c7;
+  --folio-accent-text: #17241e;
+  --folio-plate: #263b33;
+  --folio-terracotta: #e6a88a;
+  --folio-rule: #45584e;
+  --folio-control: #9aa99f;
+}
