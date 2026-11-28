@@ -8,12 +8,21 @@ export default function AcupointCautions({ priority, children }: {
   children: ReactNode;
 }) {
   return (
-    <section className={priority ? styles.withPriority : undefined} aria-labelledby="acupoint-safety-warning">
-      {priority && <div className={styles.priority}>{priority}</div>}
+    <section
+      id="acupoint-cautions"
+      className={priority ? `atlas-target ${styles.withPriority}` : "atlas-target"}
+      aria-labelledby="acupoint-safety-warning"
+    >
+      {priority && (
+        <>
+          <h3 id="acupoint-safety-warning" className={`atlas-target ${styles.heading}`}>注意事項</h3>
+          <div className={styles.priority}>{priority}</div>
+        </>
+      )}
       <HashTargetDetails
-        id="acupoint-cautions"
-        className="atlas-disclosure atlas-target"
-        summary={<span id="acupoint-safety-warning">注意事項</span>}
+        triggerScopeId="acupoint-cautions"
+        className="atlas-disclosure"
+        summary={priority ? "そのほかの注意を読む" : <span id="acupoint-safety-warning">注意事項</span>}
       >
         <div className={styles.details}>
           {children}

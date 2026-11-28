@@ -20,7 +20,7 @@ import AcupointAtlasArticle from "@/components/tsubo/AcupointAtlasArticle";
 import { AcupointKeyPointLinks, AcupointReadingLinks } from "@/components/tsubo/AcupointArticleLinks";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
-import { AcupointPointBasics } from "@/components/tsubo/AcupointReferences";
+import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "@/components/tsubo/AcupointPairNotes";
 import { AcupointAnatomyDetails, AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
@@ -35,7 +35,7 @@ import { getAcupointStudies, getClassicalCombinations } from "@/data/tsubo/atlas
 import { ATLAS_SELF_CARE } from "@/data/tsubo/atlas/selfCare";
 import { getFeaturedPairs } from "@/data/tsubo/atlas/featuredPairs";
 import { getAcupointName } from "@/data/tsubo/names";
-import { PointAtlasLocationFigure, PointAtlasLocationSupplement } from "@/components/tsubo/atlas/PointAtlasDiagrams";
+import { PointAtlasLocationFigure, PointAtlasLocationSupplement, PointAtlasThumbnail } from "@/components/tsubo/atlas/PointAtlasDiagrams";
 import type { AcupointMaster } from "@/data/tsubo/types";
 import TsuboKeyboardNav from "@/components/tsubo/TsuboKeyboardNav";
 import TsuboReviewEntry from '@/components/tsubo/TsuboReviewEntry';
@@ -424,7 +424,7 @@ export default async function AcupointDetailPage({ params }: Props) {
 
         </div>
 
-        <AcupointPointBasics point={point} />
+        <AcupointNameGuide code={point.codeLower} />
         <AcupointTopic topic="location">
           <div id="acupoint-location" tabIndex={-1} className="atlas-target space-y-4">
             {illustration && atlasMarker && (
@@ -475,6 +475,7 @@ export default async function AcupointDetailPage({ params }: Props) {
                     pointName={point.name}
                     pointCode={point.code}
                     individualModel={individualModel}
+                    surface={illustration && atlasMarker && <PointAtlasThumbnail point={point} illustration={illustration} marker={atlasMarker} />}
                   />
                 </div>
               </AcupointAnatomyDetails>

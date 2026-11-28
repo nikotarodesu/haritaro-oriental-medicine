@@ -15,6 +15,7 @@ interface DigitCopy {
   expert: string;
   safetyWarning?: string;
   pointWarning?: string;
+  symptomWarning?: string;
   relatedPoints: AcupointAtlasArticle["relatedPoints"];
   symptomLink?: { href: string; label: string };
   sources: Source[];
@@ -64,8 +65,9 @@ function digitArticle(code: DigitCode, copy: DigitCopy): AcupointAtlasArticle {
     meridianReading: copy.meridianReading,
     regionLabel: side,
     lead: copy.lead,
-    safetyWarning: copy.safetyWarning ?? copy.pointWarning,
+    safetyWarning: copy.safetyWarning ?? ([copy.symptomWarning, copy.pointWarning].filter(Boolean).join(" ") || undefined),
     pointWarning: copy.pointWarning,
+    symptomWarning: copy.symptomWarning,
     location: copy.location,
     traditional: [],
     comparisonNotes: { title: "名前の意味と近くのツボ", paragraphs: [copy.traditional] },
@@ -217,7 +219,8 @@ export const digitArticles = {
     lead: "足竅陰（あしのきょういん・GB44）は、足の小指のすぐ隣の指にあるツボです。爪の根元のうち、小指と向かい合う角を選びます。「竅陰」とつく名前は頭にもあるので、足の字とコードが見分ける手がかりです。",
     location: ["足を楽に置き、小指を最初に見つけます。小指から親指の方に一つ戻った指が第4趾（だいよんし）です。足先が横からしか見えないときは、小指の陰に隠れやすいので、甲の側から二本の指を見下ろします。",
       "第4趾の爪で、小指に近い縁を根元までたどります。図の丸印は、その縁が爪の根元の線に達するところです。小指との間のすき間そのものに点があるわけではありません。角が小さく見えるときは無理に指を広げず、皮膚の上から位置を確かめます。"],
-    traditional: "胆経という伝統医学の道筋には、頭にある頭竅陰と、足にある足竅陰があります。頭痛について検索してこの名前を見つけたら、最初の「足」か「頭」かを確かめると別のツボと取り違えずに読めます。突然の激しい頭痛があるときは、すぐに119番へ連絡してください。",
+    traditional: "胆経という伝統医学の道筋には、頭にある頭竅陰と、足にある足竅陰があります。頭痛について検索してこの名前を見つけたら、最初の「足」か「頭」かを確かめると別のツボと取り違えずに読めます。",
+    safetyWarning: "突然の激しい頭痛があるときは、すぐに119番へ連絡してください。",
     selfCare: "触れる場合は足を支え、手の指の腹を爪の小指側にふわっと当てます。小さな爪なので、指の先で一点に力を集中させなくても構いません。靴ずれがあれば、その日は図で位置を見るだけにしましょう。",
     cautions: "爪が隣の指に当たって痛むときや、赤く腫れたり膿が出たりするときは、ツボ押しを控えて医療機関に相談してください。頭痛を何度も繰り返すときは、痛みの起き方や一緒に出る症状も伝えましょう。",
     expert: "足竅陰は胆経の井穴（せいけつ、手足の先にあるツボの分類）です。GB44は足の点、GB11は頭竅陰です。足の外側は小指に向かう側をいうので、第4趾の親指側を選ばないようにします。",
@@ -232,9 +235,10 @@ export const digitArticles = {
       "外側の縁を足の甲の方へたどったところで、爪の根元の横の線と出会う角を見ます。隣の第4趾の爪も近くに見えますが、図の①で示しているのは一番外側の小指です。足を持ち上げなくても、図で場所を確認できます。"],
     traditional: "至陰は、骨盤位（こつばんい、赤ちゃんのお尻や足が下を向いている状態）とお灸の研究に出てくる名前です。研究で検討されてきたお灸と、自分で足指を押すことは別です。赤ちゃんの向きや自分に合った選択肢は、妊娠週数などを踏まえて産科で相談します。",
     selfCare: "このページでは、小指のどちらに位置するかを図で確かめるところまでにしましょう。逆子を直す目的で自分で押したり、市販のお灸や熱いものを爪のきわに当てたりしないでください。足元が見えにくいときに、無理に体をかがめる必要もありません。",
-    cautions: "妊娠中の出血や、いつもより胎動が少ないと感じたときは、ツボを探さず産科へすぐ連絡してください。小指の爪が靴に当たって傷がある場合も、そこへの刺激を避けましょう。",
+    cautions: "小指の爪が靴に当たって傷がある場合は、そこへの刺激を避けましょう。",
     expert: "至陰は膀胱経の井穴（せいけつ、手足の末端に配されるツボの分類）です。BL67はこの経絡の最終番号で、直前の足通谷（あしのつうこく・BL66）は、小指の付け根寄りの外側に位置します。",
     pointWarning: "妊娠中に逆子のことで調べている方は、自己流のお灸や指圧を始める前に、かかりつけの産科に相談してください。",
+    symptomWarning: "妊娠中の出血や、いつもより胎動が少ないと感じたときは、ツボを探さず産科へすぐ連絡してください。",
     relatedPoints: [{ code: "BL66", text: "同じ小指の外側を、指の付け根へ戻ったところにあります。" }, { code: "GB44", text: "隣の第4趾にある足竅陰と探し分けられます。" }],
     sources: [nailCare,
       { name: "英国産婦人科医協会（RCOG）の骨盤位の患者向け資料", url: "https://www.rcog.org.uk/for-the-public/browse-our-patient-information/breech-baby-at-the-end-of-pregnancy/", scope: "骨盤位への対応と、お灸について医療者の指導が必要とする記載を参照。" },

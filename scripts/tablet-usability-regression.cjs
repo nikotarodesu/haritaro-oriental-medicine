@@ -142,10 +142,25 @@ const crossSections = load('src/data/tsubo/crossSectionsData').CROSS_SECTIONS;
 const publishedLandmarks = load('src/data/tsubo/atlas/sharedAnatomyLandmarks').getSharedAnatomyLandmarks;
 const heguLabels = layouts.crossSectionCallouts(crossSections.li4, safety.getPublicCrossSectionElements(crossSections.li4), publishedLandmarks('li4'), false).labels;
 assert.deepEqual(Array.from(heguLabels, label => label.name).sort(), ['① 第2中手骨','② 第1中手骨','母指内転筋','第1背側骨間筋'].sort());
+const pointMarks = () => nodes(anatomy.tree()).filter(node => node.props['data-anatomy-surface-point'] === '');
+const pointName = () => nodes(anatomy.tree()).find(node => node.props['data-anatomy-point-name'] === '');
+anatomy.render({ model: crossSections.li4, pointName: '合谷', pointCode: 'LI4' });
+const legacyPoint = crossSections.li4.svgElements.find(element => element.layerId === 'point-marker-layer');
+assert.deepEqual(pointMarks().map(({ props }) => [props.cx, props.cy]), [[legacyPoint.cx, legacyPoint.cy]], 'The individual drawing uses its existing surface coordinates exactly once');
+assert.equal(text(pointName()), '合谷 LI4');
+anatomy.render({ model: crossSections.pc4, pointName: '郄門', pointCode: 'PC4' });
+assert.deepEqual(pointMarks().map(({ props }) => [props.cx, props.cy]), [[crossSections.pc4.surfacePoint.x, crossSections.pc4.surfacePoint.y]]);
+assert.equal(text(pointName()), crossSections.pc4.surfacePoint.label);
 const regionalSections = load('src/data/tsubo/regionalSections/index');
 const { model: regionalModel, landmarks } = regionalSections.createRegionalSectionModel('lu3', regionalSections.getRegionalSection('lu3'));
 const regionalLabels = layouts.crossSectionCallouts(regionalModel, safety.getPublicCrossSectionElements(regionalModel), landmarks, true).labels;
 assert.deepEqual(Array.from(regionalLabels, label => label.name).sort(), ['上腕三頭筋','上腕二頭筋','上腕骨'].sort());
+const surface = React.createElement('svg', null, React.createElement('circle', { 'data-point-marker': '' }));
+anatomy.render({ model: regionalModel, pointName: '天府', pointCode: 'LU3', regional: true, sharedLandmarks: landmarks, surface });
+assert.equal(pointMarks().length, 0, 'Regional sections do not project an unverified point onto the plane');
+assert.equal(text(pointName()), '天府（LU3）');
+const paired = nodes(anatomy.tree()).find(node => node.props['data-anatomy-surface-view'] === '');
+assert(nodes(paired).some(node => node.props['data-point-marker'] === ''), 'A labelled surface view shares the figure with the regional section');
 
 // Compare markup keeps row/column semantics and all original selection behavior.
 const atlasLocations = load('src/data/tsubo/friendlyLocations');

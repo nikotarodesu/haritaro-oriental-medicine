@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
 import HashTargetDetails from "@/components/common/HashTargetDetails";
 
-export default function AcupointIntroDetails({ summary, id, children }: {
-  summary: string;
-  id: string;
-  children: ReactNode;
-}) {
+export default function AcupointIntroDetails({ children }: { children: ReactNode }) {
   return (
-    <HashTargetDetails id={id} className="atlas-disclosure atlas-reference-row atlas-target" summary={<h2 id={`${id}-heading`}>{summary}</h2>}>
+    <HashTargetDetails
+      id="acupoint-name"
+      className="atlas-disclosure atlas-reference-row atlas-target atlas-intro-details"
+      open
+      summary={<h2 id="acupoint-name-heading">名前の由来</h2>}
+    >
       <div className="atlas-reference-content">{children}</div>
     </HashTargetDetails>
   );

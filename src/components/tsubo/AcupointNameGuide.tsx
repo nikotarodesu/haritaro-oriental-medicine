@@ -8,8 +8,16 @@ export default function AcupointNameGuide({ code }: { code: string }) {
   if (!name) return null;
 
   return (
-    <AcupointIntroDetails id="acupoint-name" summary="名前の由来">
-      <div className="atlas-name-panel atlas-name-guide">
+    <AcupointIntroDetails>
+      <div className="atlas-name-guide">
+        <p>{name.reading}</p>
+        {name.history && (
+          <p className="atlas-name-history">
+            {name.history.text}{" "}
+            <a href={name.history.url} className="atlas-source-link">{name.history.source}</a>
+          </p>
+        )}
+
         <dl className="atlas-name-identity">
           <div>
             <dt>中国語（簡体字）</dt>
@@ -21,7 +29,6 @@ export default function AcupointNameGuide({ code }: { code: string }) {
           </div>
         </dl>
 
-        <p>{name.reading}</p>
         {(code === "li10" || code === "st36") && (
           <a href="#featured-acupoint-pair-sanri" className="atlas-text-action">手三里と足三里の図を見比べる</a>
         )}
@@ -47,13 +54,6 @@ export default function AcupointNameGuide({ code }: { code: string }) {
             })}
           </dl>
         </div>
-
-        {name.history && (
-          <p className="atlas-name-history">
-            {name.history.text}{" "}
-            <a href={name.history.url} className="atlas-source-link">{name.history.source}</a>
-          </p>
-        )}
 
         <ul className="atlas-name-sources" aria-label="名前と読みの資料">
           <li><a href={name.standardUrl} className="atlas-source-link">中国の国家標準（表記と読み、PDF）</a></li>

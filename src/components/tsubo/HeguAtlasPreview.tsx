@@ -3,7 +3,8 @@ import AcupointAnatomy from "@/components/tsubo/AcupointAnatomy";
 import AcupointArticleHeader from "@/components/tsubo/AcupointArticleHeader";
 import AcupointCautions from "@/components/tsubo/AcupointCautions";
 import AcupointLocationComparison from "@/components/tsubo/AcupointLocationComparison";
-import AcupointReferences, { AcupointPointBasics } from "@/components/tsubo/AcupointReferences";
+import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
+import AcupointReferences from "@/components/tsubo/AcupointReferences";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
 import { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
@@ -31,12 +32,7 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
     <article data-atlas-point={point.code} className={`page-layout atlas-page atlas-entry ${styles.folio}`}>
       <AcupointArticleHeader point={point} folio />
-      <aside className="atlas-caution-priority" aria-label="このツボを探す前に">
-        <p className="font-semibold">症状がある場合の受診目安</p>
-        <p>{heguAtlasReading.symptomWarning}</p>
-      </aside>
-
-      <AcupointPointBasics point={point} meridianReading="てのようめいだいちょうけい" />
+      <AcupointNameGuide code={point.codeLower} />
       <AcupointTopic topic="location">
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
           <AcupointAtlasDiagrams point={point} />
@@ -53,7 +49,10 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
 
       <AcupointTopic topic="uses">
         <AcupointTraditionalUses code={point.codeLower} />
-        <AcupointCautions priority={<p>{heguAtlasReading.caution}</p>}>
+        <AcupointCautions priority={<>
+          <p>{heguAtlasReading.symptomWarning}</p>
+          <p>{heguAtlasReading.caution}</p>
+        </>}>
           <p>頭痛が続く、または繰り返すときは医療機関に相談してください。</p>
           <p>傷や赤い腫れがあるところは押さず、痛みやしびれが出たら手を離してください。</p>
           <p>手が赤く腫れているときや、しびれなどで温度が分かりにくいときは温めないでください。温めて痛みや腫れが増したら中止してください。</p>

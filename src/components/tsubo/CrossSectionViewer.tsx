@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { type ReactNode, useState } from "react";
 import { getPublicCrossSectionElements, getPublicAnatomyDescription } from "@/data/medicalSafety";
 import { crossSectionCallouts } from "@/data/tsubo/atlas/crossSectionCallouts";
 import type { SharedAnatomyLandmark } from "@/data/tsubo/atlas/sharedAnatomyLandmarks";
@@ -22,6 +22,8 @@ interface CrossSectionViewerProps {
   individualModel?: boolean;
   regional?: boolean;
   sharedLandmarks?: readonly SharedAnatomyLandmark[];
+  surface?: ReactNode;
+  locationHref?: string;
 }
 
 export default function CrossSectionViewer({
@@ -31,6 +33,8 @@ export default function CrossSectionViewer({
   individualModel = false,
   regional = false,
   sharedLandmarks = [],
+  surface,
+  locationHref = "#acupoint-location",
 }: CrossSectionViewerProps) {
   // 選択された組織ID（null時は全体表示）
   const [selectedStructureId, setSelectedStructureId] = useState<string | null>(null);
@@ -44,12 +48,19 @@ export default function CrossSectionViewer({
 
   const activeStructure = selectedLayer || selectedBoundary || selectedAdjacent;
   const publicElements = getPublicCrossSectionElements(model);
+  const legacyMarker = publicElements.find(element => element.layerId === "point-marker-layer" && element.shapeType === "circle");
+  const surfacePoint = regional ? undefined : model.surfacePoint ?? (
+    legacyMarker?.cx !== undefined && legacyMarker.cy !== undefined
+      ? { x: legacyMarker.cx, y: legacyMarker.cy, label: `${pointName} ${pointCode}`, description: "", diagramNote: "" }
+      : undefined
+  );
+  const pairedSurface = !surfacePoint && surface;
   const publicStructureIds = new Set([...model.layers, ...model.boundaries ?? [], ...model.adjacentStructures ?? []].map(structure => structure.id));
   const numberedLandmarks = sharedLandmarks.filter(({ layerId, elementId }) =>
     publicElements.some(element => element.layerId === layerId && element.elementId === elementId),
   );
   const landmarkSummaryId = `${pointCode.toLowerCase()}-anatomy-landmark-summary`;
-  const surfacePointId = model.surfacePoint ? `${pointCode.toLowerCase()}-anatomy-surface-description` : undefined;
+  const surfacePointId = (surfacePoint || pairedSurface) ? `${pointCode.toLowerCase()}-anatomy-surface-description` : undefined;
   const diagramDescriptions = [surfacePointId, !regional && numberedLandmarks.length ? landmarkSummaryId : undefined].filter(Boolean).join(" ");
   const callouts = crossSectionCallouts(model, publicElements, numberedLandmarks, regional);
   const selectStructure = (id: string) => setSelectedStructureId(current => current === id ? null : id);
@@ -169,120 +180,120 @@ export default function CrossSectionViewer({
 
       {/* 2. メイン図エリア：SVG断面図（主役） */}
       <figure className="anatomy-figure w-full rounded-2xl border border-[#E8E1D1] bg-[#FAF8F5] p-2 sm:rounded-3xl sm:p-4 dark:border-[#22303D] dark:bg-[#10171F]">
-        <p className="anatomy-axis anatomy-axis--vertical">↑ {model.axes.vertical[0]}</p>
-
-        {/* SVG断面図 */}
-        <svg
-          viewBox={callouts.viewBox}
-          className="mx-auto my-2 block h-auto w-full max-w-[32rem]"
-          preserveAspectRatio="xMidYMid meet"
-          role="group"
-          aria-label={regional ? `${model.title}の断面模式図` : `${pointName}の横断面解剖図`}
-          aria-describedby={diagramDescriptions || undefined}
-        >
-          {/* 断面要素描画 */}
-          {publicElements.map((el) => {
-            const interactive = publicStructureIds.has(el.layerId);
-            const isSelected = selectedStructureId === el.layerId;
-            const opacity = interactive && selectedStructureId && !isSelected ? 0.35 : 1;
-            const stroke = isSelected ? "#B86924" : el.stroke || "none";
-            const strokeWidth = isSelected ? 3.5 : el.strokeWidth || 1;
-
-            const commonProps = {
-              id: el.elementId,
-              fill: el.fill,
-              stroke,
-              strokeWidth,
-              opacity,
-              tabIndex: interactive ? 0 : undefined,
-              role: interactive ? "button" : undefined,
-              "aria-label": interactive ? el.label : undefined,
-              "aria-pressed": interactive ? isSelected : undefined,
-              className: interactive ? "transition-all duration-200 cursor-pointer hover:opacity-90" : "pointer-events-none",
-              onClick: interactive ? () => selectStructure(el.layerId) : undefined,
-              onKeyDown: interactive ? (e: React.KeyboardEvent) => handleKeyDown(e, el.layerId) : undefined,
-            };
-
-            return (
-              <g key={`g-${el.elementId}`}>
-                {el.shapeType === "path" && el.d && (
-                  <path {...commonProps} d={el.d} />
-                )}
-                {el.shapeType === "circle" && el.cx !== undefined && el.cy !== undefined && (
-                  <circle {...commonProps} cx={el.cx} cy={el.cy} r={el.r || 6} />
-                )}
-                {el.shapeType === "ellipse" && el.cx !== undefined && el.cy !== undefined && (
-                  <ellipse {...commonProps} cx={el.cx} cy={el.cy} rx={el.rx || 20} ry={el.ry || 15} />
-                )}
-                {el.shapeType === "rect" && el.x !== undefined && el.y !== undefined && (
-                  <rect {...commonProps} x={el.x} y={el.y} width={el.width || 40} height={el.height || 20} rx={el.rx || 0} />
-                )}
-                {el.shapeType === "polygon" && el.points && (
-                  <polygon {...commonProps} points={el.points} />
-                )}
-                {el.layerId === "point-marker-layer" && el.labelPos && (
-                  <text
-                    x={el.labelPos.x}
-                    y={el.labelPos.y}
-                    textAnchor={el.labelPos.anchor || "middle"}
-                    fill="#7F3520"
-                    stroke="#FFFFFF"
-                    strokeWidth={3.5}
-                    strokeLinejoin="round"
-                    style={{ paintOrder: "stroke fill" }}
-                    fontSize="21"
-                    fontWeight="700"
-                    className="pointer-events-none"
-                  >
-                    {pointName}
-                  </text>
-                )}
-              </g>
-            );
-          })}
-          {callouts.labels.map(({ element, name, x, y, edge, origin, lines }) => {
-            const path = `M${origin.x} ${origin.y}L${x} ${edge}`;
-            const active = selectedStructureId === element.layerId;
-            return (
-              <g key={element.elementId} aria-hidden="true" data-anatomy-callout={name} className="text-[var(--text-sumi)]">
-                <g className="pointer-events-none">
-                  <path d={path} fill="none" stroke="var(--bg-card)" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
-                  <path d={path} fill="none" stroke={active ? "var(--warm-readable)" : "currentColor"} strokeWidth="1" vectorEffect="non-scaling-stroke" />
-                  <circle cx={origin.x} cy={origin.y} r="4" fill="currentColor" stroke="var(--bg-card)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
-                </g>
-                <text x={x} y={y} fill={active ? "var(--warm-readable)" : "currentColor"} fontSize={callouts.fontSize} fontWeight="700"
-                  textAnchor="middle" className="cursor-pointer sm:[font-size:20px]" onClick={() => selectStructure(element.layerId)}>
-                  {lines.map((line, index) => <tspan key={index} x={x} dy={index === 0 ? 0 : "1.25em"}>{line}</tspan>)}
-                </text>
-              </g>
-            );
-          })}
-          {model.surfacePoint && (
-            <g aria-hidden="true" className="pointer-events-none">
-              <text x={model.surfacePoint.x} y={model.surfacePoint.y - 25} textAnchor="middle" fill="#7F3520" stroke="#FFF9F0" strokeWidth="4" strokeLinejoin="round" style={{ paintOrder: "stroke fill" }} fontSize="23" fontWeight="700">
-                {model.surfacePoint.label}
-              </text>
-              <circle data-anatomy-surface-point="" cx={model.surfacePoint.x} cy={model.surfacePoint.y} r="11" fill="#7F3520" stroke="#FFF9F0" strokeWidth="3" />
-            </g>
+        <div className={pairedSurface ? "atlas-anatomy-views" : undefined}>
+          {pairedSurface && (
+            <div data-anatomy-surface-view="" className="atlas-anatomy-surface">
+              <div className="atlas-anatomy-surface-image">{pairedSurface}</div>
+              <div className="atlas-anatomy-surface-key">
+                <h4>体表での位置</h4>
+                <p className="atlas-location-key"><strong data-anatomy-point-name="">{pointName}（{pointCode}）</strong></p>
+                <a href={locationHref} className="atlas-source-link inline-flex min-h-11 items-center">詳しい位置図を見る</a>
+              </div>
+            </div>
           )}
-        </svg>
+          <div className="min-w-0">
+            {pairedSurface && <h4 className="atlas-anatomy-section-title">周辺の組織の断面</h4>}
+            <p className="anatomy-axis anatomy-axis--vertical">↑ {model.axes.vertical[0]}</p>
 
-        <div className="anatomy-axis-pair">
-          <p className="anatomy-axis">← {model.axes.horizontal[0]}</p>
-          <p className="anatomy-axis">{model.axes.horizontal[1]} →</p>
+            {/* SVG断面図 */}
+            <svg
+              viewBox={callouts.viewBox}
+              className="mx-auto my-2 block h-auto w-full max-w-[32rem]"
+              preserveAspectRatio="xMidYMid meet"
+              role="group"
+              aria-label={regional ? `${model.title}の断面模式図` : `${pointName}の横断面解剖図`}
+              aria-describedby={diagramDescriptions || undefined}
+            >
+              {/* 断面要素描画 */}
+              {publicElements.filter(element => element.layerId !== "point-marker-layer").map((el) => {
+                const interactive = publicStructureIds.has(el.layerId);
+                const isSelected = selectedStructureId === el.layerId;
+                const opacity = interactive && selectedStructureId && !isSelected ? 0.35 : 1;
+                const stroke = isSelected ? "#B86924" : el.stroke || "none";
+                const strokeWidth = isSelected ? 3.5 : el.strokeWidth || 1;
+
+                const commonProps = {
+                  id: el.elementId,
+                  fill: el.fill,
+                  stroke,
+                  strokeWidth,
+                  opacity,
+                  tabIndex: interactive ? 0 : undefined,
+                  role: interactive ? "button" : undefined,
+                  "aria-label": interactive ? el.label : undefined,
+                  "aria-pressed": interactive ? isSelected : undefined,
+                  className: interactive ? "transition-all duration-200 cursor-pointer hover:opacity-90" : "pointer-events-none",
+                  onClick: interactive ? () => selectStructure(el.layerId) : undefined,
+                  onKeyDown: interactive ? (e: React.KeyboardEvent) => handleKeyDown(e, el.layerId) : undefined,
+                };
+
+                return (
+                  <g key={`g-${el.elementId}`}>
+                    {el.shapeType === "path" && el.d && (
+                      <path {...commonProps} d={el.d} />
+                    )}
+                    {el.shapeType === "circle" && el.cx !== undefined && el.cy !== undefined && (
+                      <circle {...commonProps} cx={el.cx} cy={el.cy} r={el.r || 6} />
+                    )}
+                    {el.shapeType === "ellipse" && el.cx !== undefined && el.cy !== undefined && (
+                      <ellipse {...commonProps} cx={el.cx} cy={el.cy} rx={el.rx || 20} ry={el.ry || 15} />
+                    )}
+                    {el.shapeType === "rect" && el.x !== undefined && el.y !== undefined && (
+                      <rect {...commonProps} x={el.x} y={el.y} width={el.width || 40} height={el.height || 20} rx={el.rx || 0} />
+                    )}
+                    {el.shapeType === "polygon" && el.points && (
+                      <polygon {...commonProps} points={el.points} />
+                    )}
+                  </g>
+                );
+              })}
+              {callouts.labels.map(({ element, name, x, y, edge, origin, lines }) => {
+                const path = `M${origin.x} ${origin.y}L${x} ${edge}`;
+                const active = selectedStructureId === element.layerId;
+                return (
+                  <g key={element.elementId} aria-hidden="true" data-anatomy-callout={name} className="text-[var(--text-sumi)]">
+                    <g className="pointer-events-none">
+                      <path d={path} fill="none" stroke="var(--bg-card)" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
+                      <path d={path} fill="none" stroke={active ? "var(--warm-readable)" : "currentColor"} strokeWidth="1" vectorEffect="non-scaling-stroke" />
+                      <circle cx={origin.x} cy={origin.y} r="4" fill="currentColor" stroke="var(--bg-card)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
+                    </g>
+                    <text x={x} y={y} fill={active ? "var(--warm-readable)" : "currentColor"} fontSize={callouts.fontSize} fontWeight="700"
+                      textAnchor="middle" className="cursor-pointer sm:[font-size:20px]" onClick={() => selectStructure(element.layerId)}>
+                      {lines.map((line, index) => <tspan key={index} x={x} dy={index === 0 ? 0 : "1.25em"}>{line}</tspan>)}
+                    </text>
+                  </g>
+                );
+              })}
+              {surfacePoint && (
+                <g aria-hidden="true" className="pointer-events-none">
+                  <text data-anatomy-point-name="" x={surfacePoint.x} y={surfacePoint.y - 22} textAnchor="middle" fill="var(--warm-readable)" stroke="var(--bg-card)" strokeWidth="4" strokeLinejoin="round" style={{ paintOrder: "stroke fill" }} fontSize="25" fontWeight="700">
+                    {surfacePoint.label}
+                  </text>
+                  <circle data-anatomy-surface-point="" cx={surfacePoint.x} cy={surfacePoint.y} r="11" fill="#7F3520" stroke="#FFF9F0" strokeWidth="3" />
+                </g>
+              )}
+            </svg>
+
+            <div className="anatomy-axis-pair">
+              <p className="anatomy-axis">← {model.axes.horizontal[0]}</p>
+              <p className="anatomy-axis">{model.axes.horizontal[1]} →</p>
+            </div>
+            <p className="anatomy-axis anatomy-axis--vertical">↓ {model.axes.vertical[1]}</p>
+          </div>
         </div>
-        <p className="anatomy-axis anatomy-axis--vertical">↓ {model.axes.vertical[1]}</p>
         <figcaption className="mt-2 flex items-start gap-2 border-t border-[#E8E1D1] pt-2.5 text-sm leading-relaxed text-[#59615D] dark:border-[#22303D] dark:text-[#A0B0BC]">
           <HelpCircle aria-hidden="true" className="mt-1 h-3.5 w-3.5 shrink-0 text-[#B86924]" />
           <div className="min-w-0 space-y-1">
             {!regional && <p>{individualModel ? "このツボの教育用模式図です。" : "部位別の共通模式図です。"}組織の配置は専門家による確認前です。刺鍼の安全域や経路の決定には使用できません。</p>}
-            {model.surfacePoint && <p id={surfacePointId}>
-              <strong>丸印は体表の位置です。</strong> {model.surfacePoint.description}
-              {" "}{model.surfacePoint.diagramNote}
+            {surfacePoint && <p id={surfacePointId}>
+              <strong>丸印は{pointName}の体表での位置です。</strong>
+              {surfacePoint.description && ` ${surfacePoint.description}`}
+              {surfacePoint.diagramNote && ` ${surfacePoint.diagramNote}`}
             </p>}
+            {pairedSurface && <p id={surfacePointId}>体表図の丸印が{pointName}です。断面図では、周辺の組織の並びを示しています。</p>}
             {!regional && numberedLandmarks.length > 0 && <p id={landmarkSummaryId}>
               <span className="sr-only">位置図と同じ目印は、{numberedLandmarks.map(({ number, name }) => `${number}番の${name}`).join("と")}です。</span>
-              <a href="#acupoint-location" className="atlas-source-link inline-flex min-h-11 items-center">同じ目印を位置図で見る</a>
+              <a href={locationHref} className="atlas-source-link inline-flex min-h-11 items-center">同じ目印を位置図で見る</a>
             </p>}
             <p>図の部位を選ぶと、説明を読めます。</p>
           </div>

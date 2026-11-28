@@ -3,9 +3,10 @@
 import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { trackAtlasDisclosure, type AtlasDisclosureAnalytics } from "@/utils/analytics";
 
-export default function HashTargetDetails({ summary, children, analytics, ...props }: ComponentPropsWithoutRef<"details"> & {
+export default function HashTargetDetails({ summary, children, analytics, triggerScopeId, ...props }: ComponentPropsWithoutRef<"details"> & {
   summary: ReactNode;
   analytics?: AtlasDisclosureAnalytics;
+  triggerScopeId?: string;
 }) {
   const disclosure = useRef<HTMLDetailsElement>(null);
   const previous = useRef<{ open: boolean; studyId?: string }>({ open: false });
@@ -25,7 +26,10 @@ export default function HashTargetDetails({ summary, children, analytics, ...pro
 
     function linkedTarget() {
       const target = document.getElementById(window.location.hash.slice(1));
-      return target && details.contains(target) ? target : null;
+      if (!target) return null;
+      if (details.contains(target)) return target;
+      const triggerScope = triggerScopeId ? document.getElementById(triggerScopeId) : null;
+      return triggerScope?.contains(details) && triggerScope.contains(target) ? target : null;
     }
 
     function revealLinkedContent() {
@@ -48,7 +52,7 @@ export default function HashTargetDetails({ summary, children, analytics, ...pro
       if (analytics) details.removeEventListener("toggle", handleToggle);
       window.removeEventListener("hashchange", revealLinkedContent);
     };
-  }, [analytics]);
+  }, [analytics, triggerScopeId]);
 
   return <details ref={disclosure} {...props}><summary>{summary}</summary>{children}</details>;
 }

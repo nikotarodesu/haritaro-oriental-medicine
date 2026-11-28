@@ -6,7 +6,8 @@ import AcupointArticleHeader from "./AcupointArticleHeader";
 import AcupointCautions from "./AcupointCautions";
 import AcupointLocationComparison from "./AcupointLocationComparison";
 import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "./AcupointPairNotes";
-import AcupointReferences, { AcupointPointBasics } from "./AcupointReferences";
+import AcupointNameGuide from "./AcupointNameGuide";
+import AcupointReferences from "./AcupointReferences";
 import AcupointResearch from "./AcupointResearch";
 import AcupointSelfCare from "./AcupointSelfCare";
 import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "./AcupointTopics";
@@ -49,13 +50,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
   return (
     <article data-atlas-point={point.code} className="page-layout atlas-page atlas-entry">
       <AcupointArticleHeader point={point} />
-      {(pointWarning || symptomWarning) && (
-        <aside className="atlas-caution-priority space-y-2" aria-label="このツボを探す前に">
-          {symptomWarning && <div><p className="font-semibold">症状がある場合の受診目安</p><p>{symptomWarning}</p></div>}
-          {pointWarning && <div><p className="font-semibold">ツボごとの注意</p><p>{pointWarning}</p></div>}
-        </aside>
-      )}
-      <AcupointPointBasics point={point} meridianReading={article.meridianReading} />
+      <AcupointNameGuide code={point.codeLower} />
       <AcupointTopic topic="location">
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
           <PointAtlasLocationFigure point={point} illustration={article.illustration} marker={marker} />
@@ -93,8 +88,10 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
             <Paragraphs paragraphs={article.traditional} />
           </div>
         )}
-        <AcupointResearch point={point} context={researchNotes && { title: "出典に挙げた研究", paragraphs: researchNotes }} />
-        <AcupointCautions>
+        <AcupointCautions priority={(symptomWarning || pointWarning) && <>
+          {symptomWarning && <p>{symptomWarning}</p>}
+          {pointWarning && <p>{pointWarning}</p>}
+        </>}>
           <Paragraphs paragraphs={article.cautions} />
           {article.selfCare.length > 0 && <Paragraphs paragraphs={article.selfCare} />}
           {hasIndividualAnatomy && (
@@ -102,6 +99,7 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
           )}
         </AcupointCautions>
         <AcupointSelfCare code={point.codeLower} />
+        <AcupointResearch point={point} context={researchNotes && { title: "出典に挙げた研究", paragraphs: researchNotes }} />
       </AcupointTopic>
 
       <AcupointTopic topic="nearby">

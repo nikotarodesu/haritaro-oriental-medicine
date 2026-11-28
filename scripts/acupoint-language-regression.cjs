@@ -65,7 +65,7 @@ for (const { codes, section } of regionalSectionGroups) {
   assert(section.sources.length >= 1 && section.sources.every(source => /^https:\/\//.test(source.url) && source.scope), section.name);
   const { model, landmarks } = createRegionalSectionModel(code, section);
   assert.equal(landmarks.length, section.structures.length, section.name);
-  assert.equal(model.surfacePoint, undefined, 'Only the separate surface figure identifies the individual point');
+  assert.equal(model.surfacePoint, undefined, 'A shared regional section has no individual point coordinate');
   assert(model.svgElements.every(element => element.layerId !== 'needle-indicator'));
 }
 assert.deepEqual(Object.keys(STANDARD_NAMES).sort(), allCodes);
@@ -289,11 +289,11 @@ function checkBuiltPointPages(buildDir) {
   const lectureHref = /href="\/(?:learn\/lectures\/|curriculum\/|tsubo\/basics\/key-point-types#)/;
   const caseHref = /href="\/cases(?:[/#"])/;
   const routes = [
-    ...allCodes.map(code => ({ code, route: `/tsubo/${code}` })),
-    ...Array.from(EXTRA_POINTS, point => ({ code: point.code.toLowerCase(), route: point.href, positionSource: point.sources[1].href })),
+    ...allCodes.map(code => ({ code, name: points.getAcupointByCode(code).name, route: `/tsubo/${code}` })),
+    ...Array.from(EXTRA_POINTS, point => ({ code: point.code.toLowerCase(), name: point.name, route: point.href, positionSource: point.sources[1].href })),
   ];
   let paired = 0;
-  for (const { code, route, positionSource } of routes) {
+  for (const { code, name: pointName, route, positionSource } of routes) {
     const extra = Boolean(positionSource);
     const raw = fs.readFileSync(path.join(buildDir, 'server', 'app', route.slice(1) + '.html'), 'utf8');
     const markup = raw.replace(/<!--[\s\S]*?-->|<script\b[^>]*>[\s\S]*?<\/script>/g, '');
@@ -302,11 +302,12 @@ function checkBuiltPointPages(buildDir) {
     for (const [, id] of markup.matchAll(/<[^>]*\sid="([^"]+)"/g)) sectionIds.set(id, (sectionIds.get(id) ?? 0) + 1);
     const topics = readContainers(markup, 'section', 'data-point-topic');
     const details = readContainers(markup, 'details', 'id');
-    const basics = details.get('acupoint-basics');
     const name = details.get('acupoint-name');
-    assert(basics && name && basics.index + basics.markup.length <= name.index, `${route}: basic information and point name in separate disclosures`);
+    assert(!sectionIds.has('acupoint-basics'), `${route}: the basic information panel is removed`);
+    assert(name && /\sopen(?:=|\s|>)/.test(name.opening), `${route}: the name disclosure starts open`);
+    assert.match(name.markup, /<summary><h2 id="acupoint-name-heading">名前の由来<\/h2><\/summary>/, `${route}: one named, closable introduction with its original anchor`);
+    assert(name.markup.indexOf('<p>') > 0 && name.markup.indexOf('<p>') < name.markup.indexOf('lang="zh-Latn-pinyin"'), `${route}: name explanation before pinyin`);
     assert(name.index + name.markup.length <= topics.get('location').index, `${route}: the name precedes the location chapter`);
-    for (const item of [basics, name]) assert(!/\sopen(?:=|\s|>)/.test(item.opening), `${route}: introductory details start closed`);
     const wantPairs = !extra && hasPublishedPairs(code);
     if (wantPairs) paired++;
     const order = ['location', 'uses', 'nearby'];
@@ -319,6 +320,7 @@ function checkBuiltPointPages(buildDir) {
       assert(content.includes(`id="${id}-title"`), `${route}: heading for ${topic}`);
     }
     assert(!markup.includes('aria-label="このツボのページ内目次"'), `${route}: no front-loaded topic shortcuts`);
+    assert(!markup.includes('aria-label="このツボを探す前に"') && !markup.includes('>症状がある場合の受診目安<'), `${route}: no separate warning at the top`);
 
     const location = topics.get('location').markup;
     assert(!location.includes('図を拡大する'), `${route}: location chapter has no zoom launcher`);
@@ -337,6 +339,17 @@ function checkBuiltPointPages(buildDir) {
     const anatomy = details.get('acupoint-anatomy');
     assert(appendix && location.includes(appendix.markup), `${route}: location sources follow the main diagram`);
     assert(anatomy && location.includes(anatomy.markup), `${route}: anatomy has its own disclosure in the location chapter`);
+    const pointLabels = [...anatomy.markup.matchAll(/<(text|strong)\b[^>]*\bdata-anatomy-point-name[^>]*>([\s\S]*?)<\/\1>/g)];
+    assert.equal(pointLabels.length, 1, `${route}: one point label inside the anatomy disclosure`);
+    assert(pointLabels[0][2].includes(pointName), `${route}: the anatomy label names this point`);
+    if (anatomy.opening.includes('data-anatomy-kind="regional"')) {
+      const surfaceFigure = anatomy.markup.match(/<div\b[^>]*\bdata-anatomy-surface-view[^>]*>[\s\S]*?<\/svg>/)?.[0];
+      assert(surfaceFigure?.includes(extra ? 'data-extra-point-marker' : 'data-point-marker'), `${route}: the adjacent body-surface drawing marks the point`);
+      assert(!anatomy.markup.includes('data-anatomy-surface-point'), `${route}: a shared section does not invent a point coordinate`);
+    } else {
+      assert.match(anatomy.opening, /data-anatomy-kind="individual"/, `${route}: recognized section type`);
+      assert.match(anatomy.markup, /<circle\b[^>]*\bdata-anatomy-surface-point/, `${route}: the individual model marks the point on its surface`);
+    }
     const primaryLocation = `id="${extra ? 'extra-point-location' : 'acupoint-location'}"`;
     const visiblePosition = location.slice(0, location.indexOf(appendix.markup));
     assert(visiblePosition.includes(primaryLocation) && !appendix.markup.includes(primaryLocation), `${route}: the main position remains outside and before the disclosure`);
@@ -380,10 +393,27 @@ function checkBuiltPointPages(buildDir) {
       for (const id of ['acupoint-cautions', 'acupoint-research']) assert(uses.includes(`id="${id}"`), `${route}: preserved ${id} in the uses chapter`);
       if (TRADITIONAL_POINT_USES[code]) assert.equal(sectionIds.get('acupoint-study-overview'), 1, `${route}: legacy research overview fragment`);
       assert(nearby.includes('id="acupoint-compare"'), `${route}: position comparison belongs in the nearby chapter`);
+      const caution = readContainers(uses, 'section', 'id').get('acupoint-cautions');
+      assert(caution?.opening.includes('aria-labelledby="acupoint-safety-warning"'), `${route}: one named caution block`);
+      const foldedContentAt = caution.markup.indexOf('<details');
+      assert(foldedContentAt > 0, `${route}: detailed precautions remain in a disclosure`);
+      assert.doesNotMatch(caution.markup.slice(foldedContentAt).split('>')[0], /\sopen(?:=|\s|$)/, `${route}: details start closed`);
+      assert(caution.markup.includes('href="/safety"'), `${route}: general safety link remains in the caution block`);
+      const selfCareAt = uses.indexOf('id="acupoint-self-care"');
+      if (selfCareAt >= 0) assert(caution.index < selfCareAt, `${route}: visible warnings precede self-care`);
       const notices = ATLAS_ARTICLES[code] && getAtlasSafetyNotices(ATLAS_ARTICLES[code]);
-      if (code === 'li4' || notices?.pointWarning || notices?.symptomWarning) {
-        const warningAt = markup.indexOf('aria-label="このツボを探す前に"');
-        assert(warningAt >= 0 && warningAt < topics.get('location').index, `${route}: priority warning remains visible before the position figure`);
+      const priorityCopy = code === 'li4'
+        ? ['突然の激しい頭痛や、急に言葉が出にくくなった場合は、すぐに119番へ連絡してください。', '妊娠中は合谷の指圧を控え、産科の担当者にご相談ください。']
+        : [notices?.symptomWarning, notices?.pointWarning].filter(Boolean);
+      if (priorityCopy.length) {
+        assert.match(caution.markup.slice(0, foldedContentAt), /<h3 id="acupoint-safety-warning"[^>]*>注意事項<\/h3>/, `${route}: visible warnings live under the caution heading`);
+        assert(caution.markup.includes('<summary>そのほかの注意を読む</summary>'), `${route}: additional advice opens separately within the block`);
+      } else {
+        assert(caution.markup.includes('<summary><span id="acupoint-safety-warning">注意事項</span></summary>'), `${route}: the disclosure identifies its precautions in the absence of priority notices`);
+      }
+      for (const message of priorityCopy) {
+        assert(caution.markup.slice(0, foldedContentAt).includes(message), `${route}: priority warning is readable without opening details`);
+        assert.equal(markup.split(message).length, 2, `${route}: each warning is shown once`);
       }
     } else {
       assert(appendix.markup.includes(`href="${positionSource}"`), `${route}: extra-point position source inside its location disclosure`);

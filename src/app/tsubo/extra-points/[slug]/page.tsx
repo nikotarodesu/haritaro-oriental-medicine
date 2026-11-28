@@ -44,7 +44,7 @@ export default async function ExtraPointPage({ params }: Props) {
   const point = await pointFromParams(params);
   const code = point.code.toLowerCase();
   const anatomySection = getRegionalSection(code);
-  const [namingSource, positionSource] = point.sources;
+  const [, positionSource] = point.sources;
   const url = SITE_ORIGIN + point.href;
   const schema = {
     "@context": "https://schema.org",
@@ -77,19 +77,11 @@ export default async function ExtraPointPage({ params }: Props) {
         <p>奇穴 <span aria-hidden="true">·</span> {point.bodyPart}</p>
       </header>
 
-      <div className="atlas-intro-details">
-        <AcupointIntroDetails id="acupoint-basics" summary="基本情報">
-          <p>{point.classification ?? `WHOの名称案では奇穴「${point.code}」と表記されています。`}</p>
-          <p>
-            <a href={namingSource.href} className="atlas-source-link">WHOの名称資料（PDF）</a>
-            {point.classification && <> · <a href={positionSource.href} className="atlas-source-link">中国国家規格（PDF）</a></>}
-          </p>
-        </AcupointIntroDetails>
-        <AcupointIntroDetails id="acupoint-name" summary="名前の意味と読み">
-          <p>中国語の読みは <span lang="zh-Latn-pinyin">{point.pinyin}</span> です。{point.nameNote.text}</p>
-          <p><a href={point.nameNote.href} className="atlas-source-link">{point.nameNote.source}</a></p>
-        </AcupointIntroDetails>
-      </div>
+      <AcupointIntroDetails>
+        <p>{point.nameNote.text}</p>
+        <p>中国語の読みは <span lang="zh-Latn-pinyin">{point.pinyin}</span> です。</p>
+        <p><a href={point.nameNote.href} className="atlas-source-link">{point.nameNote.source}</a></p>
+      </AcupointIntroDetails>
 
       <AcupointTopic topic="location">
         <div id="extra-point-location" tabIndex={-1} className={`atlas-target ${styles.location}`}>
@@ -141,6 +133,7 @@ export default async function ExtraPointPage({ params }: Props) {
 
       <section id="extra-point-sources" className={`atlas-target ${styles.section}`} aria-labelledby="extra-point-sources-heading">
         <h2 id="extra-point-sources-heading" className={styles.sectionTitle}>出典と確認した範囲</h2>
+        {point.classification && <p>{point.classification}</p>}
         <ul className={styles.sources}>
           {point.sources.map(source => (
             <li key={source.href}>

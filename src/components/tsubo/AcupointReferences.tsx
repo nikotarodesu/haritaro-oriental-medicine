@@ -4,26 +4,6 @@ import HashTargetDetails from "@/components/common/HashTargetDetails";
 import type { AcupointDetail } from "@/data/tsubo/types";
 import type { AcupointAtlasArticle } from "@/data/tsubo/atlas/types";
 import { AcupointReadingLinks } from "./AcupointArticleLinks";
-import AcupointNameGuide from "./AcupointNameGuide";
-import AcupointIntroDetails from "./AcupointIntroDetails";
-
-export function AcupointPointBasics({ point, meridianReading }: {
-  point: AcupointDetail;
-  meridianReading?: string;
-}) {
-  return (
-    <div className="atlas-intro-details">
-      <AcupointIntroDetails id="acupoint-basics" summary="基本情報">
-        <dl className="atlas-point-details">
-          <div><dt>経絡（ツボをつなぐ道筋）</dt><dd>{point.meridian}{meridianReading && `（${meridianReading}）`}</dd></div>
-          <div><dt>検索で使えるコード表記</dt><dd>{point.code}・{point.code.replace(/^(\D+)(\d+)$/, "$1-$2")}</dd></div>
-          {point.aliases?.length ? <div><dt>別名・表記</dt><dd>{point.aliases.join("、")}</dd></div> : null}
-        </dl>
-      </AcupointIntroDetails>
-      <AcupointNameGuide code={point.codeLower} />
-    </div>
-  );
-}
 
 export default function AcupointReferences({ point, editorialLinks, sources, sourceNote }: {
   point: AcupointDetail;

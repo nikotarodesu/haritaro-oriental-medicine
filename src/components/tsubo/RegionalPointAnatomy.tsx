@@ -18,16 +18,8 @@ export default function RegionalPointAnatomy({
 
   return (
     <AcupointAnatomyDetails key={code} kind="regional">
-      <CrossSectionViewer model={getPublicCrossSectionModel(model)} pointName={name} pointCode={code} regional sharedLandmarks={landmarks} />
-      <div className="atlas-anatomy-location">
-        <figure>
-          {surface}
-          <figcaption>体表の位置</figcaption>
-        </figure>
-        <div>
-          <a href={locationHref} className="atlas-source-link inline-flex min-h-11 items-center">{name}の位置図に戻る</a>
-        </div>
-      </div>
+      <CrossSectionViewer model={getPublicCrossSectionModel(model)} pointName={name} pointCode={code} regional sharedLandmarks={landmarks}
+        surface={surface} locationHref={locationHref} />
       <details className="atlas-disclosure atlas-reading-details">
         <summary>参照資料と確認範囲</summary>
         <ul className="space-y-2 pb-3">
