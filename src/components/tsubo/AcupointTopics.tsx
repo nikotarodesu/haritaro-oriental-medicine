@@ -11,10 +11,28 @@ const topics = {
 
 type Topic = keyof typeof topics;
 
-export function AcupointLocationDetails({ children, label = "位置の資料と断面図" }: { children: ReactNode; label?: string }) {
+export function AcupointLocationRows({ children }: { children: ReactNode }) {
+  return <div className={styles.locationRows}>{children}</div>;
+}
+
+export function AcupointLocationDetails({ children }: { children: ReactNode }) {
   return (
-    <HashTargetDetails id="acupoint-location-resources" className={`atlas-target atlas-disclosure ${styles.locationDetails}`} summary={label}>
-      <div className={styles.resources}>{children}</div>
+    <HashTargetDetails id="acupoint-location-resources" className={`atlas-target atlas-disclosure ${styles.locationDetails}`} summary={<h3>位置の資料</h3>}>
+      <div className={styles.locationContent}>{children}</div>
+    </HashTargetDetails>
+  );
+}
+
+export function AcupointAnatomyDetails({ children, kind }: { children: ReactNode; kind?: "individual" | "regional" }) {
+  return (
+    <HashTargetDetails
+      id="acupoint-anatomy"
+      className={`atlas-target atlas-disclosure ${styles.locationDetails}`}
+      data-anatomy-kind={kind}
+      analytics={kind ? { kind } : undefined}
+      summary={<h3 id="acupoint-anatomy-title">断面図</h3>}
+    >
+      <div id="acupoint-anatomy-diagram" className={`atlas-target ${styles.locationContent}`}>{children}</div>
     </HashTargetDetails>
   );
 }

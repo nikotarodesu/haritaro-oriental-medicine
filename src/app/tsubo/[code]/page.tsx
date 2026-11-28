@@ -23,7 +23,7 @@ import AcupointLocationComparison from "@/components/tsubo/AcupointLocationCompa
 import AcupointNameGuide from "@/components/tsubo/AcupointNameGuide";
 import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "@/components/tsubo/AcupointPairNotes";
-import { AcupointLocationDetails, AcupointTopic } from "@/components/tsubo/AcupointTopics";
+import { AcupointAnatomyDetails, AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import HeguAtlasPreview, { heguSources } from "@/components/tsubo/HeguAtlasPreview";
 import { ATLAS_ARTICLES } from "@/data/tsubo/atlas/articles";
@@ -465,22 +465,26 @@ export default async function AcupointDetailPage({ params }: Props) {
             )}
           </div>
 
-          <AcupointLocationDetails label={point.crossSection?.svgElements?.length ? "位置の資料と断面図" : "位置の資料"}>
-            <WhoPointLocation code={point.codeLower} pointName={point.name} />
+          <AcupointLocationRows>
+            <AcupointLocationDetails>
+              <WhoPointLocation code={point.codeLower} pointName={point.name} />
+              {illustration && atlasMarker && (
+                <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={illustration} marker={atlasMarker} />
+              )}
+            </AcupointLocationDetails>
             {point.crossSection?.svgElements?.length ? (
-              <div id={illustration && atlasMarker ? "acupoint-cross-section" : "acupoint-diagram"} className="atlas-target">
-                <CrossSectionViewer
-                  model={getPublicCrossSectionModel(point.crossSection)}
-                  pointName={point.name}
-                  pointCode={point.code}
-                  individualModel={individualModel}
-                />
-              </div>
+              <AcupointAnatomyDetails>
+                <div id={illustration && atlasMarker ? "acupoint-cross-section" : "acupoint-diagram"} className="atlas-target">
+                  <CrossSectionViewer
+                    model={getPublicCrossSectionModel(point.crossSection)}
+                    pointName={point.name}
+                    pointCode={point.code}
+                    individualModel={individualModel}
+                  />
+                </div>
+              </AcupointAnatomyDetails>
             ) : null}
-            {illustration && atlasMarker && (
-              <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={illustration} marker={atlasMarker} />
-            )}
-          </AcupointLocationDetails>
+          </AcupointLocationRows>
         </AcupointTopic>
 
         <AcupointTopic topic="uses">

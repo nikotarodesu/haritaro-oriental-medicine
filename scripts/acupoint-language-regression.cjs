@@ -297,6 +297,7 @@ function checkBuiltPointPages(buildDir) {
     assert(!markup.includes('aria-label="このツボのページ内目次"'), `${route}: no front-loaded topic shortcuts`);
 
     const location = topics.get('location').markup;
+    assert(!location.includes('図を拡大する'), `${route}: location chapter has no zoom launcher`);
     const uses = topics.get('uses').markup;
     const nearby = topics.get('nearby').markup;
     const legacyTargets = extra
@@ -309,11 +310,24 @@ function checkBuiltPointPages(buildDir) {
       assert(location.includes(`id="${id}"`), `${route}: ${id} belongs in the location chapter`);
     }
     const appendix = details.get('acupoint-location-resources');
-    assert(appendix && location.includes(appendix.markup), `${route}: one shared location disclosure after the main diagram`);
+    const anatomy = details.get('acupoint-anatomy');
+    assert(appendix && location.includes(appendix.markup), `${route}: location sources follow the main diagram`);
+    assert(anatomy && location.includes(anatomy.markup), `${route}: anatomy has its own disclosure in the location chapter`);
     const primaryLocation = `id="${extra ? 'extra-point-location' : 'acupoint-location'}"`;
-    assert(location.indexOf(appendix.markup) > location.indexOf(primaryLocation) && !appendix.markup.includes(primaryLocation), `${route}: the main position remains outside and before the disclosure`);
-    assert(!/\sopen(?:=|\s|>)/.test(appendix.opening), `${route}: location details start closed`);
-    assert(appendix.markup.includes('id="acupoint-anatomy-diagram"'), `${route}: original anatomy anchor opens inside the shared location details`);
+    const visiblePosition = location.slice(0, location.indexOf(appendix.markup));
+    assert(visiblePosition.includes(primaryLocation) && !appendix.markup.includes(primaryLocation), `${route}: the main position remains outside and before the disclosure`);
+    if (extra) {
+      assert(visiblePosition.includes('id="extra-point-location-heading"') && visiblePosition.includes('<figcaption>'), `${route}: main figure and caption stay visible`);
+    } else {
+      assert(visiblePosition.includes('id="acupoint-diagram"') && visiblePosition.includes('data-point-marker') && visiblePosition.includes('atlas-location-key'), `${route}: main figure and marker key stay visible`);
+    }
+    for (const disclosure of [appendix, anatomy]) {
+      assert(!/\sopen(?:=|\s|>)/.test(disclosure.opening), `${route}: both location disclosures start closed`);
+    }
+    assert(appendix.index + appendix.markup.length <= anatomy.index, `${route}: anatomy follows location sources without being nested in them`);
+    assert.match(appendix.markup, /<summary><h3>位置の資料<\/h3><\/summary>/, `${route}: location disclosure names its own content`);
+    assert.match(anatomy.markup, /<summary><h3 id="acupoint-anatomy-title">断面図<\/h3><\/summary>/, `${route}: anatomy disclosure has a short label`);
+    assert(anatomy.markup.includes('id="acupoint-anatomy-diagram"'), `${route}: original anatomy anchor opens the separate anatomy row`);
     assert(!lectureHref.test(location) && !caseHref.test(location), `${route}: study links do not interrupt the location chapter`);
     assert(uses.includes('id="acupoint-traditional"'), `${route}: traditional content or its original fallback target`);
     if (!extra) {
@@ -361,7 +375,7 @@ function checkBuiltPointPages(buildDir) {
     }
     if (code === 'st36') assert(nearby.includes('/tsubo/st37#acupoint-location'), 'A legitimate nearby comparison remains even when there is pairing evidence');
   }
-  console.log(`Built acupoint HTML: ${routes.length} detail pages, ordered topics without front-loaded shortcuts, a shared closed location disclosure, preserved study links and anchors, and ${paired} non-empty pair chapters.`);
+  console.log(`Built acupoint HTML: ${routes.length} detail pages, ordered topics without front-loaded shortcuts, separate closed location and anatomy disclosures, preserved study links and anchors, and ${paired} non-empty pair chapters.`);
 }
 
 if (process.argv.includes('--build-output')) {

@@ -1,16 +1,7 @@
 .folio:global(.atlas-entry) {
-  --atlas-ink: var(--folio-ink, var(--text-sumi));
-  --atlas-muted: var(--folio-muted, var(--text-secondary));
-  --atlas-accent: var(--folio-accent, var(--accent-readable));
-  --atlas-soft: var(--folio-plate, var(--accent-soft));
-  --atlas-paper: var(--folio-surface, var(--bg-card));
-  --atlas-line: var(--folio-rule, var(--border-washi));
-  --border-control: var(--folio-control, var(--border-washi));
   max-width: 48.25rem;
   padding-inline: clamp(1rem, 4vw, 1.5rem);
   gap: clamp(1.5rem, 4vw, 3rem);
-  color: var(--atlas-ink);
-  background: var(--folio-paper, var(--bg-washi));
   line-height: 1.75;
 }
 
@@ -60,13 +51,6 @@
   border-inline-start-width: 3px;
 }
 
-.folio :global(.atlas-location-figure) {
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-}
-
 .folio :global(.atlas-location-figure) > :global(.atlas-figure) {
   max-width: 27rem;
 }
@@ -107,32 +91,13 @@
   }
 }
 
-.folio :global(.atlas-location-figure) [role="group"] > div:last-child {
-  padding: .5rem;
-  border-radius: var(--folio-radius, .625rem);
-  background: var(--atlas-soft);
-}
-
-.folio :global(.atlas-location-figure) [role="group"] > div:last-child:not([role="region"]) > svg {
+.folio :global(.atlas-location-figure) svg[role="img"] {
   max-width: 25rem;
-}
-
-.folio :global(.atlas-location-figure) :global(.atlas-zoom-toggle) {
-  margin-inline: 0;
-  padding-inline: .75rem;
-  color: var(--atlas-accent);
-  border-color: var(--border-control);
-  background: var(--atlas-paper);
-  text-decoration: none;
-}
-
-.folio :global(.atlas-location-figure) :global(.atlas-zoom-toggle):hover {
-  background: var(--atlas-soft);
 }
 
 .folio :global(.atlas-location-figure) :global(.atlas-landmark-overlay) {
   --landmark-line: var(--atlas-accent);
-  --landmark-point: var(--folio-terracotta, var(--warm-readable));
+  --landmark-point: var(--warm-readable);
 }
 
 .folio :global(.atlas-location-figure) svg [stroke="#B86A38"] {

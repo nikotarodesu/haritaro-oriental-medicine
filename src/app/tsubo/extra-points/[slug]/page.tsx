@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import AuthorSupervisorCard from "@/components/common/AuthorSupervisorCard";
 import PageBreadcrumb from "@/components/design/PageBreadcrumb";
-import { AcupointLocationDetails, AcupointTopic } from "@/components/tsubo/AcupointTopics";
+import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "@/components/tsubo/AcupointTopics";
 import AcupointUses, { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import RegionalPointAnatomy from "@/components/tsubo/RegionalPointAnatomy";
 import { pageSocialMetadata, seriesPageTitle, SITE_AUTHOR, SITE_ORIGIN } from "@/config/seo";
@@ -95,8 +95,10 @@ export default async function ExtraPointPage({ params }: Props) {
             </ul>
           </div>
         </div>
-        <AcupointLocationDetails label={anatomySection ? "位置の出典と断面図" : "位置の出典"}>
-          <p>位置の出典　<a href={positionSource.href} className="atlas-source-link">{positionSource.title}（PDF）</a></p>
+        <AcupointLocationRows>
+          <AcupointLocationDetails>
+            <p>位置の出典　<a href={positionSource.href} className="atlas-source-link">{positionSource.title}（PDF）</a></p>
+          </AcupointLocationDetails>
           {anatomySection && (
             <RegionalPointAnatomy
               code={point.code}
@@ -106,7 +108,7 @@ export default async function ExtraPointPage({ params }: Props) {
               surface={<ExtraPointDiagram point={point} />}
             />
           )}
-        </AcupointLocationDetails>
+        </AcupointLocationRows>
       </AcupointTopic>
 
       <AcupointTopic topic="uses">

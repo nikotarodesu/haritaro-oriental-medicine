@@ -1,10 +1,9 @@
 import type { ReactNode } from "react";
 import type { AcupointMaster } from "@/data/tsubo/types";
 
-import { AtlasLocationFigure, AtlasLocationSupplement } from "./atlas/AtlasLocationFigures";
+import { AtlasLocationDiagram, AtlasLocationFigure, AtlasLocationSupplement } from "./atlas/AtlasLocationFigures";
 import AtlasLandmarkGuide from "./atlas/AtlasLandmarkGuide";
 import HeguHandDiagram from "./atlas/HeguHandDiagram";
-import ZoomableAtlasDiagram from "./atlas/ZoomableAtlasDiagram";
 
 export default function AcupointAtlasDiagrams({ point }: { point: AcupointMaster }) {
   if (point.codeLower !== "li4") return null;
@@ -13,9 +12,9 @@ export default function AcupointAtlasDiagrams({ point }: { point: AcupointMaster
     <AtlasLocationFigure>
       <figure className="atlas-figure atlas-figure--labelled">
         <AtlasLandmarkGuide code="li4" controlsFirst>
-          <ZoomableAtlasDiagram label="合谷の場所と目印" pointName={point.name}>
+          <AtlasLocationDiagram pointName={point.name}>
             <HeguHandDiagram />
-          </ZoomableAtlasDiagram>
+          </AtlasLocationDiagram>
         </AtlasLandmarkGuide>
         <figcaption>右手の甲</figcaption>
       </figure>
@@ -44,21 +43,19 @@ export function AcupointAtlasLocationSupplement({ point, meridianPoints, childre
       </figure>
 
       <figure className="atlas-figure atlas-figure--meridian">
-        <ZoomableAtlasDiagram label={`${point.meridian}の並び順`}>
-          <svg viewBox="0 0 360 108" role="img" aria-label={`${point.meridian}。${nearby.map((entry) => `${entry.code} ${entry.name}`).join("、")}の順で、${point.name}を強調しています。`} className="mx-auto block w-full max-w-md">
-            <path d="M30 44H330" stroke="#A69B87" strokeWidth="2" />
-            {nearby.map((entry, index) => {
-              const isCurrent = entry.code === point.code;
-              return (
-                <g key={entry.code} transform={`translate(${30 + 60 * index} 44)`}>
-                  <circle r={isCurrent ? 10 : 5} fill={isCurrent ? "#9E4B20" : "#F9F5ED"} stroke={isCurrent ? "#7F3520" : "#82725B"} strokeWidth="2" />
-                  <text textAnchor="middle" y="30" fontSize="13" fill="#332D25" fontWeight={isCurrent ? "bold" : "normal"}>{entry.name}</text>
-                  <text textAnchor="middle" y="48" fontSize="11" fill="#524637">{entry.code}</text>
-                </g>
-              );
-            })}
-          </svg>
-        </ZoomableAtlasDiagram>
+        <svg viewBox="0 0 360 108" role="img" aria-label={`${point.meridian}。${nearby.map((entry) => `${entry.code} ${entry.name}`).join("、")}の順で、${point.name}を強調しています。`} className="mx-auto block w-full max-w-md">
+          <path d="M30 44H330" stroke="#A69B87" strokeWidth="2" />
+          {nearby.map((entry, index) => {
+            const isCurrent = entry.code === point.code;
+            return (
+              <g key={entry.code} transform={`translate(${30 + 60 * index} 44)`}>
+                <circle r={isCurrent ? 10 : 5} fill={isCurrent ? "#9E4B20" : "#F9F5ED"} stroke={isCurrent ? "#7F3520" : "#82725B"} strokeWidth="2" />
+                <text textAnchor="middle" y="30" fontSize="13" fill="#332D25" fontWeight={isCurrent ? "bold" : "normal"}>{entry.name}</text>
+                <text textAnchor="middle" y="48" fontSize="11" fill="#524637">{entry.code}</text>
+              </g>
+            );
+          })}
+        </svg>
         <figcaption>{point.meridian}の順序 · 人差し指から前腕まで</figcaption>
       </figure>
     </AtlasLocationSupplement>

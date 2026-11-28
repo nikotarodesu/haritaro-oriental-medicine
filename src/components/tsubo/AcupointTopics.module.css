@@ -37,35 +37,34 @@
   background: transparent;
 }
 
+.locationRows {
+  min-width: 0;
+  border-block-start: 1px solid var(--atlas-line);
+}
+
 .locationDetails {
   min-width: 0;
-  padding-inline: clamp(.75rem, 2vw, 1.125rem);
-  border-radius: .375rem;
-  background: color-mix(in srgb, var(--atlas-soft) 65%, transparent);
+  border-block-end: 1px solid var(--atlas-line);
 }
 
 .locationDetails > summary {
-  min-height: 3rem;
+  min-height: 2.75rem;
+  padding-inline: .125rem;
   font-size: .9375rem;
   font-weight: 600;
 }
 
-.resources {
+.locationContent {
   display: grid;
   gap: 1rem;
   min-width: 0;
   padding-block: .875rem 1rem;
-  border-top: 1px solid var(--atlas-line);
+  border-block-start: 1px solid var(--atlas-line);
 }
 
-.resources :global(.atlas-who-location),
-.resources :global(.atlas-figure),
-.resources :global(.atlas-anatomy-details) {
+.locationContent :global(.atlas-who-location),
+.locationContent :global(.atlas-figure) {
   border: 0;
   padding-inline: 0;
   background: transparent;
-}
-
-.resources :global(.atlas-anatomy-details) > summary {
-  border-block-end: 1px solid var(--atlas-line);
 }

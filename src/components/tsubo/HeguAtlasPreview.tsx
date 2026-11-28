@@ -8,7 +8,7 @@ import AcupointResearch from "@/components/tsubo/AcupointResearch";
 import AcupointSelfCare from "@/components/tsubo/AcupointSelfCare";
 import { AcupointTraditionalUses } from "@/components/tsubo/AcupointUses";
 import { AcupointPairNotes } from "./AcupointPairNotes";
-import { AcupointLocationDetails, AcupointTopic } from "./AcupointTopics";
+import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "./AcupointTopics";
 import WhoPointLocation from "@/components/tsubo/WhoPointLocation";
 import AcupointAtlasDiagrams, { AcupointAtlasLocationSupplement } from "@/components/tsubo/AcupointAtlasDiagrams";
 import { getMeridianPoints } from "@/data/tsubo";
@@ -29,7 +29,7 @@ export const heguSources = [
 
 export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
   return (
-    <article data-atlas-point={point.code} className={`quiet-atlas page-layout atlas-page atlas-entry ${styles.folio}`}>
+    <article data-atlas-point={point.code} className={`page-layout atlas-page atlas-entry ${styles.folio}`}>
       <AcupointArticleHeader point={point} folio />
       <aside className="atlas-caution-priority" aria-label="このツボを探す前に">
         <p className="font-semibold">症状がある場合の受診目安</p>
@@ -40,12 +40,14 @@ export default function HeguAtlasPreview({ point }: { point: AcupointDetail }) {
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
           <AcupointAtlasDiagrams point={point} />
         </div>
-        <AcupointLocationDetails>
-          <AcupointAtlasLocationSupplement point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
-            <WhoPointLocation code={point.codeLower} pointName={point.name} />
-            <AcupointAnatomy point={point} />
-          </AcupointAtlasLocationSupplement>
-        </AcupointLocationDetails>
+        <AcupointLocationRows>
+          <AcupointLocationDetails>
+            <AcupointAtlasLocationSupplement point={point} meridianPoints={getMeridianPoints(point.meridianId)}>
+              <WhoPointLocation code={point.codeLower} pointName={point.name} />
+            </AcupointAtlasLocationSupplement>
+          </AcupointLocationDetails>
+          <AcupointAnatomy point={point} />
+        </AcupointLocationRows>
       </AcupointTopic>
 
       <AcupointTopic topic="uses">

@@ -656,13 +656,7 @@
 .atlas-guide-scope > p + p { margin-top: .5rem; }
 
 .atlas-location-layout { display: grid; gap: .5rem; }
-.atlas-location-figure {
-  min-width: 0;
-  padding: clamp(.625rem, 2.5vw, 1.25rem);
-  border: 1px solid var(--atlas-line);
-  border-radius: .875rem;
-  background: var(--bg-washi);
-}
+.atlas-location-figure { min-width: 0; }
 .atlas-location-notes { min-width: 0; border-bottom: 1px solid var(--atlas-line); }
 .atlas-location-notes > details + details { border-top: 1px solid var(--atlas-line); }
 .atlas-location-reference { display: grid; gap: .875rem; }
@@ -684,7 +678,6 @@
 
 .atlas-figure > figcaption { margin-top: .4rem; color: var(--atlas-muted); font-size: .875rem; line-height: 1.6; text-align: center; }
 .atlas-figure--labelled { justify-content: flex-start; padding: .65rem .45rem; }
-.atlas-figure--labelled button { margin-inline-start: .25rem; }
 .atlas-landmark-overlay { --landmark-line: #496d67; --landmark-point: #852f22; pointer-events: none; }
 .atlas-landmark-halo, .atlas-landmark-leader { fill: none; stroke-linejoin: round; stroke-linecap: round; }
 .atlas-landmark-halo { stroke: var(--atlas-paper); stroke-width: 3.5; opacity: .8; }
@@ -933,15 +926,6 @@
   padding: 0;
   border: 0;
   background: transparent;
-}
-.atlas-location-figure .atlas-zoom-toggle {
-  margin-inline-start: 0;
-  padding-inline: .2rem;
-  border-color: transparent;
-  background: transparent;
-  color: var(--atlas-muted);
-  text-decoration: underline;
-  text-underline-offset: .2em;
 }
 .atlas-location-key {
   display: flex;

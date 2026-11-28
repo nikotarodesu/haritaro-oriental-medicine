@@ -9,7 +9,7 @@ import { AcupointNameComparison, AcupointPairNotes, hasPointPairs } from "./Acup
 import AcupointReferences, { AcupointPointBasics } from "./AcupointReferences";
 import AcupointResearch from "./AcupointResearch";
 import AcupointSelfCare from "./AcupointSelfCare";
-import { AcupointLocationDetails, AcupointTopic } from "./AcupointTopics";
+import { AcupointLocationDetails, AcupointLocationRows, AcupointTopic } from "./AcupointTopics";
 import { AcupointTraditionalUses } from "./AcupointUses";
 import WhoPointLocation from "./WhoPointLocation";
 import NearbyPointComparison from "./atlas/NearbyPointComparison";
@@ -59,27 +59,29 @@ export default function AcupointAtlasArticle({ point, article, marker, meridianP
         <div id="acupoint-location" tabIndex={-1} className="atlas-target">
           <PointAtlasLocationFigure point={point} illustration={article.illustration} marker={marker} />
         </div>
-        <AcupointLocationDetails label={hasIndividualAnatomy || regionalSection ? "位置の資料と断面図" : "位置の資料"}>
-          <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
-            <WhoPointLocation code={point.codeLower} pointName={point.name} />
-            {!hasIndividualAnatomy && locationNotes.length > 0 && (
-              <div className="atlas-location-expert">
-                <h3>位置図の補足</h3>
-                <Paragraphs paragraphs={locationNotes} />
-              </div>
-            )}
-            {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
-            {regionalSection && (
-              <RegionalPointAnatomy
-                code={point.code}
-                name={point.name}
-                section={regionalSection}
-                locationHref="#acupoint-location"
-                surface={<PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />}
-              />
-            )}
-          </PointAtlasLocationSupplement>
-        </AcupointLocationDetails>
+        <AcupointLocationRows>
+          <AcupointLocationDetails>
+            <PointAtlasLocationSupplement point={point} meridianPoints={meridianPoints} illustration={article.illustration} marker={marker} finding={article.location}>
+              <WhoPointLocation code={point.codeLower} pointName={point.name} />
+              {!hasIndividualAnatomy && locationNotes.length > 0 && (
+                <div className="atlas-location-expert">
+                  <h3>位置図の補足</h3>
+                  <Paragraphs paragraphs={locationNotes} />
+                </div>
+              )}
+            </PointAtlasLocationSupplement>
+          </AcupointLocationDetails>
+          {hasIndividualAnatomy && <AcupointAnatomy point={point} paragraphs={article.expert} />}
+          {regionalSection && (
+            <RegionalPointAnatomy
+              code={point.code}
+              name={point.name}
+              section={regionalSection}
+              locationHref="#acupoint-location"
+              surface={<PointAtlasThumbnail point={point} illustration={article.illustration} marker={marker} />}
+            />
+          )}
+        </AcupointLocationRows>
       </AcupointTopic>
 
       <AcupointTopic topic="uses" researchOnly={researchOnly}>
